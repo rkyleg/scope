@@ -1,51 +1,54 @@
 lang:
     Python:
         plugins: [
-            py_shell,
-            outline,
-            filebrowser,
-        ]
+                    pycute,
+                    outline,
+                    filebrowser,
+                ]
         editor: scintilla
-        lexer: Qsci.QsciLexerPython()
-        run: os.system('python $file')
+        run: subprocess.Popen(['python', '$file'], stdout=subprocess.PIPE, shell=0)
     HTML:
         editor: scintilla
-        lexer: Qsci.QsciLexerHTML()
         plugins: [
-            filebrowser
-        ]
+                    filebrowser
+                ]
         run: webbrowser.open('$file')
     JavaScript:
         editor: scintilla
-        lexer: Qsci.QsciLexerJavaScript()
         plugins: [
-            filebrowser
-        ]
+                    filebrowser
+                ]
     YAML:
         editor: scintilla
-        lexer: Qsci.QsciLexerYAML()
         plugins: [
-            filebrowser
-        ]
+                    filebrowser
+                ]
     CSS:
         editor: scintilla
         plugins: [
-            filebrowser,
-            outline
-        ]
-    HTML Rich:
+                    filebrowser,
+                    outline
+                ]
+    HTML WYSIWYG:
         editor: ckeditor
         plugins: [
-        ]
+                ]
         run: webbrowser.open('$file')
     WebView:
         editor: webview
         plugins: []
+    Text:
+        editor: scintilla
+        plugins: [
+                    filebrowser,
+                ]
 plugins: 
     outline: 
         dockarea: left
     filebrowser: 
         dockarea: left
+    pycute:
+        dockarea: bottom
     # py_shell:
         # dockarea: bottom
 ext:

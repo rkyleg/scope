@@ -284,6 +284,9 @@
           <iconset>
            <normaloff>img/comment.png</normaloff>img/comment.png</iconset>
          </property>
+         <property name="shortcut">
+          <string>Ctrl+E</string>
+         </property>
         </widget>
        </item>
        <item row="0" column="0">
@@ -300,6 +303,9 @@
          <property name="icon">
           <iconset>
            <normaloff>img/new.png</normaloff>img/new.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+N</string>
          </property>
         </widget>
        </item>

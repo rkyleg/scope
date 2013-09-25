@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'afide.ui'
 #
-# Created: Wed Sep 25 01:16:15 2013
+# Created: Wed Sep 25 11:22:22 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -158,4 +158,6 @@ class Ui_MainWindow(object):
         self.b_run.setText(_translate("MainWindow", "Save", None))
         self.b_run.setShortcut(_translate("MainWindow", "F5", None))
         self.b_comment.setText(_translate("MainWindow", "Comment", None))
+        self.b_comment.setShortcut(_translate("MainWindow", "Ctrl+E", None))
+        self.b_new.setShortcut(_translate("MainWindow", "Ctrl+N", None))
 

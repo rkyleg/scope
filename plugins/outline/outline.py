@@ -11,6 +11,7 @@ class outlineTree(QtGui.QTreeWidget):
     def __init__(self,parent=None):
         QtGui.QTreeWidget.__init__(self,parent)
         self.setHeaderHidden(1)
+        self.setRootIsDecorated(0)
 
 class Outline(QtGui.QWidget):
     def __init__(self,parent=None):
@@ -20,7 +21,7 @@ class Outline(QtGui.QWidget):
         self.afide = parent
         self.wdgD = {}
         self.treeD = {}
-    
+
     def addOutline(self,wdg):
         trwdg = outlineTree()
         sw_ind = self.ui.sw_outline.count()
@@ -46,18 +47,37 @@ class Outline(QtGui.QWidget):
         txt = unicode(wdg.getText())
         for t in txt.split('\n'):
             cnt += 1
+            typ = None
+            itmText = None
+            spc = (len(t) -len(t.lstrip()))*' '
+            
+            #---Python
             if wdg.lang == 'Python':
-                if t.lstrip().startswith('def'):
-                    trwdg.addTopLevelItem(QtGui.QTreeWidgetItem([t.lstrip()[4:-1],str(cnt)]))
-                elif t.lstrip().startswith('class'):
-                    trwdg.addTopLevelItem(QtGui.QTreeWidgetItem([t.lstrip()[6:-1],str(cnt)]))
-                if t.lstrip().startswith('#---'):
-                    trwdg.addTopLevelItem(QtGui.QTreeWidgetItem([t.lstrip()[4:].lstrip('-'),str(cnt)]))
+                if t.lstrip().startswith('def '):
+                    itmText = t.lstrip()[4:-1]
+                    typ = 'function'
+                elif t.lstrip().startswith('class '):
+                    itmText =t.lstrip()[6:-1]
+                    typ = 'object'
+                elif t.lstrip().startswith('#---'):
+                    itmText =t.lstrip()[4:].lstrip('-')
+                    typ = 'heading'
+                if itmText != None:
+                    itmText = spc +itmText
+                
+            #--- Javascript
             elif wdg.lang == 'JavaScript':
                 if t.lstrip().startswith('function'):
-                    trwdg.addTopLevelItem(QtGui.QTreeWidgetItem([t.lstrip()[9],str(cnt)]))
+                    itmText =t.lstrip()[9]
+                    typ = 'function'
                 elif t.lstrip().startswith('//---'):
-                    trwdg.addTopLevelItem(QtGui.QTreeWidgetItem([t.lstrip()[5:],str(cnt)]))
+                    itmText =t.lstrip()[5:]
+                    typ = 'heading'
+                
+            if itmText != None:
+                itm =QtGui.QTreeWidgetItem([itmText,str(cnt)])
+                trwdg.addTopLevelItem(itm)
+                self.format(itm,typ)
                     
     def editorTabChanged(self,wdg):
         trwdg = self.wdgD[wdg]
@@ -67,3 +87,20 @@ class Outline(QtGui.QWidget):
         line = int(str(itm.text(1)))
         wdg = self.treeD[self.ui.sw_outline.currentWidget()]
         wdg.gotoLine(line)
+       
+    
+    def format(self,itm,typ):
+        # Format the tree widget item
+        if typ == 'object':
+            fnt=QtGui.QFont()
+            fnt.setBold(1)
+            itm.setFont(0,fnt)
+            
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
+        elif typ == 'function':
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(62,121,181)))
+        elif typ == 'heading':
+            fnt=QtGui.QFont()
+            fnt.setBold(1)
+            itm.setFont(0,fnt)
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(181,181,181)))

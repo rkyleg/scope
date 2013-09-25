@@ -8,7 +8,7 @@
 import sys, subprocess, json, new
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
-import os,shutil,datetime, webbrowser, yaml
+import os,shutil,datetime, webbrowser, yaml, subprocess
 
 class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
@@ -95,6 +95,9 @@ class Afide(QtGui.QMainWindow):
         self.ui.b_save.clicked.connect(self.editorSave)
         self.ui.b_run.clicked.connect(self.editorRun)
         self.ui.b_find.clicked.connect(self.editorFind)
+        self.ui.b_indent.clicked.connect(self.editorIndent)
+        self.ui.b_unindent.clicked.connect(self.editorUnindent)
+        self.ui.b_comment.clicked.connect(self.editorToggleComment)
         
         # Editor Signals
         
@@ -125,7 +128,7 @@ class Afide(QtGui.QMainWindow):
 
         # Add Sample pages
         wdg = self.addEditorWidget('WebView','Welcome')
-        wdg.setText('Welcome to afide (Another Fucking IDE)<br><br>afide is pronounced like aphid')
+        wdg.setText('Welcome to afide (Another Fantastic IDE)<br><br>afide is pronounced like aphid')
         self.changeTab(self.ui.tab.currentIndex())
         
 ##        from editors.ckeditor import ckeditor
@@ -175,9 +178,14 @@ class Afide(QtGui.QMainWindow):
             f.close()
             wdg.setText(txt)
             wdg.lastText = txt
+            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
 
 #---Editor
+    def currentWidget(self):
+        return self.ui.sw_main.currentWidget()
+
     def changeTab(self,tab_ind):
+        self.ui.statusbar.showMessage('')
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
         if file_id in self.tabD:
             wdg = self.tabD[file_id]
@@ -199,8 +207,8 @@ class Afide(QtGui.QMainWindow):
             
             # Disable buttons based on function availability
             btnD = {
-                'editorIndent':self.ui.b_indent,
-                'editorUnIndent':self.ui.b_unindent,
+                'indent':self.ui.b_indent,
+                'unindent':self.ui.b_unindent,
                 'find':self.ui.fr_find,
                 'toggleComment':self.ui.b_comment,
                 'getText':self.ui.b_save,
@@ -225,6 +233,11 @@ class Afide(QtGui.QMainWindow):
             # Remove Widget
             self.ui.sw_main.removeWidget(wdg)
 
+    def editorTextChanged(self):
+        # Indicate if text changed
+        wdg = self.currentWidget()
+        self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
+        
     def addEditorWidget(self,lang=None,title='New',filename=None):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
@@ -242,6 +255,9 @@ class Afide(QtGui.QMainWindow):
             wdg.lang = lang
             self.evnt.editorAdded.emit(wdg)
             self.tabD[self.fileCount]=wdg
+
+            if 'editorTextChanged' in dir(wdg):
+                wdg.evnt.editorChanged.connect(self.editorTextChanged)
 
             # Insert widget to page
             self.ui.sw_main.insertWidget(sw_ind,wdg)
@@ -279,16 +295,20 @@ class Afide(QtGui.QMainWindow):
                 filename=None
             else:
                 wdg.filename = os.path.abspath(str(filename))
-                self.ui.tab.setTabText(self.ui.tab.currentIndex(),os.path.basename(wdg.filename))
+                wdg.title = os.path.basename(wdg.filename)
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
         if filename != None:
             try:
                 f = open(wdg.filename,'w')
                 f.write(txt)
                 f.close()
                 wdg.lastText = txt
+                self.ui.statusbar.showMessage('Saved '+filename+' at '+datetime.datetime.now().ctime())
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it')
-
+                self.ui.statusbar.showMessage('Error Saving: '+filename)
+                
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         if 'find' in dir(wdg):
@@ -297,13 +317,23 @@ class Afide(QtGui.QMainWindow):
 
     def editorRun(self):
         wdg = self.ui.sw_main.currentWidget()
-        filename = str(wdg.filename)
-
         ok = self.checkSave(wdg)
-        
+        filename = str(wdg.filename)
         if ok:
             if wdg.lang in self.settings['lang'] and 'run' in self.settings['lang'][wdg.lang]:
                 exec(self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
+
+    def editorToggleComment(self):
+        wdg = self.ui.sw_main.currentWidget()
+        wdg.toggleComment()
+
+    def editorIndent(self):
+        wdg = self.ui.sw_main.currentWidget()
+        wdg.indent()
+
+    def editorUnindent(self):
+        wdg = self.ui.sw_main.currentWidget()
+        wdg.unindent()
 
 #---Plugins
     def addPlugin(self,wdg,dockarea,title):

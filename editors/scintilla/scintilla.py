@@ -10,10 +10,13 @@ lexD = {'Python':Qsci.QsciLexerPython(),
     'HTML':Qsci.QsciLexerHTML(),
     'CSS':Qsci.QsciLexerCSS(),
     'XML':Qsci.QsciLexerXML(),
+    'UI':Qsci.QsciLexerXML(),
+    'YAML':Qsci.QsciLexerYAML(),
     }
 
 commentD = {
-
+    'Python':'##',
+    'JavaScript':'//'
 }
 
 def addEditor(parent,lang):
@@ -33,7 +36,9 @@ class Sci(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.te_sci.ARROW_MARKER_NUM = 8
-
+        
+        self.afide = parent
+        
         # Events
         self.evnt = Events()
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
@@ -95,3 +100,48 @@ class Sci(QtGui.QWidget):
     
     def editorTextChanged(self):
         self.evnt.editorChanged.emit(self)
+    
+    def toggleComment(self):
+        lang = self.afide.currentWidget().lang
+        if lang in commentD:
+            if self.ui.te_sci.getSelection()[0] != -1:
+                start = self.ui.te_sci.getSelection()[0]
+                stop = self.ui.te_sci.getSelection()[2]
+                lines = range(start,stop+1)
+                if start == stop: lines = [start]
+            else:
+                start = stop = self.ui.te_sci.getCursorPosition()[0]
+                lines = [start]
+            
+            # First line text - check if adding comment or removing
+            txt1 = str(self.ui.te_sci.text(start)).lstrip()
+
+            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop))
+            ntxt = ''
+            for i in lines:
+                if txt1.startswith(commentD[lang]): # Remove Comment
+                    if str(self.ui.te_sci.text(i)).startswith(commentD[lang]):
+                        ntxt += self.ui.te_sci.text(i)[len(commentD[lang]):]
+                    else:
+                        ntxt += self.ui.te_sci.text(i)
+                else: # Add Comment
+                    ntxt += commentD[lang]+self.ui.te_sci.text(i)
+
+            self.ui.te_sci.replaceSelectedText(ntxt)
+            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
+                
+    def indent(self):
+        for i in range(self.ui.te_sci.getSelection()[0],self.ui.te_sci.getSelection()[2]+1):
+            self.ui.te_sci.indent(i)
+            
+    def unindent(self):
+        for i in range(self.ui.te_sci.getSelection()[0],self.ui.te_sci.getSelection()[2]+1):
+            self.ui.te_sci.unindent(i)
+            
+##            txt = self.ui.te_sci.selectedText()
+##            print txt
+##            ntxt = ''
+##            for t in txt.split('\n'):
+##                ntxt += commentD[lang]+t+'\n'
+##            
+##            self.ui.te_sci.replaceSelectedText(ntxt)

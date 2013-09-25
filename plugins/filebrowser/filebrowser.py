@@ -44,7 +44,7 @@ class DirTree(QtGui.QWidget):
             for f in dirlist:
                 citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
                 ext = os.path.splitext(f)[1][1:]
-                if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.afide.settings.extD:
+                if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.afide.settings['ext']:
                     itm.addChild(citm)
         else:
             self.afide.openFile(pth)
