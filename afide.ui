@@ -1,0 +1,332 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>641</width>
+    <height>497</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>afide</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>img/aphid.png</normaloff>img/aphid.png</iconset>
+  </property>
+  <property name="dockOptions">
+   <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <layout class="QGridLayout" name="gridLayout">
+    <property name="margin">
+     <number>0</number>
+    </property>
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <item row="1" column="0">
+     <widget class="QStackedWidget" name="sw_main"/>
+    </item>
+    <item row="0" column="0">
+     <widget class="QFrame" name="fr_toolbar">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="0">
+       <property name="leftMargin">
+        <number>2</number>
+       </property>
+       <property name="topMargin">
+        <number>0</number>
+       </property>
+       <property name="rightMargin">
+        <number>2</number>
+       </property>
+       <property name="bottomMargin">
+        <number>0</number>
+       </property>
+       <property name="horizontalSpacing">
+        <number>2</number>
+       </property>
+       <property name="verticalSpacing">
+        <number>0</number>
+       </property>
+       <item row="0" column="4">
+        <widget class="QToolButton" name="b_indent">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/indent.png</normaloff>img/indent.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="5">
+        <widget class="QToolButton" name="b_unindent">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/indent_remove.png</normaloff>img/indent_remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="1">
+        <widget class="QToolButton" name="b_open">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/file_open.png</normaloff>img/file_open.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="b_save">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/save.png</normaloff>img/save.png</iconset>
+         </property>
+         <property name="shortcut">
+          <string>Ctrl+S</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="7">
+        <widget class="QFrame" name="frame">
+         <property name="frameShape">
+          <enum>QFrame::NoFrame</enum>
+         </property>
+         <property name="frameShadow">
+          <enum>QFrame::Raised</enum>
+         </property>
+         <layout class="QGridLayout" name="gridLayout_3">
+          <property name="horizontalSpacing">
+           <number>2</number>
+          </property>
+          <property name="verticalSpacing">
+           <number>0</number>
+          </property>
+          <property name="margin">
+           <number>0</number>
+          </property>
+          <item row="0" column="3">
+           <widget class="QFrame" name="fr_find">
+            <property name="minimumSize">
+             <size>
+              <width>150</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>250</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="frameShape">
+             <enum>QFrame::NoFrame</enum>
+            </property>
+            <property name="frameShadow">
+             <enum>QFrame::Raised</enum>
+            </property>
+            <layout class="QGridLayout" name="gridLayout_4">
+             <property name="margin">
+              <number>0</number>
+             </property>
+             <property name="spacing">
+              <number>0</number>
+             </property>
+             <item row="0" column="0">
+              <widget class="QLineEdit" name="le_find">
+               <property name="minimumSize">
+                <size>
+                 <width>150</width>
+                 <height>0</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>Find</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QPushButton" name="b_find">
+               <property name="text">
+                <string/>
+               </property>
+               <property name="icon">
+                <iconset>
+                 <normaloff>img/search.png</normaloff>img/search.png</iconset>
+               </property>
+              </widget>
+             </item>
+            </layout>
+           </widget>
+          </item>
+          <item row="0" column="1">
+           <widget class="QToolButton" name="b_run">
+            <property name="minimumSize">
+             <size>
+              <width>26</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="text">
+             <string>Save</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/tri_right.png</normaloff>img/tri_right.png</iconset>
+            </property>
+            <property name="shortcut">
+             <string>F5</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="0">
+           <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+         </layout>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="6">
+        <widget class="QToolButton" name="b_comment">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string>Comment</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/comment.png</normaloff>img/comment.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0">
+        <widget class="QPushButton" name="b_new">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/new.png</normaloff>img/new.png</iconset>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </item>
+   </layout>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections>
+  <connection>
+   <sender>le_find</sender>
+   <signal>returnPressed()</signal>
+   <receiver>b_find</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>510</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>619</x>
+     <y>17</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+</ui>

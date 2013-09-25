@@ -1,0 +1,61 @@
+lang:
+    Python:
+        plugins: [
+            py_shell,
+            outline,
+            filebrowser,
+        ]
+        editor: scintilla
+        lexer: Qsci.QsciLexerPython()
+        run: os.system('python $file')
+    HTML:
+        editor: scintilla
+        lexer: Qsci.QsciLexerHTML()
+        plugins: [
+            filebrowser
+        ]
+        run: webbrowser.open('$file')
+    JavaScript:
+        editor: scintilla
+        lexer: Qsci.QsciLexerJavaScript()
+        plugins: [
+            filebrowser
+        ]
+    YAML:
+        editor: scintilla
+        lexer: Qsci.QsciLexerYAML()
+        plugins: [
+            filebrowser
+        ]
+    CSS:
+        editor: scintilla
+        plugins: [
+            filebrowser,
+            outline
+        ]
+    HTML Rich:
+        editor: ckeditor
+        plugins: [
+        ]
+        run: webbrowser.open('$file')
+    WebView:
+        editor: webview
+        plugins: []
+plugins: 
+    outline: 
+        dockarea: left
+    filebrowser: 
+        dockarea: left
+    # py_shell:
+       # dockarea: bottom
+ext:
+    py: Python
+    js: JavaScript
+    html: HTML
+    htm: HTML
+    css: CSS
+    style: CSS
+    yaml: YAML
+    ui: XML
+    xml: XML
+    

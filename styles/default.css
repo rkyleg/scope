@@ -1,0 +1,12 @@
+ QDockWidget {
+	color:white;
+	font-weight:bold;
+ }
+
+ QDockWidget::title {
+	background-color: qlineargradient(spread:pad, x1:1, y1:0.994, x2:0, y2:0, stop:0 rgba(31, 59, 70, 255), stop:1 rgba(18, 95, 152, 255));
+	color:white;
+	padding-left: 4px;
+    text-align: left;
+    
+ }
