@@ -32,7 +32,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.1.0'
+        self.version = '0.2.0'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
