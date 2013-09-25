@@ -27,9 +27,9 @@ afide is not yet compiled so you must run it with Python.  I have only tested it
 - Python-Qsci
 - Python-YAML
 
-==
-More info and API to come
-
 Settings
 ==
 Settings are stored in settings.yaml
+
+==
+More info and API to come
