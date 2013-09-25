@@ -22,10 +22,14 @@ The goals of afide:
 Requirements
 ==
 afide is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15) so far.
-- Python 2.6-2.7 (Haven't test with 3.x)
-- PyQt 4.8 (Havn't tested with 5.x)
+- Python 2.6-2.7 (Not tested with 3.x or 2.6 although 2.6 should work)
+- PyQt 4.8 (Not tested with 5.x)
 - Python-Qsci
 - Python-YAML
 
 ==
 More info and API to come
+
+Settings
+==
+Settings are stored in settings.yaml
