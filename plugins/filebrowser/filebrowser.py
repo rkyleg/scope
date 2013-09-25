@@ -15,7 +15,7 @@ class DirTree(QtGui.QWidget):
         self.afide = parent
         
         self.iconpth = os.path.abspath(os.path.dirname(__file__))+'/icons/'
-        print self.iconpth
+        #print self.iconpth
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         

@@ -47,7 +47,7 @@ plugins:
     filebrowser: 
         dockarea: left
     # py_shell:
-       # dockarea: bottom
+        # dockarea: bottom
 ext:
     py: Python
     js: JavaScript

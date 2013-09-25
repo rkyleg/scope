@@ -24,7 +24,7 @@ class NewMenu(QtGui.QMenu):
         self.triggered.connect(self.newEditor)
     
     def newEditor(self,event):
-        print event.text()
+        ##print event.text()
 
         self.parent.addEditorWidget(str(event.text()))
 
