@@ -42,13 +42,25 @@ lang:
         plugins: [
                     filebrowser,
                 ]
+    SQL:
+        editor: scintilla
+        plugins: [
+                    filebrowser,
+                ]
+    Bash:
+        editor: scintilla
+        plugins: [
+                ]
 plugins: 
     outline: 
         dockarea: left
+        title: Outline
     filebrowser: 
         dockarea: left
+        title: File Browser
     pycute:
         dockarea: bottom
+        title: Python Shell
     # py_shell:
         # dockarea: bottom
 ext:
@@ -61,4 +73,6 @@ ext:
     yaml: YAML
     ui: XML
     xml: XML
+    sh: Bash
+    sql: SQL
     

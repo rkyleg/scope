@@ -47,10 +47,7 @@ class Afide(QtGui.QMainWindow):
         self.setStyleSheet(style)
         
         # Settings
-        f = open('settings.yaml','r')
-        settingstxt = f.read()
-        f.close()
-        self.settings = yaml.load(settingstxt)
+        self.loadSettings()
         
         # Screen Size
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
@@ -68,7 +65,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.toolbar.addWidget(self.ui.fr_toolbar)
         self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
-        # Setup Tab Toolbar
+        #--- Setup Tab Toolbar
         self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
         self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.tabtoolbar.setFloatable(False)
@@ -93,14 +90,17 @@ class Afide(QtGui.QMainWindow):
         # Signals
         self.ui.b_open.clicked.connect(self.openFile)
         self.ui.b_save.clicked.connect(self.editorSave)
-        self.ui.b_run.clicked.connect(self.editorRun)
-        self.ui.b_find.clicked.connect(self.editorFind)
+
         self.ui.b_indent.clicked.connect(self.editorIndent)
         self.ui.b_unindent.clicked.connect(self.editorUnindent)
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
         
-        # Editor Signals
+        self.ui.b_run.clicked.connect(self.editorRun)
+        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
+        self.ui.b_settings.clicked.connect(self.openSettings)
+        self.ui.b_find.clicked.connect(self.editorFind)
         
+        # Editor Signals
         self.evnt = Events()
         self.tabD={}
         
@@ -111,7 +111,7 @@ class Afide(QtGui.QMainWindow):
         # File Dictionary
         self.fileCount = 0
         
-        # Add Plugins
+        #--- Add Plugins
         dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
             'right':QtCore.Qt.RightDockWidgetArea,
             'top':QtCore.Qt.TopDockWidgetArea,
@@ -122,25 +122,17 @@ class Afide(QtGui.QMainWindow):
         for plug in self.settings['plugins']:
             exec('from plugins.'+plug+' import '+plug)
             exec('dwdg = '+plug+'.addDock(self)')
-            exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],'"+plug+"')")
+            exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],self.settings['plugins']['"+plug+"']['title'])")
             exec('dplug.hide()')
             exec("self.pluginD['"+plug+"'] = dplug")
 
-        # Add Sample pages
+        #--- Add Welcome
         wdg = self.addEditorWidget('WebView','Welcome')
-        wdg.setText('Welcome to afide (Another Fantastic IDE)<br><br>afide is pronounced like aphid')
+        f = open('doc/start.html','r')
+        txt = f.read()
+        f.close()
+        wdg.setText(txt)
         self.changeTab(self.ui.tab.currentIndex())
-        
-##        from editors.ckeditor import ckeditor
-##        wdg3 = ckeditor.addEditor()
-##        self.addEditorWidget(wdg3,'CKEditor',lang='HTML')
-##        
-##        from editors.scintilla import scintilla
-##        wdg3 = scintilla.addEditor(self,'Python')
-##        self.addEditorWidget(wdg3,'Py',lang='Python')
-        
-
-
 
     def dropEvent(self,event):
         handled=False
@@ -212,6 +204,7 @@ class Afide(QtGui.QMainWindow):
                 'find':self.ui.fr_find,
                 'toggleComment':self.ui.b_comment,
                 'getText':self.ui.b_save,
+                'toggleWordWrap':self.ui.b_wordwrap,
             }
             for btn in btnD:
                 btnD[btn].setEnabled(btn in dir(wdg))
@@ -242,6 +235,8 @@ class Afide(QtGui.QMainWindow):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
         wdg = None
+        
+        if filename == None and title=='New': title = 'New '+lang
         
         if lang in self.settings['lang']:
             editor = self.settings['lang'][lang]['editor']
@@ -308,6 +303,10 @@ class Afide(QtGui.QMainWindow):
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it')
                 self.ui.statusbar.showMessage('Error Saving: '+filename)
+            
+            # If Settings File, reload
+            if filename == self.settings_filename:
+                self.loadSettings()
                 
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -335,6 +334,10 @@ class Afide(QtGui.QMainWindow):
         wdg = self.ui.sw_main.currentWidget()
         wdg.unindent()
 
+    def editorWordWrap(self):
+        wdg = self.ui.sw_main.currentWidget()
+        wdg.toggleWordWrap()
+
 #---Plugins
     def addPlugin(self,wdg,dockarea,title):
         
@@ -357,6 +360,17 @@ class Afide(QtGui.QMainWindow):
                 self.tabifyDockWidget(idock,dock)
         
         return dock
+
+#---Settings
+    def loadSettings(self):
+        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.yaml'
+        f = open(self.settings_filename,'r')
+        settingstxt = f.read()
+        f.close()
+        self.settings = yaml.load(settingstxt)
+        
+    def openSettings(self):
+        self.openFile(self.settings_filename)
 
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))

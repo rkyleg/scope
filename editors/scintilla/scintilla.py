@@ -12,6 +12,8 @@ lexD = {'Python':Qsci.QsciLexerPython(),
     'XML':Qsci.QsciLexerXML(),
     'UI':Qsci.QsciLexerXML(),
     'YAML':Qsci.QsciLexerYAML(),
+    'Bash':Qsci.QsciLexerBash(),
+    'SQL':Qsci.QsciLexerSQL(),
     }
 
 commentD = {
@@ -78,6 +80,8 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setCaretLineVisible(True)
         self.ui.te_sci.setCaretLineBackgroundColor(QColor("#eeeeee"))
         
+        self.wordwrapmode = 0
+        
         if lex != None:
             lex.setDefaultFont(font)
             self.ui.te_sci.setLexer(lex)
@@ -137,7 +141,14 @@ class Sci(QtGui.QWidget):
     def unindent(self):
         for i in range(self.ui.te_sci.getSelection()[0],self.ui.te_sci.getSelection()[2]+1):
             self.ui.te_sci.unindent(i)
-            
+    
+    def toggleWordWrap(self):
+        self.wordwrapmode = not self.wordwrapmode
+        if self.wordwrapmode:
+            self.ui.te_sci.setWrapMode(Qsci.QsciScintilla.WrapCharacter)
+        else:
+            self.ui.te_sci.setWrapMode(Qsci.QsciScintilla.WrapNone)
+    
 ##            txt = self.ui.te_sci.selectedText()
 ##            print txt
 ##            ntxt = ''

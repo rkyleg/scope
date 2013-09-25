@@ -210,10 +210,10 @@ class PyCute(QtGui.QTextEdit):
 		"""
 		self.reading = 1
 		self.__clearLine()
-		self.moveCursor(QTextEdit.MoveEnd, 0)
+		self.moveCursor(QtGui.QTextCursor.End, 0)
 		while self.reading:
-			qApp.processOneEvent()
-		if self.line.length() == 0:
+			QtGui.QApplication.processEvents()
+		if len(self.line) == 0:
 			return '\n'
 		else:
 			return str(self.line) 

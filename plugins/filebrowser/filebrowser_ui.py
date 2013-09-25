@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Mon Sep 23 00:35:03 2013
+# Created: Wed Sep 25 16:16:00 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -37,11 +37,16 @@ class Ui_Form(object):
         self.tr_dir.setObjectName(_fromUtf8("tr_dir"))
         self.tr_dir.headerItem().setText(0, _fromUtf8("1"))
         self.tr_dir.header().setVisible(False)
-        self.gridLayout.addWidget(self.tr_dir, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.tr_dir, 1, 0, 1, 1)
+        self.le_root = QtGui.QLineEdit(Form)
+        self.le_root.setObjectName(_fromUtf8("le_root"))
+        self.gridLayout.addWidget(self.le_root, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "File Browser", None))
+        self.le_root.setText(_translate("Form", "/", None))
+        self.le_root.setPlaceholderText(_translate("Form", "Enter Root Path", None))
 

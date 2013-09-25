@@ -66,6 +66,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Indent</string>
+         </property>
          <property name="text">
           <string>Save</string>
          </property>
@@ -82,6 +85,9 @@
            <width>26</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>Unindent</string>
          </property>
          <property name="text">
           <string>Save</string>
@@ -100,6 +106,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Open</string>
+         </property>
          <property name="text">
           <string>Save</string>
          </property>
@@ -116,6 +125,9 @@
            <width>26</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>Save</string>
          </property>
          <property name="text">
           <string>Save</string>
@@ -148,6 +160,45 @@
            <number>0</number>
           </property>
           <item row="0" column="3">
+           <widget class="QToolButton" name="b_wordwrap">
+            <property name="minimumSize">
+             <size>
+              <width>26</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Toggle Wordwrap</string>
+            </property>
+            <property name="text">
+             <string>Save</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
+            </property>
+            <property name="shortcut">
+             <string>Ctrl+W</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="2">
+           <spacer name="horizontalSpacer_5">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="7">
            <widget class="QFrame" name="fr_find">
             <property name="minimumSize">
              <size>
@@ -209,6 +260,9 @@
               <height>0</height>
              </size>
             </property>
+            <property name="toolTip">
+             <string>Run</string>
+            </property>
             <property name="text">
              <string>Save</string>
             </property>
@@ -221,7 +275,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="2">
+          <item row="0" column="6">
            <spacer name="horizontalSpacer_2">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -236,6 +290,42 @@
           </item>
           <item row="0" column="0">
            <spacer name="horizontalSpacer_4">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="5">
+           <widget class="QToolButton" name="b_settings">
+            <property name="minimumSize">
+             <size>
+              <width>26</width>
+              <height>0</height>
+             </size>
+            </property>
+            <property name="toolTip">
+             <string>Edit Settings</string>
+            </property>
+            <property name="text">
+             <string>Save</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/wrench.png</normaloff>img/wrench.png</iconset>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="4">
+           <spacer name="horizontalSpacer_6">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
@@ -277,6 +367,9 @@
            <height>0</height>
           </size>
          </property>
+         <property name="toolTip">
+          <string>Comment/Uncomment</string>
+         </property>
          <property name="text">
           <string>Comment</string>
          </property>
@@ -296,6 +389,9 @@
            <width>26</width>
            <height>0</height>
           </size>
+         </property>
+         <property name="toolTip">
+          <string>New</string>
          </property>
          <property name="text">
           <string/>
