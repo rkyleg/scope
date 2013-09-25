@@ -6,6 +6,8 @@ Pronounced as aphid
 
 Warning - This is still in early stages of development.  Use at your own risk.
 
+![Alt text](/img/screenshot.png "Screenshot")
+
 About
 ==
 I didn't really want to create a new IDE and yet I wanted to create a new IDE.  afide is inspired by SPE, Geany, Notepad++, Spyder.  afide is written in Python with PyQt and HTML5 for the UI.  HTML5 is utilized with Qt's built in WebKit (WebView).
