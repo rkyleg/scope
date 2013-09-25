@@ -1,4 +1,5 @@
-![Alt text](img/afide.png "Screenshot") afide
+![Alt text](img/afide.png "Screenshot") 
+afide
 =====
 Another Fantastic IDE
 
