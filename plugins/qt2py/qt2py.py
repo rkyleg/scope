@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from qt2py_ui import Ui_Form
-import os, datetime
+import os, datetime, subprocess
 
 def addDock(parent):
     dock = Qt2Py(parent)
@@ -15,6 +15,7 @@ class Qt2Py(QtGui.QWidget):
     
         self.ui.b_open.clicked.connect(self.open)
         self.ui.b_convert.clicked.connect(self.convert)
+        self.ui.b_qt_designer.clicked.connect(self.open_qt_designer)
         
     def open(self):
         filename = QtGui.QFileDialog.getOpenFileName(self,"Select File","","UI (*.ui)")
@@ -31,3 +32,7 @@ class Qt2Py(QtGui.QWidget):
             os.system("pyuic4 "+bname+" > " +bname[:len(bname)-3] + "_ui.py")
             
             self.ui.l_result.setText('Converted '+filename+' on '+datetime.datetime.now().ctime())
+    
+    def open_qt_designer(self):
+        if os.name == 'posix':
+            subprocess.Popen('/usr/bin/designer-qt4', stdout=subprocess.PIPE, shell=0)

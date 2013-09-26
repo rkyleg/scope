@@ -72,6 +72,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setIndentationsUseTabs(0)
         self.ui.te_sci.setAutoIndent(1)
         self.ui.te_sci.setIndentationGuides(1)
+        self.ui.te_sci.setBackspaceUnindents(1)
 
         self.ui.te_sci.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
         self.ui.te_sci.setTabWidth(4)
