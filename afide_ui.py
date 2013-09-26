@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'afide.ui'
 #
-# Created: Wed Sep 25 15:30:05 2013
+# Created: Wed Sep 25 22:44:53 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -110,6 +110,7 @@ class Ui_MainWindow(object):
         self.le_find.setObjectName(_fromUtf8("le_find"))
         self.gridLayout_4.addWidget(self.le_find, 0, 0, 1, 1)
         self.b_find = QtGui.QPushButton(self.fr_find)
+        self.b_find.setMaximumSize(QtCore.QSize(16777215, 25))
         self.b_find.setText(_fromUtf8(""))
         icon6 = QtGui.QIcon()
         icon6.addPixmap(QtGui.QPixmap(_fromUtf8("img/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)

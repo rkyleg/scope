@@ -119,12 +119,17 @@ class Afide(QtGui.QMainWindow):
         }
         self.pluginD = {}
         
+        curdir = os.path.abspath('.')
+        
         for plug in self.settings['plugins']:
             exec('from plugins.'+plug+' import '+plug)
+            os.chdir(curdir+'/plugins/'+plug)
             exec('dwdg = '+plug+'.addDock(self)')
             exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],self.settings['plugins']['"+plug+"']['title'])")
             exec('dplug.hide()')
             exec("self.pluginD['"+plug+"'] = dplug")
+
+        os.chdir(curdir)
 
         #--- Add Welcome
         wdg = self.addEditorWidget('WebView','Welcome')
@@ -240,29 +245,31 @@ class Afide(QtGui.QMainWindow):
         
         if lang in self.settings['lang']:
             editor = self.settings['lang'][lang]['editor']
-            exec("from editors."+editor+" import "+editor)
-            exec("wdg = "+editor+".addEditor(self,lang)")
-    
-            wdg.filename = filename
-            wdg.lastText=''
-            wdg.title = title
-            wdg.id = self.fileCount
-            wdg.lang = lang
-            self.evnt.editorAdded.emit(wdg)
-            self.tabD[self.fileCount]=wdg
+        else:
+            editor = self.settings['lang']['Text']['editor']
+        exec("from editors."+editor+" import "+editor)
+        exec("wdg = "+editor+".addEditor(self,lang)")
 
-            if 'editorTextChanged' in dir(wdg):
-                wdg.evnt.editorChanged.connect(self.editorTextChanged)
+        wdg.filename = filename
+        wdg.lastText=''
+        wdg.title = title
+        wdg.id = self.fileCount
+        wdg.lang = lang
+        self.evnt.editorAdded.emit(wdg)
+        self.tabD[self.fileCount]=wdg
 
-            # Insert widget to page
-            self.ui.sw_main.insertWidget(sw_ind,wdg)
-            self.ui.sw_main.setCurrentIndex(sw_ind)
-            
-            # Insert Tab on top
-            self.ui.tab.insertTab(sw_ind+1,title)
-            self.ui.tab.setTabData(sw_ind,self.fileCount)
-            self.ui.tab.setCurrentIndex(sw_ind)
-            self.ui.tab.setTabToolTip(sw_ind,str(filename))
+        if 'editorTextChanged' in dir(wdg):
+            wdg.evnt.editorChanged.connect(self.editorTextChanged)
+
+        # Insert widget to page
+        self.ui.sw_main.insertWidget(sw_ind,wdg)
+        self.ui.sw_main.setCurrentIndex(sw_ind)
+        
+        # Insert Tab on top
+        self.ui.tab.insertTab(sw_ind+1,title)
+        self.ui.tab.setTabData(sw_ind,self.fileCount)
+        self.ui.tab.setCurrentIndex(sw_ind)
+        self.ui.tab.setTabToolTip(sw_ind,str(filename))
         
         return wdg
 

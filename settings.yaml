@@ -4,13 +4,16 @@ lang:
                     pycute,
                     outline,
                     filebrowser,
+                    qt2py,
+                    find_replace,
                 ]
         editor: scintilla
         run: subprocess.Popen(['python', '$file'], stdout=subprocess.PIPE, shell=0)
     HTML:
         editor: scintilla
         plugins: [
-                    filebrowser
+                    filebrowser,
+                    find_replace,
                 ]
         run: webbrowser.open('$file')
     JavaScript:
@@ -51,6 +54,9 @@ lang:
         editor: scintilla
         plugins: [
                 ]
+    UI:
+        editor: scintilla
+        plugins: []
 plugins: 
     outline: 
         dockarea: left
@@ -61,6 +67,12 @@ plugins:
     pycute:
         dockarea: bottom
         title: Python Shell
+    qt2py:
+       dockarea: bottom
+       title: PyQt Converter
+    find_replace:
+        dockarea: bottom
+        title: Find / Replace
     # py_shell:
         # dockarea: bottom
 ext:

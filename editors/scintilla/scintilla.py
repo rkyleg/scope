@@ -93,8 +93,14 @@ class Sci(QtGui.QWidget):
     def getText(self):
         return self.ui.te_sci.text()
 
-    def find(self,txt):
-         self.ui.te_sci.findFirst(txt,0,0,0,1)
+    def find(self,txt,re=0,cs=0,wo=0):
+        self.ui.te_sci.findFirst(txt,re,cs,wo,1)
+    
+    def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
+        stxt = str(self.ui.te_sci.selectedText())
+        if stxt == ftxt:
+            self.ui.te_sci.replace(rtxt)
+        self.ui.te_sci.findFirst(ftxt,re,cs,wo,1)
     
     def gotoLine(self,line):
         self.ui.te_sci.setCursorPosition(self.ui.te_sci.lines(),0)  # Send to bottom so cursor is at top of page
