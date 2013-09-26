@@ -1,5 +1,5 @@
 # --------------------------------------------------------------------------------
-# afide | Another IDE
+# afide | Another Fantastic IDE
 # Copyright 2013 Cole Hagen
 #
 # afide is licensed under the GNU General Public License (GPL 3)
@@ -131,8 +131,8 @@ class Afide(QtGui.QMainWindow):
 
         os.chdir(curdir)
 
-        #--- Add Welcome
-        wdg = self.addEditorWidget('WebView','Welcome')
+        #--- Add Start
+        wdg = self.addEditorWidget('WebView','Start')
         f = open('doc/start.html','r')
         txt = f.read()
         f.close()
@@ -177,7 +177,7 @@ class Afide(QtGui.QMainWindow):
             wdg.lastText = txt
             self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
 
-#---Editor
+    #---Editor
     def currentWidget(self):
         return self.ui.sw_main.currentWidget()
 
@@ -345,7 +345,7 @@ class Afide(QtGui.QMainWindow):
         wdg = self.ui.sw_main.currentWidget()
         wdg.toggleWordWrap()
 
-#---Plugins
+    #---Plugins
     def addPlugin(self,wdg,dockarea,title):
         
         dock = QtGui.QDockWidget()
@@ -368,7 +368,7 @@ class Afide(QtGui.QMainWindow):
         
         return dock
 
-#---Settings
+    #---Settings
     def loadSettings(self):
         self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.yaml'
         f = open(self.settings_filename,'r')

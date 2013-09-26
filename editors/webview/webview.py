@@ -27,3 +27,6 @@ class WebView(QtWebKit.QWebView):
         baseurl=QtCore.QUrl(os.path.abspath(os.path.dirname(__file__)+'../../../'))
         self.setHtml(txt,baseurl)
         ##self.setHtml(txt)
+
+    def find(self,txt,**kargs):
+        self.findText(txt)
