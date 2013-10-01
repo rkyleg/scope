@@ -5,7 +5,7 @@
 # afide is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
-import sys, subprocess, json, new
+import sys, subprocess, json, new, codecs
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, yaml, subprocess
@@ -27,6 +27,7 @@ class NewMenu(QtGui.QMenu):
         ##print event.text()
 
         self.parent.addEditorWidget(str(event.text()))
+        
 
 class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -98,6 +99,8 @@ class Afide(QtGui.QMainWindow):
         self.ui.b_run.clicked.connect(self.editorRun)
         self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
         self.ui.b_settings.clicked.connect(self.openSettings)
+        self.ui.b_zen.clicked.connect(self.toggleZen)
+        
         self.ui.b_find.clicked.connect(self.editorFind)
         
         # Editor Signals
@@ -109,7 +112,7 @@ class Afide(QtGui.QMainWindow):
         self.setCorner(QtCore.Qt.BottomLeftCorner,QtCore.Qt.LeftDockWidgetArea)
         
         # File Dictionary
-        self.fileCount = 0
+        self.fileCount = -1
         
         #--- Add Plugins
         dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
@@ -126,10 +129,13 @@ class Afide(QtGui.QMainWindow):
             os.chdir(curdir+'/plugins/'+plug)
             exec('dwdg = '+plug+'.addDock(self)')
             exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],self.settings['plugins']['"+plug+"']['title'])")
-            exec('dplug.hide()')
+##            exec('dplug.hide()')
             exec("self.pluginD['"+plug+"'] = dplug")
 
         os.chdir(curdir)
+        
+        self.dockstate = self.saveState()
+        self.zen = 1
 
         #--- Add Start
         wdg = self.addEditorWidget('WebView','Start')
@@ -137,6 +143,7 @@ class Afide(QtGui.QMainWindow):
         txt = f.read()
         f.close()
         wdg.setText(txt)
+        QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
 
     def dropEvent(self,event):
@@ -155,6 +162,29 @@ class Afide(QtGui.QMainWindow):
     def dragEnterEvent(self,event):
         event.accept()
     
+    def keyPressEvent(self,event):
+        handled = 0
+        if event.modifiers() & QtCore.Qt.ControlModifier:
+            if event.key() == QtCore.Qt.Key_F:
+                self.ui.le_find.setFocus()
+                handled = 1
+
+        if handled:
+            event.accept()
+            return
+        else:
+            QtGui.QMainWindow.keyPressEvent(self,event)
+    
+    def toggleZen(self):
+        self.zen = not self.zen
+        print self.zen
+        if self.zen:
+            self.restoreState(self.dockstate)
+        else:
+            self.dockstate = self.saveState()
+            for plug in self.pluginD:
+                self.pluginD[plug].close()
+
     def openFile(self,filename=None):
         if not filename:
             # Ask for filename if not specified
@@ -170,7 +200,7 @@ class Afide(QtGui.QMainWindow):
                 lang = self.settings['ext'][ext]
                 
             wdg = self.addEditorWidget(lang,os.path.basename(filename),str(filename))
-            f=open(filename,'r')
+            f = codecs.open(filename,'r','utf-8')
             txt = f.read()
             f.close()
             wdg.setText(txt)
@@ -183,6 +213,8 @@ class Afide(QtGui.QMainWindow):
 
     def changeTab(self,tab_ind):
         self.ui.statusbar.showMessage('')
+
+        if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
         if file_id in self.tabD:
             wdg = self.tabD[file_id]
@@ -191,13 +223,22 @@ class Afide(QtGui.QMainWindow):
             
             # Show/Hide plugins
             lang = wdg.lang
+            
+            # Disable hiding of plugins for now - until the state can be saved
+##            for plug in self.pluginD:
+##                pshow = 0
+##                if plug in self.settings['plugins_view']:
+##                    pshow = 1
+##                else:
+##                    if lang in self.settings['lang']:
+##                        if plug in self.settings['lang'][lang]['plugins']:
+##                            pshow = 1
+##                if pshow:
+##                    self.pluginD[plug].show()
+##                else:
+##                    self.pluginD[plug].hide()
+                            
             if lang in self.settings['lang']:
-                for plug in self.pluginD:
-                    if plug in self.settings['lang'][lang]['plugins']:
-                        self.pluginD[plug].show()
-                    else:
-                        self.pluginD[plug].hide()
-                    
                 self.ui.b_run.setEnabled('run' in self.settings['lang'][lang])
             else:
                 self.ui.b_run.setEnabled(0)
@@ -255,8 +296,10 @@ class Afide(QtGui.QMainWindow):
         wdg.title = title
         wdg.id = self.fileCount
         wdg.lang = lang
-        self.evnt.editorAdded.emit(wdg)
+        wdg.dockstate = None
         self.tabD[self.fileCount]=wdg
+        self.evnt.editorAdded.emit(wdg)
+        
 
         if 'editorTextChanged' in dir(wdg):
             wdg.evnt.editorChanged.connect(self.editorTextChanged)
@@ -275,7 +318,7 @@ class Afide(QtGui.QMainWindow):
 
     def checkSave(self,wdg):
         ok = 0
-        if wdg.lastText != wdg.getText():
+        if wdg.lastText != unicode(wdg.getText(),'utf-8'):
             resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
             if resp == QtGui.QMessageBox.Yes:
                 self.editorSave()
@@ -288,7 +331,7 @@ class Afide(QtGui.QMainWindow):
 
     def editorSave(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
-        txt = unicode(wdg.getText())
+        
         if wdg.filename != None:
             filename = wdg.filename
         else:
@@ -301,14 +344,16 @@ class Afide(QtGui.QMainWindow):
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
         if filename != None:
             try:
-                f = open(wdg.filename,'w')
+##                f = open(wdg.filename,'w')
+                txt = unicode(wdg.getText(),encoding='utf-8')
+                f = codecs.open(wdg.filename,'w','utf-8')
                 f.write(txt)
                 f.close()
                 wdg.lastText = txt
                 self.ui.statusbar.showMessage('Saved '+filename+' at '+datetime.datetime.now().ctime())
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
             except:
-                QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it')
+                QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                 self.ui.statusbar.showMessage('Error Saving: '+filename)
             
             # If Settings File, reload
@@ -357,6 +402,7 @@ class Afide(QtGui.QMainWindow):
         dock.gridLayout.setMargin(0)
         dock.gridLayout.setSpacing(0)
         dock.gridLayout.addWidget(wdg, 0, 0, 1, 1)
+        dock.setObjectName(title.replace(' ','_').lower())
         
         self.addDockWidget(dockarea,dock)
         self.pluginDocks.append(dock)
