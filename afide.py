@@ -9,6 +9,7 @@ import sys, subprocess, json, new, codecs
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, yaml, subprocess
+import plugins.output.output
 
 class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
@@ -62,6 +63,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.toolbar.setFloatable(False)
         self.ui.toolbar.setMovable(True)
         self.ui.toolbar.setProperty("class","toolBar")
+        self.ui.toolbar.setObjectName('toolBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.toolbar)
         self.ui.toolbar.addWidget(self.ui.fr_toolbar)
         self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
@@ -72,6 +74,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.tabtoolbar.setFloatable(False)
         self.ui.tabtoolbar.setMovable(True)
         self.ui.tabtoolbar.setProperty("class","editorTabBar")
+        self.ui.tabtoolbar.setObjectName('editorTabBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
 ##        self.ui.tabtoolbar.addWidget(self.ui.fr_toolbar)
         self.ui.tab = QtGui.QTabBar()
@@ -79,6 +82,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.tab.setTabsClosable(True)
         self.ui.tab.setMovable(True)
         self.ui.tab.setProperty("class","editorTabs")
+        self.ui.tab.setObjectName('editorTabBar')
         self.ui.tabtoolbar.addWidget(self.ui.tab)
         self.ui.tab.currentChanged.connect(self.changeTab)
         self.ui.tab.tabCloseRequested.connect(self.closeTab)
@@ -275,8 +279,11 @@ class Afide(QtGui.QMainWindow):
     def editorTextChanged(self):
         # Indicate if text changed
         wdg = self.currentWidget()
-        self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
-        
+        if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
+        else:
+            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+            
     def addEditorWidget(self,lang=None,title='New',filename=None):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
@@ -372,7 +379,14 @@ class Afide(QtGui.QMainWindow):
         filename = str(wdg.filename)
         if ok:
             if wdg.lang in self.settings['lang'] and 'run' in self.settings['lang'][wdg.lang]:
-                exec(self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
+                newstream = plugins.output.output.MyStream()
+                exec('procs ='+ self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
+                stdout, stderr = procs.communicate()
+                print stdout
+                
+##                procs.stdout = newstream
+##                procs.stderr = newstream
+##                newstream.message.connect(self.pluginD['output'].wdg.on_myStream_message)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -403,7 +417,7 @@ class Afide(QtGui.QMainWindow):
         dock.gridLayout.setSpacing(0)
         dock.gridLayout.addWidget(wdg, 0, 0, 1, 1)
         dock.setObjectName(title.replace(' ','_').lower())
-        
+        dock.wdg = wdg
         self.addDockWidget(dockarea,dock)
         self.pluginDocks.append(dock)
         

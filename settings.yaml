@@ -6,7 +6,8 @@ lang:
                     outline,
                 ]
         editor: scintilla
-        run: subprocess.Popen(['python', '$file',], stdout=subprocess.PIPE, shell=0)
+##        run: subprocess.Popen(['python', '$file',], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=0)
+        run: subprocess.Popen(['python', '$file',], shell=0)
     HTML:
         editor: scintilla
         plugins: [
@@ -72,6 +73,9 @@ plugins:
     find_replace:
         dockarea: bottom
         title: Find / Replace
+##    output:
+##        dockarea: bottom
+##        title: Output
     # py_shell:
         # dockarea: bottom
         

@@ -18,7 +18,9 @@ lexD = {'Python':Qsci.QsciLexerPython(),
 
 commentD = {
     'Python':'##',
-    'JavaScript':'//'
+    'JavaScript':'//',
+    'YAML':'##'
+    
 }
 
 def addEditor(parent,lang):
@@ -142,11 +144,27 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
                 
     def indent(self):
-        for i in range(self.ui.te_sci.getSelection()[0],self.ui.te_sci.getSelection()[2]+1):
+        if self.ui.te_sci.getSelection()[0] != -1:
+            start = self.ui.te_sci.getSelection()[0]
+            stop = self.ui.te_sci.getSelection()[2]
+            lines = range(start,stop+1)
+            if start == stop: lines = [start]
+        else:
+            start = stop = self.ui.te_sci.getCursorPosition()[0]
+            lines = [start]
+        for i in lines:
             self.ui.te_sci.indent(i)
             
     def unindent(self):
-        for i in range(self.ui.te_sci.getSelection()[0],self.ui.te_sci.getSelection()[2]+1):
+        if self.ui.te_sci.getSelection()[0] != -1:
+            start = self.ui.te_sci.getSelection()[0]
+            stop = self.ui.te_sci.getSelection()[2]
+            lines = range(start,stop+1)
+            if start == stop: lines = [start]
+        else:
+            start = stop = self.ui.te_sci.getCursorPosition()[0]
+            lines = [start]
+        for i in lines:
             self.ui.te_sci.unindent(i)
     
     def toggleWordWrap(self):
