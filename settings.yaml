@@ -2,24 +2,21 @@ lang:
     Python:
         plugins: [
                     pycute,
-                    outline,
-                    filebrowser,
                     qt2py,
-                    find_replace,
+                    outline,
                 ]
         editor: scintilla
-        run: subprocess.Popen(['python', '$file'], stdout=subprocess.PIPE, shell=0)
+        run: subprocess.Popen(['python', '$file',], stdout=subprocess.PIPE, shell=0)
     HTML:
         editor: scintilla
         plugins: [
-                    filebrowser,
-                    find_replace,
+                    outline,
                 ]
         run: webbrowser.open('$file')
     JavaScript:
         editor: scintilla
         plugins: [
-                    filebrowser
+                    outline,
                 ]
     YAML:
         editor: scintilla
@@ -30,7 +27,7 @@ lang:
         editor: scintilla
         plugins: [
                     filebrowser,
-                    outline
+                    outline,
                 ]
     HTML WYSIWYG:
         editor: ckeditor
@@ -57,6 +54,8 @@ lang:
     UI:
         editor: scintilla
         plugins: []
+        
+# Loaded plugins
 plugins: 
     outline: 
         dockarea: left
@@ -75,6 +74,14 @@ plugins:
         title: Find / Replace
     # py_shell:
         # dockarea: bottom
+        
+# Plugins always visible
+plugins_view: [
+    filebrowser, 
+    find_replace,
+    ]
+    
+# File Extension to Language
 ext:
     py: Python
     js: JavaScript
@@ -87,4 +94,5 @@ ext:
     xml: XML
     sh: Bash
     sql: SQL
+    txt: Text
     

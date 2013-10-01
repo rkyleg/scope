@@ -14,7 +14,7 @@ class DirTree(QtGui.QWidget):
         self.ui.setupUi(self)
         self.afide = parent
         
-        self.extD = ['py','txt','html','htm','css','js']
+        self.extD = ['py','txt','html','htm','css','js','txt']
         if self.afide != None:
             self.extD = self.afide.settings['ext']
         
