@@ -365,7 +365,6 @@ class Afide(QtGui.QMainWindow):
         else:
             # New Files without filename
             ext = [key for key, value in self.settings['ext'].iteritems() if value == lang]
-            print 'EXT',ext
             if type(ext) == type([]) and ext != []:
                 ext = ext[0]
             else:
