@@ -18,8 +18,7 @@ class DirTree(QtGui.QWidget):
         if self.afide != None:
             self.extD = self.afide.settings['ext']
         
-        self.iconpth = os.path.abspath(os.path.dirname(__file__))+'/icons/'
-        #print self.iconpth
+        self.iconpth = os.path.abspath(os.path.dirname(__file__)+'../../../img/')+'/'
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
@@ -88,6 +87,9 @@ class DirTree(QtGui.QWidget):
                 citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
                 ext = os.path.splitext(f)[1][1:]
                 if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.extD:
+                    ipth = self.iconpth+'files/'+ext+'.png'
+                    if os.path.exists(ipth):
+                        citm.setIcon(0,QtGui.QIcon(ipth))
                     filecontents.append(citm)
 
         return dircontents,filecontents

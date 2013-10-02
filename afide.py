@@ -76,7 +76,6 @@ class Afide(QtGui.QMainWindow):
         self.ui.tabtoolbar.setProperty("class","editorTabBar")
         self.ui.tabtoolbar.setObjectName('editorTabBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
-##        self.ui.tabtoolbar.addWidget(self.ui.fr_toolbar)
         self.ui.tab = QtGui.QTabBar()
         self.ui.tab.setObjectName('editorTabs')
         self.ui.tab.setTabsClosable(True)
@@ -132,7 +131,9 @@ class Afide(QtGui.QMainWindow):
             exec('from plugins.'+plug+' import '+plug)
             os.chdir(curdir+'/plugins/'+plug)
             exec('dwdg = '+plug+'.addDock(self)')
-            exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],self.settings['plugins']['"+plug+"']['title'])")
+            title = self.settings['plugins'][plug]['title']
+            if plug == 'pycute': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+            exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings['plugins']['"+plug+"']['dockarea']],title)")
 ##            exec('dplug.hide()')
             exec("self.pluginD['"+plug+"'] = dplug")
 
@@ -147,8 +148,18 @@ class Afide(QtGui.QMainWindow):
         txt = f.read()
         f.close()
         wdg.setText(txt)
+        wdg.viewOnly = 1
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
+
+    def closeEvent(self,event):
+        # Check if anything needs saving
+        for i in range(self.ui.tab.count()):
+            file_id = self.ui.tab.tabData(i).toInt()[0]
+            wdg = self.tabD[file_id]
+            self.checkSave(wdg)
+
+##        QtGui.QMessageBox.warning(self,'check save','check to save'+str(self.ui.tab.count()))
 
     def dropEvent(self,event):
         handled=False
@@ -181,7 +192,6 @@ class Afide(QtGui.QMainWindow):
     
     def toggleZen(self):
         self.zen = not self.zen
-        print self.zen
         if self.zen:
             self.restoreState(self.dockstate)
         else:
@@ -198,18 +208,29 @@ class Afide(QtGui.QMainWindow):
             else:
                 filename = str(filename)
         if filename != None:
-            lang = None
-            ext = os.path.splitext(str(filename))[1][1:]
-            if ext in self.settings['ext']:
-                lang = self.settings['ext'][ext]
+            if os.path.isfile(filename):
+                opennew = 1
+                for i in range(self.ui.tab.count()):
+                    file_id = self.ui.tab.tabData(i).toInt()[0]
+                    wdg = self.tabD[file_id]
+                    if wdg.filename == filename:
+                        self.ui.tab.setCurrentIndex(i)
+                        opennew = 0
+                        break
                 
-            wdg = self.addEditorWidget(lang,os.path.basename(filename),str(filename))
-            f = codecs.open(filename,'r','utf-8')
-            txt = f.read()
-            f.close()
-            wdg.setText(txt)
-            wdg.lastText = txt
-            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                if opennew:
+                    lang = None
+                    ext = os.path.splitext(str(filename))[1][1:]
+                    if ext in self.settings['ext']:
+                        lang = self.settings['ext'][ext]
+                        
+                    wdg = self.addEditorWidget(lang,os.path.basename(filename),str(filename))
+                    f = codecs.open(filename,'r','utf-8')
+                    txt = f.read()
+                    f.close()
+                    wdg.setText(txt)
+                    wdg.lastText = txt
+                    self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
 
     #---Editor
     def currentWidget(self):
@@ -303,6 +324,7 @@ class Afide(QtGui.QMainWindow):
         wdg.title = title
         wdg.id = self.fileCount
         wdg.lang = lang
+        wdg.viewOnly = 0
         wdg.dockstate = None
         self.tabD[self.fileCount]=wdg
         self.evnt.editorAdded.emit(wdg)
@@ -321,19 +343,29 @@ class Afide(QtGui.QMainWindow):
         self.ui.tab.setCurrentIndex(sw_ind)
         self.ui.tab.setTabToolTip(sw_ind,str(filename))
         
+        # Add Icon
+        if filename != None:
+            ext = os.path.splitext(filename)[1][1:]
+            ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/'+ext+'.png'
+            if os.path.exists(ipth):
+                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+        
         return wdg
 
     def checkSave(self,wdg):
         ok = 0
-        if wdg.lastText != unicode(wdg.getText(),'utf-8'):
-            resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
-            if resp == QtGui.QMessageBox.Yes:
-                self.editorSave()
-                ok =1
-            elif resp == QtGui.QMessageBox.No:
-                ok =1
+        if wdg.viewOnly:
+            ok = 1
         else:
-            ok =1 
+            if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+                resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+                if resp == QtGui.QMessageBox.Yes:
+                    self.editorSave()
+                    ok =1
+                elif resp == QtGui.QMessageBox.No:
+                    ok =1
+            else:
+                ok =1 
         return ok
 
     def editorSave(self):
@@ -379,10 +411,14 @@ class Afide(QtGui.QMainWindow):
         filename = str(wdg.filename)
         if ok:
             if wdg.lang in self.settings['lang'] and 'run' in self.settings['lang'][wdg.lang]:
-                newstream = plugins.output.output.MyStream()
-                exec('procs ='+ self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
-                stdout, stderr = procs.communicate()
-                print stdout
+                self.pluginD['output'].raise_()
+                self.pluginD['output'].wdg.newProcess(self.settings['lang'][wdg.lang]['run'],filename)
+##                print self.settings['lang'][wdg.lang]['run']
+##                newstream = plugins.output.output.MyStream()
+##                exec('procs ='+ self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
+                #for line in iter(procs.stdout.readline, ''): print line
+
+                # print stdout
                 
 ##                procs.stdout = newstream
 ##                procs.stderr = newstream
@@ -430,7 +466,7 @@ class Afide(QtGui.QMainWindow):
 
     #---Settings
     def loadSettings(self):
-        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.yaml'
+        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.yml'
         f = open(self.settings_filename,'r')
         settingstxt = f.read()
         f.close()

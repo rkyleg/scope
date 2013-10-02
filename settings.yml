@@ -6,14 +6,15 @@ lang:
                     outline,
                 ]
         editor: scintilla
-##        run: subprocess.Popen(['python', '$file',], stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=0)
-        run: subprocess.Popen(['python', '$file',], shell=0)
+        run: python
+##        run: subprocess.Popen(['python', '$file',], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=subprocess.STDOUT, shell=0)
+##        run: subprocess.Popen(['python', '$file',], shell=0)
     HTML:
         editor: scintilla
         plugins: [
                     outline,
                 ]
-        run: webbrowser.open('$file')
+        run: webbrowser
     JavaScript:
         editor: scintilla
         plugins: [
@@ -34,7 +35,7 @@ lang:
         editor: ckeditor
         plugins: [
                 ]
-        run: webbrowser.open('$file')
+        run: webbrowser
     WebView:
         editor: webview
         plugins: []
@@ -73,9 +74,9 @@ plugins:
     find_replace:
         dockarea: bottom
         title: Find / Replace
-##    output:
-##        dockarea: bottom
-##        title: Output
+    output:
+        dockarea: bottom
+        title: Output
     # py_shell:
         # dockarea: bottom
         
@@ -93,7 +94,7 @@ ext:
     htm: HTML
     css: CSS
     style: CSS
-    yaml: YAML
+    yml: YAML
     ui: XML
     xml: XML
     sh: Bash

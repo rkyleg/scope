@@ -166,10 +166,10 @@ class PyCute(QtGui.QTextEdit):
 		except AttributeError:
 			sys.ps2 = "... "
 
-
 		self.write(sys.ps1)
 		self.prompt = sys.ps1
 		self.onKeyHook=lambda e: None
+        
 	def clear(self):
 		QtGui.QTextEdit.clear(self)
 		self.write(sys.ps1)

@@ -2,3 +2,5 @@
 *.bak
 todo.txt
 afide.xmind
+afide.sh
+/plugins/py_shell/*
