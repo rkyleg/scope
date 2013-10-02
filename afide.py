@@ -184,7 +184,9 @@ class Afide(QtGui.QMainWindow):
             if event.key() == QtCore.Qt.Key_F:
                 self.ui.le_find.setFocus()
                 handled = 1
-
+            if event.key() == QtCore.Qt.Key_G:
+                self.ui.le_goto.setFocus()
+                handled = 1
         if handled:
             event.accept()
             return
@@ -195,7 +197,9 @@ class Afide(QtGui.QMainWindow):
         self.zen = not self.zen
         if self.zen:
             self.restoreState(self.dockstate)
+            self.ui.statusbar.show()
         else:
+            self.ui.statusbar.hide()
             self.dockstate = self.saveState()
             for plug in self.pluginD:
                 self.pluginD[plug].close()
