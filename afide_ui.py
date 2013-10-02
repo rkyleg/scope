@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'afide.ui'
 #
-# Created: Mon Sep 30 21:19:50 2013
+# Created: Tue Oct  1 23:05:19 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -117,7 +117,7 @@ class Ui_MainWindow(object):
         self.b_find.setIcon(icon6)
         self.b_find.setObjectName(_fromUtf8("b_find"))
         self.gridLayout_4.addWidget(self.b_find, 0, 1, 1, 1)
-        self.gridLayout_3.addWidget(self.fr_find, 0, 9, 1, 1)
+        self.gridLayout_3.addWidget(self.fr_find, 0, 11, 1, 1)
         self.b_run = QtGui.QToolButton(self.frame)
         self.b_run.setMinimumSize(QtCore.QSize(26, 0))
         icon7 = QtGui.QIcon()
@@ -147,9 +147,15 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addItem(spacerItem3, 0, 4, 1, 1)
         spacerItem4 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.gridLayout_3.addItem(spacerItem4, 0, 6, 1, 1)
-        self.gridLayout_2.addWidget(self.frame, 0, 7, 1, 1)
+        self.le_goto = QtGui.QLineEdit(self.frame)
+        self.le_goto.setMaximumSize(QtCore.QSize(50, 16777215))
+        self.le_goto.setObjectName(_fromUtf8("le_goto"))
+        self.gridLayout_3.addWidget(self.le_goto, 0, 9, 1, 1)
         spacerItem5 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem5, 0, 3, 1, 1)
+        self.gridLayout_3.addItem(spacerItem5, 0, 10, 1, 1)
+        self.gridLayout_2.addWidget(self.frame, 0, 7, 1, 1)
+        spacerItem6 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem6, 0, 3, 1, 1)
         self.b_comment = QtGui.QToolButton(self.fr_toolbar)
         self.b_comment.setMinimumSize(QtCore.QSize(26, 0))
         icon10 = QtGui.QIcon()
@@ -195,9 +201,10 @@ class Ui_MainWindow(object):
         self.b_run.setShortcut(_translate("MainWindow", "F5", None))
         self.b_zen.setToolTip(_translate("MainWindow", "Toggle Zen Mode", None))
         self.b_zen.setText(_translate("MainWindow", "Save", None))
-        self.b_zen.setShortcut(_translate("MainWindow", "F1", None))
+        self.b_zen.setShortcut(_translate("MainWindow", "F11", None))
         self.b_settings.setToolTip(_translate("MainWindow", "Edit Settings", None))
         self.b_settings.setText(_translate("MainWindow", "Save", None))
+        self.le_goto.setPlaceholderText(_translate("MainWindow", "goto", None))
         self.b_comment.setToolTip(_translate("MainWindow", "Comment/Uncomment", None))
         self.b_comment.setText(_translate("MainWindow", "Comment", None))
         self.b_comment.setShortcut(_translate("MainWindow", "Ctrl+E", None))

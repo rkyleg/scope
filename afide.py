@@ -5,7 +5,7 @@
 # afide is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
-import sys, subprocess, json, new, codecs
+import sys, subprocess, json, codecs
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, yaml, subprocess
@@ -105,6 +105,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.b_zen.clicked.connect(self.toggleZen)
         
         self.ui.b_find.clicked.connect(self.editorFind)
+        self.ui.le_goto.returnPressed.connect(self.editorGoto)
         
         # Editor Signals
         self.evnt = Events()
@@ -223,8 +224,12 @@ class Afide(QtGui.QMainWindow):
                     ext = os.path.splitext(str(filename))[1][1:]
                     if ext in self.settings['ext']:
                         lang = self.settings['ext'][ext]
-                        
-                    wdg = self.addEditorWidget(lang,os.path.basename(filename),str(filename))
+                    
+                    title = os.path.basename(filename)
+                    if self.settings['view_folder']:
+                        title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+                    
+                    wdg = self.addEditorWidget(lang,title,str(filename))
                     f = codecs.open(filename,'r','utf-8')
                     txt = f.read()
                     f.close()
@@ -439,6 +444,17 @@ class Afide(QtGui.QMainWindow):
     def editorWordWrap(self):
         wdg = self.ui.sw_main.currentWidget()
         wdg.toggleWordWrap()
+
+    def editorGoto(self):
+        wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
+        if 'gotoLine' in dir(wdg):
+            txt = self.ui.le_goto.text()
+            try:
+                line = int(str(txt))-1
+                wdg.gotoLine(line)
+            except:
+                pass
+            
 
     #---Plugins
     def addPlugin(self,wdg,dockarea,title):

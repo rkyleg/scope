@@ -198,7 +198,7 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="9">
+          <item row="0" column="11">
            <widget class="QFrame" name="fr_find">
             <property name="minimumSize">
              <size>
@@ -329,7 +329,7 @@
               <normaloff>img/zen.png</normaloff>img/zen.png</iconset>
             </property>
             <property name="shortcut">
-             <string>F1</string>
+             <string>F11</string>
             </property>
            </widget>
           </item>
@@ -371,6 +371,35 @@
           </item>
           <item row="0" column="6">
            <spacer name="horizontalSpacer_7">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeType">
+             <enum>QSizePolicy::Fixed</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>10</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
+          <item row="0" column="9">
+           <widget class="QLineEdit" name="le_goto">
+            <property name="maximumSize">
+             <size>
+              <width>50</width>
+              <height>16777215</height>
+             </size>
+            </property>
+            <property name="placeholderText">
+             <string>goto</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="10">
+           <spacer name="horizontalSpacer_8">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
             </property>
