@@ -354,6 +354,9 @@ class Afide(QtGui.QMainWindow):
             ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/'+ext+'.png'
             if os.path.exists(ipth):
                 self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+            else:
+                ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/_blank.png'
+                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         
         return wdg
 
