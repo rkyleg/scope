@@ -93,7 +93,6 @@ ext:
     py: Python
     js: JavaScript
     html: HTML
-    htm: HTML
     css: CSS
     style: CSS
     yml: YAML

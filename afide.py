@@ -362,6 +362,20 @@ class Afide(QtGui.QMainWindow):
                 ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/_blank.png'
                 self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         
+        else:
+            # New Files without filename
+            ext = [key for key, value in self.settings['ext'].iteritems() if value == lang]
+            print 'EXT',ext
+            if type(ext) == type([]) and ext != []:
+                ext = ext[0]
+            else:
+                ext = '_blank'
+            ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/'+ext+'.png'
+            if os.path.exists(ipth):
+                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+            else:
+                ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/_blank.png'
+                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         return wdg
 
     def checkSave(self,wdg):
