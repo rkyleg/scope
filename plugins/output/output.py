@@ -38,14 +38,13 @@ class Output(QtGui.QWidget):
     def readErrors(self):
         txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()))+"</font><br>"
         txt = re_file.sub(r"<a href='\g<2>'>\g<2></a><br>",txt)
-        txt = txt.replace('\n','<br>')
         self.appendText(txt)
 
     def appendText(self,txt):
         curs = self.ui.tb_out.textCursor()
         curs.movePosition(QtGui.QTextCursor.End,0)
         self.ui.tb_out.setTextCursor(curs)
-        self.ui.tb_out.append(txt)
+        self.ui.tb_out.append(txt.replace('\n','<br>'))
        
     def finished(self):
         if self.process != None:

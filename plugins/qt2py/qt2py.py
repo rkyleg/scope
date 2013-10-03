@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from qt2py_ui import Ui_Form
-import os, datetime, subprocess
+import os, datetime, subprocess, sys
 
 def addDock(parent):
     dock = Qt2Py(parent)
@@ -18,7 +18,14 @@ class Qt2Py(QtGui.QWidget):
         self.ui.b_qt_designer.clicked.connect(self.open_qt_designer)
         
     def open(self):
-        filename = QtGui.QFileDialog.getOpenFileName(self,"Select File","","UI (*.ui)")
+        
+        # Get current file directory
+        try:
+            cdir = os.path.abspath(os.path.dirname(self.afide.currentWidget().filename))
+        except:
+            cdir = ''
+        
+        filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",cdir,"UI (*.ui)")
         if filename!='':
             self.ui.le_path.setText(filename)
     
@@ -28,11 +35,24 @@ class Qt2Py(QtGui.QWidget):
             # Convert .ui to .py
             pth = os.path.dirname(str(filename))
             bname = os.path.basename(str(filename))
+            curdir = os.path.abspath('.')
             os.chdir(pth)
             os.system("pyuic4 "+bname+" > " +bname[:len(bname)-3] + "_ui.py")
-            
+            os.chdir(curdir)
             self.ui.l_result.setText('Converted '+filename+' on '+datetime.datetime.now().ctime())
     
     def open_qt_designer(self):
+        
+        # Get current file directory
+        try:
+            cdir = os.path.abspath(os.path.dirname(self.afide.currentWidget().filename))
+        except:
+            cdir = None
+        
         if os.name == 'posix':
-            subprocess.Popen('/usr/bin/designer-qt4', stdout=subprocess.PIPE, shell=0)
+            subprocess.Popen('/usr/bin/designer-qt4', stdout=subprocess.PIPE, shell=0,cwd=cdir)
+        elif os.name == 'nt':
+            pypth = os.path.dirname(sys.executable)
+            
+            subprocess.Popen(pypth+'/Lib/site-packages/PyQt4/designer.exe', stdout=subprocess.PIPE, shell=0,cwd=cdir)
+            

@@ -18,8 +18,6 @@ class DirTree(QtGui.QWidget):
         if self.afide != None:
             self.extD = self.afide.settings['ext']
         
-        self.iconpth = os.path.abspath(os.path.dirname(__file__)+'../../../img/')+'/'
-        
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
         
@@ -80,18 +78,18 @@ class DirTree(QtGui.QWidget):
             for f in dirlist:
                 citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
                 if not f.startswith('.') and  os.path.isdir(pth+'/'+f):
-                    citm.setIcon(0,QtGui.QIcon(self.iconpth+'folder.png'))
+                    citm.setIcon(0,QtGui.QIcon(self.afide.iconPath+'folder.png'))
                     dircontents.append(citm)
             # Add Files
             for f in dirlist:
                 citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
                 ext = os.path.splitext(f)[1][1:]
                 if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.extD:
-                    ipth = self.iconpth+'files/'+ext+'.png'
+                    ipth = self.afide.iconPath+'files/'+ext+'.png'
                     if os.path.exists(ipth):
                         citm.setIcon(0,QtGui.QIcon(ipth))
                     else:
-                        citm.setIcon(0,QtGui.QIcon(self.iconpth+'files/_blank.png'))
+                        citm.setIcon(0,QtGui.QIcon(self.afide.iconPath+'files/_blank.png'))
                     filecontents.append(citm)
 
         return dircontents,filecontents

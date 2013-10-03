@@ -155,6 +155,7 @@ class PyCute(QtGui.QTextEdit):
 		
 		self.setTabStopWidth(QtGui.QFontMetrics(font).width('    ')-1)
 
+		self.setTextInteractionFlags(QtCore.Qt.TextEditorInteraction | QtCore.Qt.TextBrowserInteraction)
 
 		# interpreter prompt.
 		try:
@@ -368,7 +369,7 @@ class PyCute(QtGui.QTextEdit):
 					self.__recall(self.history[self.pointer])
 
 		else:
-			e.ignore()
+			QtGui.QTextEdit.keyPressEvent(self,e)
 			
 		self.syncViewers()
 	def __recall(self,text):
@@ -398,13 +399,13 @@ class PyCute(QtGui.QTextEdit):
 			return 0
 		return QtGui.QTextEdit.focusNextPrevChild(self, next)
 
-	def mousePressEvent(self, e):
-		"""
-		Keep the cursor after the last prompt.
-		"""
-		if e.button() == Qt.LeftButton:
-			self.moveCursor(QtGui.QTextCursor.End, 0)
-		return
+##	def mousePressEvent(self, e):
+##		"""
+##		Keep the cursor after the last prompt.
+##		"""
+##		if e.button() == Qt.LeftButton:
+##			self.moveCursor(QtGui.QTextCursor.End, 0)
+##		return
 
 	def contentsContextMenuEvent(self,ev):
 		"""

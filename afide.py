@@ -48,6 +48,8 @@ class Afide(QtGui.QMainWindow):
         f.close()
         self.setStyleSheet(style)
         
+        self.iconPath=os.path.abspath(os.path.dirname(__file__))+'/img/'
+        
         # Settings
         self.loadSettings()
         
@@ -148,7 +150,12 @@ class Afide(QtGui.QMainWindow):
         f = open('doc/start.html','r')
         txt = f.read()
         f.close()
-        wdg.setText(txt)
+        if os.name =='nt':
+            pfx="file:///"
+        else:
+            pfx="file://"
+        wdg.setHtml(txt,QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)+'/doc')+'/'))
+        print QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)+'/doc')+'/')
         wdg.viewOnly = 1
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
@@ -218,7 +225,7 @@ class Afide(QtGui.QMainWindow):
                 for i in range(self.ui.tab.count()):
                     file_id = self.ui.tab.tabData(i).toInt()[0]
                     wdg = self.tabD[file_id]
-                    if wdg.filename == filename:
+                    if wdg.filename != None and os.path.abspath(wdg.filename) == os.path.abspath(filename):
                         self.ui.tab.setCurrentIndex(i)
                         opennew = 0
                         break
@@ -355,11 +362,11 @@ class Afide(QtGui.QMainWindow):
         # Add Icon
         if filename != None:
             ext = os.path.splitext(filename)[1][1:]
-            ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/'+ext+'.png'
+            ipth = self.iconPath+'files/'+ext+'.png'
             if os.path.exists(ipth):
                 self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
             else:
-                ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/_blank.png'
+                ipth = self.iconPath+'/files/_blank.png'
                 self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         
         else:
@@ -369,12 +376,10 @@ class Afide(QtGui.QMainWindow):
                 ext = ext[0]
             else:
                 ext = '_blank'
-            ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/'+ext+'.png'
-            if os.path.exists(ipth):
-                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
-            else:
-                ipth = os.path.abspath(os.path.dirname(__file__))+'/img/files/_blank.png'
-                self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+            ipth = self.iconPath+'files/'+ext+'.png'
+            if not os.path.exists(ipth):
+                ipth = self.iconPath+'/files/_blank.png'
+            self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         return wdg
 
     def checkSave(self,wdg):
