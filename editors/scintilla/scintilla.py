@@ -70,6 +70,9 @@ class Sci(QtGui.QWidget):
 
         self.ui.te_sci.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
         
+        self.ui.te_sci.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
+        self.ui.te_sci.setAnnotationDisplay(Qsci.QsciScintilla.AnnotationBoxed )
+        
         # Indentation
         self.ui.te_sci.setIndentationsUseTabs(0)
         self.ui.te_sci.setAutoIndent(1)
@@ -129,7 +132,7 @@ class Sci(QtGui.QWidget):
             # First line text - check if adding comment or removing
             txt1 = str(self.ui.te_sci.text(start)).lstrip()
 
-            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop))
+            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
             ntxt = ''
             for i in lines:
                 if txt1.startswith(commentD[lang]): # Remove Comment
@@ -140,9 +143,10 @@ class Sci(QtGui.QWidget):
                 else: # Add Comment
                     ntxt += commentD[lang]+self.ui.te_sci.text(i)
 
-            self.ui.te_sci.replaceSelectedText(ntxt)
+            self.ui.te_sci.replaceSelectedText(ntxt[:-1])
             self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
-                
+##            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop))
+
     def indent(self):
         if self.ui.te_sci.getSelection()[0] != -1:
             start = self.ui.te_sci.getSelection()[0]

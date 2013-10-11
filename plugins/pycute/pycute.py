@@ -133,8 +133,7 @@ class PyCute(QtGui.QTextEdit):
 		self.history = []
 		self.pointer = 0
 		self.indent = ''
-
-
+        
 		# user interface setup
 		#self.setTextFormat(QtGui.QTextEdit.PlainText)
 		self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
@@ -170,6 +169,8 @@ class PyCute(QtGui.QTextEdit):
 		self.write(sys.ps1)
 		self.prompt = sys.ps1
 		self.onKeyHook=lambda e: None
+		
+		self.currentRunPosition = self.textCursor().position()
         
 	def clear(self):
 		QtGui.QTextEdit.clear(self)
@@ -289,6 +290,7 @@ class PyCute(QtGui.QTextEdit):
 		self.line=''
 		self.point = 0
 		self.__insertText(self.indent)
+		self.currentRunPosition = self.textCursor().position()
 		
 	def __insertText(self, text):
 		"""
@@ -304,11 +306,23 @@ class PyCute(QtGui.QTextEdit):
 		"""
 		Handle user input a key at a time.
 		"""
+
+		if self.currentRunPosition > self.textCursor().position():
+			return
+
+		text  = str(e.text())
+		key   = e.key()
+
+		if e.modifiers() & QtCore.Qt.ControlModifier:
+			if key == QtCore.Qt.Key_V:  # Unhide
+				self.__insertText(str(QtGui.QApplication.clipboard().text()))
+				self.syncViewers()
+			else:
+				QtGui.QTextEdit.keyPressEvent(self,e)
+			return
 		if self.onKeyHook(e):
 			return
 		
-		text  = str(e.text())
-		key   = e.key()
 		if len(text):
 			ascii = ord(str(text))
 		else:

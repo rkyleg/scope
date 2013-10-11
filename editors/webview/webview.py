@@ -23,8 +23,9 @@ class WebView(QtWebKit.QWebView):
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
     
-    def setText(self,txt):
-        baseurl=QtCore.QUrl(os.path.abspath(os.path.dirname(__file__)+'../../../'))
+    def setText(self,txt,baseurl=None):
+        if baseurl == None:
+            baseurl=QtCore.QUrl(os.path.abspath(os.path.dirname(__file__)+'../../'))
         self.setHtml(txt,baseurl)
         ##self.setHtml(txt)
 

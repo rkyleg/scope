@@ -154,8 +154,8 @@ class Afide(QtGui.QMainWindow):
             pfx="file:///"
         else:
             pfx="file://"
-        wdg.setHtml(txt,QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)+'/doc')+'/'))
-        print QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)+'/doc')+'/')
+        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/doc/')
+        wdg.setText(txt,burl)
         wdg.viewOnly = 1
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
@@ -439,7 +439,7 @@ class Afide(QtGui.QMainWindow):
         wdg = self.ui.sw_main.currentWidget()
         ok = self.checkSave(wdg)
         filename = str(wdg.filename)
-        if ok:
+        if ok and filename != 'None':
             if wdg.lang in self.settings['lang'] and 'run' in self.settings['lang'][wdg.lang]:
                 self.pluginD['output'].raise_()
                 self.pluginD['output'].wdg.newProcess(self.settings['lang'][wdg.lang]['run'],filename)
