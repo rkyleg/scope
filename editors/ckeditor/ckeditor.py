@@ -75,4 +75,6 @@ class WebView(QtWebKit.QWebView):
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(CKEDITOR.instances.editor1.getData());")
         return self.editorJS.editorHtml
-        
+    
+    def setText(self,txt):
+        self.page().mainFrame().evaluateJavaScript("CKEDITOR.instances.editor1.setData('"+txt+"');")

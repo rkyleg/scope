@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from outline_ui import Ui_Form
+import re
 
 def addDock(parent):
     dock = Outline(parent)
@@ -45,8 +46,10 @@ class Outline(QtGui.QWidget):
         cnt = -1
         trwdg.clear()
         txt = unicode(wdg.getText())
-        for t in txt.split('\n'):
+        txtlines = txt.split('\n')
+        for t in txtlines:
             cnt += 1
+            lcnt = cnt
             typ = None
             itmText = None
             spc = (len(t) -len(t.lstrip()))*' '
@@ -73,9 +76,28 @@ class Outline(QtGui.QWidget):
                 elif t.lstrip().startswith('//---'):
                     itmText =t.lstrip()[5:]
                     typ = 'heading'
-                
+            
+            #--- CSS
+            elif wdg.lang == 'CSS':
+                if t.lstrip().startswith('/*---'):
+                    itmText =t.lstrip()[5:].split('*/')[0]
+                    typ = 'heading'
+                else:
+                    g = re.match('.*{',t)
+                    if g:
+                        itmText = g.group()[:-1]
+                        if itmText == '': 
+                            itmText = txtlines[cnt-1]
+                            lcnt = cnt-1
+                        if itmText == '': itmText = None
+                        if itmText.startswith('.'):
+                            typ = 'function'
+                        else:
+                            typ = 'object'
+                        
+            # Add Outline Item
             if itmText != None:
-                itm =QtGui.QTreeWidgetItem([itmText,str(cnt)])
+                itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
                 trwdg.addTopLevelItem(itm)
                 self.format(itm,typ)
                     
