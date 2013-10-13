@@ -1,8 +1,16 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
 import os
 
-def addEditor(parent,lang):
-    editor = WebView(parent)
+def addEditor(parent,lang,filename):
+    if filename != None:
+        if os.name =='nt':
+            pfx="file:///"
+        else:
+            pfx="file://"
+        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(filename)).replace('\\','/')+'/')
+    else:
+        burl = QtCore.QUrl()
+    editor = WebView(parent,baseurl=burl)
     return editor
 
 class jsObject(QtCore.QObject):
@@ -32,7 +40,7 @@ class WebPage(QtWebKit.QWebPage):
         print('JS ERROR: %s line %d: %s' % (source, line, msg))
 
 class WebView(QtWebKit.QWebView):
-    def __init__(self,parent=None):
+    def __init__(self,parent=None,baseurl=None):
         QtWebKit.QWebView.__init__(self,parent)
         web_page = WebPage(self)
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
@@ -43,7 +51,6 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().addToJavaScriptWindowObject('pythonjs',self.editorJS)
 
         ckeditorPath='file:///'+os.path.abspath(os.path.dirname(__file__))+'/ckeditor.js'
-        print ckeditorPath
 
         # Default Html
         html = """<!DOCTYPE html>
@@ -61,8 +68,8 @@ class WebView(QtWebKit.QWebView):
               </body>
             </html>
             """
-            
-        self.setHtml(html)
+        print baseurl
+        self.setHtml(html,baseurl)
         QtGui.QApplication.processEvents()
         ckEditorJS = """
             CKEDITOR.on('instanceReady', function(ev) {
@@ -77,4 +84,11 @@ class WebView(QtWebKit.QWebView):
         return self.editorJS.editorHtml
     
     def setText(self,txt):
-        self.page().mainFrame().evaluateJavaScript("CKEDITOR.instances.editor1.setData('"+txt+"');")
+        self.editorJS.editorHtml = txt
+        self.page().mainFrame().evaluateJavaScript(
+        '''var txt =  pythonjs.html;
+        CKEDITOR.instances.editor1.setData(txt)''')
+        
+    
+    def find(self,txt):
+        self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)

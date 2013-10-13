@@ -58,7 +58,7 @@
        <property name="verticalSpacing">
         <number>0</number>
        </property>
-       <item row="0" column="4">
+       <item row="0" column="6">
         <widget class="QToolButton" name="b_indent">
          <property name="minimumSize">
           <size>
@@ -78,7 +78,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
+       <item row="0" column="7">
         <widget class="QToolButton" name="b_unindent">
          <property name="minimumSize">
           <size>
@@ -98,7 +98,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
+       <item row="0" column="3">
         <widget class="QToolButton" name="b_open">
          <property name="minimumSize">
           <size>
@@ -118,7 +118,7 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="2">
+       <item row="0" column="4">
         <widget class="QToolButton" name="b_save">
          <property name="minimumSize">
           <size>
@@ -136,12 +136,9 @@
           <iconset>
            <normaloff>img/save.png</normaloff>img/save.png</iconset>
          </property>
-         <property name="shortcut">
-          <string>Ctrl+S</string>
-         </property>
         </widget>
        </item>
-       <item row="0" column="7">
+       <item row="0" column="11">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -159,29 +156,6 @@
           <property name="margin">
            <number>0</number>
           </property>
-          <item row="0" column="3">
-           <widget class="QToolButton" name="b_wordwrap">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Toggle Wordwrap</string>
-            </property>
-            <property name="text">
-             <string>Save</string>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
-            </property>
-            <property name="shortcut">
-             <string>Ctrl+W</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="2">
            <spacer name="horizontalSpacer_5">
             <property name="orientation">
@@ -225,7 +199,7 @@
              <property name="spacing">
               <number>0</number>
              </property>
-             <item row="0" column="0">
+             <item row="0" column="3">
               <widget class="QLineEdit" name="le_find">
                <property name="minimumSize">
                 <size>
@@ -238,7 +212,7 @@
                </property>
               </widget>
              </item>
-             <item row="0" column="1">
+             <item row="0" column="4">
               <widget class="QPushButton" name="b_find">
                <property name="maximumSize">
                 <size>
@@ -254,6 +228,35 @@
                  <normaloff>img/search.png</normaloff>img/search.png</iconset>
                </property>
               </widget>
+             </item>
+             <item row="0" column="1">
+              <widget class="QLineEdit" name="le_goto">
+               <property name="maximumSize">
+                <size>
+                 <width>50</width>
+                 <height>16777215</height>
+                </size>
+               </property>
+               <property name="placeholderText">
+                <string>goto</string>
+               </property>
+              </widget>
+             </item>
+             <item row="0" column="2">
+              <spacer name="horizontalSpacer_8">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeType">
+                <enum>QSizePolicy::Fixed</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>10</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
              </item>
             </layout>
            </widget>
@@ -275,9 +278,6 @@
             <property name="icon">
              <iconset>
               <normaloff>img/tri_right.png</normaloff>img/tri_right.png</iconset>
-            </property>
-            <property name="shortcut">
-             <string>F5</string>
             </property>
            </widget>
           </item>
@@ -318,6 +318,12 @@
               <height>0</height>
              </size>
             </property>
+            <property name="maximumSize">
+             <size>
+              <width>26</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="toolTip">
              <string>Toggle Zen Mode</string>
             </property>
@@ -328,12 +334,9 @@
              <iconset>
               <normaloff>img/zen.png</normaloff>img/zen.png</iconset>
             </property>
-            <property name="shortcut">
-             <string>F11</string>
-            </property>
            </widget>
           </item>
-          <item row="0" column="5">
+          <item row="0" column="4">
            <widget class="QToolButton" name="b_settings">
             <property name="minimumSize">
              <size>
@@ -353,22 +356,6 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="4">
-           <spacer name="horizontalSpacer_6">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
           <item row="0" column="6">
            <spacer name="horizontalSpacer_7">
             <property name="orientation">
@@ -385,39 +372,30 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="9">
-           <widget class="QLineEdit" name="le_goto">
-            <property name="maximumSize">
+          <item row="0" column="5">
+           <widget class="QToolButton" name="b_help">
+            <property name="minimumSize">
              <size>
-              <width>50</width>
-              <height>16777215</height>
+              <width>26</width>
+              <height>0</height>
              </size>
             </property>
-            <property name="placeholderText">
-             <string>goto</string>
+            <property name="toolTip">
+             <string>afide Help</string>
+            </property>
+            <property name="text">
+             <string>Save</string>
+            </property>
+            <property name="icon">
+             <iconset>
+              <normaloff>img/home.png</normaloff>img/home.png</iconset>
             </property>
            </widget>
-          </item>
-          <item row="0" column="10">
-           <spacer name="horizontalSpacer_8">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="0" column="3">
+       <item row="0" column="5">
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -433,7 +411,27 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="6">
+       <item row="0" column="10">
+        <widget class="QToolButton" name="b_wordwrap">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Toggle Wordwrap</string>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="8">
         <widget class="QToolButton" name="b_comment">
          <property name="minimumSize">
           <size>
@@ -450,9 +448,6 @@
          <property name="icon">
           <iconset>
            <normaloff>img/comment.png</normaloff>img/comment.png</iconset>
-         </property>
-         <property name="shortcut">
-          <string>Ctrl+E</string>
          </property>
         </widget>
        </item>
@@ -474,8 +469,41 @@
           <iconset>
            <normaloff>img/new.png</normaloff>img/new.png</iconset>
          </property>
-         <property name="shortcut">
-          <string>Ctrl+N</string>
+        </widget>
+       </item>
+       <item row="0" column="9">
+        <spacer name="horizontalSpacer_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="1">
+        <widget class="QPushButton" name="b_workspace">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Workspaces</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/workspace.png</normaloff>img/workspace.png</iconset>
          </property>
         </widget>
        </item>

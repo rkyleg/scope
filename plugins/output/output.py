@@ -60,7 +60,7 @@ class Output(QtGui.QWidget):
             if cmd == 'webbrowser':
                 webbrowser.open(filename)
             else:
-                self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;"><b>Start '+filename+'</b></div><br>')
+                self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b></div><br>')
                 self.process = QtCore.QProcess()
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)
                 self.process.setWorkingDirectory(os.path.dirname(filename))

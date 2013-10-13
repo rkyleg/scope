@@ -10,3 +10,11 @@
     text-align: left;
     
  }
+
+QTabBar::close-button{
+	image: url(img/close.png);
+}
+ QTabBar::close-button:hover{
+	image: url(img/close_hover.png);
+}
+

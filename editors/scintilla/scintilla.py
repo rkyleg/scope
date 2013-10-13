@@ -23,7 +23,7 @@ commentD = {
     
 }
 
-def addEditor(parent,lang):
+def addEditor(parent,lang,filename):
     lex = None
     if lang in lexD:
         lex = lexD[lang]

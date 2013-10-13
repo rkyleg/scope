@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from filebrowser_ui import Ui_Form
-import os,sys
+import os,sys, new
 
 def addDock(parent):
     dock = DirTree(parent)
@@ -23,6 +23,9 @@ class DirTree(QtGui.QWidget):
         
         self.ui.le_root.setText(os.path.abspath(os.path.dirname(__file__)+'../../../'))
         self.loadRoot()
+        
+        self.ui.tr_dir.contextMenuEvent = new.instancemethod(self.fileMenu,self.ui.tr_dir,self.ui.tr_dir.__class__)
+
     
     def loadRoot(self):
         newpath = str(self.ui.le_root.text()).replace('\\','/')
@@ -93,6 +96,19 @@ class DirTree(QtGui.QWidget):
                     filecontents.append(citm)
 
         return dircontents,filecontents
+    
+    def fileMenu(self,wdg,event):
+        menu = QtGui.QMenu('file menu')
+        menu.addAction(QtGui.QIcon(),'Open', self.openFile)
+        for act in menu.actions():  # Set Icon to visible
+            act.setIconVisibleInMenu(1)
+        menu.exec_(self.ui.tr_dir.cursor().pos())
+    
+    def openFile(self):
+        itm = self.ui.tr_dir.currentItem()
+        if itm != None:
+            pth = str(itm.text(1))
+            self.itmClicked(itm,0)
     
 def runui():
     app = QtGui.QApplication(sys.argv)

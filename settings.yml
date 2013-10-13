@@ -96,7 +96,7 @@ ext:
     css: CSS
     style: CSS
     yml: YAML
-    ui: XML
+    ui: UI
     xml: XML
     sh: Bash
     sql: SQL
