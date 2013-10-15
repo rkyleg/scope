@@ -58,8 +58,9 @@ class WorkspaceMenu(QtGui.QMenu):
             resp,ok = QtGui.QInputDialog.getText(self.parent,'Enter Workspace Name','')
             if ok and not resp.isEmpty():
                 self.parent.workspace = resp
-                self.saveWact.setDisabled(0)
+                self.parent.saveWorkspace()
                 self.loadMenu()
+                self.saveWact.setDisabled(0)
         elif str(event.text()) == 'Save Workspace':
             self.parent.saveWorkspace()
         else:
@@ -721,7 +722,8 @@ class Afide(QtGui.QMainWindow):
             f.close()
             # Load Files
             for f in wD['files']:
-                self.openFile(f)
+                if f not in [None,'None','']:
+                    self.openFile(f)
             
             # Show/Hide Plugins
             for p in self.pluginD:

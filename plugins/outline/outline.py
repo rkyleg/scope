@@ -65,18 +65,20 @@ class Outline(QtGui.QWidget):
                 elif t.lstrip().startswith('#---'):
                     itmText =t.lstrip()[4:].lstrip('-')
                     typ = 'heading'
-                if itmText != None:
-                    itmText = spc +itmText
                 
             #--- Javascript
             elif wdg.lang == 'JavaScript':
                 if t.lstrip().startswith('function'):
-                    itmText =t.lstrip()[9]
+                    itmText =t.lstrip()[9:].rstrip()
+                    if itmText.endswith('{'): itmText = itmText[:-1]
                     typ = 'function'
                 elif t.lstrip().startswith('//---'):
                     itmText =t.lstrip()[5:]
                     typ = 'heading'
-            
+##                elif 'function' in t and not t.lstrip().startswith('//'):
+##                    itmText =t.lstrip()
+##                    if itmText.endswith('{'): itmText = itmText[:-1]
+##                    typ = 'function'            
             #--- CSS
             elif wdg.lang == 'CSS':
                 if t.lstrip().startswith('/*---'):
@@ -94,9 +96,16 @@ class Outline(QtGui.QWidget):
                             typ = 'function'
                         else:
                             typ = 'object'
-                        
+            
+            #--- HTML
+            elif wdg.lang == 'HTML':
+                if t.lstrip().startswith('<!---'):
+                    itmText =t.lstrip()[5:].replace('-->','')
+                    typ = 'heading'
+            
             # Add Outline Item
             if itmText != None:
+                itmText = spc +itmText
                 itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
                 trwdg.addTopLevelItem(itm)
                 self.format(itm,typ)
