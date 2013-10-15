@@ -1,4 +1,4 @@
-![Alt text](/img/aphid.png "Screenshot") afide
+![Alt text](/img/afide.png "afide") afide
 =====
 another freakin IDE
 
