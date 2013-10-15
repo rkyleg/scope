@@ -16,7 +16,7 @@ class DirTree(QtGui.QWidget):
         
         self.extD = ['py','txt','html','htm','css','js','txt']
         if self.afide != None:
-            self.extD = self.afide.settings['ext']
+            self.extD = self.afide.settings.ext
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
@@ -99,10 +99,27 @@ class DirTree(QtGui.QWidget):
     
     def fileMenu(self,wdg,event):
         menu = QtGui.QMenu('file menu')
-        menu.addAction(QtGui.QIcon(),'Open', self.openFile)
-        for act in menu.actions():  # Set Icon to visible
-            act.setIconVisibleInMenu(1)
-        menu.exec_(self.ui.tr_dir.cursor().pos())
+        citm = self.ui.tr_dir.currentItem()
+        if citm != None:
+            pth = str(citm.text(1))
+            ext = os.path.splitext(pth)[1][1:]
+            if len(self.extD[ext])>1:
+                for e in self.extD[ext]:
+                    menu.addAction(QtGui.QIcon(),'Open in '+e)
+            else:
+                menu.addAction(QtGui.QIcon(),'Open')
+            
+                
+            for act in menu.actions():  # Set Icon to visible
+                act.setIconVisibleInMenu(1)
+            act = menu.exec_(self.ui.tr_dir.cursor().pos())
+            if act != None:
+                acttxt = str(act.text())
+                if acttxt == 'Open':
+                    self.openFile()
+                else:
+                    lang = acttxt[8:]
+                    self.afide.openFile(pth,editor=lang)
     
     def openFile(self):
         itm = self.ui.tr_dir.currentItem()

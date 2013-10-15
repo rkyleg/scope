@@ -1,17 +1,17 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
 import os
 
-def addEditor(parent,lang,filename):
-    if filename != None:
-        if os.name =='nt':
-            pfx="file:///"
-        else:
-            pfx="file://"
-        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(filename)).replace('\\','/')+'/')
-    else:
-        burl = QtCore.QUrl()
-    editor = WebView(parent,baseurl=burl)
-    return editor
+##def addEditor(parent,lang,filename):
+##    if filename != None:
+##        if os.name =='nt':
+##            pfx="file:///"
+##        else:
+##            pfx="file://"
+##        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(filename)).replace('\\','/')+'/')
+##    else:
+##        burl = QtCore.QUrl()
+##    editor = WebView(parent,baseurl=burl)
+##    return editor
 
 class jsObject(QtCore.QObject):
     filePath = ''
@@ -68,7 +68,7 @@ class WebView(QtWebKit.QWebView):
               </body>
             </html>
             """
-        print baseurl
+
         self.setHtml(html,baseurl)
         QtGui.QApplication.processEvents()
         ckEditorJS = """
@@ -84,7 +84,7 @@ class WebView(QtWebKit.QWebView):
         return self.editorJS.editorHtml
     
     def setText(self,txt):
-        self.editorJS.editorHtml = txt
+        self.editorJS.editorHtml = txt.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
         CKEDITOR.instances.editor1.setData(txt)''')

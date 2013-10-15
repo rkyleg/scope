@@ -5,16 +5,17 @@ from PyQt4 import QtGui, QtCore
 from scintilla_ui import Ui_Form
 import os,sys
 
-lexD = {'Python':Qsci.QsciLexerPython(),
-    'JavaScript':Qsci.QsciLexerJavaScript(),
-    'HTML':Qsci.QsciLexerHTML(),
-    'CSS':Qsci.QsciLexerCSS(),
-    'XML':Qsci.QsciLexerXML(),
-    'UI':Qsci.QsciLexerXML(),
-    'YAML':Qsci.QsciLexerYAML(),
-    'Bash':Qsci.QsciLexerBash(),
-    'SQL':Qsci.QsciLexerSQL(),
-    }
+##lexD = {'Python':Qsci.QsciLexerPython(),
+##    'JavaScript':Qsci.QsciLexerJavaScript(),
+##    'HTML':Qsci.QsciLexerHTML(),
+##    'CSS':Qsci.QsciLexerCSS(),
+##    'XML':Qsci.QsciLexerXML(),
+##    'UI':Qsci.QsciLexerXML(),
+##    'YAML':Qsci.QsciLexerYAML(),
+##    'Bash':Qsci.QsciLexerBash(),
+##    'Batch':Qsci.QsciLexerBatch(),
+##    'SQL':Qsci.QsciLexerSQL(),
+##    }
 
 commentD = {
     'Python':'##',
@@ -23,13 +24,13 @@ commentD = {
     
 }
 
-def addEditor(parent,lang,filename):
-    lex = None
-    if lang in lexD:
-        lex = lexD[lang]
-    editor = Sci(parent,lex)
-    
-    return editor
+##def addEditor(parent,lang,filename):
+##    lex = None
+##    if lang in lexD:
+##        lex = lexD[lang]
+##    editor = Sci(parent,lex)
+##    
+##    return editor
 
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)

@@ -1,17 +1,6 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
 import os
 
-def addEditor(parent,lang,filename):
-    baseurl=None
-    if filename != None:
-        if os.name =='nt':
-            pfx="file:///"
-        else:
-            pfx="file://"
-        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(filename)).replace('\\','/')+'/')
-    editor = WebView(parent,baseurl)
-    return editor
-
 # Custom Webpage class
 class WebPage(QtWebKit.QWebPage):
     def __init__(self,parent=None,baseurl=None):

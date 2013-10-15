@@ -1,6 +1,6 @@
 
 class Settings(object):
-    #---Language
+    #---Editors
     editors={
         'Python':{
             'editor':'scintilla',
@@ -16,13 +16,6 @@ class Settings(object):
         'CSS':{
             'editor':'scintilla',
         },
-        'CKEditor (HTML)':{
-            'editor':'ckeditor',
-            'run':'webbrowser'
-        },
-        'Webview':{
-            'editor':'webview',
-        },
         'Text':{
             'editor':'scintilla',
         },
@@ -36,49 +29,66 @@ class Settings(object):
         'Batch':{
             'editor':'scintilla',
         },
-        'ui':{
+        'UI':{
             'editor':'scintilla',
         },
-        'PERL':{
+        'Perl':{
             'editor':'scintilla',
         },
+        'CKEditor':{
+            'editor':'ckeditor',
+            'run':'webbrowser'
+        },
+        'WebView':{
+            'editor':'webview',
+        },
+##        'Monkey':{
+##            'editor':'monkey',
+##        },
+        
     }
     
     #---Plugins
     plugins={ 
-        'outline': 
+        'outline': {
             'dockarea': 'left',
             'title': 'Outline',
-        'filebrowser': 
+        },
+        'filebrowser': {
             'dockarea': 'left',
             'title': 'File Browser',
-        'pycute':
+        },
+        'pycute':{
             'dockarea': 'bottom',
             'title': 'Python Shell',
-        'qt2py':
+        },
+        'qt2py':{
            'dockarea': 'bottom',
            'title': 'PyQt Converter',
-        'find_replace':
+        },
+        'find_replace':{
             'dockarea': 'bottom',
             'title': 'Find / Replace',
-        'output':
+        },
+        'output':{
             'dockarea': 'bottom',
             'title': 'Output',
+        },
     }
     
     #---Extensions
     ext={
         'py': ['Python'],
         'js': ['JavaScript'],
-        'html': ['HTML','CkEditor'],
-        'htm': ['HTML','CkEditor'],
+        'html': ['HTML','CKEditor'],
+        'htm': ['HTML','CKEditor'],
         'css': ['CSS'],
         'style': ['CSS'],
         'ui': ['UI'],
         'xml': ['XML'],
         'sh': ['Bash'],
         'sql': ['SQL'],
-        'txt': 'Text'],
+        'txt': ['Text'],
         'bat': ['Batch'],
     }
     
