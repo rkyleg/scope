@@ -300,7 +300,7 @@ class Afide(QtGui.QMainWindow):
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
-            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",""," (*.*)")
+            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.pluginD['filebrowser'].wdg.ui.le_root.text()," (*.*)")
             if filename=='':
                 filename = None
             else:
@@ -509,7 +509,7 @@ class Afide(QtGui.QMainWindow):
         if wdg.filename != None:
             filename = wdg.filename
         else:
-            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",""," (*.*)")
+            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].wdg.ui.le_root.text()," (*.*)")
             if filename=='':
                 filename=None
             else:
@@ -660,7 +660,7 @@ class Afide(QtGui.QMainWindow):
         # Create Workspace Directory
 
         # Save Workspace
-        if self.workspace != None:
+        if self.workspace != None and self.settings.save_workspace_on_close:
             self.saveWorkspace()
 
         if not self.zen:
@@ -763,6 +763,8 @@ class Afide(QtGui.QMainWindow):
             if 'basefolder' in wD:
                 self.pluginD['filebrowser'].wdg.ui.le_root.setText(wD['basefolder'])
                 self.pluginD['filebrowser'].wdg.loadRoot()
+            
+            self.setWindowTitle('afide | '+wksp)
                 
     
 def runui():

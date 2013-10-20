@@ -94,3 +94,4 @@ class Settings(object):
     
     #---Other
     view_folder=0
+    save_workspace_on_close=1

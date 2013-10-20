@@ -43,72 +43,73 @@ class Outline(QtGui.QWidget):
 
     def updateOutline(self,wdg):
         trwdg = self.wdgD[wdg]
-        cnt = -1
-        trwdg.clear()
-        txt = unicode(wdg.getText())
-        txtlines = txt.split('\n')
-        for t in txtlines:
-            cnt += 1
-            lcnt = cnt
-            typ = None
-            itmText = None
-            spc = (len(t) -len(t.lstrip()))*' '
-            
-            #---Python
-            if wdg.lang == 'Python':
-                if t.lstrip().startswith('def '):
-                    itmText = t.lstrip()[4:-1]
-                    typ = 'function'
-                elif t.lstrip().startswith('class '):
-                    itmText =t.lstrip()[6:-1]
-                    typ = 'object'
-                elif t.lstrip().startswith('#---'):
-                    itmText =t.lstrip()[4:].lstrip('-')
-                    typ = 'heading'
+        if wdg.lang != 'Text':
+            cnt = -1
+            trwdg.clear()
+            txt = unicode(wdg.getText())
+            txtlines = txt.split('\n')
+            for t in txtlines:
+                cnt += 1
+                lcnt = cnt
+                typ = None
+                itmText = None
+                spc = (len(t) -len(t.lstrip()))*' '
                 
-            #--- Javascript
-            elif wdg.lang == 'JavaScript':
-                if t.lstrip().startswith('function'):
-                    itmText =t.lstrip()[9:].rstrip()
-                    if itmText.endswith('{'): itmText = itmText[:-1]
-                    typ = 'function'
-                elif t.lstrip().startswith('//---'):
-                    itmText =t.lstrip()[5:]
-                    typ = 'heading'
-##                elif 'function' in t and not t.lstrip().startswith('//'):
-##                    itmText =t.lstrip()
+                #---Python
+                if wdg.lang == 'Python':
+                    if t.lstrip().startswith('def '):
+                        itmText = t.lstrip()[4:-1]
+                        typ = 'function'
+                    elif t.lstrip().startswith('class '):
+                        itmText =t.lstrip()[6:-1]
+                        typ = 'object'
+                    elif t.lstrip().startswith('#---'):
+                        itmText =t.lstrip()[4:].lstrip('-')
+                        typ = 'heading'
+                    
+                #--- Javascript
+                elif wdg.lang == 'JavaScript':
+                    if t.lstrip().startswith('function'):
+                        itmText =t.lstrip()[9:].rstrip()
+                        if itmText.endswith('{'): itmText = itmText[:-1]
+                        typ = 'function'
+                    elif t.lstrip().startswith('//---'):
+                        itmText =t.lstrip()[5:]
+                        typ = 'heading'
+##                    elif 'function' in t and not t.lstrip().startswith('//'):
+##                        itmText =t.lstrip()
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
-##                    typ = 'function'            
-            #--- CSS
-            elif wdg.lang == 'CSS':
-                if t.lstrip().startswith('/*---'):
-                    itmText =t.lstrip()[5:].split('*/')[0]
-                    typ = 'heading'
-                else:
-                    g = re.match('.*{',t)
-                    if g:
-                        itmText = g.group()[:-1]
-                        if itmText == '': 
-                            itmText = txtlines[cnt-1]
-                            lcnt = cnt-1
-                        if itmText == '': itmText = None
-                        if itmText.startswith('.'):
-                            typ = 'function'
-                        else:
-                            typ = 'object'
-            
-            #--- HTML
-            elif wdg.lang == 'HTML':
-                if t.lstrip().startswith('<!---'):
-                    itmText =t.lstrip()[5:].replace('-->','')
-                    typ = 'heading'
-            
-            # Add Outline Item
-            if itmText != None:
-                itmText = spc +itmText
-                itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
-                trwdg.addTopLevelItem(itm)
-                self.format(itm,typ)
+##                        typ = 'function'                
+                #--- CSS
+                elif wdg.lang == 'CSS':
+                    if t.lstrip().startswith('/*---'):
+                        itmText =t.lstrip()[5:].split('*/')[0]
+                        typ = 'heading'
+                    else:
+                        g = re.match('.*{',t)
+                        if g:
+                            itmText = g.group()[:-1]
+                            if itmText == '': 
+                                itmText = txtlines[cnt-1]
+                                lcnt = cnt-1
+                            if itmText == '': itmText = None
+                            if itmText.startswith('.'):
+                                typ = 'function'
+                            else:
+                                typ = 'object'
+                
+                #--- HTML
+                elif wdg.lang == 'HTML':
+                    if t.lstrip().startswith('<!---'):
+                        itmText =t.lstrip()[5:].replace('-->','')
+                        typ = 'heading'
+                
+                # Add Outline Item
+                if itmText != None:
+                    itmText = spc +itmText
+                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
+                    trwdg.addTopLevelItem(itm)
+                    self.format(itm,typ)
                     
     def editorTabChanged(self,wdg):
         trwdg = self.wdgD[wdg]

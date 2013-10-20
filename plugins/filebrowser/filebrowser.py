@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from filebrowser_ui import Ui_Form
-import os,sys, new
+import os,sys
 
 def addDock(parent):
     dock = DirTree(parent)
@@ -13,7 +13,7 @@ class DirTree(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.afide = parent
-        
+
         self.extD = ['py','txt','html','htm','css','js','txt']
         if self.afide != None:
             self.extD = self.afide.settings.ext
@@ -21,11 +21,11 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
         
-        self.ui.le_root.setText(os.path.abspath(os.path.dirname(__file__)+'../../../'))
+##        self.ui.le_root.setText(os.path.abspath(os.path.dirname(__file__)+'../../../'))
+        self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
         self.loadRoot()
         
-        self.ui.tr_dir.contextMenuEvent = new.instancemethod(self.fileMenu,self.ui.tr_dir,self.ui.tr_dir.__class__)
-
+        self.ui.tr_dir.contextMenuEvent = self.fileMenu
     
     def loadRoot(self):
         newpath = str(self.ui.le_root.text()).replace('\\','/')
@@ -97,17 +97,19 @@ class DirTree(QtGui.QWidget):
 
         return dircontents,filecontents
     
-    def fileMenu(self,wdg,event):
+    def fileMenu(self,event):
+        print event
         menu = QtGui.QMenu('file menu')
         citm = self.ui.tr_dir.currentItem()
         if citm != None:
             pth = str(citm.text(1))
             ext = os.path.splitext(pth)[1][1:]
-            if len(self.extD[ext])>1:
-                for e in self.extD[ext]:
-                    menu.addAction(QtGui.QIcon(),'Open in '+e)
-            else:
-                menu.addAction(QtGui.QIcon(),'Open')
+            if ext != '':
+                if len(self.extD[ext])>1:
+                    for e in self.extD[ext]:
+                        menu.addAction(QtGui.QIcon(),'Open in '+e)
+                else:
+                    menu.addAction(QtGui.QIcon(),'Open')
             
                 
             for act in menu.actions():  # Set Icon to visible
