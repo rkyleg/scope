@@ -78,7 +78,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.4.0'
+        self.version = '0.4.1'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
