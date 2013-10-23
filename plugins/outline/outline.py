@@ -2,12 +2,6 @@ from PyQt4 import QtGui, QtCore
 from outline_ui import Ui_Form
 import re
 
-def addDock(parent):
-    dock = Outline(parent)
-    parent.evnt.editorAdded.connect(dock.addOutline)
-    parent.evnt.editorTabChanged.connect(dock.editorTabChanged)
-    return dock
-
 class outlineTree(QtGui.QTreeWidget):
     def __init__(self,parent=None):
         QtGui.QTreeWidget.__init__(self,parent)
@@ -23,6 +17,7 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
         self.treeD = {}
 
+
     def addOutline(self,wdg):
         trwdg = outlineTree()
         sw_ind = self.ui.sw_outline.count()
@@ -37,9 +32,11 @@ class Outline(QtGui.QWidget):
         # Add Text Changed Signal
         if 'editorTextChanged' in dir(wdg):
             wdg.evnt.editorChanged.connect(self.updateOutline)
-        
-            if 'gotoLine' in dir(wdg):
-                trwdg.itemDoubleClicked.connect(self.goto)
+##        if 'editingFinished' in  dir(wdg):
+##            wdg.evnt.editingFinished.connect(self.updateOutline)
+            
+        if 'gotoLine' in dir(wdg):
+            trwdg.itemDoubleClicked.connect(self.goto)
 
     def updateOutline(self,wdg):
         trwdg = self.wdgD[wdg]
@@ -54,36 +51,37 @@ class Outline(QtGui.QWidget):
                 typ = None
                 itmText = None
                 spc = (len(t) -len(t.lstrip()))*' '
+                tls = t.lstrip()
                 
                 #---Python
                 if wdg.lang == 'Python':
-                    if t.lstrip().startswith('def '):
-                        itmText = t.lstrip()[4:-1]
+                    if tls.startswith('def '):
+                        itmText = tls[4:-1]
                         typ = 'function'
-                    elif t.lstrip().startswith('class '):
-                        itmText =t.lstrip()[6:-1]
+                    elif tls.startswith('class '):
+                        itmText =tls[6:-1]
                         typ = 'object'
-                    elif t.lstrip().startswith('#---'):
-                        itmText =t.lstrip()[4:].lstrip('-')
+                    elif tls.startswith('#---'):
+                        itmText =tls[4:].lstrip('-')
                         typ = 'heading'
                     
                 #--- Javascript
                 elif wdg.lang == 'JavaScript':
-                    if t.lstrip().startswith('function'):
-                        itmText =t.lstrip()[9:].rstrip()
+                    if tls.startswith('function'):
+                        itmText =tls[9:].rstrip()
                         if itmText.endswith('{'): itmText = itmText[:-1]
                         typ = 'function'
-                    elif t.lstrip().startswith('//---'):
-                        itmText =t.lstrip()[5:]
+                    elif tls.startswith('//---'):
+                        itmText =tls[5:]
                         typ = 'heading'
-##                    elif 'function' in t and not t.lstrip().startswith('//'):
-##                        itmText =t.lstrip()
+##                    elif 'function' in t and not tls.startswith('//'):
+##                        itmText =tls
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
 ##                        typ = 'function'                
                 #--- CSS
                 elif wdg.lang == 'CSS':
-                    if t.lstrip().startswith('/*---'):
-                        itmText =t.lstrip()[5:].split('*/')[0]
+                    if tls.startswith('/*---'):
+                        itmText =tls[5:].split('*/')[0]
                         typ = 'heading'
                     else:
                         g = re.match('.*{',t)
@@ -100,8 +98,17 @@ class Outline(QtGui.QWidget):
                 
                 #--- HTML
                 elif wdg.lang == 'HTML':
-                    if t.lstrip().startswith('<!---'):
-                        itmText =t.lstrip()[5:].replace('-->','')
+                    if tls.lower().startswith('<body'):
+                        itmText = '<BODY>'
+                        typ = 'object'
+                    elif tls.lower().startswith('<head'):
+                        itmText = '<HEAD>'
+                        typ = 'object'
+                    elif tls.lower().startswith('<table'):
+                        itmText = '<TABLE>'
+                        typ = 'object'
+                    elif tls.startswith('<!---'):
+                        itmText =tls[5:].replace('-->','')
                         typ = 'heading'
                 
                 # Add Outline Item

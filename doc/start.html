@@ -1,19 +1,81 @@
-<h3 align=center><img alt="" src="../img/afide.png" /> afide <small id="version"></small></h3>
-<p align=center>another freakin ide</p>
-<br><hr>
-<h4>Getting Started</h4>
-<ul>
-    <li>New - Click the new <img src="../img/new.png"> button and select the language environment.</li>
-    <li>Open - Click the open <img src="../img/file_open.png"> button or  drag and drop files to the tab bar to open them.</li>
-</ul>
+<head>
+    <style>
+        body {
+            background:rgb(240,240,240);
+        }
+        a {
+            text-decoration:none;
+            font-weight:bold;
+            color: #193882;
+        }
+        a:hover {
+            color: #1F45A1;
+        }
+        .newfile {  
+            background: rgb(200,200,200);
+            padding:2px;
+            border-radius:4px;
+            padding-left:6px;
+            margin-top:2px;
 
-<br><hr>
-<h4>Settings</h4>
-<ul>
-    <li>Settings are stored in settings.py.</li>
-    <li>A settings interface is planned for future development</li>
-    <li><a href="keyboard_shortcuts.html">Keyboard Shortcuts</a></li>
-</ul>
+        }
+        .newfile:hover {
+            background: rgb(220,220,220);
+        }
+        .workspace {  
+            text-align:center;
+            background: rgb(200,200,200);
+            padding:2px;
+            border-radius:4px;
+            padding-left:6px;
+            margin-top:2px;
+            display: inline-block;
 
-<br><hr>
-<i>afide is still in early development and has not been appropriately tested.  <b>use at your own risk.</b></i>
+        }
+        .workspace:hover {
+            background: rgb(220,220,220);
+        }
+    </style>
+</head>
+<body>
+
+<table>
+    <tr>
+        <td>
+            <!---Logo-->
+            <h3 align=center><img alt="" src="../img/afide.png" /><Br>afide <small id="version"></small></h3>
+        </td>
+        <td >
+            <!---Workspaces-->
+            <div id="workspaces"></div>
+        </td>
+    </tr>
+    <tr>
+        <td style="padding-right:10px;" valign="top">
+            <!---New-->
+            <div id="new_files"></div>
+        </td>
+        <td style="padding-left:10px;background:white;border-radius:8px;">
+            <!---Main Help-->
+            <br>
+            <h4>Getting Started</h4>
+            <ul>
+                <li>New - Click the new <img src="../img/new.png"> button and select the language environment.</li>
+                <li>Open - Click the open <img src="../img/file_open.png"> button or  drag and drop files to the tab bar to open them.</li>
+            </ul>
+
+            <br><hr>
+            <h4>Settings</h4>
+            <ul>
+                <li>Settings are stored in settings.py.</li>
+                <li>A settings interface is planned for future development</li>
+                <li><a href="keyboard_shortcuts.html">Keyboard Shortcuts</a></li>
+            </ul>
+
+            <br><hr>
+            <i>afide is still in early development and has not been appropriately tested.  <b>use at your own risk.</b></i><br><br>
+        </td>
+    </tr>
+</table>
+
+</body>

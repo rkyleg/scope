@@ -3,7 +3,7 @@ from PyQt4.QtCore import *
 from PyQt4 import Qsci
 from PyQt4 import QtGui, QtCore
 from scintilla_ui import Ui_Form
-import os,sys
+import os,sys, time
 
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
@@ -34,6 +34,7 @@ commentD = {
 
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
+    editingFinished = QtCore.pyqtSignal(QtGui.QWidget)
 
 class Sci(QtGui.QWidget):
     def __init__(self,parent,lex):
@@ -43,10 +44,13 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.ARROW_MARKER_NUM = 8
         
         self.afide = parent
+        self.okedit = 1
         
         # Events
         self.evnt = Events()
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
+
+        self.ui.te_sci.keyPressEvent = self.keyPressEvent
 
         # Font
         font = QFont()
@@ -94,6 +98,17 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.setLexer(lex)
         self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
     
+    def keyPressEvent(self,event):
+        ky = event.key()
+        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
+            self.okedit = 0
+        Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
+        QtGui.QApplication.processEvents()
+##        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace]:
+##            self.editingFinished()
+        self.okedit = 1
+        self.editorTextChanged()
+    
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
     
@@ -116,7 +131,11 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setFocus()
     
     def editorTextChanged(self):
-        self.evnt.editorChanged.emit(self)
+        if self.okedit:
+            self.evnt.editorChanged.emit(self)
+    
+    def editingFinished(self):
+        self.evnt.editingFinished.emit(self)
     
     def toggleComment(self):
         lang = self.afide.currentWidget().lang
@@ -135,6 +154,7 @@ class Sci(QtGui.QWidget):
 
             self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
             ntxt = ''
+            self.okedit=0
             for i in lines:
                 if txt1.startswith(commentD[lang]): # Remove Comment
                     if str(self.ui.te_sci.text(i)).startswith(commentD[lang]):
@@ -143,9 +163,11 @@ class Sci(QtGui.QWidget):
                         ntxt += self.ui.te_sci.text(i)
                 else: # Add Comment
                     ntxt += commentD[lang]+self.ui.te_sci.text(i)
+            self.okedit=1
 
             self.ui.te_sci.replaceSelectedText(ntxt[:-1])
             self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop)-1)
+
 ##            self.ui.te_sci.setSelection(start,0,stop,self.ui.te_sci.lineLength(stop))
 
     def indent(self):
@@ -157,10 +179,13 @@ class Sci(QtGui.QWidget):
         else:
             start = stop = self.ui.te_sci.getCursorPosition()[0]
             lines = [start]
+        self.okedit=0
         for i in lines:
             self.ui.te_sci.indent(i)
-            
+        self.okedit=1
+        
     def unindent(self):
+        self.okedit=0
         if self.ui.te_sci.getSelection()[0] != -1:
             start = self.ui.te_sci.getSelection()[0]
             stop = self.ui.te_sci.getSelection()[2]
@@ -171,6 +196,7 @@ class Sci(QtGui.QWidget):
             lines = [start]
         for i in lines:
             self.ui.te_sci.unindent(i)
+        self.okedit=1
     
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode

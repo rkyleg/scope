@@ -443,8 +443,3 @@ if __name__=='__main__':
 ##	newview.show()
 	
 	app.exec_()
-
-#---Code to add to afide
-def addDock(parent):
-    wdg = PyCute(parent)
-    return wdg

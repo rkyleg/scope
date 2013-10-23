@@ -2,11 +2,6 @@ from PyQt4 import QtGui, QtCore
 from filebrowser_ui import Ui_Form
 import os,sys
 
-def addDock(parent):
-    dock = DirTree(parent)
-    return dock
-
-
 class DirTree(QtGui.QWidget):
     def __init__(self,parent=None):
         QtGui.QWidget.__init__(self,parent)

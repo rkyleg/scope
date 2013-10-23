@@ -45,19 +45,23 @@ class WorkspaceMenu(QtGui.QMenu):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
         self.loadMenu()
+        self.triggered.connect(self.loadWorkspace)
     
     def loadMenu(self):
         self.clear()
         self.addAction('New Workspace')
         self.saveWact = self.addAction('Save Workspace')
         self.saveWact.setDisabled(1)
+        self.deleteWact = self.addAction('Delete Workspace')
+        
         
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
             for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces')):
                 self.addAction(wsp)
+                self.deleteWact.setDisabled(0)
     
-        self.triggered.connect(self.loadWorkspace)
+        
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
@@ -68,8 +72,17 @@ class WorkspaceMenu(QtGui.QMenu):
                 self.parent.saveWorkspace()
                 self.loadMenu()
                 self.saveWact.setDisabled(0)
+                self.deleteWact.setDisabled(0)
         elif str(event.text()) == 'Save Workspace':
             self.parent.saveWorkspace()
+        elif str(event.text()) == 'Delete Workspace':
+            resp,ok = QtGui.QInputDialog.getItem(self.parent,'Delete Workspace','Select the workspace to delete',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
+
+            if ok:
+                os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
+                if str(resp) == self.parent.workspace:
+                    self.parent.workspace=None
+                self.loadMenu()
         else:
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)
@@ -78,7 +91,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.4.1'
+        self.version = '0.5.0'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -172,6 +185,7 @@ class Afide(QtGui.QMainWindow):
         self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
         self.ui.b_settings.clicked.connect(self.openSettings)
         self.ui.b_help.clicked.connect(self.addStart)
+        self.ui.b_plugins.clicked.connect(self.showPlugins)
         self.ui.b_zen.clicked.connect(self.toggleZen)
         
         self.ui.b_find.clicked.connect(self.editorFind)
@@ -191,9 +205,9 @@ class Afide(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
 
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
+        QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Zen
-        
         
         # Plugins
         self.pluginDocks = []
@@ -227,8 +241,17 @@ class Afide(QtGui.QMainWindow):
         self.loadSetup()
         
         # Workspace Button Menu
-        workmenu = WorkspaceMenu(self)
-        self.ui.b_workspace.setMenu(workmenu)
+        self.workspacemenu = WorkspaceMenu(self)
+        self.ui.b_workspace.setMenu(self.workspacemenu)
+        
+        # Plugins Button
+##        pluginmenu = self.createPopupMenu()
+##        self.ui.b_plugins.setMenu(pluginmenu)
+        
+        # Open file if in sys arg
+        if len(sys.argv)>1:
+            if os.path.exists(sys.argv[1]) and os.path.isfile(sys.argv[1]):
+                self.openFile(sys.argv[1])
 
     def closeEvent(self,event):
         cancelled = 0
@@ -297,6 +320,10 @@ class Afide(QtGui.QMainWindow):
             for plug in self.pluginD:
                 self.pluginD[plug].close()
 
+    def showPlugins(self):
+        menu = self.createPopupMenu()
+        menu.exec_(self.cursor().pos())
+
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
@@ -335,6 +362,8 @@ class Afide(QtGui.QMainWindow):
                     wdg.setText(txt)
                     wdg.lastText = txt
                     self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                    
+                    self.updateOutline()
                     
                     # Remove startpage
                     if self.startinit:
@@ -413,10 +442,13 @@ class Afide(QtGui.QMainWindow):
     def editorTextChanged(self):
         # Indicate if text changed
         wdg = self.currentWidget()
-        if wdg.lastText != unicode(wdg.getText(),'utf-8'):
-            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
-        else:
-            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+        try:
+            if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
+            else:
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+        except:
+            self.ui.statusbar.showMessage('Error: ')
             
     def addEditorWidget(self,lang=None,title='New',filename=None):
         self.fileCount+=1
@@ -445,7 +477,9 @@ class Afide(QtGui.QMainWindow):
 
         if 'editorTextChanged' in dir(wdg):
             wdg.evnt.editorChanged.connect(self.editorTextChanged)
-
+##        if 'editingFinished' in  dir(wdg):
+##            wdg.evnt.editingFinished.connect(self.editingFinished)
+            
         # Insert widget to page
         self.ui.sw_main.insertWidget(sw_ind,wdg)
         self.ui.sw_main.setCurrentIndex(sw_ind)
@@ -492,15 +526,19 @@ class Afide(QtGui.QMainWindow):
             ok = 1
         else:
             if 'getText' in dir(wdg):
-                if wdg.lastText != unicode(wdg.getText(),'utf-8'):
-                    resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
-                    if resp == QtGui.QMessageBox.Yes:
-                        self.editorSave()
-                        ok =1
-                    elif resp == QtGui.QMessageBox.No:
-                        ok =1
-                else:
-                    ok =1 
+                try:
+                    if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+                        resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+                        if resp == QtGui.QMessageBox.Yes:
+                            self.editorSave()
+                            ok =1
+                        elif resp == QtGui.QMessageBox.No:
+                            ok =1
+                    else:
+                        ok =1 
+                except:
+                    ok=1
+                    self.ui.statusbar.showMessage('Error: checking save')
         return ok
 
     def editorSave(self):
@@ -593,9 +631,9 @@ class Afide(QtGui.QMainWindow):
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
 
-        exec('from plugins.'+plug+' import '+plug)
+        exec('import plugins.'+plug)
         os.chdir(self.pluginPath+plug)
-        exec('dwdg = '+plug+'.addDock(self)')
+        exec('dwdg = plugins.'+plug+'.addDock(self)')
         title = self.settings.plugins[plug]['title']
         if plug == 'pycute': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
 ##        exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings.plugins['"+plug+"']['dockarea']],title)")
@@ -688,6 +726,42 @@ class Afide(QtGui.QMainWindow):
         self.changeTab(self.ui.tab.currentIndex())
         self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML='"+str(self.version)+"'")
+        
+        wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+        wdg.linkClicked.connect(self.urlClicked)
+        
+        # Add Workspaces
+        wksp = ' '
+        for w in sorted(os.listdir(self.settingPath+'/workspaces')):
+            wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"><br>'+w+'</span></a> '
+        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
+        
+        # Add New File Links
+        nfiles = ''
+        for lang in sorted(self.settings.editors):
+            icn = None
+            for e in self.settings.ext:
+                if self.settings.ext[e][0]==lang:
+                    if os.path.exists(self.iconPath+'/files/'+e+'.png'):
+                        icn = self.iconPath+'/files/'+e+'.png'
+                        break
+            # Set default Icon if language not found
+            if icn == None:
+                editor =self.settings.editors[lang]['editor']
+                if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
+                    icn = self.editorPath+editor+'/'+editor+'.png'
+                else:
+                    icn = self.iconPath+'/files/_blank.png'
+
+            nfiles += '<a href="new:'+lang+'" ><div class="newfile"><img src="'+icn+'" style="height:14px;"> New '+lang+'</div></a>'
+        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
+    
+    def urlClicked(self,url):
+        lnk = str(url.toString())
+        if lnk.startswith('new:'):
+            self.addEditorWidget(lang=lnk.split(':')[1])
+        elif lnk.startswith('workspace'):
+            self.loadWorkspace(lnk.split(':')[1])
     
     def findFocus(self):
         if self.ui.findbar.isHidden():
@@ -707,6 +781,14 @@ class Afide(QtGui.QMainWindow):
         self.pluginD['find_replace'].raise_()
         self.pluginD['find_replace'].wdg.ui.le_find.setFocus()
         self.pluginD['find_replace'].wdg.ui.le_find.selectAll()
+    
+    def updateOutline(self):
+        wdg = self.ui.sw_main.currentWidget()
+        if 'getText' in dir(wdg):
+            if not self.pluginD['outline'].isVisible():
+                self.pluginD['outline'].show()
+            self.pluginD['outline'].raise_()
+            self.pluginD['outline'].wdg.updateOutline(wdg)
     
     #--- Workspace
     def saveWorkspace(self):
@@ -728,13 +810,13 @@ class Afide(QtGui.QMainWindow):
             
             # Save workspace dir
             wD['basefolder']=self.pluginD['filebrowser'].wdg.rootpath
-            
             f = open(self.settingPath+'/workspaces/'+self.workspace,'w')
             f.write(json.dumps(wD))
             f.close()
     
     def loadWorkspace(self,wksp):
         ok = 1
+        # Save current workspace
         if self.workspace != None:
             ok=0
             resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.workspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
@@ -743,6 +825,21 @@ class Afide(QtGui.QMainWindow):
                 ok =1
             elif resp == QtGui.QMessageBox.No:
                 ok =1
+                
+        # Close open files
+##        cancelled = 0
+##        # Check if anything needs saving
+##        for i in range(self.ui.tab.count()-1,-1,-1):
+##            file_id = self.ui.tab.tabData(i).toInt()[0]
+##            wdg = self.tabD[file_id]
+##            ok = self.checkSave(wdg)
+##            if not ok:
+##                cancelled = 1
+##                break
+##            self.closeTab(i)
+##        ok = not cancelled
+##        QtGui.QApplication.processEvents()
+        # Load workspace
         if ok:
             self.workspace=wksp
             f = open(self.settingPath+'/workspaces/'+self.workspace,'r')
@@ -765,8 +862,9 @@ class Afide(QtGui.QMainWindow):
                 self.pluginD['filebrowser'].wdg.loadRoot()
             
             self.setWindowTitle('afide | '+wksp)
+            
+            self.workspacemenu.saveWact.setDisabled(0)
                 
-    
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)

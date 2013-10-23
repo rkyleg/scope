@@ -2,10 +2,6 @@ from PyQt4 import QtGui, QtCore
 from output_ui import Ui_Form
 import sys, os, re, webbrowser
 
-def addDock(parent):
-    dock = Output(parent)
-    return dock
-
 re_file     = re.compile('(\s*)(File "(.*))\n')
 re_loc = re.compile('File "([^"]*)", line (\d+)')
 

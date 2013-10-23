@@ -1,10 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from qt2py_ui import Ui_Form
 import os, datetime, subprocess, sys
-
-def addDock(parent):
-    dock = Qt2Py(parent)
-    return dock
     
 class Qt2Py(QtGui.QWidget):
     def __init__(self,parent=None):
