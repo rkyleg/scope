@@ -32,6 +32,9 @@ class Settings(object):
         'UI':{
             'editor':'scintilla',
         },
+        'QML':{
+            'editor':'scintilla',
+        },
         'Perl':{
             'editor':'scintilla',
         },
@@ -85,6 +88,7 @@ class Settings(object):
         'css': ['CSS'],
         'style': ['CSS'],
         'ui': ['UI'],
+        'qml':['QML'],
         'xml': ['XML'],
         'sh': ['Bash'],
         'sql': ['SQL'],

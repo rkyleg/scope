@@ -3,6 +3,7 @@ from PyQt4 import Qsci
 
 lexD = {'Python':Qsci.QsciLexerPython(),
     'JavaScript':Qsci.QsciLexerJavaScript(),
+    'QML':Qsci.QsciLexerJavaScript(),
     'HTML':Qsci.QsciLexerHTML(),
     'CSS':Qsci.QsciLexerCSS(),
     'XML':Qsci.QsciLexerXML(),

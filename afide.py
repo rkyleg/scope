@@ -91,7 +91,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.5.0'
+        self.version = '0.5.1'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -106,10 +106,10 @@ class Afide(QtGui.QMainWindow):
         self.setStyleSheet(style)
         
         #--- Paths
-        self.iconPath=os.path.abspath(os.path.dirname(__file__))+'/img/'
+        self.iconPath=os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/img/'
         self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.afide'
-        self.pluginPath = os.path.abspath(os.path.dirname(__file__))+'/plugins/'
-        self.editorPath = os.path.abspath(os.path.dirname(__file__))+'/editors/'
+        self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
+        self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
         
         # Settings
         self.workspace = None
@@ -200,6 +200,7 @@ class Afide(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # Goto
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
@@ -732,9 +733,10 @@ class Afide(QtGui.QMainWindow):
         
         # Add Workspaces
         wksp = ' '
-        for w in sorted(os.listdir(self.settingPath+'/workspaces')):
-            wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"><br>'+w+'</span></a> '
-        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
+        if os.path.exists(self.settingPath+'/workspaces'):
+            for w in sorted(os.listdir(self.settingPath+'/workspaces')):
+                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"><br>'+w+'</span></a> '
+            wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links
         nfiles = ''
@@ -742,8 +744,8 @@ class Afide(QtGui.QMainWindow):
             icn = None
             for e in self.settings.ext:
                 if self.settings.ext[e][0]==lang:
-                    if os.path.exists(self.iconPath+'/files/'+e+'.png'):
-                        icn = self.iconPath+'/files/'+e+'.png'
+                    if os.path.exists(self.iconPath+'files/'+e+'.png'):
+                        icn = self.iconPath+'files/'+e+'.png'
                         break
             # Set default Icon if language not found
             if icn == None:
@@ -751,17 +753,21 @@ class Afide(QtGui.QMainWindow):
                 if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
                     icn = self.editorPath+editor+'/'+editor+'.png'
                 else:
-                    icn = self.iconPath+'/files/_blank.png'
+                    icn = self.iconPath+'files/_blank.png'
 
             nfiles += '<a href="new:'+lang+'" ><div class="newfile"><img src="'+icn+'" style="height:14px;"> New '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
     
     def urlClicked(self,url):
+        # Mainly used for startpage urls
         lnk = str(url.toString())
+        wdg = self.ui.sw_main.currentWidget()
         if lnk.startswith('new:'):
             self.addEditorWidget(lang=lnk.split(':')[1])
         elif lnk.startswith('workspace'):
             self.loadWorkspace(lnk.split(':')[1])
+        else:
+            wdg.load(url)
     
     def findFocus(self):
         if self.ui.findbar.isHidden():
@@ -789,6 +795,13 @@ class Afide(QtGui.QMainWindow):
                 self.pluginD['outline'].show()
             self.pluginD['outline'].raise_()
             self.pluginD['outline'].wdg.updateOutline(wdg)
+    
+    def qtHelp(self):
+        if not self.pluginD['qt2py'].isVisible():
+            self.pluginD['qt2py'].show()
+        self.pluginD['qt2py'].raise_()
+        self.pluginD['qt2py'].wdg.ui.le_help.setFocus()
+        self.pluginD['qt2py'].wdg.ui.le_help.selectAll()
     
     #--- Workspace
     def saveWorkspace(self):

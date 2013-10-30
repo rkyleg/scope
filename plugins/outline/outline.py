@@ -63,6 +63,7 @@ class Outline(QtGui.QWidget):
                         typ = 'object'
                     elif tls.startswith('#---'):
                         itmText =tls[4:].lstrip('-')
+                        ##if itmText == '': itmText = None
                         typ = 'heading'
                     
                 #--- Javascript
