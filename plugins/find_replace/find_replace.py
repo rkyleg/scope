@@ -7,9 +7,12 @@ class Find_Replace(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.afide = parent
-    
+        
+        self.ui.b_replace_all
+        
         self.ui.b_find.clicked.connect(self.find)
         self.ui.b_replace.clicked.connect(self.replace)
+        self.ui.b_replace_all.clicked.connect(self.replace_all)
         
     def find(self):
         ftxt = str(self.ui.le_find.text())
@@ -29,3 +32,13 @@ class Find_Replace(QtGui.QWidget):
         wdg = self.afide.currentWidget()
         if 'replace' in dir(wdg):
             wdg.replace(ftxt,rtxt,re,cs,wo)
+        
+    def replace_all(self):
+        ftxt = str(self.ui.le_find.text())
+        rtxt = str(self.ui.le_replace.text())
+        re = self.ui.ckbx_re.isChecked()
+        cs = self.ui.ckbx_cs.isChecked()
+        wo = self.ui.ckbx_wo.isChecked()
+        wdg = self.afide.currentWidget()
+        if 'replaceAll' in dir(wdg):
+            wdg.replaceAll(ftxt,rtxt,re,cs,wo)

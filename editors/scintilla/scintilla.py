@@ -116,13 +116,23 @@ class Sci(QtGui.QWidget):
         return self.ui.te_sci.text()
 
     def find(self,txt,re=0,cs=0,wo=0):
-        self.ui.te_sci.findFirst(txt,re,cs,wo,1)
+        return self.ui.te_sci.findFirst(txt,re,cs,wo,1)
     
     def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
         stxt = str(self.ui.te_sci.selectedText())
-        if stxt == ftxt:
+        if stxt.lower() == ftxt.lower():
             self.ui.te_sci.replace(rtxt)
         self.ui.te_sci.findFirst(ftxt,re,cs,wo,1)
+    
+    def replaceAll(self,ftxt,rtxt,re=0,cs=0,wo=0):
+        cnt = 0
+        r = self.ui.te_sci.findFirst(ftxt,re,cs,wo,0,1,0,0)
+        while r:
+            cnt +=1
+            self.ui.te_sci.replace(rtxt)
+            QtGui.QApplication.processEvents()
+            r = self.ui.te_sci.findFirst(ftxt,re,cs,wo,0)
+        QtGui.QMessageBox.information(self,'Replace All',str(cnt)+' occurrences replaced')
     
     def gotoLine(self,line):
         self.ui.te_sci.setCursorPosition(self.ui.te_sci.lines(),0)  # Send to bottom so cursor is at top of page

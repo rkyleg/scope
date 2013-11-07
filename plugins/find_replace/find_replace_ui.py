@@ -47,7 +47,7 @@ class Ui_Form(object):
         self.b_replace.setObjectName(_fromUtf8("b_replace"))
         self.gridLayout.addWidget(self.b_replace, 0, 1, 1, 1)
         self.b_replace_all = QtGui.QPushButton(self.frame)
-        self.b_replace_all.setEnabled(False)
+        self.b_replace_all.setEnabled(True)
         self.b_replace_all.setObjectName(_fromUtf8("b_replace_all"))
         self.gridLayout.addWidget(self.b_replace_all, 0, 2, 1, 1)
         spacerItem = QtGui.QSpacerItem(248, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)

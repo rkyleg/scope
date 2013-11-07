@@ -93,7 +93,7 @@ class DirTree(QtGui.QWidget):
         return dircontents,filecontents
     
     def fileMenu(self,event):
-        print event
+##        print event
         menu = QtGui.QMenu('file menu')
         citm = self.ui.tr_dir.currentItem()
         if citm != None:
