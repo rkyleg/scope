@@ -11,16 +11,6 @@ class Settings(object):
         'html':'webbrowser',
     }
     
-##    # Favorite New Setup
-##    favNew = [
-##        {'name':'Python','editor':'scintilla','lang':'python'},
-##        {'name':'Javascript','editor':'ace','lang':'javascript'},
-##        {'name':'CSS','editor':'ace','lang':'css'},
-##        {'name':'HTML','editor':'ace','lang':'html'},
-##        {'name':'Text','editor':'scintilla','lang':'text'},
-##        
-##    ]
-    
     # Favorite Languages
     favLang = {
         'python':{'editor':'scintilla'},
@@ -30,59 +20,6 @@ class Settings(object):
         'text':{'editor':'scintilla'},
         'markdown':{'editor':'ace'},
     }
-    
-
-    
-##    #---Favorite Editors
-##    favEditors={
-##        'Python':{
-##            'editor':'scintilla',
-##            'run':'python'
-##        },
-##        'HTML':{
-##            'editor':'scintilla',
-##            'run':'webbrowser'
-##        },
-##        'JavaScript':{
-##            'editor':'scintilla',
-##        },
-##        'CSS':{
-##            'editor':'scintilla',
-##        },
-##        'Text':{
-##            'editor':'scintilla',
-##        },
-##        'SQL':{
-##            'editor':'scintilla',
-##        },
-##        'Bash':{
-##            'editor':'scintilla',
-##            'run':''
-##        },
-##        'Batch':{
-##            'editor':'scintilla',
-##        },
-##        'UI':{
-##            'editor':'scintilla',
-##        },
-##        'QML':{
-##            'editor':'scintilla',
-##        },
-##        'Perl':{
-##            'editor':'scintilla',
-##        },
-##        'CKEditor':{
-##            'editor':'ckeditor',
-##            'run':'webbrowser'
-##        },
-##        'Ace':{
-##            'editor':'ace',
-##            'run':'webbrowser'
-##        },
-##        'WebView':{
-##            'editor':'webview',
-##        },
-##    }
     
     #---Plugins
     plugins={ 
@@ -135,22 +72,7 @@ class Settings(object):
         'java':'java',
         'md':'markdown',
     }
-##    ext2={
-##        'py': ['Python'],
-##        'js': ['JavaScript'],
-##        'html': ['HTML','CKEditor'],
-##        'htm': ['HTML','CKEditor'],
-##        'css': ['CSS'],
-##        'style': ['CSS'],
-##        'ui': ['UI'],
-##        'qml':['QML'],
-##        'xml': ['XML'],
-##        'sh': ['Bash'],
-##        'sql': ['SQL'],
-##        'txt': ['Text'],
-##        'bat': ['Batch'],
-##    }
-    
+
     #---Other
     view_folder=0
     save_workspace_on_close=1

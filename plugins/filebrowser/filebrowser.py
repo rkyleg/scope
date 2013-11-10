@@ -103,15 +103,22 @@ class DirTree(QtGui.QWidget):
             pth = str(citm.text(1))
             ext = os.path.splitext(pth)[1][1:]
             if ext != '':
-                if len(self.extD[ext])>1:
-                    for e in self.extD[ext]:
-                        menu.addAction(QtGui.QIcon(),'Open in '+e)
-                else:
+                lang = None
+                cnt = 0
+                if ext in self.afide.settings.ext:
+                    lang = self.afide.settings.ext[ext]
+                for edtr in self.afide.editorD:
+                    if lang in self.afide.editorD[edtr] or ext in self.afide.editorD[edtr]:
+                        menu.addAction(QtGui.QIcon(self.afide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Open in '+edtr)
+                        cnt += 1
+                if cnt == 0:
                     menu.addAction(QtGui.QIcon(),'Open')
             
                 
             for act in menu.actions():  # Set Icon to visible
                 act.setIconVisibleInMenu(1)
+            
+            # Launch Menu
             act = menu.exec_(self.ui.tr_dir.cursor().pos())
             if act != None:
                 acttxt = str(act.text())

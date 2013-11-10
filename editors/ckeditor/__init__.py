@@ -15,4 +15,4 @@ def addEditor(parent,lang,filename):
     return editor
 
 def getLang():
-    return []
+    return ['html']

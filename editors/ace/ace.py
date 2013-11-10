@@ -30,6 +30,11 @@ class WebPage(QtWebKit.QWebPage):
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,lang=None):
         QtWebKit.QWebView.__init__(self,parent)
+        
+        # Initial Variables
+        self.wordwrapmode = 0
+        
+        # Setup Web Page
         web_page = WebPage(self)
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
@@ -49,6 +54,7 @@ class WebView(QtWebKit.QWebView):
         f.close()
         html = html.replace('$mode',lang)
         self.setHtml(html,url)
+        QtGui.QApplication.processEvents()
         
         # Setup Javascript object
         self.editorJS = jsObject()
@@ -64,11 +70,16 @@ class WebView(QtWebKit.QWebView):
         return self.editorJS.editorHtml
     
     def setText(self,txt):
-        self.editorJS.editorHtml = txt.replace("'","''")
+        self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
         editor.setValue(txt);''')
-        
+    
+    def toggleWordWrap(self):
+        self.wordwrapmode = not self.wordwrapmode
+        ww = {0:'true',1:'false'}
+        js = "editor.getSession().setUseWrapMode("+ww[self.wordwrapmode]+");"
+        self.page().mainFrame().evaluateJavaScript(js)
     
     def find(self,txt):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)

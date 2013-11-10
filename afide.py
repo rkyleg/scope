@@ -29,12 +29,9 @@ class NewMenu(QtGui.QMenu):
                 icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
             self.addAction(icn,lang)
         
-                
-        
         # Add Editor languages
-        for e in parent.settings.editors:
-            exec('import editors.'+e)
-            exec('ld = editors.'+e+'.getLang()')
+        for e in parent.editorD:
+            ld = parent.editorD[e]
             if ld != []:
                 lmenu = QtGui.QMenu(e,self)
                 for l in ld:
@@ -203,10 +200,6 @@ class Afide(QtGui.QMainWindow):
         
         self.setAcceptDrops(1)
         
-        # New Button Menu
-        newmenu = NewMenu(self)
-        self.ui.b_new.setMenu(newmenu)
-        
         #--- Signals
         self.ui.b_open.clicked.connect(self.openFile)
         self.ui.b_save.clicked.connect(self.editorSave)
@@ -251,6 +244,13 @@ class Afide(QtGui.QMainWindow):
         # File Dictionary
         self.fileCount = -1
         
+        #--- Get Editor Languages
+        self.editorD = {}
+        for e in self.settings.editors:
+            exec('import editors.'+e)
+            exec('ld = editors.'+e+'.getLang()')
+            self.editorD[e] = ld
+            
         #--- Add Plugins
         self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
             'right':QtCore.Qt.RightDockWidgetArea,
@@ -268,6 +268,10 @@ class Afide(QtGui.QMainWindow):
         
         self.dockstate = self.saveState()
         self.zen = 1
+
+        # New Button Menu
+        newmenu = NewMenu(self)
+        self.ui.b_new.setMenu(newmenu)
 
         #--- Add Start
         self.addStart()
@@ -379,18 +383,17 @@ class Afide(QtGui.QMainWindow):
                         break
                 
                 if opennew:
-                    lang = None
                     ext = os.path.splitext(str(filename))[1][1:]
-                    if editor != None:
-                        lang = editor
-                    elif ext in self.settings.ext:
+                    lang = ext
+
+                    if ext in self.settings.ext:
                         lang = self.settings.ext[ext]
 
                     title = os.path.basename(filename)
                     if self.settings.view_folder:
                         title = os.path.split(os.path.dirname(filename))[1]+'/'+title
                     
-                    wdg = self.addEditorWidget(lang,title,str(filename))
+                    wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
                     f = codecs.open(filename,'r','utf-8')
                     txt = f.read()
                     f.close()

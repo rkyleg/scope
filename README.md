@@ -24,7 +24,7 @@ Requirements
 ==
 afide is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15) and Windows 7 so far.
 - Python 2.6-2.7 (Not tested with 2.6 although 2.6 should work)
-- PyQt 4.8-4.9 (Not tested with 5.x)
+- PyQt 4.8-4.9 (Not tested with 5.x - probably doesn't work)
 - Python-Qsci
 - pyqt4-dev-tools (if you want to use pyqt converter on linux)
 
@@ -46,7 +46,6 @@ Future State
 ==
 - User preferences interface
 - Check if open files changed outside of editor
-- Add Ace Editor as option
 - Some kind of integrated help - for online resources
 - Save user settings separate from default settings
 - Better code completion support
