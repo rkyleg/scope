@@ -19,26 +19,62 @@ class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
-        for lang in sorted(parent.settings.editors):
+        
+        # Add Favorites First
+        for lang in parent.settings.favLang:
             icn = None
-            for e in parent.settings.ext:
-                if parent.settings.ext[e][0]==lang:
-                    if os.path.exists(parent.iconPath+'/files/'+e+'.png'):
-                        icn = QtGui.QIcon(parent.iconPath+'/files/'+e+'.png')
-                        break
-            # Set default Icon if language not found
-            if icn == None:
-                editor =parent.settings.editors[lang]['editor']
-                if os.path.exists(parent.editorPath+editor+'/'+editor+'.png'):
-                    icn = QtGui.QIcon(parent.editorPath+editor+'/'+editor+'.png')
-                else:
-                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+            if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
+                icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
+            else:
+                icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
             self.addAction(icn,lang)
+        
+                
+        
+        # Add Editor languages
+        for e in parent.settings.editors:
+            print e
+            exec('import editors.'+e)
+            exec('ld = editors.'+e+'.getLang()')
+            if ld != []:
+                print e
+                lmenu = QtGui.QMenu(e,self)
+                for l in ld:
+                    if os.path.exists(parent.iconPath+'/files/'+l.lower()+'.png'):
+                        icn = QtGui.QIcon(parent.iconPath+'/files/'+l.lower()+'.png')
+                    else:
+                        icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                    a=lmenu.addAction(icn,l)
+                    a.setData(e)
+                self.addMenu(lmenu)
+                lmenu.setIcon( QtGui.QIcon(parent.editorPath+'/'+e+'/'+e+'.png'))
+            else:
+                icn = QtGui.QIcon(parent.editorPath+'/'+e+'/'+e+'.png')
+                a=self.addAction(icn,e)
+                a.setData(e)
+        
+##        for lang in sorted(parent.settings.editors):
+##            icn = None
+##            for e in parent.settings.ext:
+##                if parent.settings.ext[e][0]==lang:
+##                    if os.path.exists(parent.iconPath+'/files/'+e+'.png'):
+##                        icn = QtGui.QIcon(parent.iconPath+'/files/'+e+'.png')
+##                        break
+##            # Set default Icon if language not found
+##            if icn == None:
+##                editor =parent.settings.editors[lang]['editor']
+##                if os.path.exists(parent.editorPath+editor+'/'+editor+'.png'):
+##                    icn = QtGui.QIcon(parent.editorPath+editor+'/'+editor+'.png')
+##                else:
+##                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+##            self.addAction(icn,lang)
     
         self.triggered.connect(self.newEditor)
     
     def newEditor(self,event):
-        self.parent.addEditorWidget(str(event.text()))
+        editor = str(event.data().toString())
+        if editor == '': editor = None
+        self.parent.addEditorWidget(str(event.text()),editor=editor)
 
 class WorkspaceMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -91,7 +127,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.5.1'
+        self.version = '0.6.0'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -350,7 +386,7 @@ class Afide(QtGui.QMainWindow):
                     if editor != None:
                         lang = editor
                     elif ext in self.settings.ext:
-                        lang = self.settings.ext[ext][0]
+                        lang = self.settings.ext[ext]
 
                     title = os.path.basename(filename)
                     if self.settings.view_folder:
@@ -406,8 +442,8 @@ class Afide(QtGui.QMainWindow):
 ##                else:
 ##                    self.pluginD[plug].hide()
             # Enable Run
-            if lang in self.settings.editors:
-                self.ui.b_run.setEnabled('run' in self.settings.editors[lang])
+            if lang in self.settings.run:
+                self.ui.b_run.setEnabled('run' in self.settings.run[lang])
             else:
                 self.ui.b_run.setEnabled(0)
             
@@ -451,17 +487,20 @@ class Afide(QtGui.QMainWindow):
         except:
             self.ui.statusbar.showMessage('Error: ')
             
-    def addEditorWidget(self,lang=None,title='New',filename=None):
+    def addEditorWidget(self,lang=None,title='New',filename=None,editor=None):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
         wdg = None
         
         if filename == None and title=='New': title = 'New '+lang
         
-        if lang in self.settings.editors:
-            editor = self.settings.editors[lang]['editor']
-        else:
-            editor = self.settings.editors['Text']['editor']
+        if editor == None:
+            if lang in self.settings.favLang:
+                editor = self.settings.favLang[lang]['editor']
+            elif lang == 'webview':
+                editor = 'webview'
+            else:
+                editor = self.settings.defaultEditor
 ##        exec("from editors."+editor+" import "+editor)
         exec("import editors."+editor)
         exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
@@ -492,33 +531,35 @@ class Afide(QtGui.QMainWindow):
         self.ui.tab.setTabToolTip(sw_ind,str(filename))
         
         # Add Icon
-        if filename != None:
+        ipth = self.iconPath+'/files/_blank.png'
+        icn = QtGui.QIcon(ipth)
+        ipth = self.iconPath+'files/'+str(lang)+'.png'
+        print 'ipth',ipth
+        if os.path.exists(ipth):
+            icn = QtGui.QIcon(ipth)
+        elif filename != None:
             ext = os.path.splitext(filename)[1][1:]
-            ipth = self.iconPath+'files/'+ext+'.png'
-            if os.path.exists(ipth):
-                icn = QtGui.QIcon(ipth)
-            elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
-                icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
-            else:
-                ipth = self.iconPath+'/files/_blank.png'
-                icn = QtGui.QIcon(ipth)
-            self.ui.tab.setTabIcon(sw_ind,icn)
+            if os.path.exists(self.iconPath+'files/'+ext+'.png'):
+                icn = QtGui.QIcon(self.iconPath+'files/'+ext+'.png')
+        elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
+            icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
+        self.ui.tab.setTabIcon(sw_ind,icn)
             
-        else:
-            # New Files without filename
-            ext = [key for key, value in self.settings.ext.iteritems() if value[0] == lang]
-            if type(ext) == type([]) and ext != []:
-                ext = ext[0]
-            else:
-                ext = ''
-
-            ipth = self.iconPath+'files/'+ext+'.png'
-            if not os.path.exists(ipth):
-                if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
-                    ipth = self.editorPath+editor+'/'+editor+'.png'
-                else:
-                    ipth = self.iconPath+'/files/_blank.png'
-            self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+##        else:
+##            # New Files without filename
+##            ext = [key for key, value in self.settings.ext.iteritems() if value[0] == lang]
+##            if type(ext) == type([]) and ext != []:
+##                ext = ext[0]
+##            else:
+##                ext = ''
+##
+##            ipth = self.iconPath+'files/'+ext+'.png'
+##            if not os.path.exists(ipth):
+##                if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
+##                    ipth = self.editorPath+editor+'/'+editor+'.png'
+##                else:
+##                    ipth = self.iconPath+'/files/_blank.png'
+##            self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
         return wdg
 
     def checkSave(self,wdg):
@@ -584,11 +625,11 @@ class Afide(QtGui.QMainWindow):
         ok = self.checkSave(wdg)
         filename = str(wdg.filename)
         if ok and filename != 'None':
-            if wdg.lang in self.settings.editors and 'run' in self.settings.editors[wdg.lang]:
+            if wdg.lang in self.settings.run:
                 if not self.pluginD['output'].isVisible():
                     self.pluginD['output'].show()
                 self.pluginD['output'].raise_()
-                self.pluginD['output'].wdg.newProcess(self.settings.editors[wdg.lang]['run'],filename)
+                self.pluginD['output'].wdg.newProcess(self.settings.run[wdg.lang],filename)
 ##                print self.settings['lang'][wdg.lang]['run']
 ##                newstream = plugins.output.output.MyStream()
 ##                exec('procs ='+ self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
@@ -712,7 +753,7 @@ class Afide(QtGui.QMainWindow):
 
     #---Shortcuts
     def addStart(self):
-        wdg = self.addEditorWidget('WebView','Start','doc/start.html')
+        wdg = self.addEditorWidget('webview','Start','doc/start.html')
         f = open('doc/start.html','r')
         txt = f.read()
         f.close()
@@ -740,16 +781,16 @@ class Afide(QtGui.QMainWindow):
         
         # Add New File Links
         nfiles = ''
-        for lang in sorted(self.settings.editors):
+        for lang in sorted(self.settings.favLang):
             icn = None
-            for e in self.settings.ext:
-                if self.settings.ext[e][0]==lang:
-                    if os.path.exists(self.iconPath+'files/'+e+'.png'):
-                        icn = self.iconPath+'files/'+e+'.png'
-                        break
+##            for e in self.settings.ext:
+##                if self.settings.ext[e][0]==lang:
+            if os.path.exists(self.iconPath+'files/'+lang+'.png'):
+                icn = self.iconPath+'files/'+lang+'.png'
+                break
             # Set default Icon if language not found
             if icn == None:
-                editor =self.settings.editors[lang]['editor']
+                editor =self.settings.favLang[lang]['editor']
                 if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
                     icn = self.editorPath+editor+'/'+editor+'.png'
                 else:

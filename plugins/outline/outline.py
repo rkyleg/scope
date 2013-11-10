@@ -54,7 +54,7 @@ class Outline(QtGui.QWidget):
                 tls = t.lstrip()
                 
                 #---Python
-                if wdg.lang == 'Python':
+                if wdg.lang == 'python':
                     if tls.startswith('def '):
                         itmText = tls[4:-1]
                         typ = 'function'
@@ -67,7 +67,7 @@ class Outline(QtGui.QWidget):
                         typ = 'heading'
                     
                 #--- Javascript
-                elif wdg.lang == 'JavaScript':
+                elif wdg.lang == 'javascript':
                     if tls.startswith('function'):
                         itmText =tls[9:].rstrip()
                         if itmText.endswith('{'): itmText = itmText[:-1]
@@ -80,7 +80,7 @@ class Outline(QtGui.QWidget):
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
 ##                        typ = 'function'                
                 #--- CSS
-                elif wdg.lang == 'CSS':
+                elif wdg.lang == 'css':
                     if tls.startswith('/*---'):
                         itmText =tls[5:].split('*/')[0]
                         typ = 'heading'
@@ -98,7 +98,7 @@ class Outline(QtGui.QWidget):
                                 typ = 'object'
                 
                 #--- HTML
-                elif wdg.lang == 'HTML':
+                elif wdg.lang == 'html':
                     if tls.lower().startswith('<body'):
                         itmText = '<BODY>'
                         typ = 'object'

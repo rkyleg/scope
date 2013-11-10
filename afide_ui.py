@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'afide.ui'
 #
-# Created: Tue Oct 22 20:11:51 2013
+# Created: Sun Nov 10 01:11:01 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -118,6 +118,7 @@ class Ui_MainWindow(object):
         self.b_find.setObjectName(_fromUtf8("b_find"))
         self.gridLayout_4.addWidget(self.b_find, 0, 4, 1, 1)
         self.le_goto = QtGui.QLineEdit(self.fr_find)
+        self.le_goto.setMinimumSize(QtCore.QSize(40, 0))
         self.le_goto.setMaximumSize(QtCore.QSize(50, 16777215))
         self.le_goto.setObjectName(_fromUtf8("le_goto"))
         self.gridLayout_4.addWidget(self.le_goto, 0, 1, 1, 1)

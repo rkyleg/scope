@@ -83,9 +83,12 @@ class DirTree(QtGui.QWidget):
                 citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
                 ext = os.path.splitext(f)[1][1:]
                 if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.extD:
-                    ipth = self.afide.iconPath+'files/'+ext+'.png'
+                    
+                    ipth = self.afide.iconPath+'files/'+self.extD[ext]+'.png'
                     if os.path.exists(ipth):
                         citm.setIcon(0,QtGui.QIcon(ipth))
+                    elif os.path.exists(self.afide.iconPath+'files/'+ext+'.png'):
+                        citm.setIcon(0,QtGui.QIcon(self.afide.iconPath+'files/'+ext+'.png'))
                     else:
                         citm.setIcon(0,QtGui.QIcon(self.afide.iconPath+'files/_blank.png'))
                     filecontents.append(citm)

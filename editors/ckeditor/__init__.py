@@ -13,3 +13,6 @@ def addEditor(parent,lang,filename):
         burl = QtCore.QUrl()
     editor = ckeditor.WebView(parent,baseurl=burl)
     return editor
+
+def getLang():
+    return []
