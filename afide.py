@@ -33,11 +33,9 @@ class NewMenu(QtGui.QMenu):
         
         # Add Editor languages
         for e in parent.settings.editors:
-            print e
             exec('import editors.'+e)
             exec('ld = editors.'+e+'.getLang()')
             if ld != []:
-                print e
                 lmenu = QtGui.QMenu(e,self)
                 for l in ld:
                     if os.path.exists(parent.iconPath+'/files/'+l.lower()+'.png'):
@@ -534,7 +532,7 @@ class Afide(QtGui.QMainWindow):
         ipth = self.iconPath+'/files/_blank.png'
         icn = QtGui.QIcon(ipth)
         ipth = self.iconPath+'files/'+str(lang)+'.png'
-        print 'ipth',ipth
+##        print 'ipth',ipth
         if os.path.exists(ipth):
             icn = QtGui.QIcon(ipth)
         elif filename != None:

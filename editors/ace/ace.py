@@ -67,7 +67,7 @@ class WebView(QtWebKit.QWebView):
         self.editorJS.editorHtml = txt.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
-        editor.setValue(txt)''')
+        editor.setValue(txt);''')
         
     
     def find(self,txt):
