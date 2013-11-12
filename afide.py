@@ -29,6 +29,8 @@ class NewMenu(QtGui.QMenu):
                 icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
             self.addAction(icn,lang)
         
+        self.addSeparator()
+        
         # Add Editor languages
         for e in parent.editorD:
             ld = parent.editorD[e]
@@ -122,7 +124,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.6.0'
+        self.version = '0.6.1'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -444,7 +446,7 @@ class Afide(QtGui.QMainWindow):
 ##                    self.pluginD[plug].hide()
             # Enable Run
             if lang in self.settings.run:
-                self.ui.b_run.setEnabled('run' in self.settings.run[lang])
+                self.ui.b_run.setEnabled(lang in self.settings.run)
             else:
                 self.ui.b_run.setEnabled(0)
             
@@ -644,19 +646,23 @@ class Afide(QtGui.QMainWindow):
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
-        wdg.toggleComment()
+        if 'toggleComment' in dir(wdg):
+            wdg.toggleComment()
 
     def editorIndent(self):
         wdg = self.ui.sw_main.currentWidget()
-        wdg.indent()
+        if 'indent' in dir(wdg):
+            wdg.indent()
 
     def editorUnindent(self):
         wdg = self.ui.sw_main.currentWidget()
-        wdg.unindent()
+        if 'unindent' in dir(wdg):
+            wdg.unindent()
 
     def editorWordWrap(self):
         wdg = self.ui.sw_main.currentWidget()
-        wdg.toggleWordWrap()
+        if 'toggleWordWrap' in dir(wdg):
+            wdg.toggleWordWrap()
 
     def editorGoto(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -788,7 +794,6 @@ class Afide(QtGui.QMainWindow):
 ##                if self.settings.ext[e][0]==lang:
             if os.path.exists(self.iconPath+'files/'+lang+'.png'):
                 icn = self.iconPath+'files/'+lang+'.png'
-                break
             # Set default Icon if language not found
             if icn == None:
                 editor =self.settings.favLang[lang]['editor']
@@ -797,7 +802,7 @@ class Afide(QtGui.QMainWindow):
                 else:
                     icn = self.iconPath+'files/_blank.png'
 
-            nfiles += '<a href="new:'+lang+'" ><div class="newfile"><img src="'+icn+'" style="height:14px;"> New '+lang+'</div></a>'
+            nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="newfile"><img src="'+icn+'" style="height:14px;"> '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
     
     def urlClicked(self,url):

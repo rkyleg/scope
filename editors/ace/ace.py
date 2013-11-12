@@ -3,9 +3,11 @@ import os
 
 class jsObject(QtCore.QObject):
     filePath = ''
-    def __init__(self):
+    def __init__(self,parent):
         QtCore.QObject.__init__(self)
         self.editorHtml = ''
+        self.cliptxt = ''
+        self.parent = parent
 
     @QtCore.pyqtSlot(str)
     def getHtml(self,text):
@@ -13,9 +15,20 @@ class jsObject(QtCore.QObject):
 
     def insertHtml(self):
         return self.editorHtml
+    
+    def clipHtml(self):
+        return self.cliptxt
 
+    @QtCore.pyqtSlot()
+    def textChanged(self):
+        self.parent.editorTextChanged()
+    
     html = QtCore.pyqtProperty(str,fget=insertHtml)
+    ctxt = QtCore.pyqtProperty(str,fget=clipHtml)
 
+class Events(QtCore.QObject):
+    editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
+    
 # Custom Webpage class
 class WebPage(QtWebKit.QWebPage):
     def __init__(self,parent=None):
@@ -31,8 +44,14 @@ class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,lang=None):
         QtWebKit.QWebView.__init__(self,parent)
         
+        self.evnt = Events() # Events
+        
         # Initial Variables
         self.wordwrapmode = 0
+        
+##        fnt=QtGui.QFont()
+##        fnt.setFamily('FreeMono')
+##        self.setFont(fnt)
         
         # Setup Web Page
         web_page = WebPage(self)
@@ -57,13 +76,49 @@ class WebView(QtWebKit.QWebView):
         QtGui.QApplication.processEvents()
         
         # Setup Javascript object
-        self.editorJS = jsObject()
+        self.editorJS = jsObject(parent=self)
         self.page().mainFrame().addToJavaScriptWindowObject('pythonjs',self.editorJS)
+        QtGui.QApplication.processEvents()
         
         # Setup Editor
 ##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
-##        self.page().mainFrame().evaluateJavaScript(js)
+        js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
+        self.page().mainFrame().evaluateJavaScript(js)
+        
+        self.gotoLine(1)
 
+    def editorTextChanged(self):
+        self.evnt.editorChanged.emit(self)
+
+    def keyPressEvent(self,event):
+        ky = event.key()
+        handled = 0
+
+        if event.modifiers() & QtCore.Qt.ControlModifier:            if event.key() == QtCore.Qt.Key_C:
+                self.copy()
+                handled = 1
+            elif event.key() == QtCore.Qt.Key_V:
+                self.paste()
+                handled = 1
+                
+        if not handled:            QtWebKit.QWebView.keyPressEvent(self,event)
+        QtGui.QApplication.processEvents()
+
+    def copy(self):
+        js = "pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));"
+        self.page().mainFrame().evaluateJavaScript(js)
+        
+        clip = QtGui.QApplication.clipboard()
+        clip.setText(self.editorJS.editorHtml)
+        
+    def paste(self):
+        clip = QtGui.QApplication.clipboard()
+        txt = unicode(clip.text())
+        if txt != '':
+            self.editorJS.cliptxt = txt#.replace("'","''")
+            self.page().mainFrame().evaluateJavaScript(
+            '''var txt =  pythonjs.ctxt;
+            editor.insert(txt);''')
 
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getValue());")
@@ -73,7 +128,8 @@ class WebView(QtWebKit.QWebView):
         self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
-        editor.setValue(txt);''')
+        editor.setValue(txt);
+        editor.clearSelection()''')
     
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode
@@ -81,5 +137,47 @@ class WebView(QtWebKit.QWebView):
         js = "editor.getSession().setUseWrapMode("+ww[self.wordwrapmode]+");"
         self.page().mainFrame().evaluateJavaScript(js)
     
-    def find(self,txt):
-        self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
+    def find(self,txt,re=0,cs=0,wo=0):
+    
+        tre=tcs=two = 'false'
+        if re: tre='true'
+        if cs: tcs='true'
+        if wo: two='true'
+    
+        js = "editor.find('"+txt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
+    
+        js = "pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));"
+        self.page().mainFrame().evaluateJavaScript(js)
+        
+        js = ''
+        
+        ctxt = self.editorJS.editorHtml
+        if unicode(ctxt).lower() == unicode(ftxt).lower():
+            js = "editor.replace('"+rtxt+"');"
+            self.page().mainFrame().evaluateJavaScript(js)
+            QtGui.QApplication.processEvents()
+        tre=tcs=two = 'false'
+        if re: tre='true'
+        if cs: tcs='true'
+        if wo: two='true'
+    
+        js = "editor.find('"+ftxt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
+        
+        self.page().mainFrame().evaluateJavaScript(js)
+
+    def replaceAll(self,ftxt,rtxt,re=0,cs=0,wo=0):
+        tre=tcs=two = 'false'
+        if re: tre='true'
+        if cs: tcs='true'
+        if wo: two='true'
+    
+        js = "editor.find('"+ftxt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
+        js += "editor.replaceAll('"+rtxt+"');"
+        self.page().mainFrame().evaluateJavaScript(js)
+        
+    def gotoLine(self,line):
+        js = "editor.gotoLine("+str(line+1)+");"
+        self.page().mainFrame().evaluateJavaScript(js)

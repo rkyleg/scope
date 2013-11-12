@@ -18,9 +18,9 @@ import os,sys, time
 ##    }
 
 commentD = {
-    'Python':'##',
-    'JavaScript':'//',
-    'YAML':'##'
+    'python':'##',
+    'javascript':'//',
+    'yaml':'##'
     
 }
 
@@ -34,7 +34,7 @@ commentD = {
 
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
-    editingFinished = QtCore.pyqtSignal(QtGui.QWidget)
+##    editingFinished = QtCore.pyqtSignal(QtGui.QWidget)
 
 class Sci(QtGui.QWidget):
     def __init__(self,parent,lex):
@@ -144,8 +144,8 @@ class Sci(QtGui.QWidget):
         if self.okedit:
             self.evnt.editorChanged.emit(self)
     
-    def editingFinished(self):
-        self.evnt.editingFinished.emit(self)
+##    def editingFinished(self):
+##        self.evnt.editingFinished.emit(self)
     
     def toggleComment(self):
         lang = self.afide.currentWidget().lang
