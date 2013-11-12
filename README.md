@@ -1,8 +1,6 @@
 ![Alt text](/img/afide.png "afide") afide
 =====
-another freakin IDE
-
-Pronounced as aphid
+another freakin IDE.  Pronounced as aphid
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.
 
@@ -17,8 +15,7 @@ The goals of afide:
 - Handle Multiple languages (Python, Javascript, HTML,...)
 - Easily create plugins with Python and PyQt
 - Mostly Lightweight
-- Be able to utilize existing code editors (Scintilla, CKEditor, Ace, Scintilla)
-- Customizable and easily extensible
+- Be able to utilize existing code editors (Scintilla, CKEditor, Ace, more...)
 
 Requirements
 ==
@@ -32,7 +29,7 @@ Settings
 ==
 Settings are stored in settings.py
 
-Current State (as of October 2013)
+Current State
 ==
 - Cross Platform (Windows and Linux)
 - Multiple language support (although somewhat limited)
@@ -49,3 +46,6 @@ Future State
 - Some kind of integrated help - for online resources
 - Save user settings separate from default settings
 - Better code completion support
+- Other plugins...
+
+For more information see the [Todo][todo.md]

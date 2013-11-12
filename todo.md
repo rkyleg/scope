@@ -3,6 +3,7 @@
 
 ##Afide Main
 ----
+- [ ] Check if files edited/saved outside of editor
 - [ ] Try to open in default editor, otherwise if language does not exist, try other editors
 - [ ] Add more language icons
 - [ ] sys.argv file open work
@@ -48,6 +49,7 @@
 ----
 - [ ] Snippets plugin
 - [ ] Spellcheck plugin
+- [ ] Help plugin (with search, maybe based on current file language)
 
 ### Outline
 ====

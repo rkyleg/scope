@@ -47,7 +47,7 @@ class WebView(QtWebKit.QWebView):
         self.evnt = Events() # Events
         
         # Initial Variables
-        self.wordwrapmode = 0
+        self.wordwrapmode = 1
         
 ##        fnt=QtGui.QFont()
 ##        fnt.setFamily('FreeMono')
