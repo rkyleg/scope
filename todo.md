@@ -1,8 +1,6 @@
 #TODO
-----
 
 ##Afide Main
-----
 - [ ] Check if files edited/saved outside of editor
 - [ ] Try to open in default editor, otherwise if language does not exist, try other editors
 - [ ] Add more language icons
@@ -25,15 +23,12 @@
 - [ ] Settings button can load 
 
 ##Editors
-----
 
 ###Scintilla
-====
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)
 - [x] Add Icon
 
 ### Ace
-====
 - [x] Ctrl S save
 - [x] Fix cursor alignment problem (check in Linux - font-family style change fixes)
 - [ ] Indent buttons
@@ -46,15 +41,13 @@
 - [x] goto
 
 ## Plugins
-----
 - [ ] Snippets plugin
 - [ ] Spellcheck plugin
 - [ ] Help plugin (with search, maybe based on current file language)
 
 ### Outline
-====
 - Languages
--- [ ] Markdown
+ - [ ] Markdown
 - [ ] Use themes for color coding
 - [ ] Right click refresh
 - [ ] toggle autorefreshing
@@ -62,12 +55,10 @@
 - [ ] Fix extra slash in outline startname
 
 ### Python Shell
-====
 - [ ] Fix cursor messing up code
 - [ ] Auto complete would be nice
 
 ###File Browser
-====
 - [ ] Return press opens folder
 - [ ] toggle to view all files
 - [ ] be able to launch file with os default (do this for unknown extensions on double click)
@@ -77,6 +68,5 @@
 
 
 ##Other Random TODO
-====
 - [ ] Add markdown to run (use javascript preview with webview - or see markdown2)
 - [ ] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
