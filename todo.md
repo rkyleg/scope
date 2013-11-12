@@ -29,8 +29,8 @@
 
 ###Scintilla
 ====
-[ ] Fix autocomplete when hitting any key (set to return or tab only)
-[x] Add Icon
+- [ ] Fix autocomplete when hitting any key (set to return or tab only)
+- [x] Add Icon
 
 ### Ace
 ====

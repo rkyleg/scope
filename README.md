@@ -48,4 +48,4 @@ Future State
 - Better code completion support
 - Other plugins...
 
-For more information see the [Todo][todo.md]
+For more information see the [Todo](todo.md)
