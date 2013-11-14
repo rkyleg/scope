@@ -21,6 +21,7 @@ class DirTree(QtGui.QWidget):
         self.loadRoot()
         
         self.ui.tr_dir.contextMenuEvent = self.fileMenu
+        self.ui.tr_dir.keyPressEvent = self.ikeyPressEvent
     
     def loadRoot(self):
         newpath = str(self.ui.le_root.text()).replace('\\','/')
@@ -94,7 +95,17 @@ class DirTree(QtGui.QWidget):
                     filecontents.append(citm)
 
         return dircontents,filecontents
-    
+
+    def ikeyPressEvent(self,event):
+        ky = event.key()
+        handled = 0
+        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return]:
+            self.itmClicked(self.ui.tr_dir.currentItem(),0)
+            handled = 1
+        if not handled:
+            QtGui.QTreeWidget.keyPressEvent(self.ui.tr_dir,event)
+
+        
     def fileMenu(self,event):
 ##        print event
         menu = QtGui.QMenu('file menu')

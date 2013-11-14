@@ -112,6 +112,17 @@ class Outline(QtGui.QWidget):
                         itmText =tls[5:].replace('-->','')
                         typ = 'heading'
                 
+                #---Markdown
+                elif wdg.lang == 'markdown':
+                    if tls.startswith('#'): # Heading
+                        h = tls.split(' ')[0].count('#')
+                        head = tls.replace('#','')
+                        itmText = h*4*' '+head
+                        if h==1:
+                            typ='object'
+                        else:
+                            typ='function'
+                
                 # Add Outline Item
                 if itmText != None:
                     itmText = spc +itmText

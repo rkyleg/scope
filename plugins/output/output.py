@@ -55,6 +55,9 @@ class Output(QtGui.QWidget):
         else:
             if cmd == 'webbrowser':
                 webbrowser.open(filename)
+            elif cmd == 'markdown':
+                import markdown
+                markdown.generate(filename)
             else:
                 self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b></div><br>')
                 self.process = QtCore.QProcess()

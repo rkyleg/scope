@@ -1,6 +1,6 @@
-#TODO
+# TODO
 
-##Afide Main
+## Afide Main
 - [ ] Check if files edited/saved outside of editor
 - [ ] Try to open in default editor, otherwise if language does not exist, try other editors
 - [ ] Add more language icons
@@ -14,40 +14,46 @@
 - [ ] Workspace menu icons
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
+- [ ] Fix extra / in tab name hover (in Linux at least)
 
-###Settings
+### Settings
 - [ ] Save settings in separate location (load defaults first)
 - [ ] Themes - dark one
 - [ ] Move toggle comments to settings instead of with editor
 - [ ] Save settings for each editor and outline???
 - [ ] Settings button can load 
 
-##Editors
 
-###Scintilla
+## Editors
+
+### Scintilla
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)
 - [x] Add Icon
+- [ ] check line syntax
 
 ### Ace
 - [x] Ctrl S save
 - [x] Fix cursor alignment problem (check in Linux - font-family style change fixes)
-- [ ] Indent buttons
+- [x] Indent buttons
 - [x] Check save
-- [ ] toggle comment
+- [x] toggle comment
 - [x] copy/paste from other tools
-- [ ] custom right click menu for extra options (add copy and paste to it)
-- [ ] edit themes
+- [x] custom right click menu for extra options (add copy and paste to it)
+- [x] edit themes
 - [x] replace/replaceall
 - [x] goto
+- [x] Fix cut keyboard shortcut
+- [ ] Add Split view
 
 ## Plugins
 - [ ] Snippets plugin
 - [ ] Spellcheck plugin
 - [ ] Help plugin (with search, maybe based on current file language)
+- [ ] Python code editor to run on current tab
 
 ### Outline
 - Languages
- - [ ] Markdown
+ - [x] Markdown
 - [ ] Use themes for color coding
 - [ ] Right click refresh
 - [ ] toggle autorefreshing
@@ -58,15 +64,18 @@
 - [ ] Fix cursor messing up code
 - [ ] Auto complete would be nice
 
-###File Browser
-- [ ] Return press opens folder
+### File Browser
+- [x] Return press opens folder
 - [ ] toggle to view all files
 - [ ] be able to launch file with os default (do this for unknown extensions on double click)
 - [ ] right click new file (select from extensions
 - [ ] delete file option
-- [ ] 
+- [ ] Reload option
+- [ ] collapse all/expand all
 
+### Output
+- [x] Add markdown to run (use javascript preview with webview - or see markdown2)
 
-##Other Random TODO
-- [ ] Add markdown to run (use javascript preview with webview - or see markdown2)
+## Other Random TODO
 - [ ] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
+- [ ] Add other widgets as tabs (that aren't editors)

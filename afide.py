@@ -49,22 +49,6 @@ class NewMenu(QtGui.QMenu):
                 icn = QtGui.QIcon(parent.editorPath+'/'+e+'/'+e+'.png')
                 a=self.addAction(icn,e)
                 a.setData(e)
-        
-##        for lang in sorted(parent.settings.editors):
-##            icn = None
-##            for e in parent.settings.ext:
-##                if parent.settings.ext[e][0]==lang:
-##                    if os.path.exists(parent.iconPath+'/files/'+e+'.png'):
-##                        icn = QtGui.QIcon(parent.iconPath+'/files/'+e+'.png')
-##                        break
-##            # Set default Icon if language not found
-##            if icn == None:
-##                editor =parent.settings.editors[lang]['editor']
-##                if os.path.exists(parent.editorPath+editor+'/'+editor+'.png'):
-##                    icn = QtGui.QIcon(parent.editorPath+editor+'/'+editor+'.png')
-##                else:
-##                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
-##            self.addAction(icn,lang)
     
         self.triggered.connect(self.newEditor)
     
@@ -86,15 +70,12 @@ class WorkspaceMenu(QtGui.QMenu):
         self.saveWact = self.addAction('Save Workspace')
         self.saveWact.setDisabled(1)
         self.deleteWact = self.addAction('Delete Workspace')
-        
-        
+
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
             for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces')):
                 self.addAction(wsp)
                 self.deleteWact.setDisabled(0)
-    
-        
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
@@ -248,7 +229,7 @@ class Afide(QtGui.QMainWindow):
         
         #--- Get Editor Languages
         self.editorD = {}
-        for e in self.settings.editors:
+        for e in self.settings.activeEditors:
             exec('import editors.'+e)
             exec('ld = editors.'+e+'.getLang()')
             self.editorD[e] = ld
@@ -263,7 +244,7 @@ class Afide(QtGui.QMainWindow):
         
         curdir = os.path.abspath('.')
         
-        for plug in self.settings.plugins:
+        for plug in self.settings.activePlugins:
             self.addPlugin(plug)
 
         os.chdir(curdir)
@@ -290,6 +271,7 @@ class Afide(QtGui.QMainWindow):
 ##        self.ui.b_plugins.setMenu(pluginmenu)
         
         # Open file if in sys arg
+        # print "SYS",sys.argv
         if len(sys.argv)>1:
             if os.path.exists(sys.argv[1]) and os.path.isfile(sys.argv[1]):
                 self.openFile(sys.argv[1])
@@ -328,21 +310,6 @@ class Afide(QtGui.QMainWindow):
     
     def dragEnterEvent(self,event):
         event.accept()
-    
-##    def keyPressEvent(self,event):
-##        handled = 0
-##        if event.modifiers() & QtCore.Qt.ControlModifier:
-##            if event.key() == QtCore.Qt.Key_F:
-##                self.ui.le_find.setFocus()
-##                handled = 1
-##            if event.key() == QtCore.Qt.Key_G:
-##                self.ui.le_goto.setFocus()
-##                handled = 1
-##        if handled:
-##            event.accept()
-##            return
-##        else:
-##            QtGui.QMainWindow.keyPressEvent(self,event)
     
     def toggleZen(self):
         self.zen = not self.zen
@@ -394,6 +361,8 @@ class Afide(QtGui.QMainWindow):
                     title = os.path.basename(filename)
                     if self.settings.view_folder:
                         title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+                    elif lang == 'python' and title=='__init__.py':
+                        title = os.path.split(os.path.dirname(filename))[1]+'/init'
                     
                     wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
                     f = codecs.open(filename,'r','utf-8')
@@ -547,22 +516,7 @@ class Afide(QtGui.QMainWindow):
         elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
             icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
         self.ui.tab.setTabIcon(sw_ind,icn)
-            
-##        else:
-##            # New Files without filename
-##            ext = [key for key, value in self.settings.ext.iteritems() if value[0] == lang]
-##            if type(ext) == type([]) and ext != []:
-##                ext = ext[0]
-##            else:
-##                ext = ''
-##
-##            ipth = self.iconPath+'files/'+ext+'.png'
-##            if not os.path.exists(ipth):
-##                if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
-##                    ipth = self.editorPath+editor+'/'+editor+'.png'
-##                else:
-##                    ipth = self.iconPath+'/files/_blank.png'
-##            self.ui.tab.setTabIcon(sw_ind,QtGui.QIcon(ipth))
+
         return wdg
 
     def checkSave(self,wdg):
@@ -633,16 +587,6 @@ class Afide(QtGui.QMainWindow):
                     self.pluginD['output'].show()
                 self.pluginD['output'].raise_()
                 self.pluginD['output'].wdg.newProcess(self.settings.run[wdg.lang],filename)
-##                print self.settings['lang'][wdg.lang]['run']
-##                newstream = plugins.output.output.MyStream()
-##                exec('procs ='+ self.settings['lang'][wdg.lang]['run'].replace('$file',filename))
-                #for line in iter(procs.stdout.readline, ''): print line
-
-                # print stdout
-                
-##                procs.stdout = newstream
-##                procs.stderr = newstream
-##                newstream.message.connect(self.pluginD['output'].wdg.on_myStream_message)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -685,8 +629,6 @@ class Afide(QtGui.QMainWindow):
         exec('dwdg = plugins.'+plug+'.addDock(self)')
         title = self.settings.plugins[plug]['title']
         if plug == 'pycute': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
-##        exec("dplug = self.addPlugin(dwdg,dockareaD[self.settings.plugins['"+plug+"']['dockarea']],title)")
-##        exec('dplug.hide()')
         dockarea =self.dockareaD[self.settings.plugins[plug]['dockarea']]
         
         dock = QtGui.QDockWidget()
@@ -717,12 +659,6 @@ class Afide(QtGui.QMainWindow):
 
     #---Settings
     def loadSettings(self):
-        # Settings File
-##        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.yml'
-##        f = open(self.settings_filename,'r')
-##        settingstxt = f.read()
-##        f.close()
-##        self.settings = yaml.load(settingstxt)
         import settings
         self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.py'
         self.settings = settings.Settings()

@@ -43,7 +43,7 @@ class WebPage(QtWebKit.QWebPage):
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,lang=None):
         QtWebKit.QWebView.__init__(self,parent)
-        
+        self.parent = parent
         self.evnt = Events() # Events
         
         # Initial Variables
@@ -83,6 +83,8 @@ class WebView(QtWebKit.QWebView):
         # Setup Editor
 ##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
+        if 'theme' in self.parent.settings.editors['ace']:
+            js += 'editor.setTheme("ace/theme/'+self.parent.settings.editors['ace']['theme']+'");'
         self.page().mainFrame().evaluateJavaScript(js)
         
         self.gotoLine(1)
@@ -93,24 +95,76 @@ class WebView(QtWebKit.QWebView):
     def keyPressEvent(self,event):
         ky = event.key()
         handled = 0
-
+        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
+            self.okedit = 0
         if event.modifiers() & QtCore.Qt.ControlModifier:            if event.key() == QtCore.Qt.Key_C:
                 self.copy()
                 handled = 1
             elif event.key() == QtCore.Qt.Key_V:
                 self.paste()
                 handled = 1
-                
+            elif event.key() == QtCore.Qt.Key_X:
+                self.copy()
+                self.cut()
+                handled = 1
+##            elif event.key() == QtCore.Qt.Key_D:
+##                self.copyLinesDown()
+##                handled = 1                
         if not handled:            QtWebKit.QWebView.keyPressEvent(self,event)
         QtGui.QApplication.processEvents()
+        self.okedit = 1
+        self.editorTextChanged()
 
+    def contextMenuEvent(self,event):
+        menu = QtGui.QMenu('ace menu')
+        # Edit Menu
+        emenu = QtGui.QMenu('edit',menu)
+        emenu.addAction(QtGui.QIcon(),'Copy')
+        emenu.addAction(QtGui.QIcon(),'Cut')
+        emenu.addAction(QtGui.QIcon(),'Paste')
+        menu.addMenu(emenu)
+        # Settings Menu
+        smenu = QtGui.QMenu('settings',menu)
+        tmenu = QtGui.QMenu('theme',smenu)
+        fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
+        for f in sorted(os.listdir(fld)):
+            if f.startswith('theme'):
+                a=tmenu.addAction(QtGui.QIcon(),f[6:-3])
+                a.setData('theme')
+        smenu.addMenu(tmenu)
+        menu.addMenu(smenu)
+        
+        
+        for act in menu.actions():  # Set Icon to visible
+            act.setIconVisibleInMenu(1)
+        
+        # Launch Menu
+        act = menu.exec_(self.cursor().pos())
+        if act != None:
+            acttxt = str(act.text())
+            actdta = str(act.data().toString())
+            if actdta == 'theme':
+                js = 'editor.setTheme("ace/theme/'+acttxt+'");'
+                self.page().mainFrame().evaluateJavaScript(js)
+            elif acttxt == 'Copy':
+                self.copy()
+            elif acttxt == 'Cut':
+                self.cut()
+            elif acttxt == 'Paste':
+                self.paste()
+        
     def copy(self):
         js = "pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));"
         self.page().mainFrame().evaluateJavaScript(js)
         
         clip = QtGui.QApplication.clipboard()
         clip.setText(self.editorJS.editorHtml)
-        
+    
+    def cut(self):
+        js = "editor.insert("");"
+        self.page().mainFrame().evaluateJavaScript(js)
+        print 'cut'
+    
     def paste(self):
         clip = QtGui.QApplication.clipboard()
         txt = unicode(clip.text())
@@ -135,6 +189,22 @@ class WebView(QtWebKit.QWebView):
         self.wordwrapmode = not self.wordwrapmode
         ww = {0:'true',1:'false'}
         js = "editor.getSession().setUseWrapMode("+ww[self.wordwrapmode]+");"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def toggleComment(self):
+        js = "editor.toggleCommentLines();"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def indent(self):
+        js = "editor.indent();"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def unindent(self):
+        js = "editor.blockOutdent();"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def copyLinesDown(self):
+        js = "editor.copyLinesDown();"
         self.page().mainFrame().evaluateJavaScript(js)
     
     def find(self,txt,re=0,cs=0,wo=0):

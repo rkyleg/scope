@@ -4,7 +4,7 @@ another freakin IDE.  Pronounced as aphid
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.
 
-![Alt text](/img/screenshot.png "Screenshot")
+![Alt text](/extra/screenshot.png "Screenshot")
 
 About
 ==
@@ -48,4 +48,4 @@ Future State
 - Better code completion support
 - Other plugins...
 
-For more information see the [Todo](todo.md)
+For more information see the [Todo](/extra/todo.md)

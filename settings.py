@@ -1,14 +1,20 @@
+import os
 
 class Settings(object):
     #---Editors (that are available)
-    editors = ['scintilla','ace','ckeditor']
+    activeEditors = ['scintilla','ace','ckeditor']
+    
     # Default Editor
     defaultEditor = 'scintilla'
+    
+    # Enabled Plugins
+    activePlugins = ['outline','filebrowser','pycute','qt2py','find_replace','output']
     
     # Run Commands (language:command)
     run = {
         'python':'python',
         'html':'webbrowser',
+        'markdown':'markdown',
     }
     
     # Favorite Languages
@@ -19,6 +25,17 @@ class Settings(object):
         'css':{'editor':'ace'},
         'text':{'editor':'scintilla'},
         'markdown':{'editor':'ace'},
+        'sql':{'editor':'scintilla'},
+    }
+    
+    #---Editors
+    editors = {
+        'scintilla':{
+            
+        },
+        'ace':{
+            'theme':'twilight'
+        }
     }
     
     #---Plugins

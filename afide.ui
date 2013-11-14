@@ -58,6 +58,26 @@
        <property name="verticalSpacing">
         <number>0</number>
        </property>
+       <item row="0" column="10">
+        <widget class="QToolButton" name="b_wordwrap">
+         <property name="minimumSize">
+          <size>
+           <width>26</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Toggle Wordwrap</string>
+         </property>
+         <property name="text">
+          <string>Save</string>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="6">
         <widget class="QToolButton" name="b_indent">
          <property name="minimumSize">
@@ -135,6 +155,9 @@
          <property name="icon">
           <iconset>
            <normaloff>img/save.png</normaloff>img/save.png</iconset>
+         </property>
+         <property name="popupMode">
+          <enum>QToolButton::MenuButtonPopup</enum>
          </property>
         </widget>
        </item>
@@ -436,26 +459,6 @@
           </size>
          </property>
         </spacer>
-       </item>
-       <item row="0" column="10">
-        <widget class="QToolButton" name="b_wordwrap">
-         <property name="minimumSize">
-          <size>
-           <width>26</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Toggle Wordwrap</string>
-         </property>
-         <property name="text">
-          <string>Save</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
-         </property>
-        </widget>
        </item>
        <item row="0" column="8">
         <widget class="QToolButton" name="b_comment">
