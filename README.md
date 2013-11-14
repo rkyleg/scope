@@ -1,10 +1,10 @@
-![Alt text](/img/afide.png "afide") afide
+![Alt text](img/afide.png "afide") afide
 =====
 another freakin IDE.  Pronounced as aphid
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.
 
-![Alt text](/extra/screenshot.png "Screenshot")
+![Alt text](extra/screenshot.png "Screenshot")
 
 About
 ==
@@ -48,4 +48,4 @@ Future State
 - Better code completion support
 - Other plugins...
 
-For more information see the [Todo](/extra/todo.md)
+For more information see the [Todo](extra/todo.md)

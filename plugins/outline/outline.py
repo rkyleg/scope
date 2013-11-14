@@ -112,12 +112,12 @@ class Outline(QtGui.QWidget):
                         itmText =tls[5:].replace('-->','')
                         typ = 'heading'
                 
-                #---Markdown
+                #--- Markdown
                 elif wdg.lang == 'markdown':
                     if tls.startswith('#'): # Heading
                         h = tls.split(' ')[0].count('#')
                         head = tls.replace('#','')
-                        itmText = h*4*' '+head
+                        itmText = (h-1)*4*' '+head
                         if h==1:
                             typ='object'
                         else:
