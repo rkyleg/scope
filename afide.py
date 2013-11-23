@@ -5,6 +5,9 @@
 # afide is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
+# VERSION
+version = '0.6.4'
+
 import sys, subprocess, json, codecs
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
@@ -105,7 +108,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.6.3'
+        self.version = version
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
