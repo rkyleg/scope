@@ -68,6 +68,7 @@ class DirTree(QtGui.QWidget):
         filecontents = []
         
         if os.path.isdir(pth):
+            if not pth.endswith('/'): pth += '/'
             try:
                 dirlist = sorted(os.listdir(os.path.abspath(pth)))
             except:

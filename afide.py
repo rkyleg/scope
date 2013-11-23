@@ -66,15 +66,15 @@ class WorkspaceMenu(QtGui.QMenu):
     
     def loadMenu(self):
         self.clear()
-        self.addAction('New Workspace')
-        self.saveWact = self.addAction('Save Workspace')
+        self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
+        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.saveWact.setDisabled(1)
-        self.deleteWact = self.addAction('Delete Workspace')
+        self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
 
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
             for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces')):
-                self.addAction(wsp)
+                self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace.png'),wsp)
                 self.deleteWact.setDisabled(0)
     
     def loadWorkspace(self,event):
@@ -583,7 +583,7 @@ class Afide(QtGui.QMainWindow):
                 f.write(txt)
                 f.close()
                 wdg.lastText = txt
-                self.ui.statusbar.showMessage('Saved '+filename+' at '+datetime.datetime.now().ctime())
+                self.ui.statusbar.showMessage('Saved '+wdg.title+' at '+datetime.datetime.now().ctime())
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))

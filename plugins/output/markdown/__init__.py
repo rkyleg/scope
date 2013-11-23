@@ -23,7 +23,7 @@ def generate(file):
             h2,h3,h4,h5,h6,h7 {border-bottom:1px solid gray;}
             li.checkbox,li.cancelled,li.future {list-style-type: none;margin-left:-25px;}
             li.cancelled {text-decoration:line-through}
-            li.future {font-style:italic;}
+            li.future {font-style:italic;color:gray;}
     '''
     for i in range(2,8):
         mstyle += 'h'+str(i)+'{margin-left:'+str((i-1)*10)+'px;}'

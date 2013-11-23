@@ -10,8 +10,8 @@
 - [ ] Save as (save menu maybe)
 - [x] if save or load fails - display message
 - [-] if find not found - add statusbar message
-- [ ] improve statusbar save formatting
-- [ ] Workspace menu icons
+- [x] improve statusbar save formatting
+- [x] Workspace menu icons
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
 
@@ -25,8 +25,15 @@
 - [ ] Settings button can load 
 - [ ] Settings page like webview
 
-
 ## Editors
+- [ ] Editor specific plugins view?
+- [ ] Hide editors - store open editors with a file?
+- [ ] Add Monkey
+- [ ] Store wordwrap preferences with language
+
+### Monkey
+- [ ] Make open monkey files
+- [ ] Run will update preview
 
 ### Scintilla
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)
@@ -46,6 +53,9 @@
 - [x] goto
 - [x] Fix cut keyboard shortcut
 - [f] Add Split view
+    - [ ] option for previewer split (html and markdown)
+- [ ] Add find tag/branch function
+- [ ] When opening start at cursor position 1
 
 ## Plugins
 - [ ] Snippets plugin

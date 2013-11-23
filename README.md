@@ -27,25 +27,11 @@ afide is not yet compiled so you must run it with Python.  I have only tested it
 
 Settings
 ==
-Settings are stored in settings.py
+- Settings are stored in settings.py
+- *settings structure still in a state of change*
 
-Current State
+To Do and Roadmap
 ==
-- Cross Platform (Windows and Linux)
-- Multiple language support (although somewhat limited)
-- Some settings saved and Workspaces available
-- Scintilla is the main editor available
-- Can run Python files and html (in browser)
-- Python Shell plugin somewhat buggy
-- Outline plugin works for Python, CSS, HTML, and JavaScript
+- **[Roadmap](extra/roadmap.md)** - The current state of Afide and future plans
 
-Future State
-==
-- User preferences interface
-- Check if open files changed outside of editor
-- Some kind of integrated help - for online resources
-- Save user settings separate from default settings
-- Better code completion support
-- Other plugins...
-
-For more information see the [Todo](extra/todo.md)
+- **[Todo](extra/todo.md)** - List of to do and status
