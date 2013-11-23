@@ -49,7 +49,7 @@ class Output(QtGui.QWidget):
     
     def newProcess(self,cmd,filename):
         
-        if self.process != None:
+        if self.process != None and cmd not in ['webbrowser','markdown']:
             self.process.kill()
             self.finished()
         else:

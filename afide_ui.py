@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'afide.ui'
 #
-# Created: Wed Nov 13 22:37:50 2013
+# Created: Thu Nov 14 00:26:40 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -82,7 +82,6 @@ class Ui_MainWindow(object):
         icon5 = QtGui.QIcon()
         icon5.addPixmap(QtGui.QPixmap(_fromUtf8("img/save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_save.setIcon(icon5)
-        self.b_save.setPopupMode(QtGui.QToolButton.MenuButtonPopup)
         self.b_save.setObjectName(_fromUtf8("b_save"))
         self.gridLayout_2.addWidget(self.b_save, 0, 4, 1, 1)
         self.frame = QtGui.QFrame(self.fr_toolbar)

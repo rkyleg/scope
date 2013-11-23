@@ -156,9 +156,6 @@
           <iconset>
            <normaloff>img/save.png</normaloff>img/save.png</iconset>
          </property>
-         <property name="popupMode">
-          <enum>QToolButton::MenuButtonPopup</enum>
-         </property>
         </widget>
        </item>
        <item row="0" column="11">

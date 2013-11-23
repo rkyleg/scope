@@ -1,40 +1,73 @@
 <head>
     <style>
         body {
-            background:rgb(240,240,240);
+            background:rgb(40,40,40);
+            font-family:sans,verdana;
         }
         a {
             text-decoration:none;
             font-weight:bold;
-            color: #193882;
+            color: #c1dbf4;
         }
         a:hover {
             color: #1F45A1;
         }
         .newfile {  
-            background: rgb(200,200,200);
+            background: rgb(100,100,100);
             padding:2px;
             border-radius:4px;
             padding-left:6px;
             margin-top:2px;
-
+            color:white;
         }
         .newfile:hover {
-            background: rgb(220,220,220);
+            background: rgb(120,120,120);
+            
+        }
+        .workspace_panel{
+            background:rgb(80,80,80);
+            text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
+            color:rgb(40,40,40);
+            border-radius:9px;
+            padding-left:10px;
+            padding-right:10px;
+            padding-bottom:3px;
+            padding-top:3px;
+        }
+        .workspace_title {
+            background: #c1dbf4;
+            padding-left:4px;
+            padding-right:4px;
+            border-radius:3px;
+            padding-top:3px;
+            padding-bottom:2px;
+            margin-top:2px;
         }
         .workspace {  
             text-align:center;
-            background: rgb(200,200,200);
+            background: rgb(250,250,250);
+            color:black;
             padding:2px;
             border-radius:4px;
-            padding-left:6px;
-            padding-right:6px;
+            padding-left:4px;
+            padding-right:4px;
             margin-top:2px;
             display: inline-block;
 
         }
         .workspace:hover {
             background: rgb(220,220,220);
+        }
+        .workspaceline {
+            height:2px;
+            color:rgb(80,80,80);
+            background-color:rgb(80,80,80);
+            border:0px;
+        }
+        .blueblob {
+            width:20px;
+            background:#2d6bb1;
+            display:block;
         }
     </style>
 </head>
@@ -44,19 +77,25 @@
     <tr>
         <td>
             <!---Logo-->
-            <h3 align=center><img alt="" src="../img/afide.png" /><Br>afide <small id="version"></small></h3>
+            <h3 align=center style="color:white;"><img alt="" src="../img/afide.png" /><Br>afide <small id="version"></small></h3>
         </td>
         <td >
             <!---Workspaces-->
-            <div id="workspaces"></div>
+            <div class="workspace_panel">
+                Workspaces
+                <div id="workspaces"></div>
+            </div>
         </td>
     </tr>
     <tr>
-        <td style="padding-right:10px;" valign="top">
+        <td style="padding-right:10px;width:180px;" valign="top">
             <!---New-->
-            <div id="new_files"></div>
+            <div class="workspace_panel">
+                Create New:
+                <div id="new_files"></div>
+            </div>
         </td>
-        <td style="padding-left:10px;background:white;border-radius:8px;">
+        <td><div style="padding-left:10px;background:rgb(60,60,60);color:white;border-radius:8px;">
             <!---Main Help-->
             <br>
             <h4>Getting Started</h4>
@@ -75,7 +114,8 @@
 
             <br><hr>
             <i>afide is still in early development and has not been appropriately tested.  <b>use at your own risk.</b></i><br><br>
-        </td>
+            <br>
+        </div></td>
     </tr>
 </table>
 

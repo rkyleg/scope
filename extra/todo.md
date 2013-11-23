@@ -2,26 +2,28 @@
 
 ## Afide Main
 - [ ] Check if files edited/saved outside of editor
-- [ ] Try to open in default editor, otherwise if language does not exist, try other editors
+- [f] Try to open in default editor, otherwise if language does not exist, try other editors
 - [ ] Add more language icons
 - [ ] sys.argv file open work
 - [x] Fix editor buttons checking if functions available
-- [ ] Save file uses extensions (with all option)
+- [-] Save file uses extensions (with all option)
 - [ ] Save as (save menu maybe)
-- [ ] if save or load fails - display message
-- [ ] if find not found - add statusbar message
+- [x] if save or load fails - display message
+- [-] if find not found - add statusbar message
 - [ ] improve statusbar save formatting
 - [ ] Workspace menu icons
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
-- [ ] Fix extra / in tab name hover (in Linux at least)
+
+### Startpage
+- [x] Update theme
 
 ### Settings
 - [ ] Save settings in separate location (load defaults first)
 - [ ] Themes - dark one
-- [ ] Move toggle comments to settings instead of with editor
 - [ ] Save settings for each editor and outline???
 - [ ] Settings button can load 
+- [ ] Settings page like webview
 
 
 ## Editors
@@ -29,7 +31,7 @@
 ### Scintilla
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)
 - [x] Add Icon
-- [ ] check line syntax
+- [f] check line syntax
 
 ### Ace
 - [x] Ctrl S save
@@ -43,7 +45,7 @@
 - [x] replace/replaceall
 - [x] goto
 - [x] Fix cut keyboard shortcut
-- [ ] Add Split view
+- [f] Add Split view
 
 ## Plugins
 - [ ] Snippets plugin
@@ -55,10 +57,9 @@
 - Languages
  - [x] Markdown
 - [ ] Use themes for color coding
-- [ ] Right click refresh
+- [-] Right click refresh
 - [ ] toggle autorefreshing
-- [ ] ctrl+o to show outline
-- [ ] Fix extra slash in outline startname
+- [x] ctrl+o to show outline
 
 ### Python Shell
 - [ ] Fix cursor messing up code
@@ -72,9 +73,11 @@
 - [ ] delete file option
 - [ ] Reload option
 - [ ] collapse all/expand all
+- [x] Fix extra / in tab name hover (in Linux at least)
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
+- [f] Create markdown viewer
 
 ## Other Random TODO
 - [ ] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)

@@ -7,6 +7,10 @@ class Settings(object):
     # Default Editor
     defaultEditor = 'scintilla'
     
+    #---Other
+    view_folder=0
+    save_workspace_on_close=1
+    
     # Enabled Plugins
     activePlugins = ['outline','filebrowser','pycute','qt2py','find_replace','output']
     
@@ -25,7 +29,7 @@ class Settings(object):
         'css':{'editor':'ace'},
         'text':{'editor':'scintilla'},
         'markdown':{'editor':'ace'},
-        'sql':{'editor':'scintilla'},
+        'sql':{'editor':'ace'},
     }
     
     #---Editors
@@ -35,7 +39,11 @@ class Settings(object):
         },
         'ace':{
             'theme':'twilight'
-        }
+        },
+        'ckeditor':{
+        },
+        'webview':{
+        },
     }
     
     #---Plugins
@@ -89,7 +97,3 @@ class Settings(object):
         'java':'java',
         'md':'markdown',
     }
-
-    #---Other
-    view_folder=0
-    save_workspace_on_close=1

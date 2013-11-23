@@ -105,7 +105,7 @@ class Afide(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = '0.6.2'
+        self.version = '0.6.3'
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -124,6 +124,10 @@ class Afide(QtGui.QMainWindow):
         self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.afide'
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
+        
+        # Filesystem watercher
+##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
+##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
         # Settings
         self.workspace = None
@@ -210,6 +214,7 @@ class Afide(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # Goto
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,self,self.updateOutline) # Update/Show Outline
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
@@ -332,6 +337,10 @@ class Afide(QtGui.QMainWindow):
         menu = self.createPopupMenu()
         menu.exec_(self.cursor().pos())
 
+    def file_changed(self,file):
+        #QtGui.QMessageBox.warning(self,'FIle Changed','changed'+file)
+        print "changed",file
+        
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
@@ -342,6 +351,8 @@ class Afide(QtGui.QMainWindow):
                 filename = str(filename)
         if filename != None:
             if os.path.isfile(filename):
+##                print 'opening file',filename
+                #self.filesystemwatcher.addPath(filename)
                 opennew = 1
                 for i in range(self.ui.tab.count()):
                     file_id = self.ui.tab.tabData(i).toInt()[0]
@@ -473,7 +484,8 @@ class Afide(QtGui.QMainWindow):
                 editor = 'webview'
             else:
                 editor = self.settings.defaultEditor
-##        exec("from editors."+editor+" import "+editor)
+        if not editor in self.settings.editors:
+            editor = self.settings.defaultEditor
         exec("import editors."+editor)
         exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
 
@@ -546,7 +558,17 @@ class Afide(QtGui.QMainWindow):
         if wdg.filename != None:
             filename = wdg.filename
         else:
-            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].wdg.ui.le_root.text()," (*.*)")
+            fileext = ''
+##            exlist = ''
+##            for e in self.settings.ext:
+##                if self.settings.ext[e]==wdg.lang:
+##                    if exlist != '': exlist += ' '
+##                    exlist+='*.'+e
+##            if exlist != '':
+##                fileext += wdg.lang+" ("+exlist+");;"
+            fileext += "All (*.*)"
+            
+            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].wdg.ui.le_root.text(),fileext)
             if filename=='':
                 filename=None
             else:
@@ -719,7 +741,7 @@ class Afide(QtGui.QMainWindow):
         wksp = ' '
         if os.path.exists(self.settingPath+'/workspaces'):
             for w in sorted(os.listdir(self.settingPath+'/workspaces')):
-                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"><br>'+w+'</span></a> '
+                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links

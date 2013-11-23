@@ -75,15 +75,15 @@ class DirTree(QtGui.QWidget):
                 dirlist = []
             # Add Folders
             for f in dirlist:
-                citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
-                if not f.startswith('.') and  os.path.isdir(pth+'/'+f):
+                citm = QtGui.QTreeWidgetItem([f,pth+f])
+                if not f.startswith('.') and  os.path.isdir(pth+f):
                     citm.setIcon(0,QtGui.QIcon(self.afide.iconPath+'folder.png'))
                     dircontents.append(citm)
             # Add Files
             for f in dirlist:
-                citm = QtGui.QTreeWidgetItem([f,pth+'/'+f])
+                citm = QtGui.QTreeWidgetItem([f,pth+f])
                 ext = os.path.splitext(f)[1][1:]
-                if not f.startswith('.') and not os.path.isdir(pth+'/'+f) and ext in self.extD:
+                if not f.startswith('.') and not os.path.isdir(pth+f) and ext in self.extD:
                     
                     ipth = self.afide.iconPath+'files/'+self.extD[ext]+'.png'
                     if os.path.exists(ipth):
