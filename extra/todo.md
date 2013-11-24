@@ -32,8 +32,12 @@
 - [ ] Store wordwrap preferences with language
 
 ### Monkey
-- [ ] Make open monkey files
+- [ ] pen monkey file type
+- [ ] get rid of projects tab
 - [ ] Run will update preview
+
+## CKEditor
+- [ ] Add text alignment
 
 ### Scintilla
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)

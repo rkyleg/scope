@@ -33,5 +33,17 @@ Settings
 To Do and Roadmap
 ==
 - **[Roadmap](extra/roadmap.md)** - The current state of Afide and future plans
-
 - **[Todo](extra/todo.md)** - List of to do and status
+
+Reference
+==
+Thanks to the following tools that Afide is built on:
+
+- [Python](http://python.org) 
+- [PyQt](http://www.riverbankcomputing.com/software/pyqt) - UI
+- [Scintilla](http://www.scintilla.org/)/QsciScintilla (via [PyQt](http://www.riverbankcomputing.com/software/pyqt))
+- [Ace Editor](http://ace.c9.io/) - HTML5 based code editor
+- [CKEditor](http://ckeditor.com/) - rich text html WYSIWIG editor
+- [Silk Icons](http://www.famfamfam.com/lab/icons/silk/) - main ui icon set
+- [Python Markdown2](https://github.com/trentm/python-markdown2) - for generating html from markdown
+- [File Icon Set](https://github.com/teambox/Free-file-icons) - for most file type icons
