@@ -183,7 +183,8 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
         editor.setValue(txt);
-        editor.clearSelection()''')
+        editor.clearSelection();
+        editor.gotoLine(0);''')
     
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode

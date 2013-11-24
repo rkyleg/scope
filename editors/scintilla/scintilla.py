@@ -112,6 +112,11 @@ class Sci(QtGui.QWidget):
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
     
+##    def updateText(self,txt):
+##        # Update, but keep current undo
+##        self.ui.te_sci.selectAll(select=1)
+##        self.ui.te_sci.replaceSelectedText(txt)
+    
     def getText(self):
         return self.ui.te_sci.text()
 
