@@ -38,7 +38,9 @@ class Settings(object):
             
         },
         'ace':{
-            'theme':'twilight'
+            'theme':'twilight',
+            'behavioursEnabled':1,
+            'wrapBehavioursEnabled':1,
         },
         'ckeditor':{
         },

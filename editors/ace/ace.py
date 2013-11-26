@@ -85,6 +85,15 @@ class WebView(QtWebKit.QWebView):
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
         if 'theme' in self.parent.settings.editors['ace']:
             js += 'editor.setTheme("ace/theme/'+self.parent.settings.editors['ace']['theme']+'");'
+        self.wrapBehaviours = 1
+        if 'wrapBehavioursEnabled' in self.parent.settings.editors['ace']:
+            js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.parent.settings.editors['ace']['wrapBehavioursEnabled']]+');'
+            self.wrapBehaviours = self.parent.settings.editors['ace']['wrapBehavioursEnabled']
+        self.behaviours = 1
+        if 'behavioursEnabled' in self.parent.settings.editors['ace']:
+            js += 'editor.setBehavioursEnabled('+['false','true'][self.parent.settings.editors['ace']['behavioursEnabled']]+');'
+            self.behaviours = self.parent.settings.editors['ace']['behavioursEnabled']
+            
         self.page().mainFrame().evaluateJavaScript(js)
         
         self.gotoLine(1)
@@ -118,11 +127,12 @@ class WebView(QtWebKit.QWebView):
     def contextMenuEvent(self,event):
         menu = QtGui.QMenu('ace menu')
         # Edit Menu
-        emenu = QtGui.QMenu('edit',menu)
-        emenu.addAction(QtGui.QIcon(),'Copy')
-        emenu.addAction(QtGui.QIcon(),'Cut')
-        emenu.addAction(QtGui.QIcon(),'Paste')
-        menu.addMenu(emenu)
+##        menu = QtGui.QMenu('edit',menu)
+        menu.addAction(QtGui.QIcon(),'Copy')
+        menu.addAction(QtGui.QIcon(),'Cut')
+        menu.addAction(QtGui.QIcon(),'Paste')
+##        menu.addMenu(emenu)
+        menu.addSeparator()
         # Settings Menu
         smenu = QtGui.QMenu('settings',menu)
         tmenu = QtGui.QMenu('theme',smenu)
@@ -133,7 +143,17 @@ class WebView(QtWebKit.QWebView):
                 a.setData('theme')
         smenu.addMenu(tmenu)
         menu.addMenu(smenu)
+        # Extra Settings
         
+        smenu.addAction('Jump To Matching')
+        act = QtGui.QAction(QtGui.QIcon(),'Behaviours Enabled',menu)
+        act.setCheckable(1)
+        act.setChecked(self.behaviours)
+        smenu.addAction(act)
+        act = QtGui.QAction(QtGui.QIcon(),'Wrap Behaviour Enabled',menu)
+        act.setCheckable(1)
+        act.setChecked(self.wrapBehaviours)
+        smenu.addAction(act)
         
         for act in menu.actions():  # Set Icon to visible
             act.setIconVisibleInMenu(1)
@@ -152,6 +172,12 @@ class WebView(QtWebKit.QWebView):
                 self.cut()
             elif acttxt == 'Paste':
                 self.paste()
+            elif acttxt == 'Jump To Matching':
+                self.jumpToMatching()
+            elif acttxt == 'Behaviours Enabled':
+                self.toggleBehaviours()
+            elif acttxt == 'Wrap Behaviour Enabled':
+                self.toggleWrapBehaviours()
         
     def copy(self):
         js = "pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));"
@@ -184,7 +210,7 @@ class WebView(QtWebKit.QWebView):
         '''var txt =  pythonjs.html;
         editor.setValue(txt);
         editor.clearSelection();
-        editor.gotoLine(0);''')
+        editor.gotoLine(0,0);''')
     
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode
@@ -251,4 +277,19 @@ class WebView(QtWebKit.QWebView):
         
     def gotoLine(self,line):
         js = "editor.gotoLine("+str(line+1)+");"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def jumpToMatching(self):
+        js = "editor.jumpToMatching();"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def toggleBehaviours(self):
+        self.behaviours = abs(self.behaviours-1)
+        js = 'editor.setBehavioursEnabled('+['false','true'][self.behaviours]+');'
+        print self.behaviours,js
+        self.page().mainFrame().evaluateJavaScript(js)
+
+    def toggleWrapBehaviours(self):
+        self.wrapBehaviours = abs(self.wrapBehaviours-1)
+        js = 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
         self.page().mainFrame().evaluateJavaScript(js)

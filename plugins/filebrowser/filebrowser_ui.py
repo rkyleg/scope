@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Wed Sep 25 16:16:00 2013
+# Created: Mon Nov 25 20:41:59 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,7 +32,8 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.tr_dir = QtGui.QTreeWidget(Form)
-        self.tr_dir.setIndentation(10)
+        self.tr_dir.setIndentation(12)
+        self.tr_dir.setRootIsDecorated(False)
         self.tr_dir.setExpandsOnDoubleClick(False)
         self.tr_dir.setObjectName(_fromUtf8("tr_dir"))
         self.tr_dir.headerItem().setText(0, _fromUtf8("1"))

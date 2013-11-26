@@ -44,7 +44,7 @@ class Outline(QtGui.QWidget):
             cnt = -1
             trwdg.clear()
             txt = unicode(wdg.getText())
-            txtlines = txt.split('\n')
+            txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
             for t in txtlines:
                 cnt += 1
                 lcnt = cnt

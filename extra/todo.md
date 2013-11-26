@@ -1,9 +1,10 @@
 # TODO
 
 ## Afide Main
-- [ ] Check if files edited/saved outside of editor
+- [x] Check if files edited/saved outside of editor at least some of the time (on tab change)
+- [ ] Check if files edited/saved outside of editor continous
 - [f] Try to open in default editor, otherwise if language does not exist, try other editors
-- [ ] Add more language icons
+- [f] Add more language icons
 - [ ] sys.argv file open work
 - [x] Fix editor buttons checking if functions available
 - [-] Save file uses extensions (with all option)
@@ -14,6 +15,7 @@
 - [x] Workspace menu icons
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
+- [ ] Compile to exe
 
 ### Startpage
 - [x] Update theme
@@ -23,7 +25,7 @@
 - [ ] Themes - dark one
 - [ ] Save settings for each editor and outline???
 - [ ] Settings button can load 
-- [ ] Settings page like webview
+- [ ] Settings page like webview?
 
 ## Editors
 - [ ] Editor specific plugins view?
@@ -60,6 +62,7 @@
     - [ ] option for previewer split (html and markdown)
 - [ ] Add find tag/branch function
 - [ ] When opening start at cursor position 1
+- [x] Right click edit behaviours
 
 ## Plugins
 - [ ] Snippets plugin
@@ -70,9 +73,9 @@
 ### Outline
 - Languages
  - [x] Markdown
-- [ ] Use themes for color coding
+- [f] Use themes for color coding
 - [-] Right click refresh
-- [ ] toggle autorefreshing
+- [f] toggle autorefreshing
 - [x] ctrl+o to show outline
 
 ### Python Shell
@@ -88,6 +91,7 @@
 - [ ] Reload option
 - [ ] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
+- [ ] Goto current file/tab
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
