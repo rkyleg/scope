@@ -508,6 +508,7 @@ class Afide(QtGui.QMainWindow):
         wdg.lang = lang
         wdg.viewOnly = 0
         wdg.dockstate = None
+        wdg.modTime = None
         self.tabD[self.fileCount]=wdg
         self.evnt.editorAdded.emit(wdg)
 
@@ -905,16 +906,16 @@ class Afide(QtGui.QMainWindow):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
-                    if os.path.getmtime(wdg.filename) > wdg.modTime:
-                        resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-##                        print 'filechanged',wdg.filename,resp,resp == QtGui.QMessageBox.Yes
-                        wdg.modTime = os.path.getmtime(wdg.filename)
-                        if resp == QtGui.QMessageBox.Yes:
-                            QtGui.QApplication.processEvents()
-                            f = codecs.open(wdg.filename,'r','utf-8')
-                            txt = f.read()
-                            f.close()
-                            wdg.setText(txt)
+                    if wdg.filename != None and wdg.modTime != None:
+                        if os.path.getmtime(wdg.filename) > wdg.modTime:
+                            resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                            wdg.modTime = os.path.getmtime(wdg.filename)
+                            if resp == QtGui.QMessageBox.Yes:
+                                QtGui.QApplication.processEvents()
+                                f = codecs.open(wdg.filename,'r','utf-8')
+                                txt = f.read()
+                                f.close()
+                                wdg.setText(txt)
 
             self.fileLastCheck = time.time()
     
