@@ -1,23 +1,23 @@
 # --------------------------------------------------------------------------------
-# afide | Another Fantastic IDE
+# Afide | Another Freakin IDE
 # Copyright 2013 Cole Hagen
 #
 # afide is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
 # VERSION
-version = '0.6.4'
+version = '0.6.5'
 
-import sys, subprocess, json, codecs
+import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
 from afide_ui import Ui_MainWindow
-import os,shutil,datetime, webbrowser, subprocess
+import os,shutil,datetime, webbrowser, threading
 import plugins.output.output
 
 class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
     editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
-
+    
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
@@ -128,7 +128,7 @@ class Afide(QtGui.QMainWindow):
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
         
-        # Filesystem watercher
+##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
 ##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
@@ -136,6 +136,7 @@ class Afide(QtGui.QMainWindow):
         self.workspace = None
         self.loadSettings()
         self.startinit = 1
+        self.fileLastCheck = time.time()
         
         # Screen Size
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
@@ -152,7 +153,6 @@ class Afide(QtGui.QMainWindow):
         self.ui.toolbar.setObjectName('toolBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.toolbar)
         self.ui.toolbar.addWidget(self.ui.fr_toolbar)
-##        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
         # Find Toolbar
         self.ui.findbar = QtGui.QToolBar("findBar",self)
@@ -270,6 +270,12 @@ class Afide(QtGui.QMainWindow):
         # Load setup
         self.loadSetup()
         
+        # Load FileCheck Thread
+        self.fileLastCheck = time.time()
+        # self.fileModD = {}
+        # fmt = threading.Thread(target=self.checkFileChanges,args=(self))
+        # fmt.start()
+        
         # Workspace Button Menu
         self.workspacemenu = WorkspaceMenu(self)
         self.ui.b_workspace.setMenu(self.workspacemenu)
@@ -294,8 +300,6 @@ class Afide(QtGui.QMainWindow):
             if not ok:
                 cancelled = 1
                 break
-
-##        QtGui.QMessageBox.warning(self,'check save','check to save'+str(self.ui.tab.count()))
 
         if cancelled:
             event.ignore()
@@ -340,10 +344,6 @@ class Afide(QtGui.QMainWindow):
         menu = self.createPopupMenu()
         menu.exec_(self.cursor().pos())
 
-    def file_changed(self,file):
-        #QtGui.QMessageBox.warning(self,'FIle Changed','changed'+file)
-        print "changed",file
-        
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
@@ -355,7 +355,8 @@ class Afide(QtGui.QMainWindow):
         if filename != None:
             if os.path.isfile(filename):
 ##                print 'opening file',filename
-                #self.filesystemwatcher.addPath(filename)
+                
+                
                 opennew = 1
                 for i in range(self.ui.tab.count()):
                     file_id = self.ui.tab.tabData(i).toInt()[0]
@@ -385,7 +386,9 @@ class Afide(QtGui.QMainWindow):
                     wdg.setText(txt)
                     wdg.lastText = txt
                     self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-                    
+                    wdg.modTime = os.path.getmtime(filename)
+##                    self.filesystemwatcher.addPath(filename)
+##                    self.fileModD[filename]=os.path.getmtime(filename)
                     self.updateOutline()
                     
                     # Remove startpage
@@ -397,6 +400,7 @@ class Afide(QtGui.QMainWindow):
                         self.closeTab(i)
                         self.startinit=0
 
+        
     #---Editor
     def currentWidget(self):
         return self.ui.sw_main.currentWidget()
@@ -444,6 +448,9 @@ class Afide(QtGui.QMainWindow):
             }
             for btn in btnD:
                 btnD[btn].setEnabled(btn in dir(wdg))
+            
+            # Check for file changes
+            self.checkFileChanges()
                 
             
     def closeTab(self,tab_ind):
@@ -472,6 +479,8 @@ class Afide(QtGui.QMainWindow):
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
         except:
             self.ui.statusbar.showMessage('Error: ')
+        # Check for file changes
+##        self.checkFileChanges()
             
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None):
         self.fileCount+=1
@@ -586,6 +595,7 @@ class Afide(QtGui.QMainWindow):
                 f.write(txt)
                 f.close()
                 wdg.lastText = txt
+                wdg.modTime = os.path.getmtime(filename)
                 self.ui.statusbar.showMessage('Saved '+wdg.title+' at '+datetime.datetime.now().ctime())
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
             except:
@@ -721,8 +731,9 @@ class Afide(QtGui.QMainWindow):
 
     #---Shortcuts
     def addStart(self):
-        wdg = self.addEditorWidget('webview','Start','doc/start.html')
-        f = open('doc/start.html','r')
+        pth = 'doc/start.html'
+        wdg = self.addEditorWidget('webview','Start',pth)
+        f = open(pth,'r')
         txt = f.read()
         f.close()
         if os.name =='nt':
@@ -732,6 +743,7 @@ class Afide(QtGui.QMainWindow):
         burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/doc/')
         wdg.setText(txt,burl)
         wdg.viewOnly = 1
+        wdg.modTime = os.path.getmtime(pth)
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
         self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
@@ -885,7 +897,27 @@ class Afide(QtGui.QMainWindow):
             self.setWindowTitle('afide | '+wksp)
             
             self.workspacemenu.saveWact.setDisabled(0)
-                
+    
+    #---FileModify Checker
+    def checkFileChanges(self):
+        if self.fileLastCheck < time.time()-5:
+            for i in range(self.ui.tab.count()):
+                file_id = self.ui.tab.tabData(i).toInt()[0]
+                if file_id in self.tabD:
+                    wdg = self.tabD[file_id]
+                    if os.path.getmtime(wdg.filename) > wdg.modTime:
+                        resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+##                        print 'filechanged',wdg.filename,resp,resp == QtGui.QMessageBox.Yes
+                        wdg.modTime = os.path.getmtime(wdg.filename)
+                        if resp == QtGui.QMessageBox.Yes:
+                            QtGui.QApplication.processEvents()
+                            f = codecs.open(wdg.filename,'r','utf-8')
+                            txt = f.read()
+                            f.close()
+                            wdg.setText(txt)
+
+            self.fileLastCheck = time.time()
+    
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
