@@ -7,6 +7,11 @@ class outlineTree(QtGui.QTreeWidget):
         QtGui.QTreeWidget.__init__(self,parent)
         self.setHeaderHidden(1)
         self.setRootIsDecorated(0)
+        self.setStyleSheet("""QTreeWidget {
+            	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:1, stop:0 rgba(152, 152, 152, 255), stop:0.144279 rgba(169, 169, 169, 255), stop:0.850746 rgba(205, 205, 205, 255), stop:1 rgba(224, 224, 224, 255));
+            border-bottom-left-radius:5px;
+            border-bottom-right-radius:5px;
+            }""")
 
 class Outline(QtGui.QWidget):
     def __init__(self,parent=None):
@@ -146,12 +151,11 @@ class Outline(QtGui.QWidget):
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            
             itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
         elif typ == 'function':
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(62,121,181)))
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
         elif typ == 'heading':
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(181,181,181)))
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(120,120,120)))

@@ -57,10 +57,12 @@ class DirTree(QtGui.QWidget):
             for citm in filecontents:
                 itm.addChild(citm)
             
+            itm.setExpanded(not itm.isExpanded())
+            
         else:
             if self.afide != None:
                 self.afide.openFile(pth)
-        itm.setExpanded(1)
+        
 
     def getDirContents(self,pth):
         # Return [dirlist,filelist]

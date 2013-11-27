@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'find_replace.ui'
 #
-# Created: Wed Sep 25 23:07:47 2013
+# Created: Tue Nov 26 22:55:47 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
