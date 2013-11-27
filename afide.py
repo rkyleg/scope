@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-version = '0.6.6'
+version = '0.6.7'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -449,8 +449,8 @@ class Afide(QtGui.QMainWindow):
             for btn in btnD:
                 btnD[btn].setEnabled(btn in dir(wdg))
             
-            # Check for file changes
-            self.checkFileChanges()
+            # Check for file changes (Disabled for now)
+##            self.checkFileChanges()
                 
             
     def closeTab(self,tab_ind):

@@ -16,6 +16,7 @@
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
 - [ ] Compile to exe
+- [ ] Add start like button to top to access menu
 
 ### Startpage
 - [x] Update theme
@@ -69,6 +70,7 @@
 - [ ] Spellcheck plugin
 - [ ] Help plugin (with search, maybe based on current file language)
 - [ ] Python code editor to run on current tab
+- [ ] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 
 ### Outline
 - Languages
@@ -92,6 +94,8 @@
 - [ ] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
 - [ ] Goto current file/tab
+- [ ] Double click toggles expand
+- [ ] Improve tree formatting
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)

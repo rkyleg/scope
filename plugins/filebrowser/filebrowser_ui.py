@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Mon Nov 25 20:41:59 2013
+# Created: Tue Nov 26 00:24:19 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,6 +32,8 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.tr_dir = QtGui.QTreeWidget(Form)
+        self.tr_dir.setStyleSheet(_fromUtf8("QTreeWidget{background:transparent;}"))
+        self.tr_dir.setFrameShape(QtGui.QFrame.NoFrame)
         self.tr_dir.setIndentation(12)
         self.tr_dir.setRootIsDecorated(False)
         self.tr_dir.setExpandsOnDoubleClick(False)
@@ -40,6 +42,10 @@ class Ui_Form(object):
         self.tr_dir.header().setVisible(False)
         self.gridLayout.addWidget(self.tr_dir, 1, 0, 1, 1)
         self.le_root = QtGui.QLineEdit(Form)
+        self.le_root.setStyleSheet(_fromUtf8("background-color:black;\n"
+"color:white;\n"
+"border:0px;\n"
+"border-bottom:1px solid gray;"))
         self.le_root.setObjectName(_fromUtf8("le_root"))
         self.gridLayout.addWidget(self.le_root, 0, 0, 1, 1)
 
