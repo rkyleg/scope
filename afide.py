@@ -115,13 +115,6 @@ class Afide(QtGui.QMainWindow):
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
         
-        # Style
-        QtGui.QApplication.setStyle("Plastique")
-        f = open('styles/default.css','r')
-        style = f.read()
-        f.close()
-        self.setStyleSheet(style)
-        
         #--- Paths
         self.iconPath=os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/img/'
         self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.afide'
@@ -137,6 +130,13 @@ class Afide(QtGui.QMainWindow):
         self.loadSettings()
         self.startinit = 1
         self.fileLastCheck = time.time()
+        QtGui.QApplication.setStyle(self.settings.widgetstyle)
+        
+        # Style
+        f = open('styles/default.css','r')
+        style = f.read()
+        f.close()
+        self.setStyleSheet(style)
         
         # Screen Size
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())

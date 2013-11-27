@@ -26,7 +26,8 @@
 - [ ] Themes - dark one
 - [ ] Save settings for each editor and outline???
 - [ ] Settings button can load 
-- [ ] Settings page like webview?
+- [ ] Settings page like webview (use alpaca)?
+- [x] Native or plastique style
 
 ## Editors
 - [ ] Editor specific plugins view?

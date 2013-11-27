@@ -10,6 +10,7 @@ class Settings(object):
     #---Other
     view_folder=0
     save_workspace_on_close=1
+    widgetstyle="Plastique" # Set blank to use default OS look
     
     # Enabled Plugins
     activePlugins = ['outline','filebrowser','pycute','qt2py','find_replace','output']
