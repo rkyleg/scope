@@ -59,6 +59,11 @@ class Output(QtGui.QWidget):
                 import markdown
                 markdown.generate(filename)
             else:
+            
+                if not self.afide.pluginD['output'].isVisible():
+                    self.afide.pluginD['output'].show()
+                self.afide.pluginD['output'].raise_()
+                
                 self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b></div><br>')
                 self.process = QtCore.QProcess()
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)

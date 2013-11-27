@@ -619,9 +619,9 @@ class Afide(QtGui.QMainWindow):
         filename = str(wdg.filename)
         if ok and filename != 'None':
             if wdg.lang in self.settings.run:
-                if not self.pluginD['output'].isVisible():
-                    self.pluginD['output'].show()
-                self.pluginD['output'].raise_()
+##                if not self.pluginD['output'].isVisible():
+##                    self.pluginD['output'].show()
+##                self.pluginD['output'].raise_()
                 self.pluginD['output'].wdg.newProcess(self.settings.run[wdg.lang],filename)
 
     def editorToggleComment(self):
