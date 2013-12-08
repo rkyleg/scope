@@ -11,11 +11,11 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>afide</string>
+   <string>Armadillo</string>
   </property>
   <property name="windowIcon">
    <iconset>
-    <normaloff>img/afide.png</normaloff>img/afide.png</iconset>
+    <normaloff>img/armadillo.png</normaloff>img/armadillo.png</iconset>
   </property>
   <property name="dockOptions">
    <set>QMainWindow::AllowNestedDocks|QMainWindow::AllowTabbedDocks|QMainWindow::AnimatedDocks</set>

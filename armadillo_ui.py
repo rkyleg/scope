@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'afide.ui'
+# Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Thu Nov 14 00:26:40 2013
+# Created: Sun Dec  8 10:49:01 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -28,7 +28,7 @@ class Ui_MainWindow(object):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
         MainWindow.resize(641, 497)
         icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/afide.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/armadillo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
         MainWindow.setDockOptions(QtGui.QMainWindow.AllowNestedDocks|QtGui.QMainWindow.AllowTabbedDocks|QtGui.QMainWindow.AnimatedDocks)
         self.centralwidget = QtGui.QWidget(MainWindow)
@@ -206,7 +206,7 @@ class Ui_MainWindow(object):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(_translate("MainWindow", "afide", None))
+        MainWindow.setWindowTitle(_translate("MainWindow", "Armadillo", None))
         self.b_wordwrap.setToolTip(_translate("MainWindow", "Toggle Wordwrap", None))
         self.b_wordwrap.setText(_translate("MainWindow", "Save", None))
         self.b_indent.setToolTip(_translate("MainWindow", "Indent", None))

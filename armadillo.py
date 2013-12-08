@@ -1,16 +1,16 @@
 # --------------------------------------------------------------------------------
-# Afide | Another Freakin IDE
+# Armadillo IDE
 # Copyright 2013 Cole Hagen
 #
-# afide is licensed under the GNU General Public License (GPL 3)
+# armadillo is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
 # VERSION
-version = '0.6.7'
+__version__ = '0.7.0'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
-from afide_ui import Ui_MainWindow
+from armadillo_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, threading
 import plugins.output.output
 
@@ -104,11 +104,11 @@ class WorkspaceMenu(QtGui.QMenu):
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)
 
-class Afide(QtGui.QMainWindow):
+class Armadillo(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
         # Version
-        self.version = version
+        self.version = __version__
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
@@ -117,7 +117,7 @@ class Afide(QtGui.QMainWindow):
         
         #--- Paths
         self.iconPath=os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/img/'
-        self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.afide'
+        self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.armadillo'
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
         
@@ -895,7 +895,7 @@ class Afide(QtGui.QMainWindow):
                 self.pluginD['filebrowser'].wdg.ui.le_root.setText(wD['basefolder'])
                 self.pluginD['filebrowser'].wdg.loadRoot()
             
-            self.setWindowTitle('afide | '+wksp)
+            self.setWindowTitle('armadillo | '+wksp)
             
             self.workspacemenu.saveWact.setDisabled(0)
     
@@ -922,8 +922,8 @@ class Afide(QtGui.QMainWindow):
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
-    afideApp = Afide()
-    afideApp.show()
+    armadilloApp = Armadillo()
+    armadilloApp.show()
     sys.exit(app.exec_())
 
 if __name__ == "__main__":

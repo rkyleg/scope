@@ -1,7 +1,7 @@
 # TODO
 
-## Afide Main
-- [x] Check if files edited/saved outside of editor at least some of the time (on tab change)
+## Armadillo Main
+- [ ] Check if files edited/saved outside of editor at least some of the time (on tab change)
 - [ ] Check if files edited/saved outside of editor continous
 - [f] Try to open in default editor, otherwise if language does not exist, try other editors
 - [f] Add more language icons
