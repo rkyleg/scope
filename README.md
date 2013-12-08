@@ -1,6 +1,5 @@
-![Alt text](img/afide.png "afide") afide
+![Alt text](img/armadillo.png "afide") Armadillo
 =====
-another freakin IDE.  Pronounced as aphid
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.
 
