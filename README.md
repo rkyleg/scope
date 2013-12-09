@@ -1,5 +1,5 @@
 # Armadillo IDE
-![Alt text](img/armadillo.png "afide")
+![Alt text](img/armadillo.png "Armadillo")
 =====
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.
@@ -8,9 +8,9 @@
 
 About
 ==
-I didn't really want to create a new IDE, but I wanted total customization while keeping it lightweight.  afide is inspired by SPE, Geany, Notepad++ and Spyder.  afide is written in Python with PyQt (and sometiems HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (WebView).
+I didn't really want to create a new IDE, but I wanted total customization while keeping it lightweight.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt (and sometiems HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
 
-The goals of afide:
+The goals of Armadillo:
 - Cross Platform (Linux, Windows, and maybe Mac)
 - Handle Multiple languages (Python, Javascript, HTML,...)
 - Easily create plugins with Python and PyQt
@@ -19,7 +19,7 @@ The goals of afide:
 
 Requirements
 ==
-afide is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15) and Windows 7 so far.
+Armadillo is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15) and Windows 7 so far.
 - Python 2.6-2.7 (Not tested with 2.6 although 2.6 should work)
 - PyQt 4.8-4.9 (Not tested with 5.x - probably doesn't work)
 - Python-Qsci
@@ -32,12 +32,12 @@ Settings
 
 To Do and Roadmap
 ==
-- **[Roadmap](extra/roadmap.md)** - The current state of Afide and future plans
+- **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
 - **[Todo](extra/todo.md)** - List of to do and status
 
 Reference
 ==
-Thanks to the following tools that Afide is built on:
+Thanks to the following tools that Armadillo is built on:
 
 - [Python](http://python.org) 
 - [PyQt](http://www.riverbankcomputing.com/software/pyqt) - UI
