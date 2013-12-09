@@ -396,13 +396,13 @@
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 255), stop:1 rgba(31, 97, 135, 255));
+	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 155), stop:1 rgba(31, 97, 135, 155));
 border-radius:5px;
 border:1px outset gray;
 }
 QPushButton:hover {
 
-background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 255), stop:1 rgba(23, 73, 103, 255));
+background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 155), stop:1 rgba(23, 73, 103, 155));
 }</string>
             </property>
             <property name="text">

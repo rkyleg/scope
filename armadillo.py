@@ -138,6 +138,11 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
         self.zenAction = self.addAction(icn,'Zen Mode',self.parent.toggleZen)
         
+        # Close
+        self.addSeparator()
+        icn = QtGui.QIcon(self.parent.iconPath+'close.png')
+        self.addAction(icn,'Exit',self.parent.close)
+        
 ##        self.triggered.connect(self.trig)
 ##    def trig(self):
 ##        print 'tirggerd'
@@ -373,14 +378,14 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.findbar.show()
             self.ui.toolbar.show()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
-            self.armadilloMenu.zenAction.setText('Zen Mode')
+            self.armadilloMenu.zenAction.setText('Zen mode')
         else:
             self.ui.statusbar.hide()
             self.ui.findbar.hide()
             self.ui.toolbar.hide()
             self.dockstate = self.saveState()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
-            self.armadilloMenu.zenAction.setText('Not Zen Mode')
+            self.armadilloMenu.zenAction.setText('Exit zen mode')
             for plug in self.pluginD:
                 self.pluginD[plug].close()
 
@@ -775,9 +780,10 @@ class Armadillo(QtGui.QMainWindow):
         f.close()
 
     #---Shortcuts
-    def addStart(self):
+    def addStart(self,wdg=None):
         pth = 'doc/start.html'
-        wdg = self.addEditorWidget('webview','Start',pth)
+        if wdg in [None,True,False]:
+            wdg = self.addEditorWidget('webview','Start',pth)
         f = open(pth,'r')
         txt = f.read()
         f.close()
@@ -831,6 +837,8 @@ class Armadillo(QtGui.QMainWindow):
             self.addEditorWidget(lang=lnk.split(':')[1])
         elif lnk.startswith('workspace'):
             self.loadWorkspace(lnk.split(':')[1])
+        elif lnk.endswith('start.html'):
+            self.addStart(wdg = wdg)
         else:
             wdg.load(url)
     

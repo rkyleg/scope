@@ -93,8 +93,21 @@ class WebView(QtWebKit.QWebView):
         if 'behavioursEnabled' in self.parent.settings.editors['ace']:
             js += 'editor.setBehavioursEnabled('+['false','true'][self.parent.settings.editors['ace']['behavioursEnabled']]+');'
             self.behaviours = self.parent.settings.editors['ace']['behavioursEnabled']
-            
+        
         self.page().mainFrame().evaluateJavaScript(js)
+        
+        # Additional Settings
+        if 'settingJS' in self.parent.settings.editors['ace']:
+            jstxt = self.parent.settings.editors['ace']['settingJS']
+            js = ''
+            for jt in jstxt.split('\n'):
+                txt = jt.strip()
+                if not txt.endswith(';'): txt = txt=';'
+                js += jstxt
+            
+            if js != '':
+                self.page().mainFrame().evaluateJavaScript(js)
+        
         
         self.gotoLine(1)
 

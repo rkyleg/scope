@@ -42,6 +42,7 @@ class Settings(object):
             'theme':'twilight',
             'behavioursEnabled':1,
             'wrapBehavioursEnabled':1,
+            'settingJS':'editor.setHighlightSelectedWord(false)'  # Add any additional Ace javascript settings here
         },
         'ckeditor':{
         },

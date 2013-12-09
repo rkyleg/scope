@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Dec  8 18:57:21 2013
+# Created: Sun Dec  8 22:33:19 2013
 #      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
@@ -159,13 +159,13 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.b_plugins, 0, 4, 1, 1)
         self.b_main = QtGui.QPushButton(self.frame)
         self.b_main.setStyleSheet(_fromUtf8("QPushButton {\n"
-"    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 255), stop:1 rgba(31, 97, 135, 255));\n"
+"    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 155), stop:1 rgba(31, 97, 135, 155));\n"
 "border-radius:5px;\n"
 "border:1px outset gray;\n"
 "}\n"
 "QPushButton:hover {\n"
 "\n"
-"background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 255), stop:1 rgba(23, 73, 103, 255));\n"
+"background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 155), stop:1 rgba(23, 73, 103, 155));\n"
 "}"))
         self.b_main.setText(_fromUtf8(""))
         self.b_main.setIcon(icon)
