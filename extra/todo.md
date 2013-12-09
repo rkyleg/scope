@@ -2,7 +2,7 @@
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
-- [ ] Check if files edited/saved outside of editor continous
+- [f] Check if files edited/saved outside of editor continous
 - [f] Try to open in default editor, otherwise if language does not exist, try other editors
 - [f] Add more language icons
 - [ ] sys.argv file open work
@@ -85,8 +85,10 @@
 - [x] ctrl+o to show outline
 
 ### Python Shell
-- [ ] Fix cursor messing up code
+- [x] Fix mouse cursor messing up code
 - [ ] Auto complete would be nice
+- [x] syntax highlighting
+- [ ] Fix selection replace/delete bug
 
 ### File Browser
 - [x] Return press opens folder

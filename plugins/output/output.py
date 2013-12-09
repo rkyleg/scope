@@ -29,19 +29,23 @@ class Output(QtGui.QWidget):
             print('error: could not goto file')
     
     def readOutput(self):
-        self.appendText(QtCore.QString(self.process.readAllStandardOutput()))
+        self.appendText(QtCore.QString(self.process.readAllStandardOutput()),plaintext=1)
         
     def readErrors(self):
         txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()))+"</font><br>"
         txt = re_file.sub(r"<a href='\g<2>'>\g<2></a><br>",txt)
         self.appendText(txt)
 
-    def appendText(self,txt):
+    def appendText(self,txt,plaintext=0):
         curs = self.ui.tb_out.textCursor()
         curs.movePosition(QtGui.QTextCursor.End,0)
         self.ui.tb_out.setTextCursor(curs)
         self.ui.tb_out.append(txt.replace('\n','<br>'))
-       
+##        if plaintext:
+##            txt = '<pre>'+txt+'</pre>'
+##        else:
+##            txt = txt.replace('\n','<br>')
+##        curs.insertHtml(txt)       
     def finished(self):
         if self.process != None:
             self.appendText('<hr><b>Done</b>')

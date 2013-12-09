@@ -2,11 +2,11 @@
 # Armadillo IDE
 # Copyright 2013 Cole Hagen
 #
-# armadillo is licensed under the GNU General Public License (GPL 3)
+# Armadillo is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.1'
+__version__ = '0.7.2'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
