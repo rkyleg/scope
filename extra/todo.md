@@ -1,7 +1,7 @@
 # TODO
 
 ## Armadillo Main
-- [ ] Check if files edited/saved outside of editor at least some of the time (on tab change)
+- [x] Check if files edited/saved outside of editor at least some of the time (menu option)
 - [ ] Check if files edited/saved outside of editor continous
 - [f] Try to open in default editor, otherwise if language does not exist, try other editors
 - [f] Add more language icons
@@ -16,7 +16,7 @@
 - [x] Startpage not showing new favorites
 - [ ] Have other Widgets that load in a new tab
 - [ ] Compile to exe
-- [ ] Add start like button to top to access menu
+- [x] Add start like button to top to access menu
 
 ### Startpage
 - [x] Update theme
@@ -28,6 +28,9 @@
 - [ ] Settings button can load 
 - [ ] Settings page like webview (use alpaca)?
 - [x] Native or plastique style
+- [ ] have default settings in __init__ of each editor/plugin
+- [ ] have settings folder - in main directory?? or use user directory
+- [ ] option to store settings in os or with editor folder
 
 ## Editors
 - [ ] Editor specific plugins view?

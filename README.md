@@ -1,4 +1,5 @@
-![Alt text](img/armadillo.png "afide") Armadillo
+Armadillo IDE
+![Alt text](img/armadillo.png "afide")
 =====
 
 **Warning** - This is still in the early stages of development.  Use at your own risk.

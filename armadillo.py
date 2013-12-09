@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.0'
+__version__ = '0.7.1'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -22,6 +22,8 @@ class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
+        self.setTitle('New')
+        self.setIcon(QtGui.QIcon(self.parent.iconPath+'new.png'))
         
         # Add Favorites First
         for lang in parent.settings.favLang:
@@ -64,6 +66,8 @@ class WorkspaceMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
+        self.setTitle('Workspaces')
+        self.setIcon(QtGui.QIcon(self.parent.iconPath+'workspace.png'))
         self.loadMenu()
         self.triggered.connect(self.loadWorkspace)
     
@@ -104,6 +108,40 @@ class WorkspaceMenu(QtGui.QMenu):
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)
 
+class ArmadilloMenu(QtGui.QMenu):
+    def __init__(self,parent):
+        QtGui.QMenu.__init__(self,parent)
+        self.parent = parent
+        # New
+        self.addMenu(self.parent.newMenu)
+        
+        # Open
+        icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
+        act = self.addAction(icn,'Open',self.parent.openFile)
+        
+        # Save
+        icn = QtGui.QIcon(self.parent.iconPath+'save.png')
+        act = self.addAction(icn,'Save',self.parent.editorSave)
+        
+        self.addSeparator()
+        
+        # Workspace
+        self.addMenu(self.parent.workspaceMenu)
+        
+        self.addSeparator()
+        
+        # Check for file changes
+        icn = QtGui.QIcon()
+        act = self.addAction(icn,'Check for external file Changes',self.parent.checkFileChanges)
+        
+        # Zen
+        icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
+        self.zenAction = self.addAction(icn,'Zen Mode',self.parent.toggleZen)
+        
+##        self.triggered.connect(self.trig)
+##    def trig(self):
+##        print 'tirggerd'
+            
 class Armadillo(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
@@ -133,7 +171,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QApplication.setStyle(self.settings.widgetstyle)
         
         # Style
-        f = open('styles/default.css','r')
+        f = open('styles/default.style','r')
         style = f.read()
         f.close()
         self.setStyleSheet(style)
@@ -173,9 +211,9 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.tabtoolbar.setProperty("class","editorTabBar")
         self.ui.tabtoolbar.setObjectName('editorTabBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
-        
-        # add Zen Button to tabbar
-        self.ui.tabtoolbar.addWidget(self.ui.b_zen)
+
+        # add Main Button to tabbar
+        self.ui.tabtoolbar.addWidget(self.ui.b_main)
         
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -203,7 +241,7 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.b_settings.clicked.connect(self.openSettings)
         self.ui.b_help.clicked.connect(self.addStart)
         self.ui.b_plugins.clicked.connect(self.showPlugins)
-        self.ui.b_zen.clicked.connect(self.toggleZen)
+##        self.ui.b_zen.clicked.connect(self.toggleZen)
         
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
@@ -259,11 +297,7 @@ class Armadillo(QtGui.QMainWindow):
         
         self.dockstate = self.saveState()
         self.zen = 1
-
-        # New Button Menu
-        newmenu = NewMenu(self)
-        self.ui.b_new.setMenu(newmenu)
-
+        
         #--- Add Start
         self.addStart()
         
@@ -275,10 +309,18 @@ class Armadillo(QtGui.QMainWindow):
         # self.fileModD = {}
         # fmt = threading.Thread(target=self.checkFileChanges,args=(self))
         # fmt.start()
+
+        # New Button Menu
+        self.newMenu = NewMenu(self)
+        self.ui.b_new.setMenu(self.newMenu)
         
         # Workspace Button Menu
-        self.workspacemenu = WorkspaceMenu(self)
-        self.ui.b_workspace.setMenu(self.workspacemenu)
+        self.workspaceMenu = WorkspaceMenu(self)
+        self.ui.b_workspace.setMenu(self.workspaceMenu)
+        
+        # add Main Button to tabbar
+        self.armadilloMenu = ArmadilloMenu(self)
+        self.ui.b_main.setMenu(self.armadilloMenu)
         
         # Plugins Button
 ##        pluginmenu = self.createPopupMenu()
@@ -330,13 +372,15 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.statusbar.show()
             self.ui.findbar.show()
             self.ui.toolbar.show()
-            self.ui.b_zen.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
+            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
+            self.armadilloMenu.zenAction.setText('Zen Mode')
         else:
             self.ui.statusbar.hide()
             self.ui.findbar.hide()
             self.ui.toolbar.hide()
             self.dockstate = self.saveState()
-            self.ui.b_zen.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
+            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
+            self.armadilloMenu.zenAction.setText('Not Zen Mode')
             for plug in self.pluginD:
                 self.pluginD[plug].close()
 
@@ -897,7 +941,7 @@ class Armadillo(QtGui.QMainWindow):
             
             self.setWindowTitle('armadillo | '+wksp)
             
-            self.workspacemenu.saveWact.setDisabled(0)
+            self.workspaceMenu.saveWact.setDisabled(0)
     
     #---FileModify Checker
     def checkFileChanges(self):

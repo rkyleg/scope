@@ -8,10 +8,10 @@ class outlineTree(QtGui.QTreeWidget):
         self.setHeaderHidden(1)
         self.setRootIsDecorated(0)
         self.setStyleSheet("""QTreeWidget {
-            	background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:1, stop:0 rgba(152, 152, 152, 255), stop:0.144279 rgba(169, 169, 169, 255), stop:0.850746 rgba(205, 205, 205, 255), stop:1 rgba(224, 224, 224, 255));
             border-bottom-left-radius:5px;
             border-bottom-right-radius:5px;
             }""")
+        self.setProperty("class","pluginVertical")
 
 class Outline(QtGui.QWidget):
     def __init__(self,parent=None):
