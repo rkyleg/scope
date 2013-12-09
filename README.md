@@ -1,4 +1,4 @@
-Armadillo IDE
+# Armadillo IDE
 ![Alt text](img/armadillo.png "afide")
 =====
 

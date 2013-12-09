@@ -143,10 +143,6 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
         self.addAction(icn,'Exit',self.parent.close)
         
-##        self.triggered.connect(self.trig)
-##    def trig(self):
-##        print 'tirggerd'
-            
 class Armadillo(QtGui.QMainWindow):
     def __init__(self, parent=None):
 
