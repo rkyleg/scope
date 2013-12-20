@@ -203,6 +203,9 @@
               <height>16777215</height>
              </size>
             </property>
+            <property name="styleSheet">
+             <string notr="true">border:0px;</string>
+            </property>
             <property name="frameShape">
              <enum>QFrame::NoFrame</enum>
             </property>
@@ -396,13 +399,15 @@
             </property>
             <property name="styleSheet">
              <string notr="true">QPushButton {
-	background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 155), stop:1 rgba(31, 97, 135, 155));
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
 border-radius:5px;
 border:1px outset gray;
+border-bottom-left-radius:0px;
+border-bottom-right-radius:0px;
 }
 QPushButton:hover {
 
-background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 155), stop:1 rgba(23, 73, 103, 155));
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(182, 182, 182, 0), stop:0.0646766 rgba(197, 197, 197, 0), stop:0.935323 rgba(227, 227, 227, 150), stop:1 rgba(240, 240, 240, 0));
 }</string>
             </property>
             <property name="text">
@@ -483,6 +488,22 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
          </property>
         </widget>
        </item>
+       <item row="0" column="9">
+        <spacer name="horizontalSpacer_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>10</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="b_new">
          <property name="minimumSize">
@@ -502,22 +523,6 @@ background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5
            <normaloff>img/new.png</normaloff>img/new.png</iconset>
          </property>
         </widget>
-       </item>
-       <item row="0" column="9">
-        <spacer name="horizontalSpacer_9">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>10</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="0" column="5">
         <spacer name="horizontalSpacer_3">

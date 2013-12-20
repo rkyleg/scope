@@ -17,6 +17,7 @@
 - [ ] Have other Widgets that load in a new tab
 - [ ] Compile to exe
 - [x] Add start like button to top to access menu
+- [ ] DOCUMENTATION
 
 ### Startpage
 - [x] Update theme
