@@ -27,6 +27,9 @@ class WebPage(QtWebKit.QWebPage):
         """
         print('JS ERROR: %s line %d: %s' % (source, line, msg))
 
+class Events(QtCore.QObject):
+    editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
+        
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,baseurl=None):
         QtWebKit.QWebView.__init__(self,parent)
@@ -34,6 +37,8 @@ class WebView(QtWebKit.QWebView):
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
 
+        self.evnt = Events() # Events
+        
         # Setup Javascript object
         self.editorJS = jsObject()
         self.page().mainFrame().addToJavaScriptWindowObject('pythonjs',self.editorJS)
@@ -67,6 +72,21 @@ class WebView(QtWebKit.QWebView):
             """
         web_page.mainFrame().evaluateJavaScript(ckEditorJS)
 
+    def keyPressEvent(self,event):
+        ky = event.key()
+        handled = 0
+        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
+            self.okedit = 0
+                
+        if not handled:
+            QtWebKit.QWebView.keyPressEvent(self,event)
+        QtGui.QApplication.processEvents()
+        self.okedit = 1
+        self.editorTextChanged()
+        
+    def editorTextChanged(self):
+        self.evnt.editorChanged.emit(self)
+        
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(CKEDITOR.instances.editor1.getData());")
         return self.editorJS.editorHtml
@@ -77,6 +97,5 @@ class WebView(QtWebKit.QWebView):
         '''var txt =  pythonjs.html;
         CKEDITOR.instances.editor1.setData(txt)''')
         
-    
-    def find(self,txt):
+    def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)

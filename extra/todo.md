@@ -40,12 +40,13 @@
 - [ ] Store wordwrap preferences with language
 
 ### Monkey
-- [ ] pen monkey file type
-- [ ] get rid of projects tab
-- [ ] Run will update preview
+- [f] pen monkey file type
+- [f] get rid of projects tab
+- [f] Run will update preview
 
 ## CKEditor
-- [ ] Add text alignment
+- [x] Add text alignment
+- [x] Check for text changed (asterix to tab)
 
 ### Scintilla
 - [ ] Fix autocomplete when hitting any key (set to return or tab only)
@@ -65,8 +66,8 @@
 - [x] goto
 - [x] Fix cut keyboard shortcut
 - [f] Add Split view
-    - [ ] option for previewer split (html and markdown)
-- [ ] Add find tag/branch function
+    - [f] option for previewer split (html and markdown)
+- [-] Add find tag/branch function
 - [ ] When opening start at cursor position 1
 - [x] Right click edit behaviours
 
@@ -101,7 +102,7 @@
 - [ ] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
 - [ ] Goto current file/tab
-- [ ] Double click toggles expand
+- [x] Double click toggles expand
 - [ ] Improve tree formatting
 
 ### Output

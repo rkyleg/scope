@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.3'
+__version__ = '0.7.4'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -288,7 +288,10 @@ class Armadillo(QtGui.QMainWindow):
         self.editorD = {}
         for e in self.settings.activeEditors:
             exec('import editors.'+e)
-            exec('ld = editors.'+e+'.getLang()')
+            try:
+                exec('ld = editors.'+e+'.getLang()')
+            except:
+                ld = []
             self.editorD[e] = ld
             
         #--- Add Plugins
@@ -383,12 +386,16 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.statusbar.show()
             self.ui.findbar.show()
             self.ui.toolbar.show()
+##            self.setWindowFlags(QtCore.Qt.Window)
+##            self.show()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
             self.armadilloMenu.zenAction.setText('Zen mode')
         else:
             self.ui.statusbar.hide()
             self.ui.findbar.hide()
             self.ui.toolbar.hide()
+##            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
+##            self.show()
             self.dockstate = self.saveState()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
             self.armadilloMenu.zenAction.setText('Exit zen mode')
@@ -618,6 +625,8 @@ class Armadillo(QtGui.QMainWindow):
                 except:
                     ok=1
                     self.ui.statusbar.showMessage('Error: checking save')
+            else: # Ignore checksave if no getText
+                ok=1
         return ok
 
     def editorSave(self):
@@ -838,7 +847,7 @@ class Armadillo(QtGui.QMainWindow):
     def urlClicked(self,url):
         # Mainly used for startpage urls
         lnk = str(url.toString())
-        print url
+##        print url
         wdg = self.ui.sw_main.currentWidget()
         if lnk.startswith('new:'):
             self.addEditorWidget(lang=lnk.split(':')[1])

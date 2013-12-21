@@ -119,6 +119,7 @@ class WebView(QtWebKit.QWebView):
         handled = 0
         if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
             self.okedit = 0
+
         if event.modifiers() & QtCore.Qt.ControlModifier:            if event.key() == QtCore.Qt.Key_C:
                 self.copy()
                 handled = 1
@@ -129,9 +130,12 @@ class WebView(QtWebKit.QWebView):
                 self.copy()
                 self.cut()
                 handled = 1
-##            elif event.key() == QtCore.Qt.Key_D:
-##                self.copyLinesDown()
-##                handled = 1                
+            elif event.key() == QtCore.Qt.Key_D:
+                self.copyLinesDown()
+                handled = 1
+            elif event.key() == QtCore.Qt.Key_Delete:
+                self.removeLines()
+                handled = 1                
         if not handled:            QtWebKit.QWebView.keyPressEvent(self,event)
         QtGui.QApplication.processEvents()
         self.okedit = 1
@@ -246,7 +250,11 @@ class WebView(QtWebKit.QWebView):
     def copyLinesDown(self):
         js = "editor.copyLinesDown();"
         self.page().mainFrame().evaluateJavaScript(js)
-    
+        
+    def removeLines(self):
+        js = "editor.removeLines();"
+        self.page().mainFrame().evaluateJavaScript(js)
+        
     def find(self,txt,re=0,cs=0,wo=0):
     
         tre=tcs=two = 'false'
