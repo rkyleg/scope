@@ -49,30 +49,25 @@ class MyHighlighter( QSyntaxHighlighter ):
       brush = QBrush( Qt.darkBlue, Qt.SolidPattern )
       keyword.setForeground( brush )
       keyword.setFontWeight( QFont.Bold )
-      keywords = QStringList( [ "break", "else", "for", "if", "in", 
-                                "next", "repeat", "return", "switch", 
-                                "try", "while", "print", "class"] )
+      keywords = QStringList( [ "break", "else", "for", "if","elif", "in", 
+                                 "return", "break","except",
+                                "try", "while", "print", "class","import","def"] )
       for word in keywords:
         pattern = QRegExp("\\b" + word + "\\b")
         rule = HighlightingRule( pattern, keyword )
         self.highlightingRules.append( rule )
 
-      # reservedClasses
+      # other main functions
       reservedClasses.setForeground( brush )
-      reservedClasses.setFontWeight( QFont.Bold )
-      keywords = QStringList( [ "array", "character", "complex", 
-                                "data.frame", "double", "factor", 
-                                "function", "integer", "list", 
-                                "logical", "matrix", "numeric", 
-                                "vector" ] )
+##      reservedClasses.setFontWeight( QFont.Bold )
+      keywords = QStringList( [ "lambda","range"] )
       for word in keywords:
         pattern = QRegExp("\\b" + word + "\\b")
         rule = HighlightingRule( pattern, reservedClasses )
         self.highlightingRules.append( rule )
 
-
       # assignmentOperator
-      brush = QBrush( Qt.darkBlue, Qt.SolidPattern )
+      brush = QBrush( Qt.black, Qt.SolidPattern )
       pattern = QRegExp( "(<){1,2}-" )
       assignmentOperator.setForeground( brush )
       assignmentOperator.setFontWeight( QFont.Bold )
@@ -86,24 +81,25 @@ class MyHighlighter( QSyntaxHighlighter ):
       rule = HighlightingRule( pattern, delimiter )
       self.highlightingRules.append( rule )
 
-      # specialConstant
-      brush = QBrush( Qt.darkGreen, Qt.SolidPattern )
+      # specialConstant and boolean
+      brush = QBrush( Qt.blue, Qt.SolidPattern )
       specialConstant.setForeground( brush )
-      keywords = QStringList( [ "Inf", "NA", "NaN", "NULL", "None" ] )
+      keywords = QStringList( [ "True","False", "None", ] )
       for word in keywords:
         pattern = QRegExp("\\b" + word + "\\b")
         rule = HighlightingRule( pattern, specialConstant )
         self.highlightingRules.append( rule )
 
-      # boolean
-      boolean.setForeground( brush )
-      keywords = QStringList( [ "True", "False" ] )
-      for word in keywords:
-        pattern = QRegExp("\\b" + word + "\\b")
-        rule = HighlightingRule( pattern, boolean )
-        self.highlightingRules.append( rule )
+##      # boolean
+##      boolean.setForeground( brush )
+##      keywords = QStringList( [ "True", "False" ] )
+##      for word in keywords:
+##        pattern = QRegExp("\\b" + word + "\\b")
+##        rule = HighlightingRule( pattern, boolean )
+##        self.highlightingRules.append( rule )
 
       # number
+      brush = QBrush( Qt.darkCyan, Qt.SolidPattern )
       pattern = QRegExp( "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?" )
       pattern.setMinimal( True )
       number.setForeground( brush )
@@ -118,7 +114,7 @@ class MyHighlighter( QSyntaxHighlighter ):
       self.highlightingRules.append( rule )
 
       # string
-      brush = QBrush( Qt.darkRed, Qt.SolidPattern )
+      brush = QBrush( Qt.darkMagenta, Qt.SolidPattern )
       pattern = QRegExp( "\".*\"" )
       pattern.setMinimal( True )
       string.setForeground( brush )

@@ -13,25 +13,26 @@
 ### Work in Progress
 - Python shell plugin is buggy
 - I keep changing the settings file and layout that is not backwards compatible
-- I will probably change the code structure
 
-# Afide 1.0
-The Afide 1.0 release will be considered usable and will have the basic features that I want in an IDE.
+# Armadillo 1.0
+The Armadillo 1.0 release will be considered usable and will have the basic features that I want in an IDE.
 
-- [ ] Check and alert if open files have changed outside of editor
+- [x] Check and alert if open files have changed outside of editor
 - [ ] Fix Python Shell querks
-- [ ] Finalize code layout structure (for editors, plugins, and other)
+- [x] Finalize code layout structure (for editors, plugins, and other)
 - [ ] Finalize settings configuration and storage mechanism
 - [ ] Make sure robust for unicode errors (at least have error message on save/load)
 - [ ] No more updates to master branch until adequate testing has been done
 
-# Afide 2.0
-Afide 2.0 will allow for better/easier user customization
+# Armadillo 2.0
+Armadillo 2.0 will allow for better/easier user customization
 
 - [ ] Ease of use of adding plugins and user customizeable plugins
 - [ ] UI for settings
 - [ ] More settings options
     - [ ] User customizeable editors
+- [ ] Improve Icon
+- [ ] Continous checking and alert if open files have changed outside of editor
 
 # Additional Features
 Features that can be added independent of version

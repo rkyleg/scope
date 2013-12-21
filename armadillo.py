@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.2'
+__version__ = '0.7.4'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -125,14 +125,23 @@ class ArmadilloMenu(QtGui.QMenu):
         
         self.addSeparator()
         
+        # Home
+        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
+        act = self.addAction(icn,'Home',self.parent.addStart)
+        
         # Workspace
         self.addMenu(self.parent.workspaceMenu)
         
+        # Plugins
+        plugmenu = self.parent.createPopupMenu()
+        plugmenu.setTitle('Plugins')
+        plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
+        self.addMenu(plugmenu)
         self.addSeparator()
         
         # Check for file changes
         icn = QtGui.QIcon()
-        act = self.addAction(icn,'Check for external file Changes',self.parent.checkFileChanges)
+        act = self.addAction(icn,'File check (changes)',self.parent.checkFileChanges)
         
         # Zen
         icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
@@ -202,6 +211,7 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.findbar.setObjectName('findBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
         self.ui.findbar.addWidget(self.ui.fr_find)
+        
         self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
         #--- Setup Tab Toolbar
@@ -278,7 +288,10 @@ class Armadillo(QtGui.QMainWindow):
         self.editorD = {}
         for e in self.settings.activeEditors:
             exec('import editors.'+e)
-            exec('ld = editors.'+e+'.getLang()')
+            try:
+                exec('ld = editors.'+e+'.getLang()')
+            except:
+                ld = []
             self.editorD[e] = ld
             
         #--- Add Plugins
@@ -373,12 +386,16 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.statusbar.show()
             self.ui.findbar.show()
             self.ui.toolbar.show()
+##            self.setWindowFlags(QtCore.Qt.Window)
+##            self.show()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
             self.armadilloMenu.zenAction.setText('Zen mode')
         else:
             self.ui.statusbar.hide()
             self.ui.findbar.hide()
             self.ui.toolbar.hide()
+##            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
+##            self.show()
             self.dockstate = self.saveState()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
             self.armadilloMenu.zenAction.setText('Exit zen mode')
@@ -608,6 +625,8 @@ class Armadillo(QtGui.QMainWindow):
                 except:
                     ok=1
                     self.ui.statusbar.showMessage('Error: checking save')
+            else: # Ignore checksave if no getText
+                ok=1
         return ok
 
     def editorSave(self):
@@ -794,7 +813,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
         self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
-        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML='"+str(self.version)+"'")
+##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML='"+str(self.version)+"'")
         
         wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         wdg.linkClicked.connect(self.urlClicked)
@@ -828,6 +847,7 @@ class Armadillo(QtGui.QMainWindow):
     def urlClicked(self,url):
         # Mainly used for startpage urls
         lnk = str(url.toString())
+##        print url
         wdg = self.ui.sw_main.currentWidget()
         if lnk.startswith('new:'):
             self.addEditorWidget(lang=lnk.split(':')[1])
@@ -949,7 +969,8 @@ class Armadillo(QtGui.QMainWindow):
     
     #---FileModify Checker
     def checkFileChanges(self):
-        if self.fileLastCheck < time.time()-5:
+##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
+            chngs = 0
             for i in range(self.ui.tab.count()):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
@@ -958,14 +979,16 @@ class Armadillo(QtGui.QMainWindow):
                         if os.path.getmtime(wdg.filename) > wdg.modTime:
                             resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                             wdg.modTime = os.path.getmtime(wdg.filename)
+                            chngs=1
                             if resp == QtGui.QMessageBox.Yes:
                                 QtGui.QApplication.processEvents()
                                 f = codecs.open(wdg.filename,'r','utf-8')
                                 txt = f.read()
                                 f.close()
                                 wdg.setText(txt)
-
-            self.fileLastCheck = time.time()
+            if not chngs:
+                QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
+##            self.fileLastCheck = time.time()
     
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))

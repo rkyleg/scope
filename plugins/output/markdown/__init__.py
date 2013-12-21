@@ -9,7 +9,7 @@ def generate(file):
     f.close()
     
     # Get Markdown
-    md = markdown2.markdown(html)
+    md = markdown2.markdown(html)#,extras=['cuddled-lists','wiki-tables'])
     
     # Custom Markdown modifications
     md = md.replace('<li>[ ]','<li class="checkbox"><input type="checkbox" disabled="disabled">')

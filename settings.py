@@ -2,7 +2,7 @@ import os
 
 class Settings(object):
     #---Editors (that are available)
-    activeEditors = ['scintilla','ace','ckeditor']
+    activeEditors = ['scintilla','ace','ckeditor']#,'monkey']
     
     # Default Editor
     defaultEditor = 'scintilla'
@@ -48,6 +48,8 @@ class Settings(object):
         },
         'webview':{
         },
+##        'monkey':{
+##        }
     }
     
     #---Plugins
@@ -100,4 +102,5 @@ class Settings(object):
         'php':'php',
         'java':'java',
         'md':'markdown',
+        'mky':'monkey',
     }

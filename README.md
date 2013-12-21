@@ -1,29 +1,29 @@
 # Armadillo IDE
-![Alt text](img/armadillo.png "Armadillo")
 =====
-
-**Warning** - This is still in the early stages of development.  Use at your own risk.
 
 ![Alt text](extra/screenshot.png "Screenshot")
 
 About
 ==
-I didn't really want to create a new IDE, but I wanted total customization while keeping it lightweight.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt (and sometiems HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
+I decided to create an IDE because there wasn't a single one that met my critical needs.  I also wanted to be able to customize the IDE utilizing tools I am familiar with.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt (and sometimes HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
 
 The goals of Armadillo:
+
 - Cross Platform (Linux, Windows, and maybe Mac)
 - Handle Multiple languages (Python, Javascript, HTML,...)
 - Easily create plugins with Python and PyQt
 - Mostly Lightweight
+- Code outline for code organization
 - Be able to utilize existing code editors (Scintilla, CKEditor, Ace, more...)
 
 Requirements
 ==
-Armadillo is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15) and Windows 7 so far.
+Armadillo is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15/16) and Windows 7 so far.
+
 - Python 2.6-2.7 (Not tested with 2.6 although 2.6 should work)
-- PyQt 4.8-4.9 (Not tested with 5.x - probably doesn't work)
+- PyQt 4.8-4.10 (Not tested with 5.x - probably doesn't work)
 - Python-Qsci
-- pyqt4-dev-tools (if you want to use pyqt converter on linux)
+- pyqt4-dev-tools (if you want to use pyqt converter on Linux)
 
 Settings
 ==

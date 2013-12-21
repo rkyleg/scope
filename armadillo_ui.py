@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Dec  8 22:33:19 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Thu Dec 19 22:51:29 2013
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -100,6 +100,7 @@ class Ui_MainWindow(object):
         self.fr_find = QtGui.QFrame(self.frame)
         self.fr_find.setMinimumSize(QtCore.QSize(150, 0))
         self.fr_find.setMaximumSize(QtCore.QSize(250, 16777215))
+        self.fr_find.setStyleSheet(_fromUtf8("border:0px;"))
         self.fr_find.setFrameShape(QtGui.QFrame.NoFrame)
         self.fr_find.setFrameShadow(QtGui.QFrame.Raised)
         self.fr_find.setObjectName(_fromUtf8("fr_find"))
@@ -159,13 +160,15 @@ class Ui_MainWindow(object):
         self.gridLayout_3.addWidget(self.b_plugins, 0, 4, 1, 1)
         self.b_main = QtGui.QPushButton(self.frame)
         self.b_main.setStyleSheet(_fromUtf8("QPushButton {\n"
-"    background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 117, 195, 155), stop:1 rgba(31, 97, 135, 155));\n"
+"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
 "border-radius:5px;\n"
 "border:1px outset gray;\n"
+"border-bottom-left-radius:0px;\n"
+"border-bottom-right-radius:0px;\n"
 "}\n"
 "QPushButton:hover {\n"
 "\n"
-"background-color: qradialgradient(spread:pad, cx:0.5, cy:0.5, radius:0.5, fx:0.5, fy:0.494, stop:0 rgba(0, 93, 155, 155), stop:1 rgba(23, 73, 103, 155));\n"
+"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(182, 182, 182, 0), stop:0.0646766 rgba(197, 197, 197, 0), stop:0.935323 rgba(227, 227, 227, 150), stop:1 rgba(240, 240, 240, 0));\n"
 "}"))
         self.b_main.setText(_fromUtf8(""))
         self.b_main.setIcon(icon)
@@ -197,6 +200,8 @@ class Ui_MainWindow(object):
         self.b_comment.setIcon(icon12)
         self.b_comment.setObjectName(_fromUtf8("b_comment"))
         self.gridLayout_2.addWidget(self.b_comment, 0, 8, 1, 1)
+        spacerItem5 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        self.gridLayout_2.addItem(spacerItem5, 0, 9, 1, 1)
         self.b_new = QtGui.QPushButton(self.fr_toolbar)
         self.b_new.setMinimumSize(QtCore.QSize(26, 0))
         self.b_new.setText(_fromUtf8(""))
@@ -205,8 +210,6 @@ class Ui_MainWindow(object):
         self.b_new.setIcon(icon13)
         self.b_new.setObjectName(_fromUtf8("b_new"))
         self.gridLayout_2.addWidget(self.b_new, 0, 0, 1, 1)
-        spacerItem5 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
-        self.gridLayout_2.addItem(spacerItem5, 0, 9, 1, 1)
         spacerItem6 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem6, 0, 5, 1, 1)
         self.gridLayout.addWidget(self.fr_toolbar, 0, 0, 1, 1)
