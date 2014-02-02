@@ -971,12 +971,18 @@ class Armadillo(QtGui.QMainWindow):
     def checkFileChanges(self):
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
             chngs = 0
+            close_tabs = []
             for i in range(self.ui.tab.count()):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
                     if wdg.filename != None and wdg.modTime != None:
-                        if os.path.getmtime(wdg.filename) > wdg.modTime:
+                        if not os.path.exists(wdg.filename):
+                            resp = QtGui.QMessageBox.warning(self,'File Does not exist',str(wdg.filename)+' does not exist anymore.<br><<br>Do you want to keep the file open?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                            if resp == QtGui.QMessageBox.No:
+                                close_tabs.append(i)
+                            chngs = 1
+                        elif os.path.getmtime(wdg.filename) > wdg.modTime:
                             resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                             wdg.modTime = os.path.getmtime(wdg.filename)
                             chngs=1
@@ -986,6 +992,11 @@ class Armadillo(QtGui.QMainWindow):
                                 txt = f.read()
                                 f.close()
                                 wdg.setText(txt)
+            
+            if close_tabs != []:
+                close_tabs.reverse()
+                for i in close_tabs:
+                    self.closeTab(i)
             if not chngs:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
