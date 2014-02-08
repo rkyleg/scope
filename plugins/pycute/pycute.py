@@ -234,7 +234,7 @@ class PyCute(QtGui.QTextEdit):
         if len(self.line) == 0:
             return '\n'
         else:
-            return str(self.line) 
+            return unicode(self.line) 
     
     def write(self, text):
         """
@@ -328,12 +328,12 @@ class PyCute(QtGui.QTextEdit):
         if self.currentRunPosition > self.textCursor().position():
             return
 
-        text  = str(e.text())
+        text  = unicode(e.text())
         key   = e.key()
 
         if e.modifiers() & QtCore.Qt.ControlModifier:
             if key == QtCore.Qt.Key_V:  # Unhide
-##                self.point = self.textCursor().positionInBlock()-4                self.__insertText(str(QtGui.QApplication.clipboard().text()))
+##                self.point = self.textCursor().positionInBlock()-4                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
                 self.syncViewers()
             else:
                 QtGui.QTextEdit.keyPressEvent(self,e)
@@ -342,7 +342,7 @@ class PyCute(QtGui.QTextEdit):
             return
         
         if len(text):
-            ascii = ord(str(text))
+            ascii = ord(unicode(text))
         else:
             ascii=0
 
