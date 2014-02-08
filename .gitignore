@@ -5,3 +5,5 @@ afide.xmind
 afide.sh
 /plugins/py_shell/*
 /editors/ace/ace-master/*
+/_exe/build/*
+/_exe/dist/*
