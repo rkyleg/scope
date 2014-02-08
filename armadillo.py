@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.4'
+__version__ = '0.7.5'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -192,6 +192,20 @@ class Armadillo(QtGui.QMainWindow):
         dx = 50
         self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
         
+        #--- Setup Tab Toolbar
+        self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
+        self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+        self.ui.tabtoolbar.setFloatable(False)
+        self.ui.tabtoolbar.setMovable(True)
+        self.ui.tabtoolbar.setProperty("class","editorTabBar")
+        self.ui.tabtoolbar.setObjectName('editorTabBar')
+        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
+
+        # add Main Button to tabbar
+        self.ui.tabtoolbar.addWidget(self.ui.b_main)
+        
+        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
+        
         # Toolbutton Toolbar
         self.ui.toolbar = QtGui.QToolBar("toolBar",self)
         self.ui.toolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
@@ -212,19 +226,9 @@ class Armadillo(QtGui.QMainWindow):
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
         self.ui.findbar.addWidget(self.ui.fr_find)
         
-        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
-        #--- Setup Tab Toolbar
-        self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
-        self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
-        self.ui.tabtoolbar.setFloatable(False)
-        self.ui.tabtoolbar.setMovable(True)
-        self.ui.tabtoolbar.setProperty("class","editorTabBar")
-        self.ui.tabtoolbar.setObjectName('editorTabBar')
-        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
+        
 
-        # add Main Button to tabbar
-        self.ui.tabtoolbar.addWidget(self.ui.b_main)
         
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -271,6 +275,8 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
+        
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.updateOutline) # Update Outline
@@ -891,6 +897,11 @@ class Armadillo(QtGui.QMainWindow):
         self.pluginD['qt2py'].raise_()
         self.pluginD['qt2py'].wdg.ui.le_help.setFocus()
         self.pluginD['qt2py'].wdg.ui.le_help.selectAll()
+    
+    def nextTab(self):
+        i = self.ui.tab.currentIndex()+1
+        if i == self.ui.tab.count():i=0
+        self.ui.tab.setCurrentIndex(i)
     
     #--- Workspace
     def saveWorkspace(self):
