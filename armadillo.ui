@@ -394,34 +394,21 @@
           </item>
           <item row="0" column="8">
            <widget class="QPushButton" name="b_main">
+            <property name="minimumSize">
+             <size>
+              <width>24</width>
+              <height>24</height>
+             </size>
+            </property>
             <property name="toolTip">
              <string>Armidillo Menu</string>
-            </property>
-            <property name="styleSheet">
-             <string notr="true">QPushButton {
-	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
-border-radius:5px;
-border:1px outset gray;
-border-bottom-left-radius:0px;
-border-bottom-right-radius:0px;
-}
-QPushButton:hover {
-
-	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(182, 182, 182, 0), stop:0.0646766 rgba(197, 197, 197, 0), stop:0.935323 rgba(227, 227, 227, 150), stop:1 rgba(240, 240, 240, 0));
-}</string>
             </property>
             <property name="text">
              <string/>
             </property>
             <property name="icon">
              <iconset>
-              <normaloff>img/armadillo.png</normaloff>img/armadillo.png</iconset>
-            </property>
-            <property name="iconSize">
-             <size>
-              <width>32</width>
-              <height>24</height>
-             </size>
+              <normaloff>img/menu.png</normaloff>img/menu.png</iconset>
             </property>
            </widget>
           </item>

@@ -18,10 +18,10 @@
 The Armadillo 1.0 release will be considered usable and will have the basic features that I want in an IDE.
 
 - [x] Check and alert if open files have changed outside of editor
-- [ ] Fix Python Shell querks
+- [x] Fix most Python Shell querks
 - [x] Finalize code layout structure (for editors, plugins, and other)
 - [ ] Finalize settings configuration and storage mechanism
-- [ ] Make sure robust for unicode errors (at least have error message on save/load)
+- [x] Make sure robust for unicode errors (at least have error message on save/load)
 - [ ] No more updates to master branch until adequate testing has been done
 
 # Armadillo 2.0

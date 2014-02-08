@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Thu Dec 19 22:51:29 2013
+# Created: Sat Feb  8 16:07:33 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -159,45 +159,36 @@ class Ui_MainWindow(object):
         self.b_plugins.setObjectName(_fromUtf8("b_plugins"))
         self.gridLayout_3.addWidget(self.b_plugins, 0, 4, 1, 1)
         self.b_main = QtGui.QPushButton(self.frame)
-        self.b_main.setStyleSheet(_fromUtf8("QPushButton {\n"
-"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
-"border-radius:5px;\n"
-"border:1px outset gray;\n"
-"border-bottom-left-radius:0px;\n"
-"border-bottom-right-radius:0px;\n"
-"}\n"
-"QPushButton:hover {\n"
-"\n"
-"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(182, 182, 182, 0), stop:0.0646766 rgba(197, 197, 197, 0), stop:0.935323 rgba(227, 227, 227, 150), stop:1 rgba(240, 240, 240, 0));\n"
-"}"))
+        self.b_main.setMinimumSize(QtCore.QSize(24, 24))
         self.b_main.setText(_fromUtf8(""))
-        self.b_main.setIcon(icon)
-        self.b_main.setIconSize(QtCore.QSize(32, 24))
+        icon10 = QtGui.QIcon()
+        icon10.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_main.setIcon(icon10)
         self.b_main.setObjectName(_fromUtf8("b_main"))
         self.gridLayout_3.addWidget(self.b_main, 0, 8, 1, 1)
         self.gridLayout_2.addWidget(self.frame, 0, 11, 1, 1)
         self.b_unindent = QtGui.QToolButton(self.fr_toolbar)
         self.b_unindent.setMinimumSize(QtCore.QSize(26, 0))
         self.b_unindent.setText(_fromUtf8(""))
-        icon10 = QtGui.QIcon()
-        icon10.addPixmap(QtGui.QPixmap(_fromUtf8("img/indent_remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_unindent.setIcon(icon10)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8("img/indent_remove.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_unindent.setIcon(icon11)
         self.b_unindent.setObjectName(_fromUtf8("b_unindent"))
         self.gridLayout_2.addWidget(self.b_unindent, 0, 7, 1, 1)
         self.b_indent = QtGui.QToolButton(self.fr_toolbar)
         self.b_indent.setMinimumSize(QtCore.QSize(26, 0))
         self.b_indent.setText(_fromUtf8(""))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8("img/indent.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_indent.setIcon(icon11)
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/indent.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_indent.setIcon(icon12)
         self.b_indent.setObjectName(_fromUtf8("b_indent"))
         self.gridLayout_2.addWidget(self.b_indent, 0, 6, 1, 1)
         self.b_comment = QtGui.QToolButton(self.fr_toolbar)
         self.b_comment.setMinimumSize(QtCore.QSize(26, 0))
         self.b_comment.setText(_fromUtf8(""))
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/comment.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_comment.setIcon(icon12)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8("img/comment.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_comment.setIcon(icon13)
         self.b_comment.setObjectName(_fromUtf8("b_comment"))
         self.gridLayout_2.addWidget(self.b_comment, 0, 8, 1, 1)
         spacerItem5 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
@@ -205,9 +196,9 @@ class Ui_MainWindow(object):
         self.b_new = QtGui.QPushButton(self.fr_toolbar)
         self.b_new.setMinimumSize(QtCore.QSize(26, 0))
         self.b_new.setText(_fromUtf8(""))
-        icon13 = QtGui.QIcon()
-        icon13.addPixmap(QtGui.QPixmap(_fromUtf8("img/new.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_new.setIcon(icon13)
+        icon14 = QtGui.QIcon()
+        icon14.addPixmap(QtGui.QPixmap(_fromUtf8("img/new.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_new.setIcon(icon14)
         self.b_new.setObjectName(_fromUtf8("b_new"))
         self.gridLayout_2.addWidget(self.b_new, 0, 0, 1, 1)
         spacerItem6 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
