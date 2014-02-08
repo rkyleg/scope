@@ -1,42 +1,42 @@
 # Armadillo IDE
-=====
-
 ![Alt text](extra/screenshot.png "Screenshot")
 
-About
-==
-I decided to create an IDE because there wasn't a single one that met my critical needs.  I also wanted to be able to customize the IDE utilizing tools I am familiar with.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt (and sometimes HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
+## About
+Armadillo is a lightweight,cross-platform IDE primarily for Python and Web Development, while also providing an editor for most languages.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt (and sometimes HTML5) for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
 
-The goals of Armadillo:
+## Features:
 
 - Cross Platform (Linux, Windows, and maybe Mac)
 - Handle Multiple languages (Python, Javascript, HTML,...)
-- Easily create plugins with Python and PyQt
 - Mostly Lightweight
 - Code outline for code organization
-- Be able to utilize existing code editors (Scintilla, CKEditor, Ace, more...)
+- Easily create plugins with Python and PyQt
+- Multiple options for code editors (Scintilla, CKEditor, Ace, more...)
 
-Requirements
-==
-Armadillo is not yet compiled so you must run it with Python.  I have only tested it on Linux (Mint 15/16) and Windows 7 so far.
+## Requirements
+Armadillo must be run with Python.  I have only tested it on Linux (Mint 15/16) and Windows 7 so far.
 
 - Python 2.6-2.7 (Not tested with 2.6 although 2.6 should work)
 - PyQt 4.8-4.10 (Not tested with 5.x - probably doesn't work)
-- Python-Qsci
+
+- Python-Qsci (Required on Linux.  PyQt Windows installer has option to install this)
 - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
 
-Settings
-==
+## Installing/Launching
+1. Install prerequisites above (Python and PyQt)
+2. Linux - Set armadillo.sh properties to execute and run.
+4. Windows - Run armadillo.py
+
+## Settings
 - Settings are stored in settings.py
 - *settings structure still in a state of change*
 
-To Do and Roadmap
-==
+## More Stuff
+- **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
 - **[Todo](extra/todo.md)** - List of to do and status
 
-Reference
-==
+## Reference
 Thanks to the following tools that Armadillo is built on:
 
 - [Python](http://python.org) 
