@@ -18,6 +18,7 @@
 - [x] Compile to exe
 - [x] Add start like button to top to access menu
 - [ ] DOCUMENTATION
+- [x] BUG - if closing in zen mode - don't save window state
 
 ### Startpage
 - [x] Update theme

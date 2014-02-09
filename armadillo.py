@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.1'
+__version__ = '0.8.2'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -788,17 +788,17 @@ class Armadillo(QtGui.QMainWindow):
         self.openFile(self.settings_filename)
 
     def saveSettings(self):
-        # Create Afid settings directory
+        # Create settings directory
         if not os.path.exists(self.settingPath):
             os.mkdir(self.settingPath)
-        # Create Workspace Directory
-
-        # Save Workspace
-        if self.workspace != None and self.settings.save_workspace_on_close:
-            self.saveWorkspace()
 
         if not self.zen:
             self.toggleZen()
+            QtGui.QApplication.processEvents()
+        
+        # Save Workspace
+        if self.workspace != None and self.settings.save_workspace_on_close:
+            self.saveWorkspace()
 
         # Save Window Geometry
         f = open(self.settingPath+'/window','wb')
