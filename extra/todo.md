@@ -68,7 +68,7 @@
 - [f] Add Split view
     - [f] option for previewer split (html and markdown)
 - [-] Add find tag/branch function
-- [ ] When opening start at cursor position 1
+- [x] When opening start at cursor position 1
 - [x] Right click edit behaviours
 
 ## Plugins
@@ -95,15 +95,16 @@
 ### File Browser
 - [x] Return press opens folder
 - [ ] toggle to view all files
-- [ ] be able to launch file with os default (do this for unknown extensions on double click)
-- [ ] right click new file (select from extensions
-- [ ] delete file option
+- [x] be able to launch file with os default (do this for unknown extensions on double click)
+- [x] right click new file (select from extensions
+- [x] delete file option
 - [ ] Reload option
-- [ ] collapse all/expand all
+- [x] rename file (also has to rename if file open in editor or at least check first)
+- [f] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
-- [ ] Goto current file/tab
+- [f] Goto current file/tab
 - [x] Double click toggles expand
-- [ ] Improve tree formatting
+- [x] Improve tree formatting
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)

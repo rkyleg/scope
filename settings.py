@@ -102,5 +102,8 @@ class Settings(object):
         'php':'php',
         'java':'java',
         'md':'markdown',
+        'c':'cpp',
+        'h':'cpp',
+        'ino':'cpp', # Arduino
         'mky':'monkey',
     }

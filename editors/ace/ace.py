@@ -227,7 +227,8 @@ class WebView(QtWebKit.QWebView):
         '''var txt =  pythonjs.html;
         editor.setValue(txt);
         editor.clearSelection();
-        editor.gotoLine(0,0);''')
+        editor.moveCursorTo(0,0);
+        editor.focus();''')
     
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode

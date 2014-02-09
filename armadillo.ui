@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>641</width>
-    <height>497</height>
+    <width>739</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -30,13 +30,25 @@
     </property>
     <item row="0" column="0">
      <widget class="QFrame" name="fr_toolbar">
+      <property name="styleSheet">
+       <string notr="true">QPushButton,QToolButton {
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));
+	border:0px;
+	padding:3px;
+	padding-left:6px;
+	padding-right:6px;
+}
+QPushButton:hover,QToolButton:hover {
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
+}</string>
+      </property>
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <layout class="QGridLayout" name="gridLayout_2" rowstretch="0">
+      <layout class="QGridLayout" name="gridLayout_2" rowstretch="0,0">
        <property name="leftMargin">
         <number>2</number>
        </property>
@@ -49,93 +61,136 @@
        <property name="bottomMargin">
         <number>0</number>
        </property>
-       <property name="horizontalSpacing">
-        <number>2</number>
-       </property>
-       <property name="verticalSpacing">
+       <property name="spacing">
         <number>0</number>
        </property>
-       <item row="0" column="4">
-        <widget class="QToolButton" name="b_save">
+       <item row="0" column="15">
+        <widget class="QToolButton" name="b_plugins">
          <property name="minimumSize">
           <size>
-           <width>26</width>
+           <width>32</width>
            <height>0</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string>Save</string>
+          <string>Show/Hide Plugins and Toolbars</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+}</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/save.png</normaloff>img/save.png</iconset>
+           <normaloff>img/plugin.png</normaloff>img/plugin.png</iconset>
          </property>
         </widget>
        </item>
-       <item row="0" column="10">
-        <widget class="QToolButton" name="b_wordwrap">
+       <item row="0" column="7">
+        <widget class="QToolButton" name="b_comment">
          <property name="minimumSize">
           <size>
-           <width>26</width>
+           <width>32</width>
            <height>0</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string>Toggle Wordwrap</string>
+          <string>Comment/Uncomment</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+}</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
+           <normaloff>img/comment.png</normaloff>img/comment.png</iconset>
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QToolButton" name="b_open">
+       <item row="0" column="5">
+        <widget class="QToolButton" name="b_indent">
          <property name="minimumSize">
           <size>
-           <width>26</width>
+           <width>32</width>
            <height>0</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string>Open</string>
+          <string>Indent</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/file_open.png</normaloff>img/file_open.png</iconset>
+           <normaloff>img/indent.png</normaloff>img/indent.png</iconset>
          </property>
         </widget>
        </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="b_workspace">
+       <item row="0" column="14">
+        <widget class="QToolButton" name="b_help">
          <property name="minimumSize">
           <size>
-           <width>26</width>
+           <width>32</width>
            <height>0</height>
           </size>
          </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
          <property name="toolTip">
-          <string>Workspaces</string>
+          <string>afide Help</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/workspace.png</normaloff>img/workspace.png</iconset>
+           <normaloff>img/home.png</normaloff>img/home.png</iconset>
          </property>
         </widget>
        </item>
-       <item row="0" column="11">
+       <item row="0" column="18">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -153,43 +208,7 @@
           <property name="margin">
            <number>0</number>
           </property>
-          <item row="0" column="3">
-           <widget class="QToolButton" name="b_help">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>afide Help</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/home.png</normaloff>img/home.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="2">
-           <spacer name="horizontalSpacer_5">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="12">
+          <item row="0" column="6">
            <widget class="QFrame" name="fr_find">
             <property name="minimumSize">
              <size>
@@ -220,33 +239,70 @@
               <number>0</number>
              </property>
              <item row="0" column="3">
-              <widget class="QLineEdit" name="le_find">
-               <property name="minimumSize">
-                <size>
-                 <width>150</width>
-                 <height>0</height>
-                </size>
+              <widget class="QFrame" name="fr_find_2">
+               <property name="styleSheet">
+                <string notr="true">QFrame#fr_find_2 {
+background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));
+border:0px;
+border-bottom:1px solid gray;
+border-radius:3px;
+}</string>
                </property>
-               <property name="placeholderText">
-                <string>Find</string>
+               <property name="frameShape">
+                <enum>QFrame::StyledPanel</enum>
                </property>
-              </widget>
-             </item>
-             <item row="0" column="4">
-              <widget class="QPushButton" name="b_find">
-               <property name="maximumSize">
-                <size>
-                 <width>16777215</width>
-                 <height>25</height>
-                </size>
+               <property name="frameShadow">
+                <enum>QFrame::Raised</enum>
                </property>
-               <property name="text">
-                <string/>
-               </property>
-               <property name="icon">
-                <iconset>
-                 <normaloff>img/search.png</normaloff>img/search.png</iconset>
-               </property>
+               <layout class="QGridLayout" name="gridLayout_9">
+                <property name="margin">
+                 <number>0</number>
+                </property>
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <item row="0" column="0">
+                 <widget class="QLineEdit" name="le_find">
+                  <property name="minimumSize">
+                   <size>
+                    <width>150</width>
+                    <height>24</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">background:transparent;
+border:0px;
+color:white;</string>
+                  </property>
+                  <property name="placeholderText">
+                   <string>Find</string>
+                  </property>
+                 </widget>
+                </item>
+                <item row="0" column="1">
+                 <widget class="QPushButton" name="b_find">
+                  <property name="maximumSize">
+                   <size>
+                    <width>16777215</width>
+                    <height>25</height>
+                   </size>
+                  </property>
+                  <property name="styleSheet">
+                   <string notr="true">QPushButton:hover,QToolButton:hover {
+	border-radius:3px;
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
+}</string>
+                  </property>
+                  <property name="text">
+                   <string/>
+                  </property>
+                  <property name="icon">
+                   <iconset>
+                    <normaloff>img/search.png</normaloff>img/search.png</iconset>
+                  </property>
+                 </widget>
+                </item>
+               </layout>
               </widget>
              </item>
              <item row="0" column="1">
@@ -254,7 +310,7 @@
                <property name="minimumSize">
                 <size>
                  <width>40</width>
-                 <height>0</height>
+                 <height>24</height>
                 </size>
                </property>
                <property name="maximumSize">
@@ -262,6 +318,13 @@
                  <width>50</width>
                  <height>16777215</height>
                 </size>
+               </property>
+               <property name="styleSheet">
+                <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));
+color:white;
+border:0px;
+border-bottom:1px solid gray;
+border-radius:3px;</string>
                </property>
                <property name="placeholderText">
                 <string>goto</string>
@@ -288,75 +351,6 @@
            </widget>
           </item>
           <item row="0" column="1">
-           <widget class="QToolButton" name="b_run">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Run</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/tri_right.png</normaloff>img/tri_right.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="9">
-           <spacer name="horizontalSpacer_2">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>40</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="0">
-           <spacer name="horizontalSpacer_4">
-            <property name="orientation">
-             <enum>Qt::Horizontal</enum>
-            </property>
-            <property name="sizeType">
-             <enum>QSizePolicy::Fixed</enum>
-            </property>
-            <property name="sizeHint" stdset="0">
-             <size>
-              <width>10</width>
-              <height>20</height>
-             </size>
-            </property>
-           </spacer>
-          </item>
-          <item row="0" column="5">
-           <widget class="QToolButton" name="b_settings">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Edit Settings</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/wrench.png</normaloff>img/wrench.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="7">
            <spacer name="horizontalSpacer_7">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -372,36 +366,30 @@
             </property>
            </spacer>
           </item>
-          <item row="0" column="4">
-           <widget class="QToolButton" name="b_plugins">
-            <property name="minimumSize">
-             <size>
-              <width>26</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="toolTip">
-             <string>Show/Hide Plugins and Toolbars</string>
-            </property>
-            <property name="text">
-             <string/>
-            </property>
-            <property name="icon">
-             <iconset>
-              <normaloff>img/plugin.png</normaloff>img/plugin.png</iconset>
-            </property>
-           </widget>
-          </item>
-          <item row="0" column="8">
+          <item row="0" column="2">
            <widget class="QPushButton" name="b_main">
             <property name="minimumSize">
              <size>
-              <width>24</width>
+              <width>32</width>
               <height>24</height>
              </size>
             </property>
             <property name="toolTip">
              <string>Armidillo Menu</string>
+            </property>
+            <property name="styleSheet">
+             <string notr="true">QPushButton::menu-indicator {
+     image: url(none.png);
+}
+QPushButton {
+	border-radius:5px;
+	
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));
+}
+QPushButton:hover {
+	border-radius:3px;
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
+}</string>
             </property>
             <property name="text">
              <string/>
@@ -412,70 +400,235 @@
             </property>
            </widget>
           </item>
+          <item row="0" column="3">
+           <spacer name="horizontalSpacer_2">
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="sizeHint" stdset="0">
+             <size>
+              <width>40</width>
+              <height>20</height>
+             </size>
+            </property>
+           </spacer>
+          </item>
          </layout>
         </widget>
        </item>
-       <item row="0" column="7">
-        <widget class="QToolButton" name="b_unindent">
+       <item row="0" column="1">
+        <widget class="QPushButton" name="b_workspace">
          <property name="minimumSize">
           <size>
-           <width>26</width>
-           <height>0</height>
+           <width>40</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="toolTip">
-          <string>Unindent</string>
+          <string>Workspaces</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	border-left:1px solid rgb(100,100,100);
+	padding-right:14px;
+}
+QPushButton::menu-indicator {
+     image: url(img/tri_down.png);
+}</string>
          </property>
          <property name="text">
           <string/>
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>img/indent_remove.png</normaloff>img/indent_remove.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="6">
-        <widget class="QToolButton" name="b_indent">
-         <property name="minimumSize">
-          <size>
-           <width>26</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Indent</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/indent.png</normaloff>img/indent.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="8">
-        <widget class="QToolButton" name="b_comment">
-         <property name="minimumSize">
-          <size>
-           <width>26</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Comment/Uncomment</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/comment.png</normaloff>img/comment.png</iconset>
+           <normaloff>img/workspace.png</normaloff>img/workspace.png</iconset>
          </property>
         </widget>
        </item>
        <item row="0" column="9">
+        <widget class="QToolButton" name="b_wordwrap">
+         <property name="minimumSize">
+          <size>
+           <width>32</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Toggle Wordwrap</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/wordwrap.png</normaloff>img/wordwrap.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="2">
+        <widget class="QToolButton" name="b_open">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Open</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/file_open.png</normaloff>img/file_open.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="16">
+        <widget class="QToolButton" name="b_settings">
+         <property name="minimumSize">
+          <size>
+           <width>32</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Edit Settings</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/wrench.png</normaloff>img/wrench.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="3">
+        <widget class="QToolButton" name="b_save">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Save</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/save.png</normaloff>img/save.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="12">
+        <widget class="QToolButton" name="b_run">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Run</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/tri_right.png</normaloff>img/tri_right.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="4">
+        <spacer name="horizontalSpacer_3">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="10">
         <spacer name="horizontalSpacer_9">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -485,7 +638,23 @@
          </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>10</width>
+           <width>6</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item row="0" column="13">
+        <spacer name="horizontalSpacer_10">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
            <height>20</height>
           </size>
          </property>
@@ -495,12 +664,28 @@
         <widget class="QPushButton" name="b_new">
          <property name="minimumSize">
           <size>
-           <width>26</width>
-           <height>0</height>
+           <width>40</width>
+           <height>25</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
           </size>
          </property>
          <property name="toolTip">
           <string>New</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton {
+	padding-right:14px;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+}
+QPushButton::menu-indicator {
+     image: url(img/tri_down.png);
+}</string>
          </property>
          <property name="text">
           <string/>
@@ -511,21 +696,36 @@
          </property>
         </widget>
        </item>
-       <item row="0" column="5">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
+       <item row="0" column="6">
+        <widget class="QToolButton" name="b_unindent">
+         <property name="minimumSize">
           <size>
-           <width>10</width>
-           <height>20</height>
+           <width>32</width>
+           <height>0</height>
           </size>
          </property>
-        </spacer>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Unindent</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/indent_remove.png</normaloff>img/indent_remove.png</iconset>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

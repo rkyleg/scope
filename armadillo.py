@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.0'
+__version__ = '0.8.1'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -37,7 +37,7 @@ class NewMenu(QtGui.QMenu):
         self.addSeparator()
         
         # Add Editor languages
-        for e in parent.editorD:
+        for e in sorted(parent.editorD):
             ld = parent.editorD[e]
             if ld != []:
                 lmenu = QtGui.QMenu(e,self)
@@ -412,6 +412,18 @@ class Armadillo(QtGui.QMainWindow):
         menu = self.createPopupMenu()
         menu.exec_(self.cursor().pos())
 
+    def isFileOpen(self,filename):
+        # Check if file open and return tab index
+        fileopen = -1
+        for i in range(self.ui.tab.count()):
+            file_id = self.ui.tab.tabData(i).toInt()[0]
+            wdg = self.tabD[file_id]
+            if wdg.filename != None and os.path.abspath(wdg.filename) == os.path.abspath(filename):
+                self.ui.tab.setCurrentIndex(i)
+                fileopen = i
+                break
+        return fileopen
+        
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
@@ -422,19 +434,12 @@ class Armadillo(QtGui.QMainWindow):
                 filename = str(filename)
         if filename != None:
             if os.path.isfile(filename):
-##                print 'opening file',filename
-                
-                
-                opennew = 1
-                for i in range(self.ui.tab.count()):
-                    file_id = self.ui.tab.tabData(i).toInt()[0]
-                    wdg = self.tabD[file_id]
-                    if wdg.filename != None and os.path.abspath(wdg.filename) == os.path.abspath(filename):
-                        self.ui.tab.setCurrentIndex(i)
-                        opennew = 0
-                        break
-                
-                if opennew:
+                # Check if file already open
+                file_open = self.isFileOpen(filename)
+                if file_open !=-1:
+                    self.ui.tab.setCurrentIndex(file_open)
+
+                else:
                     ext = os.path.splitext(str(filename))[1][1:]
                     lang = ext
 
@@ -974,7 +979,7 @@ class Armadillo(QtGui.QMainWindow):
                 self.pluginD['filebrowser'].wdg.ui.le_root.setText(wD['basefolder'])
                 self.pluginD['filebrowser'].wdg.loadRoot()
             
-            self.setWindowTitle('armadillo | '+wksp)
+            self.setWindowTitle('Armadillo | '+wksp)
             
             self.workspaceMenu.saveWact.setDisabled(0)
     
