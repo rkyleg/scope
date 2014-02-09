@@ -1,27 +1,27 @@
-# Armadillo IDE
+# ![Alt text](img/armadillo.png "Screenshot")Armadillo IDE
 ![Alt text](extra/screenshot.png "Screenshot")
 
 ## About
-Armadillo is a lightweight,cross-platform IDE primarily for Python and Web Development, while also providing an editor for most languages.  Armadillo is inspired by SPE, Geany, Notepad++ and Spyder.  Armadillo is written in Python with PyQt and HTML5 for the UI.  HTML5 is utilized with Qt's built in WebKit (QWebView).
+Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Development, while also providing an editor for most languages. Armadillo is inspired by SPE, Geany, Notepad++ and Spyder. Armadillo is written in Python with PyQt and HTML5 for the UI.  HTML5 is utilized for the ui with Qt's built in WebKit (QWebView).
 
 ## Features:
-
 - Cross Platform (Linux, Windows, and maybe Mac)
-- Handle Multiple languages (Python, Javascript, HTML,...)
-- Mostly Lightweight
+- Support for multiple languages (Python, Javascript, HTML,...)
+- Mostly lightweight
 - Code outline for code organization
 - Easily create plugins with Python and PyQt
-- Multiple options for code editors (Scintilla, CKEditor, Ace, more...)
+- Multiple options for code editors (Ace, Scintilla, CKEditor, more...)
 
 ## Requirements
-Armadillo must be run with Python.  I have only tested it on Linux (Mint 15/16) and Windows 7 so far.
-- Python 2.6-2.7 (Not tested with 2.6 although 2.6 should work)
-- PyQt 4.8-4.10 (Not tested with 5.x - probably doesn't work)
-- Python-Qsci (Required on Linux.  PyQt Windows installer has option to install this)
-- pyqt4-dev-tools (if you want to use pyqt converter on Linux)
+Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16) and Windows 7.
+- Python 2.6-2.7
+- PyQt 4.8-4.10
+- Additional Linux requirements
+-- Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
+-- pyqt4-dev-tools (if you want to use pyqt converter on Linux)
 
 ## Installing/Launching
-1. Install prerequisites above (Python and PyQt)
+1. Install Python and PyQt (and Linux packages if it applies)
 2. Linux - Set armadillo.sh properties to execute and run.
 4. Windows - Run armadillo.py
 
