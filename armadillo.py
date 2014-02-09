@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.3'
+__version__ = '0.8.4'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -123,20 +123,25 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'save.png')
         act = self.addAction(icn,'Save',self.parent.editorSave)
         
+        # Workspace
+        self.addMenu(self.parent.workspaceMenu)
+        
         self.addSeparator()
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
         act = self.addAction(icn,'Home',self.parent.addStart)
         
-        # Workspace
-        self.addMenu(self.parent.workspaceMenu)
-        
         # Plugins
         plugmenu = self.parent.createPopupMenu()
         plugmenu.setTitle('Plugins')
         plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
         self.addMenu(plugmenu)
+        
+        # Settings
+        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
+        act = self.addAction(icn,'Settings',self.parent.openSettings)
+        
         self.addSeparator()
         
         # Check for file changes
