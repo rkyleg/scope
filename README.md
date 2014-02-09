@@ -29,6 +29,10 @@ Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16)
 4. Windows - Run armadillo.py
 
 ## More Stuff
+- **[Overview](doc/overview.md)** - Overview of main window features
+- **[Editors](doc/editors.md)** - multiple code editors are available
+- **[Plugins](doc/plugins.md)** - comes with default plugins
+    - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
 - **Settings** are stored in **[settings.py](settings.py)** - *settings structure still in a state of change*
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Keyboard Shortcuts](doc/keyboard_shortcuts.html)**

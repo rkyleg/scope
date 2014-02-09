@@ -203,7 +203,7 @@ class DirTree(QtGui.QWidget):
                             f.close()
                             self.itmClick(fitm,0,toggleExpanded=0)
                             fitm.setExpanded(1)
-                elif acttxt == 'Rename File':
+                elif acttxt == 'Rename':
                     # Rename the file
                     fileopen = self.armadillo.isFileOpen(pth)
                     rename = 1
