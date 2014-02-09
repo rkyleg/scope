@@ -25,11 +25,8 @@ Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16)
 2. Linux - Set armadillo.sh properties to execute and run.
 4. Windows - Run armadillo.py
 
-## Settings
-- Settings are stored in [settings.py](settings.py)
-- *settings structure still in a state of change*
-
 ## More Stuff
+- **Settings** are stored in **[settings.py](settings.py)** - *settings structure still in a state of change*
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Keyboard Shortcuts](doc/keyboard_shortcuts.html)**
 - **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
