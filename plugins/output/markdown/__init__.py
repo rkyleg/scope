@@ -25,8 +25,8 @@ def generate(file):
             li.cancelled {text-decoration:line-through}
             li.future {font-style:italic;color:gray;}
     '''
-    for i in range(2,8):
-        mstyle += 'h'+str(i)+'{margin-left:'+str((i-1)*10)+'px;}'
+##    for i in range(2,8):
+##        mstyle += 'h'+str(i)+'{margin-left:'+str((i-1)*10)+'px;}'
     mhtml = '<style>'+mstyle+'</style>'
     
     mhtml += md

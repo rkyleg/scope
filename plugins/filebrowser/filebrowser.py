@@ -243,7 +243,8 @@ class DirTree(QtGui.QWidget):
                             fitm.setExpanded(1)
                 else:
                     # Open file in specific editor
-                    lang = acttxt[8:]
+                    lang = acttxt[10:]
+                    print lang
                     self.armadillo.openFile(pth,editor=lang)
     
     def openFile(self):

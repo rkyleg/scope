@@ -1,0 +1,62 @@
+body,table {
+    background:rgb(40,40,40);
+    font-family:sans,verdana;
+    color:white;
+}
+a {
+    text-decoration:none;
+    font-weight:bold;
+    color: #c1dbf4;
+}
+a:hover {
+    color: #1F45A1;
+}
+#version {
+    color:gray;
+    font-size:12px;
+    margin-bottom:4px;
+}
+/*---Workspace and New Buttons*/
+.newfile {  
+    background: rgb(100,100,100);
+    padding:3px;
+    border-radius:4px;
+    padding-left:6px;
+    padding-right:6px;
+    margin-top:2px;
+    color:white;
+}
+.newfile:hover {
+    background: rgb(120,120,120);
+}
+.workspace_panel{
+    background:rgb(80,80,80);
+    text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
+    color:rgb(40,40,40);
+    border-radius:5px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom:3px;
+    padding-top:3px;
+}
+/*---Main Section*/
+.main_section {
+    padding-left:10px;
+    background:rgb(60,60,60);
+    color:white;
+    border-radius:5px;
+}
+.main_toolbar {
+    
+}
+.toolbutton {  
+    background: rgb(100,100,100);
+    padding:2px;
+    border-radius:4px;
+    padding-left:6px;
+    margin-top:2px;
+    color:white;
+}
+.toolbutton:hover {
+    background: rgb(120,120,120);
+}

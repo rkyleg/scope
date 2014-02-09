@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.2'
+__version__ = '0.8.3'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -26,7 +26,7 @@ class NewMenu(QtGui.QMenu):
         self.setIcon(QtGui.QIcon(self.parent.iconPath+'new.png'))
         
         # Add Favorites First
-        for lang in parent.settings.favLang:
+        for lang in sorted(parent.settings.favLang):
             icn = None
             if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
                 icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
@@ -832,7 +832,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
         self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
-##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML='"+str(self.version)+"'")
+        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML=' version "+str(self.version)+"'")
         
         if openfile==-1:
             wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
