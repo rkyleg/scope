@@ -19,6 +19,9 @@ Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16)
 - Additional Linux requirements
     - Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
     - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
+    - For Debian/Ubuntu in command Window:
+        - > su
+        - > apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 
 ## Installing/Launching
 1. Install Python and PyQt (and Linux packages if it applies)

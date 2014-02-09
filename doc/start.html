@@ -1,91 +1,16 @@
 <head>
-    <style>
-        body {
-            background:rgb(40,40,40);
-            font-family:sans,verdana;
-        }
-        a {
-            text-decoration:none;
-            font-weight:bold;
-            color: #c1dbf4;
-        }
-        a:hover {
-            color: #1F45A1;
-        }
-        .newfile {  
-            background: rgb(100,100,100);
-            padding:2px;
-            border-radius:4px;
-            padding-left:6px;
-            margin-top:2px;
-            color:white;
-        }
-        .newfile:hover {
-            background: rgb(120,120,120);
-            
-        }
-        .workspace_panel{
-            background:rgb(80,80,80);
-            text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
-            color:rgb(40,40,40);
-            border-radius:9px;
-            padding-left:10px;
-            padding-right:10px;
-            padding-bottom:3px;
-            padding-top:3px;
-        }
-        .workspace_title {
-            background: #c1dbf4;
-            padding-left:4px;
-            padding-right:4px;
-            border-radius:3px;
-            padding-top:3px;
-            padding-bottom:2px;
-            margin-top:2px;
-        }
-        .workspace {  
-            text-align:center;
-            background: rgb(250,250,250);
-            color:black;
-            padding:2px;
-            border-radius:4px;
-            padding-left:4px;
-            padding-right:4px;
-            margin-top:2px;
-            display: inline-block;
-
-        }
-        .workspace:hover {
-            background: rgb(220,220,220);
-        }
-        .workspaceline {
-            height:2px;
-            color:rgb(80,80,80);
-            background-color:rgb(80,80,80);
-            border:0px;
-        }
-        .blueblob {
-            width:20px;
-            background:#2d6bb1;
-            display:block;
-        }
-    </style>
+    <link rel="stylesheet" type="text/css" href="doc.css">
 </head>
 <body>
 
-<table>
+<table width=100%>
     <tr>
-        <td>
+        <td colspan=2>
             <!---Logo-->
-            <h3 align=center style="color:white;"><img alt="" src="../img/armadillo.png" height="50px"/>
-            <Br><img src="../img/armadillo_txt.png" height=22px> <small id="version"></small></h3>
-        </td>
-        <td >
-            <!---Workspaces-->
-            <div class="workspace_panel">
-                Workspaces
-                <div id="workspaces"></div>
-            </div>
+            <span id="logo">
+                <img alt="" src="../img/armadillo.png" height="50px" />
+                <img src="../img/armadillo_txt.png" height=22px> <span id="version"></span>
+            </span>
         </td>
     </tr>
     <tr>
@@ -96,7 +21,13 @@
                 <div id="new_files"></div>
             </div>
         </td>
-        <td><div style="padding-left:10px;background:rgb(60,60,60);color:white;border-radius:8px;">
+        <td>
+            <!---Workspaces-->
+            <div class="workspace_panel" id="workspaces">
+                Workspaces: 
+            </div>
+            <br>
+            <div class="main_section">
             <!---Main Help-->
             <br>
             <h4>Getting Started</h4>
@@ -106,12 +37,12 @@
             </ul>
 
             <br><hr>
-            <h4>Settings</h4>
-            <ul>
-                <li>Settings are stored in settings.py.</li>
-                <li>A settings interface is planned for future development</li>
-                <li><a href="keyboard_shortcuts.html">Keyboard Shortcuts</a></li>
-            </ul>
+            <h4>More Info</h4>
+            <a href="editors.html" class="toolbutton">Editors</a> 
+            <a href="editors.html" class="toolbutton">Plugins</a> 
+            <a href="editors.html" class="toolbutton">Settings</a>
+            <a href="keyboard_shortcuts.html" class="toolbutton">Keyboard Shortcuts</a>
+            <br>
 
             <!--<br><hr>-->
             <!--<i>Armadillo is available free and open with the <a href="../LICENSE">GPL 3</a> license</i><br><br>-->

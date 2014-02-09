@@ -808,8 +808,16 @@ class Armadillo(QtGui.QMainWindow):
     #---Shortcuts
     def addStart(self,wdg=None):
         pth = 'doc/start.html'
-        if wdg in [None,True,False]:
+        
+##        if wdg in [None,True,False]:
+        openfile = self.isFileOpen(pth)
+        if openfile==-1:
             wdg = self.addEditorWidget('webview','Start',pth)
+        else:
+            self.ui.tab.setCurrentIndex(openfile)
+            QtGui.QApplication.processEvents()
+            wdg = self.ui.sw_main.currentWidget()
+        
         f = open(pth,'r')
         txt = f.read()
         f.close()
@@ -826,14 +834,16 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
 ##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML='"+str(self.version)+"'")
         
-        wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-        wdg.linkClicked.connect(self.urlClicked)
+        if openfile==-1:
+            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            wdg.linkClicked.connect(self.urlClicked)
         
         # Add Workspaces
-        wksp = ' '
+        wksp = 'Workspaces: '
         if os.path.exists(self.settingPath+'/workspaces'):
             for w in sorted(os.listdir(self.settingPath+'/workspaces')):
-                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
+##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
+                wksp += '<a href="workspace:'+w+'"><span class="newfile"><img src="../img/workspace.png"> '+w+'</span></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links

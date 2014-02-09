@@ -39,6 +39,7 @@
 - [ ] Hide editors - store open editors with a file?
 - [ ] Add Monkey
 - [ ] Store wordwrap preferences with language
+- [ ] Show line/column numbers in status bar
 
 ### Monkey
 - [f] pen monkey file type
