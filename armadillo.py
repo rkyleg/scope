@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.5'
+__version__ = '0.8.6'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -848,7 +848,7 @@ class Armadillo(QtGui.QMainWindow):
         if os.path.exists(self.settingPath+'/workspaces'):
             for w in sorted(os.listdir(self.settingPath+'/workspaces')):
 ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                wksp += '<a href="workspace:'+w+'"><span class="newfile"><img src="../img/workspace.png"> '+w+'</span></a> '
+                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"> '+w+'</span></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links

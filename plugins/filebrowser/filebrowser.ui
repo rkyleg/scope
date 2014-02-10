@@ -22,8 +22,13 @@
    </property>
    <item row="0" column="0">
     <widget class="QLineEdit" name="le_root">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
      <property name="styleSheet">
-      <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));
 color:white;
 border:0px;
 border-bottom:1px solid gray;</string>
@@ -33,6 +38,9 @@ border-bottom:1px solid gray;</string>
      </property>
      <property name="placeholderText">
       <string>Enter Root Path</string>
+     </property>
+     <property name="class" stdset="0">
+      <string/>
      </property>
     </widget>
    </item>

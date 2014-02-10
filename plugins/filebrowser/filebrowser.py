@@ -138,6 +138,7 @@ class DirTree(QtGui.QWidget):
 ##        print event
         menu = QtGui.QMenu('file menu')
         citm = self.ui.tr_dir.currentItem()
+        fitm = None
         if citm != None:
             pth = str(citm.text(1))
             fpth = pth # Folder path
@@ -163,9 +164,9 @@ class DirTree(QtGui.QWidget):
                 menu.addSeparator()
             
             # New File
-            if os.path.isdir(pth):
-                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
-                menu.addSeparator()
+##            if os.path.isdir(pth):
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
+            menu.addSeparator()
             
             # Other File Options
 ##            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'file_open.png'),'Open')
@@ -179,73 +180,87 @@ class DirTree(QtGui.QWidget):
             
             for act in menu.actions():  # Set Icon to visible
                 act.setIconVisibleInMenu(1)
+        else:
+            fpth = unicode(self.ui.le_root.text())
+            # New File
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
+            menu.addSeparator()
             
-            # Launch Menu
-            act = menu.exec_(self.ui.tr_dir.cursor().pos())
-            if act != None:
-                acttxt = str(act.text())
-                if acttxt == 'Edit':
-                    # Open File
-                    self.openFile()
-                elif acttxt == 'Open':
-                    try:
-                        os.startfile(pth)
-                    except:
-                        subprocess.Popen(['xdg-open', pth])
-                elif acttxt == 'New File':
-                    # New File
-                    resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New File','Enter the file name and extension.')
+        # Launch Menu
+        act = menu.exec_(self.ui.tr_dir.cursor().pos())
+        if act != None:
+            acttxt = str(act.text())
+            if acttxt == 'Edit':
+                # Open File
+                self.openFile()
+            elif acttxt == 'Open':
+                try:
+                    os.startfile(pth)
+                except:
+                    subprocess.Popen(['xdg-open', pth])
+            elif acttxt == 'New File':
+                # New File
+                resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New File','Enter the file name and extension.')
+                if ok and not resp.isEmpty():
+                    if os.path.exists(fpth+'/'+unicode(resp)):
+                        QtGui.QMessageBox.warning(self,'File Exists','That file already exists')
+                    else:
+                        f = open(fpth+'/'+unicode(resp),'w')
+                        f.close()
+                        if fitm != None:
+                            self.itmClick(fitm,0,toggleExpanded=0)
+                            fitm.setExpanded(1)
+                        else:
+                            self.loadRoot()
+            elif acttxt == 'Rename':
+                # Rename the file
+                fileopen = self.armadillo.isFileOpen(pth)
+                rename = 1
+                if fileopen != -1:
+                    rename = 0
+                    resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to rename.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                    if resp == QtGui.QMessageBox.Yes:
+                        rename = 1
+                        self.armadillo.closeTab(fileopen)
+                
+                if rename:
+                    resp,ok = QtGui.QInputDialog.getText(self.armadillo,'Rename File','Enter the file name and extension.',QtGui.QLineEdit.Normal,os.path.split(pth)[1])
                     if ok and not resp.isEmpty():
-                        if os.path.exists(fpth+'/'+unicode(resp)):
+                        newpth = fpth+'/'+unicode(resp)
+                        if os.path.exists(newpth):
                             QtGui.QMessageBox.warning(self,'File Exists','That file already exists')
                         else:
-                            f = open(fpth+'/'+unicode(resp),'w')
-                            f.close()
-                            self.itmClick(fitm,0,toggleExpanded=0)
-                            fitm.setExpanded(1)
-                elif acttxt == 'Rename':
-                    # Rename the file
-                    fileopen = self.armadillo.isFileOpen(pth)
-                    rename = 1
-                    if fileopen != -1:
-                        rename = 0
-                        resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to rename.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                        if resp == QtGui.QMessageBox.Yes:
-                            rename = 1
-                            self.armadillo.closeTab(fileopen)
-                    
-                    if rename:
-                        resp,ok = QtGui.QInputDialog.getText(self.armadillo,'Rename File','Enter the file name and extension.',QtGui.QLineEdit.Normal,os.path.split(pth)[1])
-                        if ok and not resp.isEmpty():
-                            newpth = fpth+'/'+unicode(resp)
-                            if os.path.exists(newpth):
-                                QtGui.QMessageBox.warning(self,'File Exists','That file already exists')
-                            else:
-                                os.rename(pth,newpth)
+                            os.rename(pth,newpth)
+                            if fitm != None:
                                 self.itmClick(fitm,0,toggleExpanded=0)
                                 fitm.setExpanded(1)
-                elif acttxt == 'Delete File':
-                    # Delete File
-                    fileopen = self.armadillo.isFileOpen(pth)
-                    delfile = 1
-                    if fileopen != -1:
-                        delfile = 0
-                        resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to delete.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                        if resp == QtGui.QMessageBox.Yes:
-                            delfile = 1
-                            self.armadillo.closeTab(fileopen)
-                    
-                    if delfile:
-                        resp = QtGui.QMessageBox.warning(self,'Delete File','Are you sure you want to delete the file:<br><br>'+pth,QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                        if resp == QtGui.QMessageBox.Yes:
-                            os.remove(pth)
+                            else:
+                                self.loadRoot()
+            elif acttxt == 'Delete File':
+                # Delete File
+                fileopen = self.armadillo.isFileOpen(pth)
+                delfile = 1
+                if fileopen != -1:
+                    delfile = 0
+                    resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to delete.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                    if resp == QtGui.QMessageBox.Yes:
+                        delfile = 1
+                        self.armadillo.closeTab(fileopen)
+                
+                if delfile:
+                    resp = QtGui.QMessageBox.warning(self,'Delete File','Are you sure you want to delete the file:<br><br>'+pth,QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                    if resp == QtGui.QMessageBox.Yes:
+                        os.remove(pth)
+                        if fitm != None:
                             self.itmClick(fitm,0,toggleExpanded=0)
                             fitm.setExpanded(1)
-                else:
-                    # Open file in specific editor
-                    lang = acttxt[10:]
-                    print lang
-                    self.armadillo.openFile(pth,editor=lang)
+                        else:
+                            self.loadRoot()
+            else:
+                # Open file in specific editor
+                lang = acttxt[10:]
+##                    print lang
+                self.armadillo.openFile(pth,editor=lang)
     
     def openFile(self):
         itm = self.ui.tr_dir.currentItem()

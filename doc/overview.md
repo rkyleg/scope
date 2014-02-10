@@ -12,7 +12,7 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
 ## Main Menu
 ![](img/main_menu.png)
 
-The main menu button is on the top left of the tabbar and stays open during Zen Mode
+The main menu button is on the top left of the tabbar and is available during Zen Mode.  It contains functions that are not necessarily tied to a keyboard shortcut
 
 - ![](../img/new.png) **New** - menu with list of default languages and all editor languages
 - ![](../img/file_open.png) **Open** - Popup to select a file

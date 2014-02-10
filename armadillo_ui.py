@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Feb  9 08:48:04 2014
+# Created: Sun Feb  9 16:22:12 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName(_fromUtf8("MainWindow"))
-        MainWindow.resize(739, 400)
+        MainWindow.resize(756, 397)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/armadillo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         MainWindow.setWindowIcon(icon)
@@ -127,9 +127,9 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.fr_find_2 = QtGui.QFrame(self.fr_find)
         self.fr_find_2.setStyleSheet(_fromUtf8("QFrame#fr_find_2 {\n"
-"background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+"color:white;\n"
 "border:0px;\n"
-"border-bottom:1px solid gray;\n"
 "border-radius:3px;\n"
 "}"))
         self.fr_find_2.setFrameShape(QtGui.QFrame.StyledPanel)
@@ -148,8 +148,12 @@ class Ui_MainWindow(object):
         self.gridLayout_9.addWidget(self.le_find, 0, 0, 1, 1)
         self.b_find = QtGui.QPushButton(self.fr_find_2)
         self.b_find.setMaximumSize(QtCore.QSize(16777215, 25))
-        self.b_find.setStyleSheet(_fromUtf8("QPushButton:hover,QToolButton:hover {\n"
-"    border-radius:3px;\n"
+        self.b_find.setStyleSheet(_fromUtf8("QPushButton {\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+"border-top-right-radius:3px;\n"
+"border-bottom-right-radius:3px;\n"
+"}\n"
+"QPushButton:hover,QToolButton:hover {\n"
 "    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
 "}"))
         self.b_find.setText(_fromUtf8(""))
@@ -162,10 +166,9 @@ class Ui_MainWindow(object):
         self.le_goto = QtGui.QLineEdit(self.fr_find)
         self.le_goto.setMinimumSize(QtCore.QSize(40, 24))
         self.le_goto.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.le_goto.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));\n"
+        self.le_goto.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
 "color:white;\n"
 "border:0px;\n"
-"border-bottom:1px solid gray;\n"
 "border-radius:3px;"))
         self.le_goto.setObjectName(_fromUtf8("le_goto"))
         self.gridLayout_4.addWidget(self.le_goto, 0, 1, 1, 1)
@@ -335,6 +338,7 @@ class Ui_MainWindow(object):
         self.b_help.setToolTip(_translate("MainWindow", "afide Help", None))
         self.le_find.setPlaceholderText(_translate("MainWindow", "Find", None))
         self.le_goto.setPlaceholderText(_translate("MainWindow", "goto", None))
+        self.le_goto.setProperty("class", _translate("MainWindow", "darklineedit", None))
         self.b_main.setToolTip(_translate("MainWindow", "Armidillo Menu", None))
         self.b_workspace.setToolTip(_translate("MainWindow", "Workspaces", None))
         self.b_wordwrap.setToolTip(_translate("MainWindow", "Toggle Wordwrap", None))

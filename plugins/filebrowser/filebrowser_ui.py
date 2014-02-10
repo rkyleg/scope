@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Sat Feb  8 21:10:50 2014
+# Created: Sun Feb  9 16:24:41 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,10 +32,14 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.le_root = QtGui.QLineEdit(Form)
-        self.le_root.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(29, 29, 29, 255), stop:0.0845771 rgba(54, 54, 54, 255), stop:0.850746 rgba(94, 94, 94, 255), stop:1 rgba(119, 119, 119, 255));\n"
+        font = QtGui.QFont()
+        font.setPointSize(8)
+        self.le_root.setFont(font)
+        self.le_root.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
 "color:white;\n"
 "border:0px;\n"
 "border-bottom:1px solid gray;"))
+        self.le_root.setProperty("class", _fromUtf8(""))
         self.le_root.setObjectName(_fromUtf8("le_root"))
         self.gridLayout.addWidget(self.le_root, 0, 0, 1, 1)
         self.tr_dir = QtGui.QTreeWidget(Form)

@@ -39,6 +39,19 @@ a:hover {
     padding-bottom:3px;
     padding-top:3px;
 }
+.workspace {  
+    background: rgb(100,100,100);
+    padding:3px;
+    border-radius:4px;
+    padding-left:6px;
+    padding-right:6px;
+    margin-top:2px;
+    color:white;
+    display:inline-block;
+}
+.workspace:hover {
+    background: rgb(120,120,120);
+}
 /*---Main Section*/
 .main_section {
     padding-left:10px;

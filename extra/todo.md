@@ -8,7 +8,7 @@
 - [ ] sys.argv file open work
 - [x] Fix editor buttons checking if functions available
 - [-] Save file uses extensions (with all option)
-- [ ] Save as (save menu maybe)
+- [f] Save as (save menu maybe)
 - [x] if save or load fails - display message
 - [-] if find not found - add statusbar message
 - [x] improve statusbar save formatting
@@ -39,7 +39,7 @@
 - [ ] Hide editors - store open editors with a file?
 - [ ] Add Monkey
 - [ ] Store wordwrap preferences with language
-- [ ] Show line/column numbers in status bar
+- [f] Show column numbers in status bar
 
 ### Monkey
 - [f] pen monkey file type
@@ -51,7 +51,7 @@
 - [x] Check for text changed (asterix to tab)
 
 ### Scintilla
-- [ ] Fix autocomplete when hitting any key (set to return or tab only)
+- [-] Fix autocomplete when hitting any key (set to return or tab only)
 - [x] Add Icon
 - [f] check line syntax
 
@@ -84,13 +84,13 @@
 - Languages
  - [x] Markdown
 - [f] Use themes for color coding
-- [-] Right click refresh
+- [-] Right click refresh (ctrl+o instead)
 - [f] toggle autorefreshing
 - [x] ctrl+o to show outline
 
 ### Python Shell
 - [x] Fix mouse cursor messing up code
-- [ ] Auto complete would be nice
+- [f] Auto complete would be nice
 - [x] syntax highlighting
 - [ ] Fix selection replace/delete bug
 
@@ -107,6 +107,7 @@
 - [f] Goto current file/tab
 - [x] Double click toggles expand
 - [x] Improve tree formatting
+- [ ] create new file in main directory
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
