@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Feb  9 16:22:12 2014
+# Created: Sun Feb  9 21:42:09 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -205,10 +205,9 @@ class Ui_MainWindow(object):
         self.b_workspace.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_workspace.setStyleSheet(_fromUtf8("QPushButton {\n"
 "    border-left:1px solid rgb(100,100,100);\n"
-"    padding-right:14px;\n"
 "}\n"
 "QPushButton::menu-indicator {\n"
-"     image: url(img/tri_down.png);\n"
+"     image: url(none.png);\n"
 "}"))
         self.b_workspace.setText(_fromUtf8(""))
         icon7 = QtGui.QIcon()
@@ -292,12 +291,11 @@ class Ui_MainWindow(object):
         self.b_new.setMinimumSize(QtCore.QSize(40, 25))
         self.b_new.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_new.setStyleSheet(_fromUtf8("QPushButton {\n"
-"    padding-right:14px;\n"
 "    border-top-left-radius:5px;\n"
 "    border-bottom-left-radius:5px;\n"
 "}\n"
 "QPushButton::menu-indicator {\n"
-"     image: url(img/tri_down.png);\n"
+"     image: url(none.png);\n"
 "}"))
         self.b_new.setText(_fromUtf8(""))
         icon13 = QtGui.QIcon()

@@ -442,10 +442,9 @@ QPushButton:hover {
          <property name="styleSheet">
           <string notr="true">QPushButton {
 	border-left:1px solid rgb(100,100,100);
-	padding-right:14px;
 }
 QPushButton::menu-indicator {
-     image: url(img/tri_down.png);
+     image: url(none.png);
 }</string>
          </property>
          <property name="text">
@@ -685,12 +684,11 @@ QPushButton::menu-indicator {
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton {
-	padding-right:14px;
 	border-top-left-radius:5px;
 	border-bottom-left-radius:5px;
 }
 QPushButton::menu-indicator {
-     image: url(img/tri_down.png);
+     image: url(none.png);
 }</string>
          </property>
          <property name="text">
