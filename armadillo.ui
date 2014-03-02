@@ -173,7 +173,7 @@ QPushButton:hover,QToolButton:hover {
           </size>
          </property>
          <property name="toolTip">
-          <string>afide Help</string>
+          <string>Armadillo start page and help links</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QToolButton {

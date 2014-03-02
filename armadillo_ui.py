@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Feb  9 21:42:09 2014
+# Created: Fri Feb 14 08:56:04 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -333,7 +333,7 @@ class Ui_MainWindow(object):
         self.b_plugins.setToolTip(_translate("MainWindow", "Show/Hide Plugins and Toolbars", None))
         self.b_comment.setToolTip(_translate("MainWindow", "Comment/Uncomment", None))
         self.b_indent.setToolTip(_translate("MainWindow", "Indent", None))
-        self.b_help.setToolTip(_translate("MainWindow", "afide Help", None))
+        self.b_help.setToolTip(_translate("MainWindow", "Armadillo start page and help links", None))
         self.le_find.setPlaceholderText(_translate("MainWindow", "Find", None))
         self.le_goto.setPlaceholderText(_translate("MainWindow", "goto", None))
         self.le_goto.setProperty("class", _translate("MainWindow", "darklineedit", None))
