@@ -174,16 +174,16 @@ class Armadillo(QtGui.QMainWindow):
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
         
-##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
-##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
-##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
-        
         # Settings
         self.workspace = None
         self.loadSettings()
         self.startinit = 1
         self.fileLastCheck = time.time()
         QtGui.QApplication.setStyle(self.settings.widgetstyle)
+        
+##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
+##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
+##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
         # Style
         f = open('styles/default.style','r')

@@ -58,7 +58,7 @@ class Outline(QtGui.QWidget):
                 spc = (len(t) -len(t.lstrip()))*' '
                 tls = t.lstrip()
                 
-                #---Python
+        #--- Python
                 if wdg.lang == 'python':
                     if tls.startswith('def '):
                         itmText = tls[4:-1]
@@ -71,7 +71,7 @@ class Outline(QtGui.QWidget):
                         ##if itmText == '': itmText = None
                         typ = 'heading'
                     
-                #--- Javascript
+        #--- Javascript
                 elif wdg.lang == 'javascript':
                     if tls.startswith('function'):
                         itmText =tls[9:].rstrip()
@@ -84,7 +84,7 @@ class Outline(QtGui.QWidget):
 ##                        itmText =tls
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
 ##                        typ = 'function'                
-                #--- CSS
+        #--- CSS
                 elif wdg.lang == 'css':
                     if tls.startswith('/*---'):
                         itmText =tls[5:].split('*/')[0]
@@ -102,7 +102,7 @@ class Outline(QtGui.QWidget):
                             else:
                                 typ = 'object'
                 
-                #--- HTML
+        #--- HTML
                 elif wdg.lang in ['html','thtml']:
                     if tls.lower().startswith('<body'):
                         itmText = '<BODY>'
@@ -117,7 +117,7 @@ class Outline(QtGui.QWidget):
                         itmText =tls[5:].replace('-->','')
                         typ = 'heading'
                 
-                #--- Markdown
+        #--- Markdown
                 elif wdg.lang == 'markdown':
                     if tls.startswith('#'): # Heading
                         h = tls.split(' ')[0].count('#')
@@ -128,7 +128,7 @@ class Outline(QtGui.QWidget):
                         else:
                             typ='function'
                 
-                # Add Outline Item
+        # Add Outline Item
                 if itmText != None:
                     itmText = spc +itmText
                     itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])

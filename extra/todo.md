@@ -5,7 +5,7 @@
 - [f] Check if files edited/saved outside of editor continous
 - [f] Try to open in default editor, otherwise if language does not exist, try other editors
 - [f] Add more language icons
-- [ ] sys.argv file open work
+- [x] sys.argv file open work
 - [x] Fix editor buttons checking if functions available
 - [-] Save file uses extensions (with all option)
 - [f] Save as (save menu maybe)
@@ -14,7 +14,7 @@
 - [x] improve statusbar save formatting
 - [x] Workspace menu icons
 - [x] Startpage not showing new favorites
-- [ ] Have other Widgets that load in a new tab
+- [f] Have other Widgets that load in a new tab
 - [x] Compile to exe
 - [x] Add start like button to top to access menu
 - [ ] DOCUMENTATION
@@ -72,7 +72,7 @@
 - [-] Add find tag/branch function
 - [x] When opening start at cursor position 1
 - [x] Right click edit behaviours
-- [ ] disable drag and drop in webpage
+- [x] disable drag and drop in webpage
 
 ## Plugins
 - [ ] Snippets plugin
@@ -83,7 +83,7 @@
 
 ### Outline
 - Languages
- - [x] Markdown
+  - [x] Markdown
 - [f] Use themes for color coding
 - [-] Right click refresh (ctrl+o instead)
 - [f] toggle autorefreshing
@@ -92,6 +92,7 @@
 ### Python Shell
 - [x] Fix mouse cursor messing up code
 - [f] Auto complete would be nice
+- [ ] upon import - add completion to editor
 - [x] syntax highlighting
 - [ ] Fix selection replace/delete bug
 
@@ -101,21 +102,22 @@
 - [x] be able to launch file with os default (do this for unknown extensions on double click)
 - [x] right click new file (select from extensions
 - [x] delete file option
-- [ ] Reload option
+- [f] Reload option
 - [x] rename file (also has to rename if file open in editor or at least check first)
 - [f] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
 - [f] Goto current file/tab
 - [x] Double click toggles expand
 - [x] Improve tree formatting
-- [ ] create new file in main directory
+- [x] create new file in main directory
+- [ ] copy file
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
 - [f] Create markdown viewer
-- [ ] switch to main markdown package
-- [ ] add markdown preview
+- [x] switch to main markdown package
+- [x] add markdown preview
 
 ## Other Random TODO
-- [ ] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
+- [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
 - [ ] Add other widgets as tabs (that aren't editors)
