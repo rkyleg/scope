@@ -1,4 +1,4 @@
-from PyQt4 import QtGui, QtCore
+from PyQt4 import QtGui, QtCore , QtWebKit
 from output_ui import Ui_Form
 import sys, os, re, webbrowser
 
@@ -10,7 +10,7 @@ class Output(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.afide = parent
+        self.armadillo = parent
         
         self.process = None
 
@@ -23,8 +23,8 @@ class Output(QtGui.QWidget):
             match   = re_loc.match(pth)
             fileName    = match.group(1)
             lineno      = int(match.group(2))
-            self.afide.openFile(fileName)
-            self.afide.currentWidget().gotoLine(lineno-1)
+            self.armadillo.openFile(fileName)
+            self.armadillo.currentWidget().gotoLine(lineno-1)
         except:
             print('error: could not goto file')
     
@@ -60,13 +60,14 @@ class Output(QtGui.QWidget):
             if cmd == 'webbrowser':
                 webbrowser.open(filename)
             elif cmd == 'markdown':
-                import markdown
-                markdown.generate(filename)
+                import mkdown
+                html = mkdown.generate(filename)
+                self.webview_preview(html,filename)
             else:
             
-                if not self.afide.pluginD['output'].isVisible():
-                    self.afide.pluginD['output'].show()
-                self.afide.pluginD['output'].raise_()
+                if not self.armadillo.pluginD['output'].isVisible():
+                    self.armadillo.pluginD['output'].show()
+                self.armadillo.pluginD['output'].raise_()
                 
                 self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b></div><br>')
                 self.process = QtCore.QProcess()
@@ -77,3 +78,40 @@ class Output(QtGui.QWidget):
                 self.process.readyReadStandardOutput.connect(self.readOutput)
                 self.process.readyReadStandardError.connect(self.readErrors)
                 self.process.finished.connect(self.finished)
+
+    def webview_preview(self,html,burl=None):
+        openfile = self.armadillo.isFileOpen('preview')
+        if openfile==-1:
+            wdg = self.armadillo.addEditorWidget('webview','Preview','preview')
+            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            wdg.linkClicked.connect(self.urlClicked)
+        else:
+            self.armadillo.ui.tab.setCurrentIndex(openfile)
+            QtGui.QApplication.processEvents()
+            wdg = self.armadillo.ui.sw_main.currentWidget()
+        
+        if burl != None:
+            if os.name =='nt':
+                pfx="file:///"
+            else:
+                pfx="file://"
+            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+
+        wdg.setText(html,burl)
+
+        wdg.viewOnly = 1
+        wdg.modTime = None
+        QtGui.QApplication.processEvents()
+        self.armadillo.changeTab(self.armadillo.ui.tab.currentIndex())
+        self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
+    
+    def urlClicked(self,url):
+        lnk = str(url.toString())
+        wdg = self.armadillo.ui.sw_main.currentWidget()
+        if lnk.startswith('file:') and lnk.endswith('.md'):
+            filename = str(url.path())
+            import mkdown
+            html = mkdown.generate(filename)
+            self.webview_preview(html,filename)
+        else:
+            wdg.load(url)

@@ -315,3 +315,8 @@ class WebView(QtWebKit.QWebView):
         self.wrapBehaviours = abs(self.wrapBehaviours-1)
         js = 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
         self.page().mainFrame().evaluateJavaScript(js)
+    
+    def dropEvent(self,event):
+        # Ignore drop event
+        pass
+        

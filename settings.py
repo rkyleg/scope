@@ -31,6 +31,7 @@ class Settings(object):
         'text':{'editor':'scintilla'},
         'markdown':{'editor':'ace'},
         'sql':{'editor':'ace'},
+        'handlebars':{'editor':'ace'},
     }
     
     #---Editors
@@ -106,4 +107,5 @@ class Settings(object):
         'h':'cpp',
         'ino':'cpp', # Arduino
         'mky':'monkey',
+        'thtml':'handlebars', # Mustache/Handlebars HTML template file
     }

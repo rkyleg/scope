@@ -103,7 +103,7 @@ class Outline(QtGui.QWidget):
                                 typ = 'object'
                 
                 #--- HTML
-                elif wdg.lang == 'html':
+                elif wdg.lang in ['html','thtml']:
                     if tls.lower().startswith('<body'):
                         itmText = '<BODY>'
                         typ = 'object'

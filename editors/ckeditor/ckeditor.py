@@ -99,3 +99,7 @@ class WebView(QtWebKit.QWebView):
         
     def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
+
+    def dropEvent(self,event):
+        # Ignore drop event
+        pass

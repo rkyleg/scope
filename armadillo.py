@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.8.6'
+__version__ = '0.8.7'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -199,9 +199,9 @@ class Armadillo(QtGui.QMainWindow):
         
         #--- Setup Tab Toolbar
         self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
-        self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+##        self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.tabtoolbar.setFloatable(False)
-        self.ui.tabtoolbar.setMovable(True)
+        self.ui.tabtoolbar.setMovable(False)
         self.ui.tabtoolbar.setProperty("class","editorTabBar")
         self.ui.tabtoolbar.setObjectName('editorTabBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
@@ -213,9 +213,9 @@ class Armadillo(QtGui.QMainWindow):
         
         # Toolbutton Toolbar
         self.ui.toolbar = QtGui.QToolBar("toolBar",self)
-        self.ui.toolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+##        self.ui.toolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.toolbar.setFloatable(False)
-        self.ui.toolbar.setMovable(True)
+        self.ui.toolbar.setMovable(False)
         self.ui.toolbar.setProperty("class","toolBar")
         self.ui.toolbar.setObjectName('toolBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.toolbar)
@@ -223,18 +223,14 @@ class Armadillo(QtGui.QMainWindow):
         
         # Find Toolbar
         self.ui.findbar = QtGui.QToolBar("findBar",self)
-        self.ui.findbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+##        self.ui.findbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.findbar.setFloatable(False)
-        self.ui.findbar.setMovable(True)
+        self.ui.findbar.setMovable(False)
         self.ui.findbar.setProperty("class","findBar")
         self.ui.findbar.setObjectName('findBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
         self.ui.findbar.addWidget(self.ui.fr_find)
-        
-        
-        
 
-        
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
         self.ui.tab.setObjectName('editorTabs')

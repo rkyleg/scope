@@ -72,6 +72,7 @@
 - [-] Add find tag/branch function
 - [x] When opening start at cursor position 1
 - [x] Right click edit behaviours
+- [ ] disable drag and drop in webpage
 
 ## Plugins
 - [ ] Snippets plugin
@@ -112,6 +113,8 @@
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
 - [f] Create markdown viewer
+- [ ] switch to main markdown package
+- [ ] add markdown preview
 
 ## Other Random TODO
 - [ ] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)

@@ -1,18 +1,35 @@
-import markdown2, os, sys
+import os, sys
+
+try:
+    import markdown
+except:
+    import markdown2 as markdown
 
 #file = r'/media/hdesktop/hmedia/Software/afide/extra/todo.md'
 
 def generate(file):
     # Open File
     f = open(file,'r')
-    html = f.read()
+    rawhtml = f.read()
     f.close()
     
+    # Parse
+    html = ''
+    txtlines = rawhtml.replace('\r\n','\n').replace('\r','\n').split('\n')
+    for t in txtlines:
+        if not t.startswith('> '):
+            # Ignore comments
+            html += t+'\n'
+    
+##    html=rawhtml
+        
+    
     # Get Markdown
-    md = markdown2.markdown(html)#,extras=['cuddled-lists','wiki-tables'])
+    md = markdown.markdown(html)#,extras=['cuddled-lists','wiki-tables'])
     
     # Custom Markdown modifications
     md = md.replace('<li>[ ]','<li class="checkbox"><input type="checkbox" disabled="disabled">')
+    md = md.replace('<li>[]','<li class="checkbox"><input type="checkbox" disabled="disabled">')
     md = md.replace('<li>[x]','<li class="checkbox"><input type="checkbox" checked="checked" disabled="disabled">')
     md = md.replace('<li>[-]','<li class="cancelled"><input type="checkbox" checked="checked" disabled="disabled">')
     md = md.replace('<li>[f]','<li class="future"><input type="checkbox" disabled="disabled"> FUTURE')
@@ -32,17 +49,19 @@ def generate(file):
     mhtml += md
     
     # Get html path
-    pth = os.path.dirname(file)
-    nm = os.path.basename(file).split('.')[0]
-    fpth = pth+'/'+nm+'.html'
+##    pth = os.path.dirname(file)
+##    nm = os.path.basename(file).split('.')[0]
+##    fpth = pth+'/'+nm+'.html'
     
-    # Write to file
-    f = open(fpth,'w')
-    f.write(mhtml)
-    f.close()
-
-    import webbrowser
-    webbrowser.open(fpth)
+    return mhtml
+    
+##    # Write to file
+##    f = open(fpth,'w')
+##    f.write(mhtml)
+##    f.close()
+##
+##    import webbrowser
+##    webbrowser.open(fpth)
 
 #generate(file)
 
