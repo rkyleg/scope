@@ -14,14 +14,17 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
 
 ## Requirements
 Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16) and Windows 7.
+
 - Python 2.6-2.7
 - PyQt 4.8-4.10
 - Additional Linux requirements
     - Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
     - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
     - For Debian/Ubuntu in command Window:
-        - > su
-        - > apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
+        - \> su
+        - \> apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
+- Optional
+    - markdown-python (if not installed it includes [markdown2](https://github.com/trentm/python-markdown2))
 
 ## Installing/Launching
 1. Install Python and PyQt (and Linux packages if it applies)
