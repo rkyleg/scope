@@ -17,7 +17,7 @@ def generate(file):
     html = ''
     txtlines = rawhtml.replace('\r\n','\n').replace('\r','\n').split('\n')
     for t in txtlines:
-        if not t.startswith('> '):
+##        if not t.startswith('>> '):
             # Ignore comments
             html += t+'\n'
     

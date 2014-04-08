@@ -32,6 +32,7 @@ class Settings(object):
         'markdown':{'editor':'ace'},
         'sql':{'editor':'ace'},
         'handlebars':{'editor':'ace'},
+        'jade':{'editor':'ace'},
     }
     
     #---Editors
@@ -108,4 +109,5 @@ class Settings(object):
         'ino':'cpp', # Arduino
         'mky':'monkey',
         'thtml':'handlebars', # Mustache/Handlebars HTML template file
+        'jade':'jade',
     }

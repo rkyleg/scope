@@ -117,6 +117,8 @@
 - [f] Create markdown viewer
 - [x] switch to main markdown package
 - [x] add markdown preview
+- [ ] have additional markdown settings based on markdown-python extras
+- [ ] markdown preview - has html save as option
 
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
