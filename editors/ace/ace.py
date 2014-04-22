@@ -9,7 +9,7 @@ class jsObject(QtCore.QObject):
         self.cliptxt = ''
         self.parent = parent
 
-    @QtCore.pyqtSlot(str)
+    @QtCore.pyqtSlot('QString')
     def getHtml(self,text):
         self.editorHtml=text
 
@@ -210,7 +210,7 @@ class WebView(QtWebKit.QWebView):
     
     def paste(self):
         clip = QtGui.QApplication.clipboard()
-        txt = unicode(clip.text())
+        txt =str(clip.text().toUtf8()).decode('utf-8')
         if txt != '':
             self.editorJS.cliptxt = txt#.replace("'","''")
             self.page().mainFrame().evaluateJavaScript(
@@ -219,7 +219,8 @@ class WebView(QtWebKit.QWebView):
 
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getValue());")
-        return self.editorJS.editorHtml
+        txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
+        return txt
     
     def setText(self,txt):
         self.editorJS.editorHtml = txt#.replace("'","''")

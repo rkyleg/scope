@@ -42,7 +42,7 @@ class Sci(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ui.te_sci.ARROW_MARKER_NUM = 8
-        
+        self.ui.te_sci.setUtf8(True)
         self.afide = parent
         self.okedit = 1
         
@@ -51,7 +51,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
 
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
-
+        
         # Font
         font = QFont()
         font.setFamily('Courier')
@@ -118,7 +118,8 @@ class Sci(QtGui.QWidget):
 ##        self.ui.te_sci.replaceSelectedText(txt)
     
     def getText(self):
-        return self.ui.te_sci.text()
+        txt = str(self.ui.te_sci.text().toUtf8()).decode('utf-8')
+        return txt
 
     def find(self,txt,re=0,cs=0,wo=0):
         return self.ui.te_sci.findFirst(txt,re,cs,wo,1)

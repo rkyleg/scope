@@ -89,7 +89,8 @@ class WebView(QtWebKit.QWebView):
         
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(CKEDITOR.instances.editor1.getData());")
-        return self.editorJS.editorHtml
+        txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
+        return txt
     
     def setText(self,txt):
         self.editorJS.editorHtml = txt.replace("'","''")

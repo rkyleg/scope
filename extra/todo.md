@@ -73,6 +73,7 @@
 - [x] When opening start at cursor position 1
 - [x] Right click edit behaviours
 - [x] disable drag and drop in webpage
+- [x] add autocomplete
 
 ## Plugins
 - [ ] Snippets plugin

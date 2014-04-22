@@ -547,7 +547,8 @@ class Armadillo(QtGui.QMainWindow):
         # Indicate if text changed
         wdg = self.currentWidget()
         try:
-            if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+##            if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+            if wdg.lastText != wdg.getText():
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
             else:
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
@@ -625,7 +626,8 @@ class Armadillo(QtGui.QMainWindow):
         else:
             if 'getText' in dir(wdg):
                 try:
-                    if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+##                    if wdg.lastText != unicode(wdg.getText(),'utf-8'):
+                    if wdg.lastText != wdg.getText():
                         resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
                         if resp == QtGui.QMessageBox.Yes:
                             self.editorSave()
@@ -667,8 +669,10 @@ class Armadillo(QtGui.QMainWindow):
         if filename != None:
             try:
 ##                f = open(wdg.filename,'w')
-                txt = unicode(wdg.getText(),encoding='utf-8')
-                f = codecs.open(wdg.filename,'w','utf-8')
+##            txt = unicode(wdg.getText(),encoding='utf-8')
+##            txt = str(wdg.getText().toUtf8()).decode('utf-8')
+                txt = wdg.getText()
+                f = codecs.open(wdg.filename,'w','utf8')
                 f.write(txt)
                 f.close()
                 wdg.lastText = txt
