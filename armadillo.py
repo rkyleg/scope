@@ -781,6 +781,7 @@ class Armadillo(QtGui.QMainWindow):
         import settings
         self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.py'
         self.settings = settings.Settings()
+        
     def loadSettings2(self):
         self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings'
         f = open(self.settings_filename,'r')
@@ -828,8 +829,8 @@ class Armadillo(QtGui.QMainWindow):
                 self.restoreState(wingeo)
         
     def openSettings(self):
-##        self.openFile(self.settings_filename)
-        wdg = self.addEditorWidget('settings','Settings',self.settings_filename)
+        self.openFile(self.settings_filename)
+##        wdg = self.addEditorWidget('settings','Settings',self.settings_filename)
 
     def saveSettings(self):
         # Create settings directory
