@@ -31,3 +31,8 @@ def addEditor(parent,lang,filename):
 def getLang():
     return sorted(langD)
     
+def getSettings():
+    settingsD = {
+        'wordwrap':{'type':'bool'}
+    }
+    return settingsD

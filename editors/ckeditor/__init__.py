@@ -16,3 +16,6 @@ def addEditor(parent,lang,filename):
 
 def getLang():
     return ['html']
+
+def getSettings():
+    return {}

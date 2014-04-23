@@ -2,7 +2,7 @@ import os
 
 class Settings(object):
     #---Editors (that are available)
-    activeEditors = ['scintilla','ace','ckeditor']#,'monkey']
+##    activeEditors = ['scintilla','ace','ckeditor']#,'monkey']
     
     # Default Editor
     defaultEditor = 'scintilla'
@@ -48,9 +48,8 @@ class Settings(object):
         },
         'ckeditor':{
         },
-        'webview':{
-        },
-##        'monkey':{
+##        'webview':{
+##        },##        'monkey':{
 ##        }
     }
     

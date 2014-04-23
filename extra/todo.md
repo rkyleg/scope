@@ -17,28 +17,28 @@
 - [f] Have other Widgets that load in a new tab
 - [x] Compile to exe
 - [x] Add start like button to top to access menu
-- [ ] DOCUMENTATION
+- [] DOCUMENTATION
 - [x] BUG - if closing in zen mode - don't save window state
 
 ### Startpage
 - [x] Update theme
 
 ### Settings
-- [ ] Save settings in separate location (load defaults first)
-- [ ] Themes - dark one
-- [ ] Save settings for each editor and outline???
-- [ ] Settings button can load 
-- [ ] Settings page like webview (use alpaca)?
+- [] Save settings in separate location (load defaults first)
+- [] Themes - dark one
+- [] Save settings for each editor and outline???
+- [] Settings button can load 
+- [] Settings page like webview (use alpaca)?
 - [x] Native or plastique style
-- [ ] have default settings in __init__ of each editor/plugin
-- [ ] have settings folder - in main directory?? or use user directory
-- [ ] option to store settings in os or with editor folder
+- [] have default settings in __init__ of each editor/plugin
+- [] have settings folder - in main directory?? or use user directory
+- [] option to store settings in os or with editor folder
 
 ## Editors
-- [ ] Editor specific plugins view?
-- [ ] Hide editors - store open editors with a file?
-- [ ] Add Monkey
-- [ ] Store wordwrap preferences with language
+- [] Editor specific plugins view?
+- [] Hide editors - store open editors with a file?
+- [] Add Monkey
+- [] Store wordwrap preferences with language
 - [f] Show column numbers in status bar
 
 ### Monkey
@@ -74,13 +74,14 @@
 - [x] Right click edit behaviours
 - [x] disable drag and drop in webpage
 - [x] add autocomplete
+- [] fix find/replace with a '
 
 ## Plugins
-- [ ] Snippets plugin
-- [ ] Spellcheck plugin
-- [ ] Help plugin (with search, maybe based on current file language)
-- [ ] Python code editor to run on current tab
-- [ ] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
+- [] Snippets plugin
+- [] Spellcheck plugin
+- [] Help plugin (with search, maybe based on current file language)
+- [] Python code editor to run on current tab
+- [] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 
 ### Outline
 - Languages
@@ -93,13 +94,13 @@
 ### Python Shell
 - [x] Fix mouse cursor messing up code
 - [f] Auto complete would be nice
-- [ ] upon import - add completion to editor
+- [] upon import - add completion to editor
 - [x] syntax highlighting
-- [ ] Fix selection replace/delete bug
+- [] Fix selection replace/delete bug
 
 ### File Browser
 - [x] Return press opens folder
-- [ ] toggle to view all files
+- [] toggle to view all files
 - [x] be able to launch file with os default (do this for unknown extensions on double click)
 - [x] right click new file (select from extensions
 - [x] delete file option
@@ -111,16 +112,16 @@
 - [x] Double click toggles expand
 - [x] Improve tree formatting
 - [x] create new file in main directory
-- [ ] copy file
+- [] copy file
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
 - [f] Create markdown viewer
 - [x] switch to main markdown package
 - [x] add markdown preview
-- [ ] have additional markdown settings based on markdown-python extras
-- [ ] markdown preview - has html save as option
+- [] have additional markdown settings based on markdown-python extras
+- [] markdown preview - has html save as option
 
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
-- [ ] Add other widgets as tabs (that aren't editors)
+- [] Add other widgets as tabs (that aren't editors)

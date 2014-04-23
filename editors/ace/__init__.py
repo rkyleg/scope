@@ -23,3 +23,20 @@ def getLang():
             lexers.append(f[5:-3])
     
     return lexers
+
+def getSettings():
+    
+    # Get Theme list
+    fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
+    themes = []
+    for f in sorted(os.listdir(fld)):
+        if f.startswith('theme'):
+            themes.append(f[6:-3])
+
+    settingsD = {
+        'wordwrap':{'type':'bool'},
+        'behavioursEnabled':{'type':'bool','tooltip':'autocomplete quotation marks, parenthesis, and brackets'},
+        'wrapBehavioursEnabled':{'type':'bool','tooltip':'use automatic wrapping after certain characters like brackets'},
+        'theme':{'type':'list','options':themes},
+    }
+    return settingsD

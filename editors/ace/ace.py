@@ -276,6 +276,7 @@ class WebView(QtWebKit.QWebView):
         
         ctxt = self.editorJS.editorHtml
         if unicode(ctxt).lower() == unicode(ftxt).lower():
+##            if '"' in rtxt: rtxt=rtxt.replace('"','\"')
             js = "editor.replace('"+rtxt+"');"
             self.page().mainFrame().evaluateJavaScript(js)
             QtGui.QApplication.processEvents()
@@ -283,6 +284,8 @@ class WebView(QtWebKit.QWebView):
         if re: tre='true'
         if cs: tcs='true'
         if wo: two='true'
+        
+##        if "'" in ftxt: ftxt=ftxt.replace("'","\''")
     
         js = "editor.find('"+ftxt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
         
