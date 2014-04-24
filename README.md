@@ -53,3 +53,4 @@ Thanks to the following tools that Armadillo is built on:
 - [Silk Icons](http://www.famfamfam.com/lab/icons/silk/) - main ui icon set
 - [Python Markdown2](https://github.com/trentm/python-markdown2) - for generating html from markdown
 - [File Icon Set](https://github.com/teambox/Free-file-icons) - for most file type icons
+- [ConfigObj](http://www.voidspace.org.uk/python/configobj.html) - for settings file

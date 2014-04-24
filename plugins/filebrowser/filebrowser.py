@@ -11,7 +11,7 @@ class DirTree(QtGui.QWidget):
 
 ##        self.extD = ['py','txt','html','htm','css','js','txt']
 ##        if self.armadillo != None:
-        self.extD = self.armadillo.settings.ext
+        self.extD = self.armadillo.settings['extensions']
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
@@ -152,8 +152,8 @@ class DirTree(QtGui.QWidget):
                 # Open menu
                 lang = None
                 cnt = 0
-                if ext in self.armadillo.settings.ext:
-                    lang = self.armadillo.settings.ext[ext]
+                if ext in self.armadillo.settings['extensions']:
+                    lang = self.armadillo.settings['extensions'][ext]
                 for edtr in self.armadillo.editorD:
                     if lang in self.armadillo.editorD[edtr] or ext in self.armadillo.editorD[edtr]:
                         menu.addAction(QtGui.QIcon(self.armadillo.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)

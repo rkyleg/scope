@@ -80,33 +80,40 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().addToJavaScriptWindowObject('pythonjs',self.editorJS)
         QtGui.QApplication.processEvents()
         
+        # Default settings
+        theme = 'twighlight'
+        self.wrapBehaviours = 1
+        self.behaviours = 1
+        
         # Setup Editor
 ##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
-        if 'theme' in self.parent.settings.editors['ace']:
-            js += 'editor.setTheme("ace/theme/'+self.parent.settings.editors['ace']['theme']+'");'
-        self.wrapBehaviours = 1
-        if 'wrapBehavioursEnabled' in self.parent.settings.editors['ace']:
-            js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.parent.settings.editors['ace']['wrapBehavioursEnabled']]+');'
-            self.wrapBehaviours = self.parent.settings.editors['ace']['wrapBehavioursEnabled']
-        self.behaviours = 1
-        if 'behavioursEnabled' in self.parent.settings.editors['ace']:
-            js += 'editor.setBehavioursEnabled('+['false','true'][self.parent.settings.editors['ace']['behavioursEnabled']]+');'
-            self.behaviours = self.parent.settings.editors['ace']['behavioursEnabled']
+        if 'theme' in self.parent.settings['fav_lang']['default']:
+            js += 'editor.setTheme("ace/theme/'+self.parent.settings['fav_lang']['default']['theme']+'");'
+        
+        if 'wrapBehavioursEnabled' in self.parent.settings['fav_lang']['default']:
+            self.wrapBehaviours = int(self.parent.settings['fav_lang']['default']['wrapBehavioursEnabled'])
+            js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
+            
+        
+        if 'behavioursEnabled' in self.parent.settings['fav_lang']['default']:
+            self.behaviours = int(self.parent.settings['fav_lang']['default']['behavioursEnabled'])
+            js += 'editor.setBehavioursEnabled('+['false','true'][self.behaviours]+');'
         
         self.page().mainFrame().evaluateJavaScript(js)
         
         # Additional Settings
-        if 'settingJS' in self.parent.settings.editors['ace']:
-            jstxt = self.parent.settings.editors['ace']['settingJS']
-            js = ''
-            for jt in jstxt.split('\n'):
-                txt = jt.strip()
-                if not txt.endswith(';'): txt = txt=';'
-                js += jstxt
-            
-            if js != '':
-                self.page().mainFrame().evaluateJavaScript(js)
+##        if 'settingJS' in self.parent.settings.editors['ace']:
+##            jstxt = self.parent.settings.editors['ace']['settingJS']
+        jstxt = 'editor.setHighlightSelectedWord(false); editor.setOptions({enableBasicAutocompletion: true});'
+        js = ''
+        for jt in jstxt.split('\n'):
+            txt = jt.strip()
+            if not txt.endswith(';'): txt = txt=';'
+            js += jstxt
+        
+        if js != '':
+            self.page().mainFrame().evaluateJavaScript(js)
         
         
         self.gotoLine(1)

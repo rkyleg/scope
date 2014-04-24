@@ -19,6 +19,7 @@
 - [x] Add start like button to top to access menu
 - [] DOCUMENTATION
 - [x] BUG - if closing in zen mode - don't save window state
+- [] check if extension = language if not found elsewhere
 
 ### Startpage
 - [x] Update theme
