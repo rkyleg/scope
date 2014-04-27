@@ -459,6 +459,7 @@ class Armadillo(QtGui.QMainWindow):
                     txt = f.read()
                     f.close()
                     wdg.setText(txt)
+                    QtGui.QApplication.processEvents()
                     wdg.lastText = txt
                     self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
                     wdg.modTime = os.path.getmtime(filename)
@@ -466,6 +467,13 @@ class Armadillo(QtGui.QMainWindow):
 ##                    self.fileModD[filename]=os.path.getmtime(filename)
                     self.updateOutline()
                     
+                    # Set wordwrap if in settings
+                    QtGui.QApplication.processEvents()
+                    if lang in self.settings['fav_lang']:
+                        if 'wordwrap' in self.settings['fav_lang'][lang]:
+                            wdg.wordwrapmode = int(self.settings['fav_lang'][lang]['wordwrap'])
+                            self.editorWordWrap()
+                            
                     # Remove startpage
                     if self.startinit:
                         for i in range(self.ui.tab.count()):
@@ -620,6 +628,9 @@ class Armadillo(QtGui.QMainWindow):
             icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
         self.ui.tab.setTabIcon(sw_ind,icn)
 
+        # Setup wordwrap
+        
+        
         return wdg
 
     def checkSave(self,wdg):
