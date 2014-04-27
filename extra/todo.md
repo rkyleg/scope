@@ -20,6 +20,7 @@
 - [] DOCUMENTATION
 - [x] BUG - if closing in zen mode - don't save window state
 - [] check if extension = language if not found elsewhere
+- [] merge default settings and user settings
 
 ### Startpage
 - [x] Update theme
