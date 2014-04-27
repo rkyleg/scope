@@ -582,8 +582,16 @@ class Armadillo(QtGui.QMainWindow):
                 editor = 'settings'
             else:
                 editor = self.settings['fav_lang']['default']['editor']
+                
+                if lang not in self.editorD[editor]:
+                    for e in self.editorD:
+                        if lang in self.editorD[e]:
+                            editor = e
+                            break
+                
         if not editor in self.settings['editors'] and not editor in ['webview','settings']:
             editor = self.settings['fav_lang']['default']['editor']
+            
         exec("import editors."+editor)
         exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
 
