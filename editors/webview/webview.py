@@ -31,3 +31,30 @@ class WebView(QtWebKit.QWebView):
 
     def find(self,txt,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
+    
+    def load2(self,url):
+        # Custom load for handling markdown urls and external
+        
+        lnk = str(url.toString())
+            # Markdown
+        if lnk.startswith('file:') and lnk.endswith('.md'):
+            filename = str(url.path())
+            import plugins.mkdown as mkdown
+            html = mkdown.generate(filename)
+            
+            burl = url
+##            if burl != None:
+##                if os.name =='nt':
+##                    pfx="file:///"
+##                else:
+##                    pfx="file://"
+##                burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+
+            self.setText(html,burl)
+            
+        elif lnk.startswith('http') or lnk.startswith('www'):
+            # External links
+            import webbrowser
+            webbrowser.open(lnk)
+        else:
+            self.load(url)

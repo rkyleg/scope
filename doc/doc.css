@@ -1,15 +1,31 @@
 body,table {
-    background:rgb(40,40,40);
     font-family:sans,verdana;
-    color:white;
+    /*background:rgb(220,220,220);*/
+    
+    
+    color:rgb(60,60,60);
 }
+
+body {
+    background: #dbdbdb; /* Old browsers */
+    background: -moz-linear-gradient(left,  #dbdbdb 0%, #f7f7f7 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dbdbdb), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* IE10+ */
+    background: linear-gradient(to right,  #dbdbdb 0%,#f7f7f7 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#f7f7f7',GradientType=1 ); /* IE6-9 */
+
+}
+
 a {
     text-decoration:none;
-    font-weight:bold;
-    color: #c1dbf4;
+    /*font-weight:bold;*/
+    
+    color: rgb(22,90,117);
 }
 a:hover {
-    color: #1F45A1;
+    color: rgb(47,127,158);
 }
 #version {
     color:gray;
@@ -18,7 +34,7 @@ a:hover {
 }
 /*---Workspace and New Buttons*/
 .newfile {  
-    background: rgb(100,100,100);
+    background: rgb(140,140,140);
     padding:3px;
     border-radius:4px;
     padding-left:6px;
@@ -30,9 +46,9 @@ a:hover {
     background: rgb(120,120,120);
 }
 .workspace_panel{
-    background:rgb(80,80,80);
+    background:rgb(180,180,180);
     text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
-    color:rgb(40,40,40);
+    color:rgb(80,80,80);
     border-radius:5px;
     padding-left:10px;
     padding-right:10px;
@@ -40,7 +56,7 @@ a:hover {
     padding-top:3px;
 }
 .workspace {  
-    background: rgb(100,100,100);
+    background: rgb(140,140,140);
     padding:3px;
     border-radius:4px;
     padding-left:6px;
@@ -55,21 +71,25 @@ a:hover {
 /*---Main Section*/
 .main_section {
     padding-left:10px;
-    background:rgb(60,60,60);
-    color:white;
+    margin-top:10px;
+    padding-top:8px;
+    background:rgb(255,255,255);
+    color:rgb(60,60,60);
     border-radius:5px;
 }
 .main_toolbar {
     
 }
 .toolbutton {  
-    background: rgb(100,100,100);
+    background: rgb(140,140,140);
     padding:2px;
     border-radius:4px;
     padding-left:6px;
+    padding-right:6px;
     margin-top:2px;
     color:white;
 }
 .toolbutton:hover {
     background: rgb(120,120,120);
+    color:white;
 }

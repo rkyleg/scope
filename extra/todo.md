@@ -24,10 +24,11 @@
 
 ### Startpage
 - [x] Update theme
-- [] Create light theme
+- [x] Create light theme
 
 ### Documentation
-- [] Just use markdown viewer
+- [x] Just use markdown viewer
+- [x] Update settings documentation
 
 ### Settings
 - [x] Save settings in separate location (load defaults first)
@@ -83,7 +84,7 @@
 - [] fix find/replace with a '
 
 ### Webview
-- [] if markdown, generate
+- [x] if markdown, generate
 - [x] move markdown outside of output
 
 

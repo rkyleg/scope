@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="doc.css">
 
-# [Home](start.html) | [Plugins](plugins.html) | Outline
+# [Home](start.html) | [Plugins](plugins.md) | Outline
 
 - The Outline plugin outlines the code structure to help with organization
 - Provides links to get to code sections
@@ -14,6 +14,7 @@
 - CSS
 - HTML
 - Markdown
+- ini/config
 
 ## Comment Protocol
 To add a comment to the outline, you typically add 3 dashes (---) after the comment character.
@@ -23,3 +24,4 @@ To add a comment to the outline, you typically add 3 dashes (---) after the comm
 - **CSS:** /\*---Comment\*/
 - **HTML:** &lt;!---Comment--&gt;
 - **Markdown:** (not available)
+- **ini/configobj** #---Comment

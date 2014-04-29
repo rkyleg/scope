@@ -127,6 +127,20 @@ class Outline(QtGui.QWidget):
                             typ='object'
                         else:
                             typ='function'
+        #--- Ini/Config
+                elif wdg.lang == 'ini':
+                    if tls.lower().startswith('['):
+                        h = tls.split(' ')[0].count('[')
+                        head = tls.replace('[','').replace(']','')
+                        itmText = (h-1)*4*' '+head
+                        if h==1:
+                            typ='object'
+                        else:
+                            typ='function'
+                    elif tls.startswith('['):
+                        itmText =tls[4:].lstrip('-')
+                        ##if itmText == '': itmText = None
+                        typ = 'heading'
                 
         # Add Outline Item
                 if itmText != None:

@@ -56,10 +56,10 @@ The following settings are saved for each workspace:
 ## Editor Tabs
 - A given file can only be open in one tab
 - Ctrl + Tab will toggle through the open editor tabs
-- Drag and drop files into the tab area to open them
+- Drag and drop files into the tab area to open them (in Windows this is sometimes finicky)
 
 ## ![](../img/tri_right.png) Run
 - The run function works with the following file types:
     - **Python** - runs in an external process and displays any output in the Output plugin.  (Only one Python file can be run at a time)
     - **HTML** - opens in external browser
-    - **Markdown** - converts to html with similar file name and opens in external browser
+    - **Markdown** - loads in a preview tab

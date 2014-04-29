@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.2'
+__version__ = '0.9.3'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -926,7 +926,7 @@ class Armadillo(QtGui.QMainWindow):
         elif lnk.endswith('start.html'):
             self.addStart(wdg = wdg)
         else:
-            wdg.load(url)
+            wdg.load2(url)
     
     def findFocus(self):
         if self.ui.findbar.isHidden():

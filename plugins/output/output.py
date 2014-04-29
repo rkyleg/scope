@@ -106,12 +106,14 @@ class Output(QtGui.QWidget):
         self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
     
     def urlClicked(self,url):
-        lnk = str(url.toString())
         wdg = self.armadillo.ui.sw_main.currentWidget()
-        if lnk.startswith('file:') and lnk.endswith('.md'):
-            filename = str(url.path())
-            import mkdown
-            html = mkdown.generate(filename)
-            self.webview_preview(html,filename)
-        else:
-            wdg.load(url)
+        wdg.load2(url)
+##        lnk = str(url.toString())
+##        wdg = self.armadillo.ui.sw_main.currentWidget()
+##        if lnk.startswith('file:') and lnk.endswith('.md'):
+##            filename = str(url.path())
+##            import plugins.mkdown as mkdown
+##            html = mkdown.generate(filename)
+##            self.webview_preview(html,filename)
+##        else:
+##            wdg.load(url)
