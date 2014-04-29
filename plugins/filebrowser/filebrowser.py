@@ -107,7 +107,7 @@ class DirTree(QtGui.QWidget):
                     citm.setIcon(0,QtGui.QIcon(self.armadillo.iconPath+'folder.png'))
                     dircontents.append(citm)
             # Add Files
-            for f in dirlist:
+            for f in sorted(dirlist, key=lambda s: s.lower()):
                 citm = QtGui.QTreeWidgetItem([f,pth+f])
                 
                 ext = os.path.splitext(f)[1][1:]

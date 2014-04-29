@@ -17,30 +17,34 @@
 - [f] Have other Widgets that load in a new tab
 - [x] Compile to exe
 - [x] Add start like button to top to access menu
-- [] DOCUMENTATION
 - [x] BUG - if closing in zen mode - don't save window state
-- [] check if extension = language if not found elsewhere
-- [] merge default settings and user settings
+- [x] check if extension = language if not found elsewhere
+- [x] merge default settings and user settings
+- [x] Load workspace closes open files
 
 ### Startpage
 - [x] Update theme
+- [] Create light theme
+
+### Documentation
+- [] Just use markdown viewer
 
 ### Settings
-- [] Save settings in separate location (load defaults first)
-- [] Themes - dark one
-- [] Save settings for each editor and outline???
-- [] Settings button can load 
-- [] Settings page like webview (use alpaca)?
+- [x] Save settings in separate location (load defaults first)
+- [f] Themes - dark one
+- [x] Save settings for each editor and outline???
+- [x] Settings button can load 
+- [f] Settings page like webview (use alpaca)?
 - [x] Native or plastique style
-- [] have default settings in __init__ of each editor/plugin
-- [] have settings folder - in main directory?? or use user directory
-- [] option to store settings in os or with editor folder
+- [f] have default settings in __init__ of each editor/plugin
+- [x] have settings folder - in main directory?? or use user directory
+- [f] option to store settings in os or with editor folder
 
 ## Editors
 - [] Editor specific plugins view?
 - [] Hide editors - store open editors with a file?
 - [] Add Monkey
-- [] Store wordwrap preferences with language
+- [x] Store wordwrap preferences with language
 - [f] Show column numbers in status bar
 
 ### Monkey
@@ -48,7 +52,7 @@
 - [f] get rid of projects tab
 - [f] Run will update preview
 
-## CKEditor
+### CKEditor
 - [x] Add text alignment
 - [x] Check for text changed (asterix to tab)
 
@@ -77,6 +81,11 @@
 - [x] disable drag and drop in webpage
 - [x] add autocomplete
 - [] fix find/replace with a '
+
+### Webview
+- [] if markdown, generate
+- [x] move markdown outside of output
+
 
 ## Plugins
 - [] Snippets plugin
@@ -122,7 +131,7 @@
 - [x] switch to main markdown package
 - [x] add markdown preview
 - [] have additional markdown settings based on markdown-python extras
-- [] markdown preview - has html save as option
+- [] markdown compile
 
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)

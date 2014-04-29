@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.0'
+__version__ = '0.9.2'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -293,14 +293,18 @@ class Armadillo(QtGui.QMainWindow):
         
         #--- Get Editor Languages
         self.editorD = {}
-        activeEditors = ['scintilla','ace','ckeditor']
-        for e in activeEditors:
+        
+        for e in self.settings['editors']:
             exec('import editors.'+e)
             try:
                 exec('ld = editors.'+e+'.getLang()')
             except:
                 ld = []
             self.editorD[e] = ld
+
+            for l in ld:
+                if l not in self.settings['extensions']:
+                    self.settings['extensions'][l]=l
             
         #--- Add Plugins
         self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
@@ -479,9 +483,9 @@ class Armadillo(QtGui.QMainWindow):
                         for i in range(self.ui.tab.count()):
                             file_id = self.ui.tab.tabData(i).toInt()[0]
                             if file_id == 0:
+                                self.closeTab(i)
+                                self.startinit=0
                                 break
-                        self.closeTab(i)
-                        self.startinit=0
 
         
     #---Editor
@@ -589,8 +593,8 @@ class Armadillo(QtGui.QMainWindow):
                             editor = e
                             break
                 
-        if not editor in self.settings['editors'] and not editor in ['webview','settings']:
-            editor = self.settings['fav_lang']['default']['editor']
+##        if not editor in self.settings['editors'] and not editor in ['webview','settings']:
+##            editor = self.settings['fav_lang']['default']['editor']
             
         exec("import editors."+editor)
         exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
@@ -756,9 +760,7 @@ class Armadillo(QtGui.QMainWindow):
             except:
                 pass
             
-
     #---Plugins
-##    def addPlugin(self,wdg,dockarea,title):
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
 
@@ -797,10 +799,6 @@ class Armadillo(QtGui.QMainWindow):
 
     #---Settings
     def loadSettings(self):
-##        import settings
-##        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings.py'
-##        self.settings = settings.Settings()
-
         # Create settings directory
         if not os.path.exists(self.settingPath):
             os.mkdir(self.settingPath)
@@ -811,57 +809,22 @@ class Armadillo(QtGui.QMainWindow):
 
         from plugins.configobj import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
+        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
         try:
-            config = configobj.ConfigObj(self.settings_filename)
+            usr_config = configobj.ConfigObj(self.settings_filename)
+            config.merge(usr_config)
         except:
-            QtGui.QMessageBox.warnign(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings')
-            self.settings_filename =os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf'
-            onfig = configobj.ConfigObj(self.settings_filename)
+            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings')
+##            self.settings_filename =os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf'
         self.settings = config
+        
+##        print self.settings
         
         # add run to settings
         self.settings['run']={}
         for l in self.settings['fav_lang']:
             if 'run' in self.settings['fav_lang'][l]:
                 self.settings['run'][l]=self.settings['fav_lang'][l]['run']
-        
-        
-##        print self.settings
-##    def loadSettings2(self):
-##        self.settings_filename = os.path.abspath(os.path.dirname(__file__))+'/settings'
-##        f = open(self.settings_filename,'r')
-##        txt = f.read()
-##        f.close()
-##        
-##        # Parse settings yaml like file
-##        self.settings = {}
-##        prev_lvl = [None,None,None,None]
-##        prev_spc = None
-##        txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
-##        for t in txtlines:
-##            ts = t.strip()
-##            if ts.startswith('#'):
-##                break
-##            spc = (len(t) - len(t.lstrip()))/4.0
-##            prop_val = ts.split(':')
-##            if len(prop_val) ==1:
-##                val = {}
-##            else:
-##                val = prop_val[1].split('#')[0].strip()
-##            prop = prop_val[0].strip()
-##            if spc==0:
-##                # New Top Item
-##                self.settings[prop]=val
-##                prev_lvl[0]=self.settings[prop]
-##                prev_spc = spc
-##            elif prev_spc != None:
-##                if spc ==prev_spc:
-##                    prev_lvl[spc-1][prop]=val
-##                elif spc>prev_spc:
-##                    prev_lvl[prop]=val
-##            
-##            print self.settings
-                
     
     def loadSetup(self):
         # Geometry 
@@ -875,13 +838,8 @@ class Armadillo(QtGui.QMainWindow):
         
     def openSettings(self):
         self.openFile(self.settings_filename)
-##        wdg = self.addEditorWidget('settings','Settings',self.settings_filename)
 
     def saveSettings(self):
-##        # Create settings directory
-##        if not os.path.exists(self.settingPath):
-##            os.mkdir(self.settingPath)
-
         if not self.zen:
             self.toggleZen()
             QtGui.QApplication.processEvents()
@@ -1046,18 +1004,19 @@ class Armadillo(QtGui.QMainWindow):
                 ok =1
                 
         # Close open files
-##        cancelled = 0
-##        # Check if anything needs saving
-##        for i in range(self.ui.tab.count()-1,-1,-1):
-##            file_id = self.ui.tab.tabData(i).toInt()[0]
-##            wdg = self.tabD[file_id]
-##            ok = self.checkSave(wdg)
-##            if not ok:
-##                cancelled = 1
-##                break
-##            self.closeTab(i)
-##        ok = not cancelled
-##        QtGui.QApplication.processEvents()
+        cancelled = 0
+        # Check if anything needs saving
+        for i in range(self.ui.tab.count()-1,-1,-1):
+            file_id = self.ui.tab.tabData(i).toInt()[0]
+            wdg = self.tabD[file_id]
+            ok = self.checkSave(wdg)
+            if not ok:
+                cancelled = 1
+                break
+            self.closeTab(i)
+        ok = not cancelled
+        QtGui.QApplication.processEvents()
+        
         # Load workspace
         if ok:
             self.workspace=wksp

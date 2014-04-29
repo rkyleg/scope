@@ -60,7 +60,7 @@ class Output(QtGui.QWidget):
             if cmd == 'webbrowser':
                 webbrowser.open(filename)
             elif cmd == 'markdown':
-                import mkdown
+                import plugins.mkdown as mkdown
                 html = mkdown.generate(filename)
                 self.webview_preview(html,filename)
             else:
