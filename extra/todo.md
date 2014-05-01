@@ -89,11 +89,11 @@
 
 
 ## Plugins
-- [] Snippets plugin
-- [] Spellcheck plugin
-- [] Help plugin (with search, maybe based on current file language)
-- [] Python code editor to run on current tab
-- [] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
+- [f] Snippets plugin
+- [f] Spellcheck plugin
+- [f] Help plugin (with search, maybe based on current file language)
+- [f] Python code editor to run on current tab
+- [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 
 ### Outline
 - Languages

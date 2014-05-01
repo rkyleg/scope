@@ -53,10 +53,12 @@ The following settings are saved for each workspace:
 - Last opened files
 - What plugins and toolbars are visible
 
-## Editor Tabs
+## Editor
 - A given file can only be open in one tab
 - Ctrl + Tab will toggle through the open editor tabs
 - Drag and drop files into the tab area to open them (in Windows this is sometimes finicky)
+- Files are saved as utf-8
+- Tab indentation is 4 spaces
 
 ## ![](../img/tri_right.png) Run
 - The run function works with the following file types:

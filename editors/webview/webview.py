@@ -38,7 +38,7 @@ class WebView(QtWebKit.QWebView):
         lnk = str(url.toString())
             # Markdown
         if lnk.startswith('file:') and lnk.endswith('.md'):
-            filename = str(url.path())
+            filename = str(url.toLocalFile())
             import plugins.mkdown as mkdown
             html = mkdown.generate(filename)
             
