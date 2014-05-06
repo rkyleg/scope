@@ -30,7 +30,7 @@ def generate(file):
     # Custom Markdown modifications
     md = md.replace('<li>[ ]','<li class="checkbox"><input type="checkbox" disabled="disabled">')
     md = md.replace('<li>[]','<li class="checkbox"><input type="checkbox" disabled="disabled">')
-    md = md.replace('<li>[x]','<li class="checkbox"><input type="checkbox" checked="checked" disabled="disabled">')
+    md = md.replace('<li>[x]','<li class="checkbox checked"><input type="checkbox" checked="checked" disabled="disabled">')
     md = md.replace('<li>[-]','<li class="cancelled"><input type="checkbox" checked="checked" disabled="disabled">')
     md = md.replace('<li>[f]','<li class="future"><input type="checkbox" disabled="disabled"> FUTURE')
     
@@ -39,8 +39,9 @@ def generate(file):
             h1{border-bottom:2px solid gray;}
             h2,h3,h4,h5,h6,h7 {border-bottom:1px solid gray;}
             li.checkbox,li.cancelled,li.future {list-style-type: none;margin-left:-25px;}
-            li.cancelled {text-decoration:line-through}
+            li.cancelled {text-decoration:line-through;color:gray;}
             li.future {font-style:italic;color:gray;}
+            li.checked {color:gray;} 
     '''
 ##    for i in range(2,8):
 ##        mstyle += 'h'+str(i)+'{margin-left:'+str((i-1)*10)+'px;}'

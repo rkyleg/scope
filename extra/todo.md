@@ -97,11 +97,12 @@
 
 ### Outline
 - Languages
-  - [x] Markdown
+    - [x] Markdown
 - [f] Use themes for color coding
 - [-] Right click refresh (ctrl+o instead)
 - [f] toggle autorefreshing
 - [x] ctrl+o to show outline
+- [] Delete pages when closing tabs
 
 ### Python Shell
 - [x] Fix mouse cursor messing up code
@@ -128,11 +129,20 @@
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
-- [f] Create markdown viewer
+- [x] Create markdown viewer
 - [x] switch to main markdown package
 - [x] add markdown preview
-- [] have additional markdown settings based on markdown-python extras
-- [] markdown compile
+- [f] have additional markdown settings based on markdown-python extras
+- [f] markdown compile
+- [] allow running multiple outputs - add tabs for each and stop button
+- [] goto correct output tab when switching tabs
+
+### Snippets
+- [] search
+- [] list of snippets
+- [] show code with formatting (scintilla for now)
+- [] save button for snippets
+- [] use settings for snippets location (home default)
 
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
