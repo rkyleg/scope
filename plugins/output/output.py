@@ -29,7 +29,7 @@ class Output(QtGui.QWidget):
             print('error: could not goto file')
     
     def readOutput(self):
-        self.appendText(QtCore.QString(self.process.readAllStandardOutput()),plaintext=1)
+        self.appendText(QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;')),plaintext=1)
         
     def readErrors(self):
         txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()))+"</font><br>"
