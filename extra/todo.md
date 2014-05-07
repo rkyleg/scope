@@ -81,7 +81,7 @@
 - [x] Right click edit behaviours
 - [x] disable drag and drop in webpage
 - [x] add autocomplete
-- [] fix find/replace with a '
+- [x] fix find/replace with a '
 
 ### Webview
 - [x] if markdown, generate

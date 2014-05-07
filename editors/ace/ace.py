@@ -271,7 +271,9 @@ class WebView(QtWebKit.QWebView):
         if cs: tcs='true'
         if wo: two='true'
     
-        js = "editor.find('"+txt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
+        self.editorJS.editorHtml = txt#.replace("'","''")
+        js='''var txt =  pythonjs.html;
+        editor.find(txt,{backwards:false,wrap:true,caseSensitive:'''+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
         self.page().mainFrame().evaluateJavaScript(js)
     
     def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
@@ -284,7 +286,8 @@ class WebView(QtWebKit.QWebView):
         ctxt = self.editorJS.editorHtml
         if unicode(ctxt).lower() == unicode(ftxt).lower():
 ##            if '"' in rtxt: rtxt=rtxt.replace('"','\"')
-            js = "editor.replace('"+rtxt+"');"
+            self.editorJS.editorHtml = rtxt
+            js = "var rtxt =  pythonjs.html;editor.replace(rtxt);"
             self.page().mainFrame().evaluateJavaScript(js)
             QtGui.QApplication.processEvents()
         tre=tcs=two = 'false'
@@ -293,9 +296,9 @@ class WebView(QtWebKit.QWebView):
         if wo: two='true'
         
 ##        if "'" in ftxt: ftxt=ftxt.replace("'","\''")
-    
-        js = "editor.find('"+ftxt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
-        
+        self.editorJS.editorHtml = ftxt
+        js='''var ftxt =  pythonjs.html;
+        editor.find(ftxt,{backwards:false,wrap:true,caseSensitive:'''+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
         self.page().mainFrame().evaluateJavaScript(js)
 
     def replaceAll(self,ftxt,rtxt,re=0,cs=0,wo=0):
@@ -303,9 +306,13 @@ class WebView(QtWebKit.QWebView):
         if re: tre='true'
         if cs: tcs='true'
         if wo: two='true'
-    
-        js = "editor.find('"+ftxt+"',{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
-        js += "editor.replaceAll('"+rtxt+"');"
+        self.editorJS.editorHtml = ftxt
+        js='var ftxt =  pythonjs.html;'
+        js += "editor.find(ftxt,{backwards:false,wrap:true,caseSensitive:"+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
+        self.page().mainFrame().evaluateJavaScript(js)
+        self.editorJS.editorHtml = rtxt
+        js='var rtxt =  pythonjs.html;'
+        js += "editor.replaceAll(rtxt);"
         self.page().mainFrame().evaluateJavaScript(js)
         
     def gotoLine(self,line):
