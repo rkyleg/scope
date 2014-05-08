@@ -36,7 +36,11 @@ Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16)
 - **[Editors](doc/editors.md)** - multiple code editors are available
 - **[Plugins](doc/plugins.md)** - comes with default plugins
     - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
-- **Settings** are stored in **[settings.py](settings.py)** - *settings structure still in a state of change*
+    - Python Shell - integrated Python Interpreter
+    - PyQt Converter - convert Qt ui files to PyQt .py files
+    - Find / Replace - advanced find/replace tool
+    - Snippets - store and retreive useful code snippets
+- **[Settings](doc/settings.md)** - settings are stored in config file
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Keyboard Shortcuts](doc/keyboard_shortcuts.html)**
 - **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
