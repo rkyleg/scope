@@ -41,5 +41,5 @@ Armadillo 2.0 will allow for better/easier user customization
 Features that can be added independent of version
 
 - [ ] Spellcheck plugin
-- [ ] Snippets plugin
+- [x] Snippets plugin
 - [x] Better documentation/integrated help (maybe as a plugin)

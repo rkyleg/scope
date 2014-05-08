@@ -89,7 +89,7 @@
 
 
 ## Plugins
-- [f] Snippets plugin
+- [x] Snippets plugin
 - [f] Spellcheck plugin
 - [f] Help plugin (with search, maybe based on current file language)
 - [f] Python code editor to run on current tab
@@ -103,6 +103,7 @@
 - [f] toggle autorefreshing
 - [x] ctrl+o to show outline
 - [] Delete pages when closing tabs
+- [] search outline
 
 ### Python Shell
 - [x] Fix mouse cursor messing up code
@@ -134,15 +135,17 @@
 - [x] add markdown preview
 - [f] have additional markdown settings based on markdown-python extras
 - [f] markdown compile
-- [] allow running multiple outputs - add tabs for each and stop button
-- [] goto correct output tab when switching tabs
+- [f] allow running multiple outputs - add tabs for each and stop button
+- [f] goto correct output tab when switching tabs
 
 ### Snippets
-- [] search
-- [] list of snippets
-- [] show code with formatting (scintilla for now)
-- [] save button for snippets
-- [] use settings for snippets location (home default)
+- [x] search
+- [x] list of snippets
+- [x] show code with formatting (scintilla for now)
+- [x] edit/save snippets
+- [x] use settings for snippets location (home default)
+- [] search within files
+- [x] double click to copy to clipboard
 
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)

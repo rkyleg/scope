@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.4'
+__version__ = '0.9.5'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -767,7 +767,13 @@ class Armadillo(QtGui.QMainWindow):
         exec('import plugins.'+plug)
         os.chdir(self.pluginPath+plug)
         exec('dwdg = plugins.'+plug+'.addDock(self)')
-        title = self.settings['plugins'][plug]['title']
+        if plug in self.settings['plugins']:
+            title = self.settings['plugins'][plug]['title']
+            dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+        else:
+            # Default info
+            title = plug.capitalize()
+            dockarea =self.dockareaD['bottom']
         if plug == 'pycute': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
         dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
         
