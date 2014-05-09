@@ -55,6 +55,10 @@ Different settings for the editor can be set for the default and each language. 
 - wrapBehavioursEnabled
     - ace wrapBehaviours (currently only works for ace - other editors ignore)
     - default = 1
+- run
+    - the run command to run
+- run_args
+    - a list of args to append to the run command
 
 ### Extensions
 If you need to specify that a file extension goes with a specific language.

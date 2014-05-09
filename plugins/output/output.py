@@ -29,10 +29,10 @@ class Output(QtGui.QWidget):
             print('error: could not goto file')
     
     def readOutput(self):
-        self.appendText(QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;')),plaintext=1)
+        self.appendText(QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;')),plaintext=1)
         
     def readErrors(self):
-        txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()))+"</font><br>"
+        txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font><br>"
         txt = re_file.sub(r"<a href='\g<2>'>\g<2></a><br>",txt)
         self.appendText(txt)
 
@@ -45,13 +45,14 @@ class Output(QtGui.QWidget):
 ##            txt = '<pre>'+txt+'</pre>'
 ##        else:
 ##            txt = txt.replace('\n','<br>')
-##        curs.insertHtml(txt)       
+##        curs.insertHtml(txt)
+       
     def finished(self):
         if self.process != None:
             self.appendText('<hr><b>Done</b>')
         self.process = None
     
-    def newProcess(self,cmd,filename):
+    def newProcess(self,cmd,filename,args=[]):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
             self.process.kill()
@@ -73,7 +74,8 @@ class Output(QtGui.QWidget):
                 self.process = QtCore.QProcess()
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)
                 self.process.setWorkingDirectory(os.path.dirname(filename))
-                self.process.start(cmd,QtCore.QStringList(['-u',filename]))
+##                self.process.start(cmd,QtCore.QStringList(['-u',filename]))
+                self.process.start(cmd,QtCore.QStringList(args+[filename]))
 
                 self.process.readyReadStandardOutput.connect(self.readOutput)
                 self.process.readyReadStandardError.connect(self.readErrors)

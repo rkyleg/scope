@@ -21,6 +21,7 @@
 - [x] check if extension = language if not found elsewhere
 - [x] merge default settings and user settings
 - [x] Load workspace closes open files
+- [x] Save As
 
 ### Startpage
 - [x] Update theme
@@ -40,6 +41,7 @@
 - [f] have default settings in __init__ of each editor/plugin
 - [x] have settings folder - in main directory?? or use user directory
 - [f] option to store settings in os or with editor folder
+- [] add stylesheet to settings (add error checking)
 
 ## Editors
 - [] Editor specific plugins view?
@@ -94,6 +96,7 @@
 - [f] Help plugin (with search, maybe based on current file language)
 - [f] Python code editor to run on current tab
 - [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
+- [] update plugin style
 
 ### Outline
 - Languages
@@ -126,7 +129,7 @@
 - [x] Double click toggles expand
 - [x] Improve tree formatting
 - [x] create new file in main directory
-- [] copy file
+- [f] copy file
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
@@ -137,6 +140,7 @@
 - [f] markdown compile
 - [f] allow running multiple outputs - add tabs for each and stop button
 - [f] goto correct output tab when switching tabs
+- [f] when closing a file, will need to stop output
 
 ### Snippets
 - [x] search

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.5'
+__version__ = '0.9.7'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -27,12 +27,13 @@ class NewMenu(QtGui.QMenu):
         
         # Add Favorites First
         for lang in sorted(parent.settings['fav_lang']):
-            icn = None
-            if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
-                icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
-            else:
-                icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
-            self.addAction(icn,lang)
+            if lang != 'default':
+                icn = None
+                if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
+                    icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
+                else:
+                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                self.addAction(icn,lang)
         
         self.addSeparator()
         
@@ -121,7 +122,13 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Save
         icn = QtGui.QIcon(self.parent.iconPath+'save.png')
-        act = self.addAction(icn,'Save',self.parent.editorSave)
+        self.menuSaveAction = self.addAction(icn,'Save',self.parent.editorSave)
+        self.menuSaveAction.setEnabled(0) # Default to disabled
+        
+        # Save As
+        icn = QtGui.QIcon(self.parent.iconPath+'save.png')
+        self.menuSaveAsAction = self.addAction(icn,'Save As',self.parent.editorSaveAs)
+        self.menuSaveAsAction.setEnabled(0) # Default to disabled
         
         # Workspace
         self.addMenu(self.parent.workspaceMenu)
@@ -536,6 +543,12 @@ class Armadillo(QtGui.QMainWindow):
             for btn in btnD:
                 btnD[btn].setEnabled(btn in dir(wdg))
             
+            try:
+                self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
+                self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+            except:
+                pass
+            
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
                 
@@ -580,18 +593,19 @@ class Armadillo(QtGui.QMainWindow):
         if editor == None:
             if lang in self.settings['fav_lang']:
                 editor = self.settings['fav_lang'][lang]['editor']
-            elif lang == 'webview':
-                editor = 'webview'
-            elif lang == 'settings':
-                editor = 'settings'
-            else:
-                editor = self.settings['fav_lang']['default']['editor']
-                
-                if lang not in self.editorD[editor]:
-                    for e in self.editorD:
-                        if lang in self.editorD[e]:
-                            editor = e
-                            break
+            if editor == None:
+                if lang == 'webview':
+                    editor = 'webview'
+                elif lang == 'settings':
+                    editor = 'settings'
+                else:
+                    editor = self.settings['fav_lang']['default']['editor']
+                    
+                    if lang not in self.editorD[editor]:
+                        for e in self.editorD:
+                            if lang in self.editorD[e]:
+                                editor = e
+                                break
                 
 ##        if not editor in self.settings['editors'] and not editor in ['webview','settings']:
 ##            editor = self.settings['fav_lang']['default']['editor']
@@ -713,6 +727,23 @@ class Armadillo(QtGui.QMainWindow):
             if filename == self.settings_filename:
                 self.loadSettings()
                 
+    def editorSaveAs(self):
+        wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
+        fileext = ''
+        if wdg.filename != None:
+            pth = wdg.filename
+        else:
+            pth = self.pluginD['filebrowser'].wdg.ui.le_root.text()
+            
+        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
+        if filename!='':
+
+            wdg.filename = os.path.abspath(str(filename))
+            wdg.title = os.path.basename(wdg.filename)
+            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+            
+            self.editorSave()
+                
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         if 'find' in dir(wdg):
@@ -728,7 +759,8 @@ class Armadillo(QtGui.QMainWindow):
 ##                if not self.pluginD['output'].isVisible():
 ##                    self.pluginD['output'].show()
 ##                self.pluginD['output'].raise_()
-                self.pluginD['output'].wdg.newProcess(self.settings['run'][wdg.lang],filename)
+                runD = self.settings['run'][wdg.lang]
+                self.pluginD['output'].wdg.newProcess(runD['cmd'],filename,runD['args'])
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -817,8 +849,8 @@ class Armadillo(QtGui.QMainWindow):
         self.settings_filename = self.settingPath+'/settings.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
         try:
-            usr_config = configobj.ConfigObj(self.settings_filename)
-            config.merge(usr_config)
+            user_config = configobj.ConfigObj(self.settings_filename)
+            config.merge(user_config)
         except:
             QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings')
 ##            self.settings_filename =os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf'
@@ -826,11 +858,30 @@ class Armadillo(QtGui.QMainWindow):
         
 ##        print self.settings
         
-        # add run to settings
+        
+        # Configure Settings
         self.settings['run']={}
         for l in self.settings['fav_lang']:
-            if 'run' in self.settings['fav_lang'][l]:
-                self.settings['run'][l]=self.settings['fav_lang'][l]['run']
+            ok = 1
+            # Remove default languages if not in user config
+            if 'fav_lang' in user_config:
+                if l not in user_config['fav_lang']:
+                    self.settings['fav_lang'].pop(l)
+                    ok = 0
+                    
+            if ok:
+                # Make sure editor in settings
+                if not 'editor' in self.settings['fav_lang'][l]:
+                    self.settings['fav_lang'][l]['editor']=None
+            
+                # add run to settings
+                if 'run' in self.settings['fav_lang'][l]:
+                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':[]}
+                    if 'run_args' in self.settings['fav_lang'][l]:
+                        a = self.settings['fav_lang'][l]['run_args']
+                        if type(a) == type(''):
+                            a = [a]
+                        self.settings['run'][l]['args']=a
     
     def loadSetup(self):
         # Geometry 
@@ -895,29 +946,29 @@ class Armadillo(QtGui.QMainWindow):
         
         # Add Workspaces
         wksp = 'Workspaces: '
+        icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
         if os.path.exists(self.settingPath+'/workspaces'):
             for w in sorted(os.listdir(self.settingPath+'/workspaces')):
 ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="../img/workspace.png"> '+w+'</span></a> '
+                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="'+icn_wksp+'"> '+w+'</span></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links
         nfiles = ''
         for lang in sorted(self.settings['fav_lang']):
-            icn = None
-##            for e in self.settings.ext:
-##                if self.settings.ext[e][0]==lang:
-            if os.path.exists(self.iconPath+'files/'+lang+'.png'):
-                icn = self.iconPath+'files/'+lang+'.png'
-            # Set default Icon if language not found
-            if icn == None:
-                editor =self.settings['fav_lang'][lang]['editor']
-                if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
-                    icn = self.editorPath+editor+'/'+editor+'.png'
-                else:
-                    icn = self.iconPath+'files/_blank.png'
+            if lang != 'default':
+                icn = None
+                if os.path.exists(self.iconPath+'files/'+lang+'.png'):
+                    icn = self.iconPath+'files/'+lang+'.png'
+                # Set default Icon if language not found
+                if icn == None:
+##                    editor=self.settings['fav_lang'][lang]['editor']
+##                    if os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
+##                        icn = self.editorPath+editor+'/'+editor+'.png'
+##                    else:
+                        icn = self.iconPath+'files/_blank.png'
 
-            nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="newfile"><img src="'+icn+'" style="height:14px;"> '+lang+'</div></a>'
+                nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="newfile"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
     
     def urlClicked(self,url):
