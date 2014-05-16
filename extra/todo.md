@@ -108,6 +108,7 @@
 - [x] ctrl+o to show outline
 - [] Delete pages when closing tabs
 - [] search outline
+- [] Highlight current section closest to top of screen
 
 ### Python Shell
 - [x] Fix mouse cursor messing up code

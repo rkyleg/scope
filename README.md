@@ -36,7 +36,7 @@ Armadillo must be run with Python. It has only been tested on Linux (Mint 15/16)
 - **[Editors](doc/editors.md)** - multiple code editors are available
 - **[Plugins](doc/plugins.md)** - comes with default plugins
     - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
-    - Python Shell - integrated Python Interpreter
+    - Python Shell - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool
     - Snippets - store and retreive useful code snippets
