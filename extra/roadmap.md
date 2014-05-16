@@ -12,8 +12,7 @@
 - Outline plugin works for python, markdown, html, javascript, css, ini/conf
 
 ### Work in Progress
-- Python shell plugin is a little buggy still
-- minor syntax checking for Scintilla/Python would be nice.
+
 
 # Armadillo 1.0
 The Armadillo 1.0 release will be considered usable and will have the basic features that I want in an IDE.
@@ -43,3 +42,4 @@ Features that can be added independent of version
 - [ ] Spellcheck plugin
 - [x] Snippets plugin
 - [x] Better documentation/integrated help (maybe as a plugin)
+- [ ] syntax checking for Scintilla/Python would be nice.
