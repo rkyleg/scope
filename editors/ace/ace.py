@@ -84,6 +84,8 @@ class WebView(QtWebKit.QWebView):
         theme = 'twighlight'
         self.wrapBehaviours = 1
         self.behaviours = 1
+        self.showPrintMargin=0
+        self.fontSize=12
         
         # Setup Editor
 ##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
@@ -93,12 +95,19 @@ class WebView(QtWebKit.QWebView):
         
         if 'wrapBehavioursEnabled' in self.parent.settings['fav_lang']['default']:
             self.wrapBehaviours = int(self.parent.settings['fav_lang']['default']['wrapBehavioursEnabled'])
-            js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
+        js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
             
-        
         if 'behavioursEnabled' in self.parent.settings['fav_lang']['default']:
             self.behaviours = int(self.parent.settings['fav_lang']['default']['behavioursEnabled'])
-            js += 'editor.setBehavioursEnabled('+['false','true'][self.behaviours]+');'
+        js += 'editor.setBehavioursEnabled('+['false','true'][self.behaviours]+');'
+        
+        if 'showPrintMargin' in self.parent.settings['fav_lang']['default']:
+            self.showPrintMargin = int(self.parent.settings['fav_lang']['default']['showPrintMargin'])
+        js += 'editor.setShowPrintMargin('+['false','true'][self.showPrintMargin]+');'
+        
+        if 'fontSize' in self.parent.settings['fav_lang']['default']:
+            self.showPrintMargin = int(self.parent.settings['fav_lang']['default']['fontSize'])
+        js += 'editor.setFontSize('+str(self.fontSize)+');'
         
         self.page().mainFrame().evaluateJavaScript(js)
         

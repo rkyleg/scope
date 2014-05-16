@@ -22,6 +22,7 @@
 - [x] merge default settings and user settings
 - [x] Load workspace closes open files
 - [x] Save As
+- [] show column number and wordcount, total lines? - stats in statusbar
 
 ### Startpage
 - [x] Update theme

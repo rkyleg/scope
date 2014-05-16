@@ -43,7 +43,7 @@ Different settings for the editor can be set for the default and each language. 
 
 **Example**
 
-    [[default]]
+    [[default]] # Default settings for all editors
         editor=scintilla
         wordwrap=0
         theme=twilight
@@ -64,20 +64,29 @@ The available (and default) parameters are:
 - wordwrap
     - start in wordwrap mode
     - default = 0
-- theme
-    - theme of editor (currently only works for ace - other editors ignore)
-- behavioursEnabled
-    - ace behavioiurs (currently only works for ace - other editors ignore)
-    - default = 1
-- wrapBehavioursEnabled
-    - ace wrapBehaviours (currently only works for ace - other editors ignore)
-    - default = 1
 - run
     - the run command to run
     - Ex: if you have node installed: run=/home/convolutedlogic/nodejs/bin/node
 - run_args
     - a list of args to append to the run command
     - this is optional
+
+The Ace editor has additional settings:
+
+- theme
+    - theme of editor
+- behavioursEnabled
+    - ace behavioiurs
+    - default = 1
+- wrapBehavioursEnabled
+    - ace wrapBehaviours
+    - default = 1
+- fontSize
+    - font size of editor
+    - default = 12
+- showPrintMargin
+    - show the print margin
+    - default = 0
 
 
 ### Extensions
