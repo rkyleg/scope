@@ -31,12 +31,18 @@
      <property name="orientation">
       <enum>Qt::Horizontal</enum>
      </property>
+     <property name="class" stdset="0">
+      <string>pluginHorizontal</string>
+     </property>
      <widget class="QFrame" name="frame">
       <property name="frameShape">
        <enum>QFrame::NoFrame</enum>
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
+      </property>
+      <property name="class" stdset="0">
+       <string/>
       </property>
       <layout class="QGridLayout" name="gridLayout">
        <property name="horizontalSpacing">
@@ -142,6 +148,9 @@ QPushButton:hover,QToolButton:hover {
       </property>
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
+      </property>
+      <property name="class" stdset="0">
+       <string/>
       </property>
       <layout class="QGridLayout" name="gridLayout_2">
        <property name="horizontalSpacing">

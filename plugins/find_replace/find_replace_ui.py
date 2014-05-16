@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'find_replace.ui'
 #
-# Created: Tue Nov 26 22:55:47 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Thu May 15 23:11:14 2014
+#      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -27,6 +27,7 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(536, 141)
+        Form.setProperty("class", _fromUtf8(""))
         self.gridLayout_2 = QtGui.QGridLayout(Form)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.le_find = QtGui.QLineEdit(Form)

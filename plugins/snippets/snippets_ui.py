@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Wed May  7 22:18:28 2014
+# Created: Thu May 15 23:09:02 2014
 #      by: PyQt4 UI code generator 4.10.3
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,6 +38,7 @@ class Ui_Form(object):
         self.frame = QtGui.QFrame(self.split_main)
         self.frame.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame.setProperty("class", _fromUtf8(""))
         self.frame.setObjectName(_fromUtf8("frame"))
         self.gridLayout = QtGui.QGridLayout(self.frame)
         self.gridLayout.setMargin(0)
@@ -86,6 +87,7 @@ class Ui_Form(object):
 "}"))
         self.frame_2.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_2.setProperty("class", _fromUtf8(""))
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.gridLayout_2 = QtGui.QGridLayout(self.frame_2)
         self.gridLayout_2.setMargin(0)
@@ -152,6 +154,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Snippets", None))
+        self.split_main.setProperty("class", _translate("Form", "pluginHorizontal", None))
         self.le_search.setPlaceholderText(_translate("Form", "search", None))
         self.cb_ext.setItemText(0, _translate("Form", "All", None))
         self.b_reload.setToolTip(_translate("Form", "reload snippets directory", None))

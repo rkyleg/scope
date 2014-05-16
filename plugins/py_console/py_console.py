@@ -1,37 +1,15 @@
 #!/usr/bin/python
 #
-# This version has been modified for the Armadillo IDE by Cole Hagen
-#     Modifications include bug fixes, and personal preference changes
+# PyConsole is a Python Shell console for Armadillo IDE
+# by Cole Hagen
 #
-# ORIGINAL DESCRIPTION
-# This is PyCute3.py from gerard vermeulen (http://gerard.vermeulen.free.fr/)
-# ported to Qt4 and extended to have an external viewer by Rob Reilink
-# Source: http://pyqtlive.googlecode.com/hg/pycute4.py
+# PyConsole is a modified version of pycute4 by Rob Reilink.
+# pycute4 source: http://pyqtlive.googlecode.com/hg/pycute4.py
+# pycute4 derives from PyCute3.py by gerard vermeulen
+# (http://gerard.vermeulen.free.fr/) and was ported for Qt4.
 #
-# In the future PyCute will get more features of the Idle's Python shell:
-# - fontification (syntax coloring)  - Fixed for Armadillo
-# - balloon help with documentation strings - Fixed for Armadillo
-# - copy & paste into or out of the shell - Fixed for Armadillo
-#
-#
-# Did you find a bug in PyCute? Check Idle's behavior before reporting.
-#
-# There will be always some differences between a GUI shell and the Python
-# interpreter running in a terminal (Unix) or DOS box (Windows), e.g:
-#
-# os.system('dir') or os.system('ls') 
-#
-# In a terminal or DOS box, the user sees the directory listing followed by
-# the return code (0). Why? In this case, stdout of the 'dir' or 'ls' command
-# coincides with stdout of the interpreter.
-#
-# This is not the case with a GUI shell like PyCute or Idle. If the shell has
-# been started from a terminal or DOS box, the directory listing will appear
-# in the terminal or DOS box and the return code will appear in the GUI shell.
-# If the GUI shell has been started by other means, the return code of the
-# command will appear in the shell but the other behavior of is undefined
-# (under Unix you will see nothing, and under Windows you will see
-# a DOS box flashing up).
+# PyConsole has some bug fixes and personalized features for
+# the Armadillo IDE
 
 import os, sys
 from code import InteractiveInterpreter as Interpreter
@@ -40,60 +18,7 @@ from PyQt4.QtCore import Qt
 
 import highlighter
 
-##class PyCuteViewer(QtGui.QTextEdit):
-##    def __init__(self,parent=None,fontSize=12):
-##        QtGui.QTextEdit.__init__(self, parent)
-##        self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
-##        #self.setCaption('PyCute -- a Python Shell for PyQt -- '
-##        #                'http://gerard.vermeulen.free.fr')
-##        # font
-##        if os.name == 'posix':
-##            font = QtGui.QFont("Fixed", fontSize)
-##        elif os.name == 'nt' or os.name == 'dos':
-##            font = QtGui.QFont("Courier New", fontSize)
-##        else:
-##            raise SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'"
-##        font.setFixedPitch(1)
-##        self.setFont(font)
-##        self.setTabStopWidth(QtGui.QFontMetrics(font).width('    ')-1)
-
-# Autocompletion
-class DictionaryCompleter(QtGui.QCompleter):
-    def __init__(self, parent=None):
-        words = []
-        try:
-            f = open("/usr/share/dict/words","r")
-            for word in f:
-                words.append(word.strip())
-            f.close()
-        except IOError:
-            print "dictionary not in anticipated location"
-            words = ['os.path','import','for']
-        QtGui.QCompleter.__init__(self, words, parent)
-
-class PyCute(QtGui.QTextEdit):
-##class PyCute(Qsci.QsciScintilla):
-    """
-    PyCute is a Python shell for PyQt.
-
-    Creating, displaying and controlling PyQt widgets from the Python command
-    line interpreter is very hard, if not, impossible.  PyCute solves this
-    problem by interfacing the Python interpreter to a PyQt widget.
-
-    My use is interpreter driven plotting to QwtPlot instances. Why?
-    
-    Other popular scientific software packages like SciPy, SciLab, Octave,
-    Maple, Mathematica, GnuPlot, ..., also have interpreter driven plotting.  
-    It is well adapted to quick & dirty exploration. 
-
-    Of course, PyQt's debugger -- eric -- gives you similar facilities, but
-    PyCute is smaller and easier to integrate in applications.
-    Eric requires Qt-3.x
-
-    PyCute is based on ideas and code from:
-    - Python*/Tools/idle/PyShell.py (Python Software Foundation License)
-    - PyQt*/eric/Shell.py (Gnu Public License)
-    """
+class Console(QtGui.QTextEdit):
     
     def __init__(self, parent=None,locals=None, log='',fontSize=10):
         """Constructor.
@@ -112,15 +37,6 @@ class PyCute(QtGui.QTextEdit):
         """
 
         QtGui.QTextEdit.__init__(self, parent)
-##        Qsci.QsciScintilla.__init__(self, parent)
-        
-        self.completer = None
-        
-        # QScintilla Options
-##        self.setAutoCompletionFillupsEnabled(1)
-##        self.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
-##        self.setAutoCompletionThreshold(3)
-##        self.setLexer(Qsci.QsciLexerPython())
 
         self.setProperty("class","pluginHorizontal")
         
@@ -212,12 +128,7 @@ class PyCute(QtGui.QTextEdit):
         self.line = ''
         self.lines = []
         self.more = 0
-        
-##    def newViewer(self,parent=None,*args,**kwds):
-##        viewer=PyCuteViewer(parent,*args,**kwds)
-##        self.viewers.append(viewer)
-##        self.syncViewers()
-##        return viewer    def syncViewers(self):
+            def syncViewers(self):
         text=self.toPlainText()
         position=self.textCursor().position()
         for viewer in self.viewers:
@@ -258,14 +169,10 @@ class PyCute(QtGui.QTextEdit):
         """
         # The output of self.append(text) contains to many newline characters,
         # so work around QTextEdit's policy for handling newline characters.
-        #print dir(self)
         hack = self.toPlainText()
         hack.append(text)
         self.setText(hack)
-        #self.setText(self.text().append(text)) # segmentation fault
         self.moveCursor(QtGui.QTextCursor.End, 0)
-        #self.yLast, self.xLast = self.getCursorPosition()
-        #sys.stderr.write('Wrote %s\n' % text)
         self.syncViewers()
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
     def writelines(self, text):
@@ -291,9 +198,7 @@ class PyCute(QtGui.QTextEdit):
         (1) the interpreter succeeds
         (2) the interpreter fails, finds no errors and wants more line(s)
         (3) the interpreter fails, finds errors and writes them to sys.stderr
-        """
-##        self.line = str(self.toPlainText()).split('>>> ')[-1]
-##        QtGui.QMessageBox.warning(self,'t',self.line)        if self.line.strip():    #Non-empty line
+        """        if self.line.strip():    #Non-empty line
             self.history.append(self.line)
             self.pointer = len(self.history)
         else:
@@ -329,8 +234,6 @@ class PyCute(QtGui.QTextEdit):
         """
         Insert text at the current cursor position.
         """
-        #y, x = self.getCursorPosition()
-        #self.insertAt(text, y, x)
         
         # Get selection points
         tc = self.textCursor()
@@ -340,9 +243,7 @@ class PyCute(QtGui.QTextEdit):
             delta_pt=0
         
         self.point -= delta_pt
-        self.line=self.line[:self.point]+text+self.line[self.point+delta_pt:]
-##        self.line=self.line[:self.point]+text+self.line[self.point:]        self.point += len(text)
-        #self.setCursorPosition(y, x + text.length())
+        self.line=self.line[:self.point]+text+self.line[self.point+delta_pt:]        self.point += len(text)
         self.insertPlainText(text)
 
     
@@ -363,72 +264,10 @@ class PyCute(QtGui.QTextEdit):
         if self.currentRunPosition > self.textCursor().position():
             return
 
-        #---Autocompletion section -------------------------------------
-##        event = e
-##        if self.completer and self.completer.popup().isVisible():
-##            if event.key() in (
-##            QtCore.Qt.Key_Enter,
-##            QtCore.Qt.Key_Return,
-##            QtCore.Qt.Key_Escape,
-##            QtCore.Qt.Key_Tab,
-##            QtCore.Qt.Key_Backtab):
-##                event.ignore()
-##                return
-##
-##        ## has ctrl-E been pressed??
-##        isShortcut = (event.modifiers() == QtCore.Qt.ControlModifier and
-##                      event.key() == QtCore.Qt.Key_E)
-##        if (not self.completer or not isShortcut):
-##            QtGui.QTextEdit.keyPressEvent(self, event)
-##
-##        ## ctrl or shift key on it's own??
-##        ctrlOrShift = event.modifiers() in (QtCore.Qt.ControlModifier ,
-##                QtCore.Qt.ShiftModifier)
-##        if ctrlOrShift and event.text().isEmpty():
-##            # ctrl or shift key on it's own
-##            return
-##
-##        eow = QtCore.QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=") #end of word
-##
-##        hasModifier = ((event.modifiers() != QtCore.Qt.NoModifier) and
-##                        not ctrlOrShift)
-##
-##        completionPrefix = self.textUnderCursor()
-##
-##        if (not isShortcut and (hasModifier or event.text().isEmpty() or
-##        completionPrefix.length() < 3 or
-##        eow.contains(event.text().right(1)))):
-##            self.completer.popup().hide()
-##            return
-##
-##        if (completionPrefix != self.completer.completionPrefix()):
-##            self.completer.setCompletionPrefix(completionPrefix)
-##            popup = self.completer.popup()
-##            popup.setCurrentIndex(
-##                self.completer.completionModel().index(0,0))
-##
-##        cr = self.cursorRect()
-##        cr.setWidth(self.completer.popup().sizeHintForColumn(0)
-##            + self.completer.popup().verticalScrollBar().sizeHint().width())
-##        self.completer.complete(cr) ## popup it up!
-        # -------------------------------------------------------------
-        
-        
-        
-        
-            
-            
-
-
         # Paste
         if e.modifiers() & QtCore.Qt.ControlModifier:
-            if key == QtCore.Qt.Key_V:  # paste
-##                self.clear_text_sel()
-##                self.point = self.textCursor().positionInBlock()-4                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
-                self.syncViewers()
-##            elif key == QtCore.Qt.Key_C:  # copy
-##                clip = QtGui.QApplication.clipboard()
-##                clip.setText(self.textCursor().selectedText())            else:
+            if key == QtCore.Qt.Key_V:  # paste                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
+                self.syncViewers()            else:
                 QtGui.QTextEdit.keyPressEvent(self,e)
             return
             
@@ -510,14 +349,7 @@ class PyCute(QtGui.QTextEdit):
         Display the current item from the command history.
         """
         cursor=self.textCursor()
-        
-        #self.moveCursor(QtGui.QTextCursor.StartOfLine, 0)
-        #self.setSelection(self.cursorPosition,-1)
-        #fdsafdsa
         cursor.select(QtGui.QTextCursor.LineUnderCursor)
-
-#        self.setSelection(self.yLast, self.xLast,
-#                          self.yLast, self.paragraphLength(self.yLast))
         cursor.removeSelectedText()
         cursor.insertText(self.prompt)
         self.__clearLine()
@@ -534,69 +366,18 @@ class PyCute(QtGui.QTextEdit):
 
     def mousePressEvent(self, e):
         QtGui.QTextEdit.mousePressEvent(self,e)
-        self.point = self.textCursor().positionInBlock()-4##        """
-##        Keep the cursor after the last prompt.
-##        """
-##        if e.button() == Qt.LeftButton:
-####            self.moveCursor(QtGui.QTextCursor.End, 0)
-##            QtGui.QTextEdit.mousePressEvent(self,e)
-##            self.point = self.textCursor().positionInBlock()
-####            print self.point
-####            self.syncViewers()##        return
+        self.point = self.textCursor().positionInBlock()-4
     def contentsContextMenuEvent(self,ev):
         """
         Suppress the right button context menu.
         """
         return
 
-        
-#---Autocompletion code 
-#          from http://rowinggolfer.blogspot.com/2010/08/qtextedit-with-autocompletion-using.html
-##    def setCompleter(self, completer):
-##        if self.completer:
-##            self.disconnect(self.completer, 0, self, 0)
-##        if not completer:
-##            return
-##
-##        completer.setWidget(self)
-##        completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
-##        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
-##        self.completer = completer
-##        self.connect(self.completer,
-##            QtCore.SIGNAL("activated(const QString&)"), self.insertCompletion)
-##
-##    def insertCompletion(self, completion):
-##        tc = self.textCursor()
-##        extra = (completion.length() -
-##            self.completer.completionPrefix().length())
-##        tc.movePosition(QtGui.QTextCursor.Left)
-##        tc.movePosition(QtGui.QTextCursor.EndOfWord)
-##        tc.insertText(completion.right(extra))
-##        self.setTextCursor(tc)
-##
-##    def textUnderCursor(self):
-##        tc = self.textCursor()
-##        tc.select(QtGui.QTextCursor.WordUnderCursor)
-##        return tc.selectedText()
-##
-##    def focusInEvent(self, event):
-##        if self.completer:
-##            self.completer.setWidget(self);
-##        QtGui.QTextEdit.focusInEvent(self, event)
-
-   
 
 #---Main
 if __name__=='__main__':
     import sys
     app=QtGui.QApplication(sys.argv)
-    pycute=PyCute()
-    pycute.resize(600,400)
-##    completer = DictionaryCompleter()
-##    pycute.setCompleter(completer)    pycute.show()
-
-##    newview=pycute.newViewer()
-##    newview.resize(600,400)
-##    newview.show()
-    
+    console=Console()
+    console.resize(600,400)    console.show()
     app.exec_()

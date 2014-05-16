@@ -809,44 +809,47 @@ class Armadillo(QtGui.QMainWindow):
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
 
-        exec('import plugins.'+plug)
-        os.chdir(self.pluginPath+plug)
-        exec('dwdg = plugins.'+plug+'.addDock(self)')
-        if plug in self.settings['plugins']:
-            title = self.settings['plugins'][plug]['title']
-            dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+        if not os.path.exists(self.pluginPath+plug):
+            QtGui.QMessageBox.warning(self,'Plugin Load Failure','The plugin <b>'+plug+'</b> was not found')
         else:
-            # Default info
-            title = plug.capitalize()
-            dockarea =self.dockareaD['bottom']
-        if plug == 'pycute': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
-        dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
-        
-        dock = QtGui.QDockWidget()
-        
-        dock.dockWidgetContents = QtGui.QWidget()
-        dock.setWidget(dock.dockWidgetContents)
-        dock.setWindowTitle(title)
-        dock.gridLayout = QtGui.QGridLayout(dock.dockWidgetContents)
-        dock.gridLayout.setMargin(0)
-        dock.gridLayout.setSpacing(0)
-        dock.gridLayout.addWidget(dwdg, 0, 0, 1, 1)
-        dock.setObjectName(title.replace(' ','_').lower())
-        dock.wdg = dwdg
-        self.addDockWidget(dockarea,dock)
-        self.pluginDocks.append(dock)
-        
-        if os.path.exists(self.pluginPath+plug+'/'+plug+'.png'):
-            dock.setWindowIcon(QtGui.QIcon(self.pluginPath+plug+'/'+plug+'.png'))
-        
-        # Tabify Dock with other widgets in its area
-        for idock in self.pluginDocks[:-1]:
-            if self.dockWidgetArea(idock) == dockarea:
-                self.tabifyDockWidget(idock,dock)
-        
-        os.chdir(curdir)
-        
-        self.pluginD[plug] = dock
+            exec('import plugins.'+plug)
+            os.chdir(self.pluginPath+plug)
+            exec('dwdg = plugins.'+plug+'.addDock(self)')
+            if plug in self.settings['plugins']:
+                title = self.settings['plugins'][plug]['title']
+                dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+            else:
+                # Default info
+                title = plug.capitalize()
+                dockarea =self.dockareaD['bottom']
+            if plug == 'py_console': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+            dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+            
+            dock = QtGui.QDockWidget()
+            
+            dock.dockWidgetContents = QtGui.QWidget()
+            dock.setWidget(dock.dockWidgetContents)
+            dock.setWindowTitle(title)
+            dock.gridLayout = QtGui.QGridLayout(dock.dockWidgetContents)
+            dock.gridLayout.setMargin(0)
+            dock.gridLayout.setSpacing(0)
+            dock.gridLayout.addWidget(dwdg, 0, 0, 1, 1)
+            dock.setObjectName(title.replace(' ','_').lower())
+            dock.wdg = dwdg
+            self.addDockWidget(dockarea,dock)
+            self.pluginDocks.append(dock)
+            
+            if os.path.exists(self.pluginPath+plug+'/'+plug+'.png'):
+                dock.setWindowIcon(QtGui.QIcon(self.pluginPath+plug+'/'+plug+'.png'))
+            
+            # Tabify Dock with other widgets in its area
+            for idock in self.pluginDocks[:-1]:
+                if self.dockWidgetArea(idock) == dockarea:
+                    self.tabifyDockWidget(idock,dock)
+            
+            os.chdir(curdir)
+            
+            self.pluginD[plug] = dock
 
     #---Settings
     def loadSettings(self):
