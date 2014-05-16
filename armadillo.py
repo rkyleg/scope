@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.9'
+__version__ = '0.9.10'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -158,7 +158,7 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Zen
         icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
-        self.zenAction = self.addAction(icn,'Zen Mode',self.parent.toggleZen)
+        self.zenAction = self.addAction(icn,'Zen Mode (F11)',self.parent.toggleZen)
         
         # Close
         self.addSeparator()
