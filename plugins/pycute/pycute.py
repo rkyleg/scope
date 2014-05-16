@@ -1,15 +1,17 @@
 #!/usr/bin/python
 #
-# This version has been modified for Armadillo (bug fixes, and personal preference changes)
+# This version has been modified for the Armadillo IDE by Cole Hagen
+#     Modifications include bug fixes, and personal preference changes
 #
+# ORIGINAL DESCRIPTION
 # This is PyCute3.py from gerard vermeulen (http://gerard.vermeulen.free.fr/)
 # ported to Qt4 and extended to have an external viewer by Rob Reilink
 # Source: http://pyqtlive.googlecode.com/hg/pycute4.py
 #
 # In the future PyCute will get more features of the Idle's Python shell:
-# - fontification (syntax coloring)
-# - balloon help with documentation strings
-# - copy & paste into or out of the shell
+# - fontification (syntax coloring)  - Fixed for Armadillo
+# - balloon help with documentation strings - Fixed for Armadillo
+# - copy & paste into or out of the shell - Fixed for Armadillo
 #
 #
 # Did you find a bug in PyCute? Check Idle's behavior before reporting.
@@ -33,28 +35,41 @@
 
 import os, sys
 from code import InteractiveInterpreter as Interpreter
-from PyQt4 import QtGui,QtCore, Qsci
+from PyQt4 import QtGui,QtCore#, Qsci
 from PyQt4.QtCore import Qt
 
 import highlighter
 
-class PyCuteViewer(QtGui.QTextEdit):
-    def __init__(self,parent=None,fontSize=12):
-        QtGui.QTextEdit.__init__(self, parent)
-        self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
-        #self.setCaption('PyCute -- a Python Shell for PyQt -- '
-        #                'http://gerard.vermeulen.free.fr')
-        # font
-        if os.name == 'posix':
-            font = QtGui.QFont("Fixed", fontSize)
-        elif os.name == 'nt' or os.name == 'dos':
-            font = QtGui.QFont("Courier New", fontSize)
-        else:
-            raise SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'"
-        font.setFixedPitch(1)
-        self.setFont(font)
-        self.setTabStopWidth(QtGui.QFontMetrics(font).width('    ')-1)
+##class PyCuteViewer(QtGui.QTextEdit):
+##    def __init__(self,parent=None,fontSize=12):
+##        QtGui.QTextEdit.__init__(self, parent)
+##        self.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
+##        #self.setCaption('PyCute -- a Python Shell for PyQt -- '
+##        #                'http://gerard.vermeulen.free.fr')
+##        # font
+##        if os.name == 'posix':
+##            font = QtGui.QFont("Fixed", fontSize)
+##        elif os.name == 'nt' or os.name == 'dos':
+##            font = QtGui.QFont("Courier New", fontSize)
+##        else:
+##            raise SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'"
+##        font.setFixedPitch(1)
+##        self.setFont(font)
+##        self.setTabStopWidth(QtGui.QFontMetrics(font).width('    ')-1)
 
+# Autocompletion
+class DictionaryCompleter(QtGui.QCompleter):
+    def __init__(self, parent=None):
+        words = []
+        try:
+            f = open("/usr/share/dict/words","r")
+            for word in f:
+                words.append(word.strip())
+            f.close()
+        except IOError:
+            print "dictionary not in anticipated location"
+            words = ['os.path','import','for']
+        QtGui.QCompleter.__init__(self, words, parent)
 
 class PyCute(QtGui.QTextEdit):
 ##class PyCute(Qsci.QsciScintilla):
@@ -98,6 +113,8 @@ class PyCute(QtGui.QTextEdit):
 
         QtGui.QTextEdit.__init__(self, parent)
 ##        Qsci.QsciScintilla.__init__(self, parent)
+        
+        self.completer = None
         
         # QScintilla Options
 ##        self.setAutoCompletionFillupsEnabled(1)
@@ -196,12 +213,11 @@ class PyCute(QtGui.QTextEdit):
         self.lines = []
         self.more = 0
         
-    def newViewer(self,parent=None,*args,**kwds):
-        viewer=PyCuteViewer(parent,*args,**kwds)
-        self.viewers.append(viewer)
-        self.syncViewers()
-        return viewer
-    def syncViewers(self):
+##    def newViewer(self,parent=None,*args,**kwds):
+##        viewer=PyCuteViewer(parent,*args,**kwds)
+##        self.viewers.append(viewer)
+##        self.syncViewers()
+##        return viewer    def syncViewers(self):
         text=self.toPlainText()
         position=self.textCursor().position()
         for viewer in self.viewers:
@@ -315,29 +331,107 @@ class PyCute(QtGui.QTextEdit):
         """
         #y, x = self.getCursorPosition()
         #self.insertAt(text, y, x)
-        self.line=self.line[:self.point]+text+self.line[self.point:]
-        self.point += len(text)
+        
+        # Get selection points
+        tc = self.textCursor()
+        if tc.hasSelection():
+            delta_pt = tc.selectionEnd()-tc.selectionStart()
+        else:
+            delta_pt=0
+        
+        self.point -= delta_pt
+        self.line=self.line[:self.point]+text+self.line[self.point+delta_pt:]
+##        self.line=self.line[:self.point]+text+self.line[self.point:]        self.point += len(text)
         #self.setCursorPosition(y, x + text.length())
         self.insertPlainText(text)
-        
+
+    
     def keyPressEvent(self, e):
         """
         Handle user input a key at a time.
         """
-
+        text  = unicode(e.text())
+        key   = e.key()
+        
+        # Copy ahead of disable
+        if e.modifiers() & QtCore.Qt.ControlModifier:
+            if key == QtCore.Qt.Key_C:  # copy
+                clip = QtGui.QApplication.clipboard()
+                clip.setText(self.textCursor().selectedText())
+        
+        # End event if cursor before command position
         if self.currentRunPosition > self.textCursor().position():
             return
 
-        text  = unicode(e.text())
-        key   = e.key()
+        #---Autocompletion section -------------------------------------
+##        event = e
+##        if self.completer and self.completer.popup().isVisible():
+##            if event.key() in (
+##            QtCore.Qt.Key_Enter,
+##            QtCore.Qt.Key_Return,
+##            QtCore.Qt.Key_Escape,
+##            QtCore.Qt.Key_Tab,
+##            QtCore.Qt.Key_Backtab):
+##                event.ignore()
+##                return
+##
+##        ## has ctrl-E been pressed??
+##        isShortcut = (event.modifiers() == QtCore.Qt.ControlModifier and
+##                      event.key() == QtCore.Qt.Key_E)
+##        if (not self.completer or not isShortcut):
+##            QtGui.QTextEdit.keyPressEvent(self, event)
+##
+##        ## ctrl or shift key on it's own??
+##        ctrlOrShift = event.modifiers() in (QtCore.Qt.ControlModifier ,
+##                QtCore.Qt.ShiftModifier)
+##        if ctrlOrShift and event.text().isEmpty():
+##            # ctrl or shift key on it's own
+##            return
+##
+##        eow = QtCore.QString("~!@#$%^&*()_+{}|:\"<>?,./;'[]\\-=") #end of word
+##
+##        hasModifier = ((event.modifiers() != QtCore.Qt.NoModifier) and
+##                        not ctrlOrShift)
+##
+##        completionPrefix = self.textUnderCursor()
+##
+##        if (not isShortcut and (hasModifier or event.text().isEmpty() or
+##        completionPrefix.length() < 3 or
+##        eow.contains(event.text().right(1)))):
+##            self.completer.popup().hide()
+##            return
+##
+##        if (completionPrefix != self.completer.completionPrefix()):
+##            self.completer.setCompletionPrefix(completionPrefix)
+##            popup = self.completer.popup()
+##            popup.setCurrentIndex(
+##                self.completer.completionModel().index(0,0))
+##
+##        cr = self.cursorRect()
+##        cr.setWidth(self.completer.popup().sizeHintForColumn(0)
+##            + self.completer.popup().verticalScrollBar().sizeHint().width())
+##        self.completer.complete(cr) ## popup it up!
+        # -------------------------------------------------------------
+        
+        
+        
+        
+            
+            
 
+
+        # Paste
         if e.modifiers() & QtCore.Qt.ControlModifier:
-            if key == QtCore.Qt.Key_V:  # Unhide
+            if key == QtCore.Qt.Key_V:  # paste
+##                self.clear_text_sel()
 ##                self.point = self.textCursor().positionInBlock()-4                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
                 self.syncViewers()
-            else:
+##            elif key == QtCore.Qt.Key_C:  # copy
+##                clip = QtGui.QApplication.clipboard()
+##                clip.setText(self.textCursor().selectedText())            else:
                 QtGui.QTextEdit.keyPressEvent(self,e)
             return
+            
         if self.onKeyHook(e):
             return
         
@@ -346,21 +440,27 @@ class PyCute(QtGui.QTextEdit):
         else:
             ascii=0
 
+        # Get selection points
+        tc = self.textCursor()
+        if tc.hasSelection():
+            delta_pt = tc.selectionEnd()-tc.selectionStart()
+        else:
+            delta_pt=1
+            
         if len(text) and ascii>=32 and ascii<127:
 ##            self.point = self.textCursor().positionInBlock()-4            self.__insertText(text)
             self.syncViewers()
             return
 
-
-
         elif key == Qt.Key_Backspace:
             if self.point:
+                self.point -= delta_pt
                 self.textCursor().deletePreviousChar()
-                self.point -= 1
-                self.line=self.line[:self.point]+self.line[self.point+1:]
+                self.line=self.line[:self.point]+self.line[self.point+delta_pt:]
         elif key == Qt.Key_Delete:
             self.textCursor().deleteChar()
-            self.line=self.line[:self.point]+self.line[self.point+1:]
+            self.point -= delta_pt
+            self.line=self.line[:self.point]+self.line[self.point+delta_pt:]
 
         elif key == Qt.Key_Return or key == Qt.Key_Enter:
             self.write('\n')
@@ -404,6 +504,7 @@ class PyCute(QtGui.QTextEdit):
             QtGui.QTextEdit.keyPressEvent(self,e)
             
         self.syncViewers()
+        
     def __recall(self,text):
         """
         Display the current item from the command history.
@@ -448,16 +549,51 @@ class PyCute(QtGui.QTextEdit):
         """
         return
 
-# Local Variables: ***
-# mode: python ***
-# End: ***
+        
+#---Autocompletion code 
+#          from http://rowinggolfer.blogspot.com/2010/08/qtextedit-with-autocompletion-using.html
+##    def setCompleter(self, completer):
+##        if self.completer:
+##            self.disconnect(self.completer, 0, self, 0)
+##        if not completer:
+##            return
+##
+##        completer.setWidget(self)
+##        completer.setCompletionMode(QtGui.QCompleter.PopupCompletion)
+##        completer.setCaseSensitivity(QtCore.Qt.CaseInsensitive)
+##        self.completer = completer
+##        self.connect(self.completer,
+##            QtCore.SIGNAL("activated(const QString&)"), self.insertCompletion)
+##
+##    def insertCompletion(self, completion):
+##        tc = self.textCursor()
+##        extra = (completion.length() -
+##            self.completer.completionPrefix().length())
+##        tc.movePosition(QtGui.QTextCursor.Left)
+##        tc.movePosition(QtGui.QTextCursor.EndOfWord)
+##        tc.insertText(completion.right(extra))
+##        self.setTextCursor(tc)
+##
+##    def textUnderCursor(self):
+##        tc = self.textCursor()
+##        tc.select(QtGui.QTextCursor.WordUnderCursor)
+##        return tc.selectedText()
+##
+##    def focusInEvent(self, event):
+##        if self.completer:
+##            self.completer.setWidget(self);
+##        QtGui.QTextEdit.focusInEvent(self, event)
 
+   
+
+#---Main
 if __name__=='__main__':
     import sys
     app=QtGui.QApplication(sys.argv)
     pycute=PyCute()
     pycute.resize(600,400)
-    pycute.show()
+##    completer = DictionaryCompleter()
+##    pycute.setCompleter(completer)    pycute.show()
 
 ##    newview=pycute.newViewer()
 ##    newview.resize(600,400)

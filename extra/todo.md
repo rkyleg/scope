@@ -112,9 +112,9 @@
 ### Python Shell
 - [x] Fix mouse cursor messing up code
 - [f] Auto complete would be nice
-- [] upon import - add completion to editor
+- [f] upon import - add completion to editor
 - [x] syntax highlighting
-- [] Fix selection replace/delete bug
+- [x] Fix selection replace/delete bug
 
 ### File Browser
 - [x] Return press opens folder
