@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.7'
+__version__ = '0.9.8'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -62,6 +62,7 @@ class NewMenu(QtGui.QMenu):
         editor = str(event.data().toString())
         if editor == '': editor = None
         self.parent.addEditorWidget(str(event.text()),editor=editor)
+        self.parent.removeStart()
 
 class WorkspaceMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -184,7 +185,7 @@ class Armadillo(QtGui.QMainWindow):
         # Settings
         self.workspace = None
         self.loadSettings()
-        self.startinit = 1
+##        self.startinit = 1
         self.fileLastCheck = time.time()
         QtGui.QApplication.setStyle(self.settings['widgetstyle'])
         
@@ -485,14 +486,8 @@ class Armadillo(QtGui.QMainWindow):
                             wdg.wordwrapmode = int(self.settings['fav_lang'][lang]['wordwrap'])
                             self.editorWordWrap()
                             
-                    # Remove startpage
-                    if self.startinit:
-                        for i in range(self.ui.tab.count()):
-                            file_id = self.ui.tab.tabData(i).toInt()[0]
-                            if file_id == 0:
-                                self.closeTab(i)
-                                self.startinit=0
-                                break
+                    # Remove Startpage
+                    self.removeStart()
 
         
     #---Editor
@@ -511,7 +506,9 @@ class Armadillo(QtGui.QMainWindow):
             
             # Show/Hide plugins
             lang = wdg.lang
-            
+        else:
+            wdg = None
+            lang = None
             # Disable hiding of plugins for now - until the state can be saved
 ##            for plug in self.pluginD:
 ##                pshow = 0
@@ -525,29 +522,29 @@ class Armadillo(QtGui.QMainWindow):
 ##                    self.pluginD[plug].show()
 ##                else:
 ##                    self.pluginD[plug].hide()
-            # Enable Run
-            if lang in self.settings['run']:
-                self.ui.b_run.setEnabled(lang in self.settings['run'])
-            else:
-                self.ui.b_run.setEnabled(0)
-            
-            # Disable buttons based on function availability
-            btnD = {
-                'indent':self.ui.b_indent,
-                'unindent':self.ui.b_unindent,
-                'find':self.ui.fr_find,
-                'toggleComment':self.ui.b_comment,
-                'getText':self.ui.b_save,
-                'toggleWordWrap':self.ui.b_wordwrap,
-            }
-            for btn in btnD:
-                btnD[btn].setEnabled(btn in dir(wdg))
-            
-            try:
-                self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
-                self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
-            except:
-                pass
+        # Enable Run
+        if lang in self.settings['run']:
+            self.ui.b_run.setEnabled(lang in self.settings['run'])
+        else:
+            self.ui.b_run.setEnabled(0)
+        
+        # Disable buttons based on function availability
+        btnD = {
+            'indent':self.ui.b_indent,
+            'unindent':self.ui.b_unindent,
+            'find':self.ui.fr_find,
+            'toggleComment':self.ui.b_comment,
+            'getText':self.ui.b_save,
+            'toggleWordWrap':self.ui.b_wordwrap,
+        }
+        for btn in btnD:
+            btnD[btn].setEnabled(btn in dir(wdg))
+        
+        try:
+            self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
+            self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+        except:
+            pass
             
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -568,6 +565,10 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.tab.removeTab(tab_ind)
             # Remove Widget
             self.ui.sw_main.removeWidget(wdg)
+            
+            # Add start page if no tabs exist
+##            if self.ui.sw_main.count() == 0:
+##                self.addStart()
 
     def editorTextChanged(self):
         # Indicate if text changed
@@ -655,8 +656,6 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.tab.setTabIcon(sw_ind,icn)
 
         # Setup wordwrap
-        
-        
         return wdg
 
     def checkSave(self,wdg):
@@ -737,11 +736,12 @@ class Armadillo(QtGui.QMainWindow):
             
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
-
+            
+            ind = self.ui.tab.currentIndex()
             wdg.filename = os.path.abspath(str(filename))
             wdg.title = os.path.basename(wdg.filename)
-            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-            
+            self.ui.tab.setTabText(ind,wdg.title)
+            self.ui.tab.setTabToolTip(ind,str(filename))
             self.editorSave()
                 
     def editorFind(self):
@@ -970,6 +970,16 @@ class Armadillo(QtGui.QMainWindow):
 
                 nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="newfile"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
+        
+    def removeStart(self):
+        # Remove startpage
+##        if self.startinit:
+            for i in range(self.ui.tab.count()):
+                file_id = self.ui.tab.tabData(i).toInt()[0]
+                if file_id == 0:
+                    self.closeTab(i)
+##                    self.startinit=0
+                    break
     
     def urlClicked(self,url):
         # Mainly used for startpage urls
@@ -978,6 +988,7 @@ class Armadillo(QtGui.QMainWindow):
         wdg = self.ui.sw_main.currentWidget()
         if lnk.startswith('new:'):
             self.addEditorWidget(lang=lnk.split(':')[1])
+            self.removeStart()
         elif lnk.startswith('workspace'):
             self.loadWorkspace(lnk.split(':')[1])
         elif lnk.endswith('start.html'):
@@ -1099,6 +1110,9 @@ class Armadillo(QtGui.QMainWindow):
             self.setWindowTitle('Armadillo | '+wksp)
             
             self.workspaceMenu.saveWact.setDisabled(0)
+            
+##            QtGui.QApplication.processEvents()
+            self.removeStart()
     
     #---FileModify Checker
     def checkFileChanges(self):
