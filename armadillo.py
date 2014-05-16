@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.8'
+__version__ = '0.9.9'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -293,7 +293,8 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
-        QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Zen
+        QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
+        QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Fullscreen Zen
         
         # Plugins
         self.pluginDocks = []
@@ -402,13 +403,18 @@ class Armadillo(QtGui.QMainWindow):
     def dragEnterEvent(self,event):
         event.accept()
     
-    def toggleZen(self):
+    def toggleEditorZen(self):
+        self.toggleZen(mode='editor')
+    
+    def toggleZen(self,mode='full'):
         self.zen = not self.zen
         if self.zen:
             self.restoreState(self.dockstate)
             self.ui.statusbar.show()
             self.ui.findbar.show()
             self.ui.toolbar.show()
+            self.ui.tabtoolbar.show()
+            self.showNormal()
 ##            self.setWindowFlags(QtCore.Qt.Window)
 ##            self.show()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
@@ -424,6 +430,10 @@ class Armadillo(QtGui.QMainWindow):
             self.armadilloMenu.zenAction.setText('Exit zen mode')
             for plug in self.pluginD:
                 self.pluginD[plug].close()
+            
+            if mode=='full':
+                self.ui.tabtoolbar.hide()
+                self.showFullScreen()
 
     def showPlugins(self):
         menu = self.createPopupMenu()
