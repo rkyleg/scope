@@ -41,7 +41,7 @@
 - [f] have default settings in __init__ of each editor/plugin
 - [x] have settings folder - in main directory?? or use user directory
 - [f] option to store settings in os or with editor folder
-- [] add stylesheet to settings (add error checking)
+- [x] add stylesheet to settings (add error checking)
 
 ## Editors
 - [] Editor specific plugins view?

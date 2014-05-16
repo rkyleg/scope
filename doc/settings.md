@@ -39,7 +39,24 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - the list of active editors to load
 
 ### Favorite Languages (fav_lang)
-Different settings for the editor can be set for the default and each language.  The available (and default) parameters are:
+Different settings for the editor can be set for the default and each language.  If no parameter is specified, the default is used.  The double bracket indicates the language.  For the full list of languages look in the new menu for each editor.  The default for all languages is listed as `[[default]]`
+
+**Example**
+
+    [[default]]
+        editor=scintilla
+        wordwrap=0
+        theme=twilight
+        behavioursEnabled=1
+        wrapBehavioursEnabled=1
+    [[javascript]]
+        editor=ace
+        run=/home/convolutedlogic/nodejs/bin/node
+    [[markdown]]
+        editor=ace
+        wordwrap=1
+
+The available (and default) parameters are:
 
 - editor
     - what editor to use
@@ -57,8 +74,11 @@ Different settings for the editor can be set for the default and each language. 
     - default = 1
 - run
     - the run command to run
+    - Ex: if you have node installed: run=/home/convolutedlogic/nodejs/bin/node
 - run_args
     - a list of args to append to the run command
+    - this is optional
+
 
 ### Extensions
 If you need to specify that a file extension goes with a specific language.

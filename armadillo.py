@@ -194,7 +194,10 @@ class Armadillo(QtGui.QMainWindow):
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
         # Style
-        f = open('styles/default.style','r')
+        style_path = 'styles/'+self.settings['style']+'.style'
+        if not os.path.exists(style_path):
+            style_path = 'styles/default.style'
+        f = open(style_path,'r')
         style = f.read()
         f.close()
         self.setStyleSheet(style)
