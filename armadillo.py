@@ -395,7 +395,7 @@ class Armadillo(QtGui.QMainWindow):
             handled=True
 
         if not handled:
-            QtGui.QWMainWindow.dropEvent(self,event)
+            QtGui.QMainWindow.dropEvent(self,event)
 
     def dragEvent(self,event):
         event.accept()
