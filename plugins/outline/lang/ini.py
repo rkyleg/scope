@@ -12,6 +12,10 @@ def analyzeLine(line):
     elif line.startswith('['):
         itmText =line[4:].lstrip('-')
         ##if itmText == '': itmText = None
+        typ = 'object'
+    elif line.startswith('#---'):
+        itmText =line[4:].lstrip('-')
+        ##if itmText == '': itmText = None
         typ = 'heading'
     
     return itmText,typ
