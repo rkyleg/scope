@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore , QtWebKit
 from output_ui import Ui_Form
-import sys, os, re, webbrowser
+import sys, os, re, webbrowser, time
 
 re_file     = re.compile('(\s*)(File "(.*))\n')
 re_loc = re.compile('File "([^"]*)", line (\d+)')
@@ -49,7 +49,7 @@ class Output(QtGui.QWidget):
        
     def finished(self):
         if self.process != None:
-            self.appendText('<hr><b>Done</b>')
+            self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
         self.process = None
     
     def newProcess(self,cmd,filename,args=[]):
@@ -70,7 +70,7 @@ class Output(QtGui.QWidget):
                     self.armadillo.pluginD['output'].show()
                 self.armadillo.pluginD['output'].raise_()
                 
-                self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b></div><br>')
+                self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
                 self.process = QtCore.QProcess()
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)
                 self.process.setWorkingDirectory(os.path.dirname(filename))

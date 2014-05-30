@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.10'
+__version__ = '0.9.11'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -491,14 +491,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                    self.filesystemwatcher.addPath(filename)
 ##                    self.fileModD[filename]=os.path.getmtime(filename)
                     self.updateOutline()
-                    
-                    # Set wordwrap if in settings
-                    QtGui.QApplication.processEvents()
-                    if lang in self.settings['fav_lang']:
-                        if 'wordwrap' in self.settings['fav_lang'][lang]:
-                            wdg.wordwrapmode = int(self.settings['fav_lang'][lang]['wordwrap'])
-                            self.editorWordWrap()
-                            
+ 
                     # Remove Startpage
                     self.removeStart()
 
@@ -668,7 +661,19 @@ class Armadillo(QtGui.QMainWindow):
             icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
         self.ui.tab.setTabIcon(sw_ind,icn)
 
-        # Setup wordwrap
+        # Set wordwrap if in settings
+        QtGui.QApplication.processEvents()
+        if lang in self.settings['fav_lang']:
+            if 'wordwrap' in self.settings['fav_lang'][lang]:
+                wdg.wordwrapmode = int(self.settings['fav_lang'][lang]['wordwrap'])
+                self.editorWordWrap()
+        
+            # Set Autocomplete Toggle
+            if 'autocomplete' in self.settings['fav_lang'][lang]:
+                wdg.autocomplete = int(self.settings['fav_lang'][lang]['autocomplete'])
+                if 'toggleAutoComplete' in dir(wdg):
+                    wdg.toggleAutoComplete()
+                
         return wdg
 
     def checkSave(self,wdg):

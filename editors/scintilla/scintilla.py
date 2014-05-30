@@ -68,11 +68,10 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setMarginLineNumbers(0, True)
         self.ui.te_sci.setMarginsBackgroundColor(QColor("#cccccc"))
 
-        # Enabled autocompletion
-        self.ui.te_sci.setAutoCompletionFillupsEnabled(1)
-        self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
-        self.ui.te_sci.setAutoCompletionThreshold(3)
-
+        # Default to autocomplete
+        self.autocompletemode=0
+        self.toggleAutoComplete()
+        
         self.ui.te_sci.setBraceMatching(Qsci.QsciScintilla.SloppyBraceMatch)
         
         self.ui.te_sci.setCallTipsStyle(Qsci.QsciScintilla.CallTipsContext)
@@ -228,3 +227,13 @@ class Sci(QtGui.QWidget):
 ##                ntxt += commentD[lang]+t+'\n'
 ##            
 ##            self.ui.te_sci.replaceSelectedText(ntxt)
+
+    def toggleAutoComplete(self):
+        self.autocompletemode = not self.autocompletemode
+        if self.autocompletemode:
+            # Enabled autocompletion
+            self.ui.te_sci.setAutoCompletionFillupsEnabled(1)
+            self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
+            self.ui.te_sci.setAutoCompletionThreshold(3)
+        else:
+            self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsNone)
