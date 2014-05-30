@@ -21,6 +21,15 @@ class Outline(QtGui.QWidget):
         self.afide = parent
         self.wdgD = {}
         self.treeD = {}
+        
+        self.outlineLangD = {}
+        for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
+            l = lang.split('.')[0]
+            exec('import lang.'+l)
+            exec('funcs=dir(lang.'+l+')')
+            if 'analyzeLine' in funcs:
+                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
+                exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
 
     def analyzeLine(self,wdg,typ):
         return None,None
@@ -42,11 +51,11 @@ class Outline(QtGui.QWidget):
 ##        if 'editingFinished' in  dir(wdg):
 ##            wdg.evnt.editingFinished.connect(self.updateOutline)
 
-        # Load output files
-        l = wdg.lang
-        if l+'.py' in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
-            exec('import lang.'+l)
-            exec('self.analyzeLine=lang.'+l+'.analyzeLine')
+##        # Load output files
+##        l = wdg.lang
+##        if l+'.py' in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
+##            exec('import lang.'+l)
+##            exec('self.analyzeLine=lang.'+l+'.analyzeLine')
             
         if 'gotoLine' in dir(wdg):
             trwdg.itemDoubleClicked.connect(self.goto)
@@ -67,7 +76,8 @@ class Outline(QtGui.QWidget):
                 tls = t.lstrip()
                 
         #--- Python
-                itmText,typ = self.analyzeLine(tls)
+                if wdg.lang in self.outlineLangD:
+                    itmText,typ = self.outlineLangD[wdg.lang](tls)
 
 ##                if wdg.lang == 'python':
 ##                    if tls.startswith('def '):
