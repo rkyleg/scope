@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from outline_ui import Ui_Form
-import re
+import re, os
 
 class outlineTree(QtGui.QTreeWidget):
     def __init__(self,parent=None):
@@ -22,7 +22,9 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
         self.treeD = {}
 
-
+    def analyzeLine(self,wdg,typ):
+        return None,None
+        
     def addOutline(self,wdg):
         trwdg = outlineTree()
         sw_ind = self.ui.sw_outline.count()
@@ -39,6 +41,12 @@ class Outline(QtGui.QWidget):
             wdg.evnt.editorChanged.connect(self.updateOutline)
 ##        if 'editingFinished' in  dir(wdg):
 ##            wdg.evnt.editingFinished.connect(self.updateOutline)
+
+        # Load output files
+        l = wdg.lang
+        if l+'.py' in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
+            exec('import lang.'+l)
+            exec('self.analyzeLine=lang.'+l+'.analyzeLine')
             
         if 'gotoLine' in dir(wdg):
             trwdg.itemDoubleClicked.connect(self.goto)
@@ -59,89 +67,89 @@ class Outline(QtGui.QWidget):
                 tls = t.lstrip()
                 
         #--- Python
-                if wdg.lang == 'python':
-                    if tls.startswith('def '):
-                        itmText = tls[4:-1]
-                        typ = 'function'
-                    elif tls.startswith('class '):
-                        itmText =tls[6:-1]
-                        typ = 'object'
-                    elif tls.startswith('#---'):
-                        itmText =tls[4:].lstrip('-')
-                        ##if itmText == '': itmText = None
-                        typ = 'heading'
-                    
-        #--- Javascript
-                elif wdg.lang == 'javascript':
-                    if tls.startswith('function'):
-                        itmText =tls[9:].rstrip()
-                        if itmText.endswith('{'): itmText = itmText[:-1]
-                        typ = 'function'
-                    elif tls.startswith('//---'):
-                        itmText =tls[5:]
-                        typ = 'heading'
-##                    elif 'function' in t and not tls.startswith('//'):
+                itmText,typ = self.analyzeLine(tls)
+
+##                if wdg.lang == 'python':
+##                    if tls.startswith('def '):
+##                        itmText = tls[4:-1]
+##                        typ = 'function'
+##                    elif tls.startswith('class '):
+##                        itmText =tls[6:-1]
+##                        typ = 'object'
+##                    elif tls.startswith('#---'):
+##                        itmText =tls[4:].lstrip('-')
+##                        ##if itmText == '': itmText = None
+##                        typ = 'heading'
+##                    
+##        #--- Javascript
+##                elif wdg.lang == 'javascript':
+##                    if tls.startswith('function'):
+##                        itmText =tls[9:].rstrip()
+##                        if itmText.endswith('{'): itmText = itmText[:-1]
+##                        typ = 'function'
+##                    elif tls.startswith('//---'):
+##                        itmText =tls[5:]
+##                        typ = 'heading'##                    elif 'function' in t and not tls.startswith('//'):
 ##                        itmText =tls
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
-##                        typ = 'function'                
-        #--- CSS
-                elif wdg.lang == 'css':
-                    if tls.startswith('/*---'):
-                        itmText =tls[5:].split('*/')[0]
-                        typ = 'heading'
-                    else:
-                        g = re.match('.*{',t)
-                        if g:
-                            itmText = g.group()[:-1]
-                            if itmText == '': 
-                                itmText = txtlines[cnt-1]
-                                lcnt = cnt-1
-                            if itmText == '': itmText = None
-                            if itmText.startswith('.'):
-                                typ = 'function'
-                            else:
-                                typ = 'object'
-                
-        #--- HTML
-                elif wdg.lang in ['html','thtml']:
-                    if tls.lower().startswith('<body'):
-                        itmText = '<BODY>'
-                        typ = 'object'
-                    elif tls.lower().startswith('<head'):
-                        itmText = '<HEAD>'
-                        typ = 'object'
-                    elif tls.lower().startswith('<table'):
-                        itmText = '<TABLE>'
-                        typ = 'object'
-                    elif tls.startswith('<!---'):
-                        itmText =tls[5:].replace('-->','')
-                        typ = 'heading'
-                
-        #--- Markdown
-                elif wdg.lang == 'markdown':
-                    if tls.startswith('#'): # Heading
-                        h = tls.split(' ')[0].count('#')
-                        head = tls.replace('#','')
-                        itmText = (h-1)*4*' '+head
-                        if h==1:
-                            typ='object'
-                        else:
-                            typ='function'
-        #--- Ini/Config
-                elif wdg.lang == 'ini':
-                    if tls.lower().startswith('['):
-                        h = tls.split(' ')[0].count('[')
-                        head = tls.replace('[','').replace(']','')
-                        itmText = (h-1)*4*' '+head
-                        if h==1:
-                            typ='object'
-                        else:
-                            typ='function'
-                    elif tls.startswith('['):
-                        itmText =tls[4:].lstrip('-')
-                        ##if itmText == '': itmText = None
-                        typ = 'heading'
-                
+##                        typ = 'function'##                
+##        #--- CSS
+##                elif wdg.lang == 'css':
+##                    if tls.startswith('/*---'):
+##                        itmText =tls[5:].split('*/')[0]
+##                        typ = 'heading'
+##                    else:
+##                        g = re.match('.*{',t)
+##                        if g:
+##                            itmText = g.group()[:-1]
+##                            if itmText == '': 
+##                                itmText = txtlines[cnt-1]
+##                                lcnt = cnt-1
+##                            if itmText == '': itmText = None
+##                            if itmText.startswith('.'):
+##                                typ = 'function'
+##                            else:
+##                                typ = 'object'
+##                
+##        #--- HTML
+##                elif wdg.lang in ['html','thtml']:
+##                    if tls.lower().startswith('<body'):
+##                        itmText = '<BODY>'
+##                        typ = 'object'
+##                    elif tls.lower().startswith('<head'):
+##                        itmText = '<HEAD>'
+##                        typ = 'object'
+##                    elif tls.lower().startswith('<table'):
+##                        itmText = '<TABLE>'
+##                        typ = 'object'
+##                    elif tls.startswith('<!---'):
+##                        itmText =tls[5:].replace('-->','')
+##                        typ = 'heading'
+##                
+##        #--- Markdown
+##                elif wdg.lang == 'markdown':
+##                    if tls.startswith('#'): # Heading
+##                        h = tls.split(' ')[0].count('#')
+##                        head = tls.replace('#','')
+##                        itmText = (h-1)*4*' '+head
+##                        if h==1:
+##                            typ='object'
+##                        else:
+##                            typ='function'
+##        #--- Ini/Config
+##                elif wdg.lang == 'ini':
+##                    if tls.lower().startswith('['):
+##                        h = tls.split(' ')[0].count('[')
+##                        head = tls.replace('[','').replace(']','')
+##                        itmText = (h-1)*4*' '+head
+##                        if h==1:
+##                            typ='object'
+##                        else:
+##                            typ='function'
+##                    elif tls.startswith('['):
+##                        itmText =tls[4:].lstrip('-')
+##                        ##if itmText == '': itmText = None
+##                        typ = 'heading'                
         # Add Outline Item
                 if itmText != None:
                     itmText = spc +itmText

@@ -109,6 +109,7 @@
 - [] Delete pages when closing tabs
 - [] search outline
 - [] Highlight current section closest to top of screen
+- [x] Move outline code to language plugins in separate files
 
 ### Python Shell
 - [x] Fix mouse cursor messing up code
@@ -143,6 +144,7 @@
 - [f] allow running multiple outputs - add tabs for each and stop button
 - [f] goto correct output tab when switching tabs
 - [f] when closing a file, will need to stop output
+- [] Move markdown and preview to separate files for customization
 
 ### Snippets
 - [x] search
