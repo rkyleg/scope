@@ -161,3 +161,8 @@
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
 - [] Add other widgets as tabs (that aren't editors)
+
+## Binaries
+- [] Create Windows binary
+- [] check if python and qt installed when launching binary - remove shell and pyqt converter if not
+- [] Create Linux binary
