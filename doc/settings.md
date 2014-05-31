@@ -35,8 +35,27 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
 - activePlugins
     - the list of active plugins to load
 
-- editors
+### Editor Settings
+- activeEditors
     - the list of active editors to load
+
+- editors
+    - a dictionary of editors and their default settings
+
+**Example**
+
+    activeEditors = ace,scintilla,ckeditor
+    [editors]
+        [[ace]]
+            wordwrap=0
+            theme=twilight
+            behavioursEnabled=1
+            wrapBehavioursEnabled=1
+        [[scintilla]]
+            wordwrap=0
+            autocomplete=1
+        [[ckeditor]]
+
 
 ### Favorite Languages (fav_lang)
 Different settings for the editor can be set for the default and each language.  If no parameter is specified, the default is used.  The double bracket indicates the language.  For the full list of languages look in the new menu for each editor.  The default for all languages is listed as `[[default]]`

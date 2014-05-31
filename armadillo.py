@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.15'
+__version__ = '0.9.16'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -306,7 +306,7 @@ class Armadillo(QtGui.QMainWindow):
         #--- Get Editor Languages
         self.editorD = {}
         
-        for e in self.settings['editors']:
+        for e in self.settings['activeEditors']:
             exec('import editors.'+e)
             try:
                 exec('ld = editors.'+e+'.getLang()')
@@ -879,15 +879,14 @@ class Armadillo(QtGui.QMainWindow):
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
         try:
             user_config = configobj.ConfigObj(self.settings_filename)
+            if type(user_config['editors'])==type([]): # Check editor settings 
+                error
             config.merge(user_config)
         except:
-            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings')
+            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings<Br><br><i>Compare your settings with the default_settings</i>')
 ##            self.settings_filename =os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf'
         self.settings = config
-        
-##        print self.settings
-        
-        
+
         # Configure Settings
         self.settings['run']={}
         for l in self.settings['fav_lang']:

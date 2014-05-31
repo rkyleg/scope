@@ -23,6 +23,7 @@
 - [x] Load workspace closes open files
 - [x] Save As
 - [] show column number and wordcount, total lines? - stats in statusbar
+- [] Make sure default editor settings (wordwrap,etc) are loading correctly
 
 ### Startpage
 - [x] Update theme
@@ -85,6 +86,7 @@
 - [x] disable drag and drop in webpage
 - [x] add autocomplete
 - [x] fix find/replace with a '
+- [ ] add javascript custom settings
 
 ### Webview
 - [x] if markdown, generate
@@ -117,6 +119,7 @@
 - [f] upon import - add completion to editor
 - [x] syntax highlighting
 - [x] Fix selection replace/delete bug
+- [] Fix syntax highlighting of strings
 
 ### File Browser
 - [x] Return press opens folder

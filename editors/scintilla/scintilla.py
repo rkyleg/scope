@@ -57,7 +57,12 @@ class Sci(QtGui.QWidget):
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
-        font.setPointSize(10)
+        
+        xfont = 10
+        if 'fontSize' in self.armadillo.settings['editors']['scintilla']:
+            xfont = self.armadillo.settings['editors']['scintilla'][fontSize]
+        
+        font.setPointSize(xfont)
         self.ui.te_sci.setFont(font)
         self.ui.te_sci.setMarginsFont(font)
 
