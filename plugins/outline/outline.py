@@ -28,7 +28,7 @@ class Outline(QtGui.QWidget):
             exec('import lang.'+l)
             exec('funcs=dir(lang.'+l+')')
             if 'analyzeLine' in funcs:
-                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
+##                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
                 exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
 
     def analyzeLine(self,wdg,typ):
@@ -62,23 +62,33 @@ class Outline(QtGui.QWidget):
 
     def updateOutline(self,wdg):
         trwdg = self.wdgD[wdg]
-        if wdg.lang != 'Text':
-            cnt = -1
+        if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
             trwdg.clear()
             txt = unicode(wdg.getText())
             txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
-            for t in txtlines:
-                cnt += 1
-                lcnt = cnt
-                typ = None
-                itmText = None
-                spc = (len(t) -len(t.lstrip()))*' '
-                tls = t.lstrip()
-                
-        #--- Python
-                if wdg.lang in self.outlineLangD:
-                    itmText,typ = self.outlineLangD[wdg.lang](tls)
+            
+            txt_outline = self.outlineLangD[wdg.lang](txtlines)
+            
+            for t in txt_outline:
+                itmText = t[0]
+                typ = t[1]
+                lcnt = t[2]
+##                itmText = spc +itmText
+                itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
+                trwdg.addTopLevelItem(itm)
+                self.format(itm,typ)
+            
+##            for t in txtlines:
+##                cnt += 1
+##                lcnt = cnt
+##                typ = None
+##                itmText = None
+##                spc = (len(t) -len(t.lstrip()))*' '
+##
+##                itmText,typ = self.outlineLangD[wdg.lang](t)
 
+
+##        #--- Python
 ##                if wdg.lang == 'python':
 ##                    if tls.startswith('def '):
 ##                        itmText = tls[4:-1]
@@ -99,10 +109,12 @@ class Outline(QtGui.QWidget):
 ##                        typ = 'function'
 ##                    elif tls.startswith('//---'):
 ##                        itmText =tls[5:]
-##                        typ = 'heading'##                    elif 'function' in t and not tls.startswith('//'):
+##                        typ = 'heading'
+##                    elif 'function' in t and not tls.startswith('//'):
 ##                        itmText =tls
 ##                    if itmText.endswith('{'): itmText = itmText[:-1]
-##                        typ = 'function'##                
+##                        typ = 'function'
+##                
 ##        #--- CSS
 ##                elif wdg.lang == 'css':
 ##                    if tls.startswith('/*---'):
@@ -159,13 +171,14 @@ class Outline(QtGui.QWidget):
 ##                    elif tls.startswith('['):
 ##                        itmText =tls[4:].lstrip('-')
 ##                        ##if itmText == '': itmText = None
-##                        typ = 'heading'                
-        # Add Outline Item
-                if itmText != None:
-                    itmText = spc +itmText
-                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
-                    trwdg.addTopLevelItem(itm)
-                    self.format(itm,typ)
+##                        typ = 'heading'
+##                
+##        # Add Outline Item
+##                if itmText != None:
+##                    itmText = spc +itmText
+##                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
+##                    trwdg.addTopLevelItem(itm)
+##                    self.format(itm,typ)
                     
     def editorTabChanged(self,wdg):
         trwdg = self.wdgD[wdg]

@@ -1,12 +1,25 @@
+import re
 
-def analyzeLine(line):
-    itmText=typ=None
-    if line.startswith('function'):
-        itmText =line[9:].rstrip()
-        if itmText.endswith('{'): itmText = itmText[:-1]
-        typ = 'function'
-    elif line.startswith('//---'):
-        itmText =line[5:]
-        typ = 'heading'
+def analyzeLine(txtlines):
+    outline = []
+    lcnt = -1
+    for line in txtlines:
+        lcnt += 1
+        typ = None
+        itmText = None
     
-    return itmText,typ
+        spc = (len(line) -len(line.lstrip()))*' '
+        tls = line.lstrip()
+        
+        if tls.startswith('function'):
+            itmText =tls[9:].rstrip()
+            if itmText.endswith('{'): itmText = itmText[:-1]
+            typ = 'function'
+        elif tls.startswith('//---'):
+            itmText =tls[5:]
+            typ = 'heading'
+    
+        if itmText != None:
+            outline.append([itmText,typ,lcnt])
+    
+    return outline

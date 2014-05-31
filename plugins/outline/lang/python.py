@@ -1,15 +1,28 @@
+import re
 
-def analyzeLine(line):
-    itmText=typ=None
-    if line.startswith('def '):
-        itmText = line[4:-1]
-        typ = 'function'
-    elif line.startswith('class '):
-        itmText =line[6:-1]
-        typ = 'object'
-    elif line.startswith('#---'):
-        itmText =line[4:].lstrip('-')
-        ##if itmText == '': itmText = None
-        typ = 'heading'
+def analyzeLine(txtlines):
+    outline = []
+    lcnt = -1
+    for line in txtlines:
+        lcnt += 1
+        typ = None
+        itmText = None
     
-    return itmText,typ
+        spc = (len(line) -len(line.lstrip()))*' '
+        tls = line.lstrip()
+        
+        if tls.startswith('def '):
+            itmText = tls[4:-1]
+            typ = 'function'
+        elif tls.startswith('class '):
+            itmText =tls[6:-1]
+            typ = 'object'
+        elif tls.startswith('#---'):
+            itmText =tls[4:].lstrip('-')
+            ##if itmText == '': itmText = None
+            typ = 'heading'
+        
+        if itmText != None:
+            outline.append([itmText,typ,lcnt])
+    
+    return outline

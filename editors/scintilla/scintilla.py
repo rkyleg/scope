@@ -43,7 +43,7 @@ class Sci(QtGui.QWidget):
         self.ui.setupUi(self)
         self.ui.te_sci.ARROW_MARKER_NUM = 8
         self.ui.te_sci.setUtf8(True)
-        self.afide = parent
+        self.armadillo = parent
         self.okedit = 1
         
         # Events
@@ -51,6 +51,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
 
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
+        self.ui.te_sci.dropEvent = self.dropEvent
         
         # Font
         font = QFont()
@@ -153,7 +154,7 @@ class Sci(QtGui.QWidget):
 ##        self.evnt.editingFinished.emit(self)
     
     def toggleComment(self):
-        lang = self.afide.currentWidget().lang
+        lang = self.armadillo.currentWidget().lang
         if lang in commentD:
             if self.ui.te_sci.getSelection()[0] != -1:
                 start = self.ui.te_sci.getSelection()[0]
@@ -237,3 +238,6 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.setAutoCompletionThreshold(3)
         else:
             self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsNone)
+    
+    def dropEvent(self,event):
+        self.armadillo.dropEvent(event)

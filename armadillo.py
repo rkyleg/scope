@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.9.14'
+__version__ = '0.9.15'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -479,21 +479,29 @@ class Armadillo(QtGui.QMainWindow):
                     elif lang == 'python' and title=='__init__.py':
                         title = os.path.split(os.path.dirname(filename))[1]+'/init'
                     
-                    wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
-                    f = codecs.open(filename,'r','utf-8')
-                    txt = f.read()
-                    f.close()
-                    wdg.setText(txt)
-                    QtGui.QApplication.processEvents()
-                    wdg.lastText = txt
-                    self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-                    wdg.modTime = os.path.getmtime(filename)
-##                    self.filesystemwatcher.addPath(filename)
-##                    self.fileModD[filename]=os.path.getmtime(filename)
-                    self.updateOutline()
- 
-                    # Remove Startpage
-                    self.removeStart()
+                    try:
+                        f = codecs.open(filename,'r','utf-8')
+                        txt = f.read()
+                        f.close()
+                        
+                    except:
+                        QtGui.QMessageBox.warning(self,'Error Opening File','The following file could not be read.  Make sure it is ascii or utf-8 encoded<br><br>'+filename)
+                        txt = None
+                    
+                    if txt != None:
+                        # Create Widget
+                        wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
+                        wdg.setText(txt)
+                        QtGui.QApplication.processEvents()
+                        wdg.lastText = txt
+                        self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                        wdg.modTime = os.path.getmtime(filename)
+    ##                    self.filesystemwatcher.addPath(filename)
+    ##                    self.fileModD[filename]=os.path.getmtime(filename)
+                        self.updateOutline()
+     
+                        # Remove Startpage
+                        self.removeStart()
 
         
     #---Editor

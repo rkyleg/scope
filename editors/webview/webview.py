@@ -15,6 +15,7 @@ class WebPage(QtWebKit.QWebPage):
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,baseurl=None):
         QtWebKit.QWebView.__init__(self,parent)
+        self.parent = parent
         web_page = WebPage(self)
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
@@ -58,3 +59,6 @@ class WebView(QtWebKit.QWebView):
             webbrowser.open(lnk)
         else:
             self.load(url)
+
+    def dropEvent(self,event):
+        self.parent.dropEvent(event)

@@ -33,6 +33,7 @@ class Events(QtCore.QObject):
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,baseurl=None):
         QtWebKit.QWebView.__init__(self,parent)
+        self.parent = parent
         web_page = WebPage(self)
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
@@ -102,5 +103,4 @@ class WebView(QtWebKit.QWebView):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
 
     def dropEvent(self,event):
-        # Ignore drop event
-        pass
+        self.parent.dropEvent(event)

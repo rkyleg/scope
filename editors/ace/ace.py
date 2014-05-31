@@ -344,6 +344,5 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().evaluateJavaScript(js)
     
     def dropEvent(self,event):
-        # Ignore drop event
-        pass
+        self.parent.dropEvent(event)
         
