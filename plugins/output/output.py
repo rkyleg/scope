@@ -17,6 +17,16 @@ class Output(QtGui.QWidget):
         self.ui.tb_out.setOpenLinks(0)
         self.ui.tb_out.anchorClicked.connect(self.urlClick)
     
+        # Get Command dictionary
+        self.runD = {}
+        for runs in os.listdir(os.path.join(os.path.dirname(__file__),'run')):
+            r = runs.split('.')[0]
+            exec('import run.'+r)
+            exec('funcs=dir(run.'+r+')')
+            if 'cmd' in funcs:
+##                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
+                exec('self.runD["'+r+'"]=run.'+r+'.cmd')
+    
     def urlClick(self,url):
         pth = str(url.toString())
         try:
@@ -60,10 +70,8 @@ class Output(QtGui.QWidget):
         else:
             if cmd == 'webbrowser':
                 webbrowser.open(filename)
-            elif cmd == 'markdown':
-                import plugins.mkdown as mkdown
-                html = mkdown.generate(filename)
-                self.webview_preview(html,filename)
+            elif cmd in self.runD:
+                self.runD[cmd](self,filename)
             else:
             
                 if not self.armadillo.pluginD['output'].isVisible():
@@ -87,6 +95,8 @@ class Output(QtGui.QWidget):
             wdg = self.armadillo.addEditorWidget('webview','Preview','preview')
             wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
             wdg.linkClicked.connect(self.urlClicked)
+            self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
+    
         else:
             self.armadillo.ui.tab.setCurrentIndex(openfile)
             QtGui.QApplication.processEvents()
@@ -105,8 +115,7 @@ class Output(QtGui.QWidget):
         wdg.modTime = None
         QtGui.QApplication.processEvents()
         self.armadillo.changeTab(self.armadillo.ui.tab.currentIndex())
-        self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
-    
+        
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()
         wdg.load2(url)

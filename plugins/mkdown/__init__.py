@@ -17,13 +17,9 @@ def generate(file):
     html = ''
     txtlines = rawhtml.replace('\r\n','\n').replace('\r','\n').split('\n')
     for t in txtlines:
-##        if not t.startswith('>> '):
             # Ignore comments
             html += t+'\n'
-    
-##    html=rawhtml
-        
-    
+
     # Get Markdown
     md = markdown.markdown(html)#,extras=['cuddled-lists','wiki-tables'])
     
@@ -43,26 +39,12 @@ def generate(file):
             li.future {font-style:italic;color:gray;}
             li.checked {color:gray;} 
     '''
-##    for i in range(2,8):
-##        mstyle += 'h'+str(i)+'{margin-left:'+str((i-1)*10)+'px;}'
     mhtml = '<style>'+mstyle+'</style>'
     
     mhtml += md
-    
-    # Get html path
-##    pth = os.path.dirname(file)
-##    nm = os.path.basename(file).split('.')[0]
-##    fpth = pth+'/'+nm+'.html'
+
     
     return mhtml
-    
-##    # Write to file
-##    f = open(fpth,'w')
-##    f.write(mhtml)
-##    f.close()
-##
-##    import webbrowser
-##    webbrowser.open(fpth)
 
 #generate(file)
 
