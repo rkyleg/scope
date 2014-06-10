@@ -15,7 +15,7 @@ def analyzeLine(txtlines):
         if tls.startswith('/*---'):
             itmText =tls[5:].split('*/')[0]
             typ = 'heading'
-        else:
+        elif not tls.startswith('/*'):
             g = re.match('.*{',line)
             if g:
                 itmText = g.group()[:-1]
