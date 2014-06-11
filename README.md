@@ -30,17 +30,17 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
 2. Run windows/Armadillo.exe
 
 ## More Stuff
-- **[Overview](doc/overview.md)** - Overview of main window features
-- **[Editors](doc/editors.md)** - multiple code editors are available
-- **[Plugins](doc/plugins.md)** - comes with default plugins
+- **[Overview](armadillo/doc/overview.md)** - Overview of main window features
+- **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
+- **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins
     - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
     - Python Shell - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool
     - Snippets - store and retreive useful code snippets
-- **[Settings](doc/settings.md)** - settings are stored in config file
+- **[Settings](armadillo/doc/settings.md)** - settings are stored in config file
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
-- **[Keyboard Shortcuts](doc/keyboard_shortcuts.html)**
+- **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.html)**
 - **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
 - **[Todo](extra/todo.md)** - List of to do and status
 

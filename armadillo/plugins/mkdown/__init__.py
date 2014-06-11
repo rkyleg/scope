@@ -1,4 +1,4 @@
-import os, sys
+import os, sys, codecs
 
 try:
     import markdown
@@ -9,7 +9,8 @@ except:
 
 def generate(file):
     # Open File
-    f = open(file,'r')
+##    f = open(file,'r')
+    f = codecs.open(file,'r','utf-8')
     rawhtml = f.read()
     f.close()
     
