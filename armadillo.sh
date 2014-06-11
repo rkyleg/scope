@@ -1,2 +1,2 @@
-cd $(dirname $(readlink -f $0))
+cd $(dirname $(readlink -f $0))/armadillo
 python armadillo.py
