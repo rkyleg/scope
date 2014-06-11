@@ -1,4 +1,4 @@
-# <img src="img/armadillo.png" height="48px;"> Armadillo IDE
+# <img src="armadillo/img/armadillo.png" height="48px;"> Armadillo IDE
 ![Alt text](extra/screenshot.png "Screenshot")
 
 ## About
