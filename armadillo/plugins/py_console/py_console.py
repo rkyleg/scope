@@ -41,10 +41,15 @@ class Console(QtGui.QTextEdit):
         self.setProperty("class","pluginHorizontal")
         
         # Syntax Highlighter
-        
         self.highlighter = highlighter.MyHighlighter(self)
-        if locals==None:
-            locals={'self':self}
+
+        # Add sys path 
+        if os.path.exists(r'C:\python27'):
+            pyflds = ['Lib','Lib\site-packages']
+            for fld in pyflds:
+                sys.path.append(r'C:\python27\\'+fld)
+                if locals==None:
+            locals={'self':self,'armadillo':parent}
         self.interpreter = Interpreter(locals)
 
         # session log
