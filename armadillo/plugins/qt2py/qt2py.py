@@ -47,13 +47,17 @@ class Qt2Py(QtGui.QWidget):
         except:
             cdir = None
         
-        if os.name == 'posix':
-            subprocess.Popen('/usr/bin/designer-qt4', stdout=subprocess.PIPE, shell=0,cwd=cdir)
-        elif os.name == 'nt':
-            pypth = os.path.dirname(sys.executable)
+        try:
+            if os.name == 'posix':
+                subprocess.Popen('/usr/bin/designer-qt4', stdout=subprocess.PIPE, shell=0,cwd=cdir)
+            elif os.name == 'nt':
+    ##            pypth = os.path.dirname(sys.executable)
+                pypth = r'C:\python27'
+                
+                subprocess.Popen(pypth+'/Lib/site-packages/PyQt4/designer.exe', stdout=subprocess.PIPE, shell=0,cwd=cdir)
+        except:
+            QtGui.QMessageBox.warning(self,'Qt Designer?','Armadillo could not find Qt Designer. Check to make sure it is installed')
             
-            subprocess.Popen(pypth+'/Lib/site-packages/PyQt4/designer.exe', stdout=subprocess.PIPE, shell=0,cwd=cdir)
-    
     def search_help(self):
         txt = str(self.ui.le_help.text()).lower()
         if not txt.startswith('q'):
