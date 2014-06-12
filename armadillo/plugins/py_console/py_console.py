@@ -44,11 +44,14 @@ class Console(QtGui.QTextEdit):
         self.highlighter = highlighter.MyHighlighter(self)
 
         # Add sys path 
-        if os.path.exists(r'C:\python27'):
-            pyflds = ['Lib','Lib\site-packages']
-            for fld in pyflds:
-                sys.path.append(r'C:\python27\\'+fld)
-                if locals==None:
+        if os.name =='nt':
+            if os.path.exists(r'C:\python27'):
+                pyflds = ['Lib','Lib\site-packages']
+                for fld in pyflds:
+                    sys.path.append(r'C:\python27\\'+fld)
+        else:
+            if os.path.exists('/usr/lib/python2.7'):
+                sys.path.append('/usr/lib/python2.7')        if locals==None:
             locals={'self':self,'armadillo':parent}
         self.interpreter = Interpreter(locals)
 
