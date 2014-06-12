@@ -51,7 +51,8 @@ class Console(QtGui.QTextEdit):
                     sys.path.append(r'C:\python27\\'+fld)
         else:
             if os.path.exists('/usr/lib/python2.7'):
-                sys.path.append('/usr/lib/python2.7')        if locals==None:
+                sys.path.append('/usr/lib/python2.7')
+                sys.path.append('/usr/lib/python2.7/dist-packages')        if locals==None:
             locals={'self':self,'armadillo':parent}
         self.interpreter = Interpreter(locals)
 
