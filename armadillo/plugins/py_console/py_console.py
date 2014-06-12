@@ -44,7 +44,7 @@ class Console(QtGui.QTextEdit):
         self.highlighter = highlighter.MyHighlighter(self)
 
         # Add sys path if not running from python
-        if not sys.executable.split('.')[-1][:2]!='py':
+        if not sys.executable.split('.')[-1][:2]=='py':
             if os.name =='nt':
                 if os.path.exists(r'C:\python27'):
                     pyflds = ['Lib','Lib\site-packages']
