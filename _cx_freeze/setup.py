@@ -30,7 +30,7 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 setup(  name = "Armadillo",
-        version = "0.9.17",
+        version = "1.0.1",
         description = "IDE",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Armadillo.py", base=base)])
