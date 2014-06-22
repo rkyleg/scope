@@ -37,7 +37,7 @@ class WebView(QtWebKit.QWebView):
         web_page = WebPage(self)
         web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
-
+        self.baseurl=baseurl
         self.evnt = Events() # Events
         
         # Setup Javascript object
@@ -125,20 +125,20 @@ class WebView(QtWebKit.QWebView):
     def dropEvent(self,event):
         handled = self.paste(event.mimeData(),drop=1)
         if not handled:
-            self.parent.dropEvent(event)
+            if self.parent != None:
+                self.parent.dropEvent(event)
     
     #---Paste Convenience Functions
     def paste(self,mimeData,drop=0):
         # View mimedata formats
 ##        for f in mimeData.formats():
 ##            print f,mimeData.hasFormat("XML Spreadsheet")
-##        print mimeData.hasUrls()
         handled = 0
         if mimeData.hasUrls():
-            
             pth=unicode(mimeData.urls()[0].toString()).split('\n')[0]
-            print pth
             ext = pth.split('.')[-1].lower()
+            if not pth.startswith('http'):
+                pth = os.path.relpath(str(mimeData.urls()[0].toLocalFile()),str(self.baseurl.toLocalFile()))
             if ext in ['png','jpg','jpeg','bmp','gif','svg']:
                 if drop or pth.startswith('http'):
                     self.insertText(u'<img src="'+pth+'">')
@@ -152,10 +152,8 @@ class WebView(QtWebKit.QWebView):
             if mimeData.hasFormat("XML Spreadsheet"):
                 pasteTable(webview,txt)
                 handled=1
-##            elif not mimeData.hasHtml():
             else:
                 # Ask to paste as table
-##                print txt.split('\n')[0].split('\t')
                 if len(txt.split('\n')[0].split('\t')) >1:
                     resp = QtGui.QMessageBox.question(None, 'Paste as Table','Do you want to paste the text as a table?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
                     if resp == QtGui.QMessageBox.Yes:
@@ -164,21 +162,10 @@ class WebView(QtWebKit.QWebView):
                     elif resp == QtGui.QMessageBox.Cancel:
                         handled = 1
 
-##        if not handled:
         elif mimeData.hasImage():
             self.pasteImage(mimeData)
             handled=1
-##        elif mimeData.hasUrls():
-##            
-##            pth=unicode(mimeData.urls()[0].toString()).split('\n')[0]
-####            print pth
-##            ext = pth.split('.')[-1].lower()
-##            if ext in ['png','jpg','jpeg','bmp','gif','svg']:
-##                if not drop:
-##                    self.pasteImage(mimeData)
-##                else:
-##                    self.insertText(u'<img src="'+pth+'">')
-##                handled=1
+
         return handled
         
     def pasteImage(self,mimeData):
@@ -198,8 +185,9 @@ class WebView(QtWebKit.QWebView):
                 data= unicode(mimeData.imageData().toByteArray().toBase64())
 
         else:
-##            f = open(unicode(mimeData.urls()[0].path()[1:]),'rb')
-            f = open(unicode(mimeData.urls()[0].path()),'rb')
+            pth = unicode(mimeData.urls()[0].path())
+            if os.name =='nt': pth = pth[1:]
+            f = open(pth,'rb')
             data = base64.b64encode(f.read())
             f.close()
         try:
