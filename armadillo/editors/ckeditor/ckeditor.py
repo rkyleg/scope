@@ -127,6 +127,8 @@ class WebView(QtWebKit.QWebView):
         if not handled:
             if self.parent != None:
                 self.parent.dropEvent(event)
+        else:
+            self.editorTextChanged()
     
     #---Paste Convenience Functions
     def paste(self,mimeData,drop=0):
@@ -138,7 +140,10 @@ class WebView(QtWebKit.QWebView):
             pth=unicode(mimeData.urls()[0].toString()).split('\n')[0]
             ext = pth.split('.')[-1].lower()
             if not pth.startswith('http'):
-                pth = os.path.relpath(str(mimeData.urls()[0].toLocalFile()),str(self.baseurl.toLocalFile()))
+                try:
+                    pth = os.path.relpath(str(mimeData.urls()[0].toLocalFile()),str(self.baseurl.toLocalFile())).replace('\\','/')
+                except:
+                    pass
             if ext in ['png','jpg','jpeg','bmp','gif','svg']:
                 if drop or pth.startswith('http'):
                     self.insertText(u'<img src="'+pth+'">')
