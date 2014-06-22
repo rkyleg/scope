@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
-import os
+import os, base64
 
 class jsObject(QtCore.QObject):
     filePath = ''
@@ -35,7 +35,7 @@ class WebView(QtWebKit.QWebView):
         QtWebKit.QWebView.__init__(self,parent)
         self.parent = parent
         web_page = WebPage(self)
-        #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+        web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
 
         self.evnt = Events() # Events
@@ -76,15 +76,27 @@ class WebView(QtWebKit.QWebView):
     def keyPressEvent(self,event):
         ky = event.key()
         handled = 0
-        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
-            self.okedit = 0
-                
-        if not handled:
+##        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
+##            self.okedit = 0
+        
+        if event.modifiers() & QtCore.Qt.ControlModifier:
+            if event.key() == QtCore.Qt.Key_V:
+                clip = QtGui.QApplication.clipboard()
+                handled = self.paste(clip.mimeData())
+
+        if handled:
+            event.accept()
+            return
+        
+        else:
             QtWebKit.QWebView.keyPressEvent(self,event)
         QtGui.QApplication.processEvents()
-        self.okedit = 1
+##        self.okedit = 1
         self.editorTextChanged()
-        
+    
+    def contextMenuEvent(self):
+        pass
+    
     def editorTextChanged(self):
         self.evnt.editorChanged.emit(self)
         
@@ -98,9 +110,133 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
         CKEDITOR.instances.editor1.setData(txt)''')
-        
+    
+    def insertText(self,txt):
+        QtGui.QApplication.processEvents()
+        self.editorJS.editorHtml = txt.replace("'","''")
+        self.page().mainFrame().evaluateJavaScript(
+        '''CKEDITOR.instances.editor1.focus();
+        var txt = pythonjs.html;
+        CKEDITOR.instances.editor1.insertHtml(txt)''')
+    
     def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
 
     def dropEvent(self,event):
-        self.parent.dropEvent(event)
+        handled = self.paste(event.mimeData(),drop=1)
+        if not handled:
+            self.parent.dropEvent(event)
+    
+    #---Paste Convenience Functions
+    def paste(self,mimeData,drop=0):
+        # View mimedata formats
+##        for f in mimeData.formats():
+##            print f,mimeData.hasFormat("XML Spreadsheet")
+##        print mimeData.hasUrls()
+        handled = 0
+        if mimeData.hasUrls():
+            
+            pth=unicode(mimeData.urls()[0].toString()).split('\n')[0]
+            print pth
+            ext = pth.split('.')[-1].lower()
+            if ext in ['png','jpg','jpeg','bmp','gif','svg']:
+                if drop or pth.startswith('http'):
+                    self.insertText(u'<img src="'+pth+'">')
+                else:
+                    self.pasteImage(mimeData)
+                handled=1
+        
+        elif mimeData.hasText():
+            # Spreadsheet
+            txt = str(mimeData.text().toUtf8()).decode('utf-8')
+            if mimeData.hasFormat("XML Spreadsheet"):
+                pasteTable(webview,txt)
+                handled=1
+##            elif not mimeData.hasHtml():
+            else:
+                # Ask to paste as table
+##                print txt.split('\n')[0].split('\t')
+                if len(txt.split('\n')[0].split('\t')) >1:
+                    resp = QtGui.QMessageBox.question(None, 'Paste as Table','Do you want to paste the text as a table?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+                    if resp == QtGui.QMessageBox.Yes:
+                        self.pasteTable(txt)
+                        handled=1
+                    elif resp == QtGui.QMessageBox.Cancel:
+                        handled = 1
+
+##        if not handled:
+        elif mimeData.hasImage():
+            self.pasteImage(mimeData)
+            handled=1
+##        elif mimeData.hasUrls():
+##            
+##            pth=unicode(mimeData.urls()[0].toString()).split('\n')[0]
+####            print pth
+##            ext = pth.split('.')[-1].lower()
+##            if ext in ['png','jpg','jpeg','bmp','gif','svg']:
+##                if not drop:
+##                    self.pasteImage(mimeData)
+##                else:
+##                    self.insertText(u'<img src="'+pth+'">')
+##                handled=1
+        return handled
+        
+    def pasteImage(self,mimeData):
+        # Code to insert mimedata image as base64
+        if mimeData.hasImage():
+            if str(mimeData.imageData().typeName()) == 'QImage':
+                # Clipboard Paste
+                img = QtGui.QImage(mimeData.imageData())
+                ba = QtCore.QByteArray()
+                buffer = QtCore.QBuffer(ba)
+                buffer.open(QtCore.QIODevice.WriteOnly)
+                img.save(buffer,'PNG')
+
+                data = unicode(ba.toBase64())
+            
+            else:
+                data= unicode(mimeData.imageData().toByteArray().toBase64())
+
+        else:
+##            f = open(unicode(mimeData.urls()[0].path()[1:]),'rb')
+            f = open(unicode(mimeData.urls()[0].path()),'rb')
+            data = base64.b64encode(f.read())
+            f.close()
+        try:
+            ext = unicode(mimeData.urls()[0].path()).split('.')[-1].lower()
+        except:
+            ext='png'
+
+        html = u'<img src="data:image/'+ext+';base64, '+data+'"><br />'
+        self.insertText(html)
+
+        self.page().mainFrame().evaluateJavaScript("CKEDITOR.instances.editor1.focus()")
+        self.setFocus(1)
+    
+    def pasteTable(self,text):
+        tbltxt = '<table>'
+        for tl in text.split('\n'):
+            cols = tl.split('\t')
+            if cols != ['']:
+                tbltxt += '<tr>'
+                
+                for t in cols:
+                    tbltxt += '<td>'+t+'</td>'
+                tbltxt += '</tr>'
+        
+        tbltxt += '</table>'
+        self.insertText(tbltxt)
+        
+#---Main
+if __name__=='__main__':
+    import sys
+    app=QtGui.QApplication(sys.argv)
+    if os.name =='nt':
+        pfx="file:///"
+    else:
+        pfx="file://"
+    burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/')
+    editor=WebView(baseurl=burl)
+    editor.resize(800,600)
+    editor.show()
+    app.exec_()

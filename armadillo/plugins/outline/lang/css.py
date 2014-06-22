@@ -28,6 +28,6 @@ def analyzeLine(txtlines):
                     typ = 'object'
     
         if itmText != None:
-            outline.append([itmText,typ,lcnt])
+            outline.append([spc+itmText,typ,lcnt])
     
     return outline

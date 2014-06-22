@@ -108,6 +108,14 @@ class MyHighlighter( QSyntaxHighlighter ):
 ##        rule = HighlightingRule( pattern, boolean )
 ##        self.highlightingRules.append( rule )
 
+        # number
+        brush = QBrush( Qt.darkCyan, Qt.SolidPattern )
+        pattern = QRegExp( "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?" )
+        pattern.setMinimal( True )
+        number.setForeground( brush )
+        rule = HighlightingRule( pattern, number )
+        self.highlightingRules.append( rule )
+
         # comment
         brush = QBrush( Qt.gray, Qt.SolidPattern )
         pattern = QRegExp( "#[^\n]*" )
@@ -128,14 +136,6 @@ class MyHighlighter( QSyntaxHighlighter ):
 ##        pattern.setMinimal( True )
         singleQuotedString.setForeground( brush )
         rule = HighlightingRule( pattern, singleQuotedString )
-        self.highlightingRules.append( rule )
-
-        # number
-        brush = QBrush( Qt.darkCyan, Qt.SolidPattern )
-        pattern = QRegExp( "[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?" )
-        pattern.setMinimal( True )
-        number.setForeground( brush )
-        rule = HighlightingRule( pattern, number )
         self.highlightingRules.append( rule )
 
     def highlightBlock( self, text ):

@@ -21,6 +21,6 @@ def analyzeLine(txtlines):
                 typ='function'
     
         if itmText != None:
-            outline.append([itmText,typ,lcnt])
+            outline.append([spc+itmText,typ,lcnt])
     
     return outline

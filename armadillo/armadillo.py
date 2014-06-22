@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.1'
+__version__ = '1.0.2'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit

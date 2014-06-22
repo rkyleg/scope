@@ -1,6 +1,6 @@
 /**
  * @license Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
- * For licensing, see LICENSE.md or http://ckeditor.com/license
+ * For licensing, see LICENSE.html or http://ckeditor.com/license
  */
 
 CKEDITOR.editorConfig = function( config ) {
@@ -16,4 +16,24 @@ CKEDITOR.editorConfig = function( config ) {
     // afide customization
     config.enterMode = CKEDITOR.ENTER_BR;
     config.allowedContent = true
+    
+    config.toolbarGroups = [
+    { name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
+    { name: 'editing',     groups: [ 'find', 'selection', 'spellchecker' ] },
+    { name: 'styles' },
+    { name: 'links' },
+    { name: 'insert' },
+    { name: 'forms' },
+    { name: 'tools' },
+
+    { name: 'basicstyles', groups: [ 'basicstyles', 'cleanup' ] },
+    { name: 'paragraph',   groups: [ 'list','blocks',  ] },
+    { name: 'paragraph2',   groups: [ 'indent', 'align' ] },
+    
+    { name: 'colors' },
+    { name: 'document',    groups: [ 'mode', 'document', 'doctools' ] },
+    { name: 'others' },
+    { name: 'about' }
+];
+    
 };
