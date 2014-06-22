@@ -178,11 +178,11 @@ class WebView(QtWebKit.QWebView):
         smenu.addAction('Jump To Matching')
         act = QtGui.QAction(QtGui.QIcon(),'Behaviours Enabled',menu)
         act.setCheckable(1)
-        act.setChecked(self.behaviours)
+        act.setChecked(self.settings['behaviours'])
         smenu.addAction(act)
         act = QtGui.QAction(QtGui.QIcon(),'Wrap Behaviour Enabled',menu)
         act.setCheckable(1)
-        act.setChecked(self.wrapBehaviours)
+        act.setChecked(self.settings['wrapBehaviours'])
         smenu.addAction(act)
         
         for act in menu.actions():  # Set Icon to visible
@@ -330,14 +330,14 @@ class WebView(QtWebKit.QWebView):
         self.page().mainFrame().evaluateJavaScript(js)
     
     def toggleBehaviours(self):
-        self.behaviours = abs(self.behaviours-1)
-        js = 'editor.setBehavioursEnabled('+['false','true'][self.behaviours]+');'
-        print self.behaviours,js
+        self.settings['behaviours'] = abs(self.settings['behaviours']-1)
+        js = 'editor.setBehavioursEnabled('+['false','true'][self.settings['behaviours']]+');'
+##        print self.settings['behaviours'],js
         self.page().mainFrame().evaluateJavaScript(js)
 
     def toggleWrapBehaviours(self):
-        self.wrapBehaviours = abs(self.wrapBehaviours-1)
-        js = 'editor.setWrapBehavioursEnabled('+['false','true'][self.wrapBehaviours]+');'
+        self.settings['wrapBehaviours'] = abs(self.settings['wrapBehaviours']-1)
+        js = 'editor.setWrapBehavioursEnabled('+['false','true'][self.settings['wrapBehaviours']]+');'
         self.page().mainFrame().evaluateJavaScript(js)
     
     def dropEvent(self,event):

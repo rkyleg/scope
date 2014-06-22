@@ -3,12 +3,12 @@
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
 - [f] Check if files edited/saved outside of editor continous
-- [f] Try to open in default editor, otherwise if language does not exist, try other editors
+- [x] Try to open in default editor, otherwise if language does not exist, try other editors
 - [f] Add more language icons
 - [x] sys.argv file open work
 - [x] Fix editor buttons checking if functions available
 - [-] Save file uses extensions (with all option)
-- [f] Save as (save menu maybe)
+- [x] Save as (save menu maybe)
 - [x] if save or load fails - display message
 - [-] if find not found - add statusbar message
 - [x] improve statusbar save formatting
@@ -32,6 +32,8 @@
 ### Documentation
 - [x] Just use markdown viewer
 - [x] Update settings documentation
+- [] py console documentation (armadillo object)
+- [] improve settings documentation
 
 ### Settings
 - [x] Save settings in separate location (load defaults first)
@@ -40,7 +42,7 @@
 - [x] Settings button can load 
 - [f] Settings page like webview (use alpaca)?
 - [x] Native or plastique style
-- [f] have default settings in __init__ of each editor/plugin
+- [-] have default settings in __init__ of each editor/plugin
 - [x] have settings folder - in main directory?? or use user directory
 - [f] option to store settings in os or with editor folder
 - [x] add stylesheet to settings (add error checking)
@@ -86,7 +88,7 @@
 - [x] disable drag and drop in webpage
 - [x] add autocomplete
 - [x] fix find/replace with a '
-- [ ] add javascript custom settings
+- [] add javascript custom settings
 
 ### Webview
 - [x] if markdown, generate
@@ -97,12 +99,12 @@
 - [x] Snippets plugin
 - [f] Spellcheck plugin
 - [f] Help plugin (with search, maybe based on current file language)
-- [f] Python code editor to run on current tab
+- [f] Python code editor to run on current tab - possible split with shell (little code editor)
 - [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 - [] update plugin style
 
 ### Outline
-- Languages
+- Languages to add
     - [x] Markdown
 - [f] Use themes for color coding
 - [-] Right click refresh (ctrl+o instead)
@@ -110,16 +112,17 @@
 - [x] ctrl+o to show outline
 - [] Delete pages when closing tabs
 - [] search outline
-- [] Highlight current section closest to top of screen
+- [f] Highlight current section closest to top of screen
 - [x] Move outline code to language plugins in separate files
 
-### Python Shell
+### Python Console
 - [x] Fix mouse cursor messing up code
 - [f] Auto complete would be nice
 - [f] upon import - add completion to editor
 - [x] syntax highlighting
 - [x] Fix selection replace/delete bug
-- [] Fix syntax highlighting of strings
+- [] Fix syntax highlighting of strings (and brackets mixed with strings)
+- [x] Add python2.7 source if installed
 
 ### File Browser
 - [x] Return press opens folder
@@ -147,7 +150,7 @@
 - [f] allow running multiple outputs - add tabs for each and stop button
 - [f] goto correct output tab when switching tabs
 - [f] when closing a file, will need to stop output
-- [] Move markdown and preview to separate files for customization
+- [x] Move markdown and preview to separate files for customization
 
 ### Snippets
 - [x] search
@@ -155,7 +158,7 @@
 - [x] show code with formatting (scintilla for now)
 - [x] edit/save snippets
 - [x] use settings for snippets location (home default)
-- [] search within files
+- [f] search within files
 - [x] double click to copy to clipboard
 
 ## Other Random TODO
@@ -163,6 +166,7 @@
 - [] Add other widgets as tabs (that aren't editors)
 
 ## Binaries
-- [] Create Windows binary
-- [] check if python and qt installed when launching binary - remove shell and pyqt converter if not
-- [] Create Linux binary
+- [x] Create Windows binary
+- [] check if python and qt installed when launching binary - remove pyqt converter if not
+- [x] Create Linux binary
+- [] Create Mac binary

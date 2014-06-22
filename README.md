@@ -34,7 +34,7 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
 - **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
 - **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins
     - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
-    - Python Shell - integrated Python Console
+    - [Python Shell](doc/plugins_pyconsole.md) - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool
     - Snippets - store and retreive useful code snippets

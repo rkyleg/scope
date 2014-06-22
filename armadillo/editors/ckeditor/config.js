@@ -12,6 +12,7 @@ CKEDITOR.editorConfig = function( config ) {
 
 	// Make dialogs simpler.
 	config.removeDialogTabs = 'image:advanced;link:advanced';
+	config.removePlugins='preview'
         
     // afide customization
     config.enterMode = CKEDITOR.ENTER_BR;
