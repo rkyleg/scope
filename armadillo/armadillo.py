@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.2'
+__version__ = '1.0.3'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -17,6 +17,7 @@ import plugins.output.output
 class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
     editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
+    editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -307,16 +308,20 @@ class Armadillo(QtGui.QMainWindow):
         self.editorD = {}
         
         for e in self.settings['activeEditors']:
-            exec('import editors.'+e)
+            
             try:
+                exec('import editors.'+e)
                 exec('ld = editors.'+e+'.getLang()')
             except:
+                QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
-            self.editorD[e] = ld
+            
+            if ld != []:
+                self.editorD[e] = ld
 
-            for l in ld:
-                if l not in self.settings['extensions']:
-                    self.settings['extensions'][l]=l
+                for l in ld:
+                    if l not in self.settings['extensions']:
+                        self.settings['extensions'][l]=l
             
         #--- Add Plugins
         self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
@@ -747,6 +752,9 @@ class Armadillo(QtGui.QMainWindow):
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                 self.ui.statusbar.showMessage('Error Saving: '+filename)
+            
+            # Save Signal
+            self.evnt.editorSaved.emit(wdg)
             
             # If Settings File, reload
             if filename == self.settings_filename:

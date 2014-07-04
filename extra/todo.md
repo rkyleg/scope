@@ -107,13 +107,17 @@
 - Languages to add
     - [x] Markdown
 - [f] Use themes for color coding
-- [-] Right click refresh (ctrl+o instead)
-- [f] toggle autorefreshing
+- [x] Right click refresh (ctrl+o instead)
+- [-] toggle autorefreshing
 - [x] ctrl+o to show outline
 - [] Delete pages when closing tabs
 - [] search outline
 - [f] Highlight current section closest to top of screen
 - [x] Move outline code to language plugins in separate files
+- [x] Way to turn off
+- [x] Test Handling large blocks of text
+- [x] Option to update only on save (or by default)
+- [x] Refresh right click menu
 
 ### Python Console
 - [x] Fix mouse cursor messing up code
@@ -126,7 +130,7 @@
 
 ### File Browser
 - [x] Return press opens folder
-- [] toggle to view all files
+- [x] toggle to view all files
 - [x] be able to launch file with os default (do this for unknown extensions on double click)
 - [x] right click new file (select from extensions
 - [x] delete file option

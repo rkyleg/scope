@@ -18,7 +18,7 @@ class Outline(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.afide = parent
+        self.armadillo = parent
         self.wdgD = {}
         self.treeD = {}
         
@@ -31,6 +31,10 @@ class Outline(QtGui.QWidget):
 ##                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
                 exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
 
+        self.alwaysUpdate = int(self.armadillo.settings['plugins']['outline']['alwaysUpdate'])
+        if self.alwaysUpdate==0:
+            self.armadillo.evnt.editorSaved.connect(self.updateOutline)
+        
     def analyzeLine(self,wdg,typ):
         return None,None
         
@@ -45,9 +49,13 @@ class Outline(QtGui.QWidget):
         self.wdgD[wdg] = trwdg
         self.treeD[trwdg]=wdg
         
-        # Add Text Changed Signal
-        if 'editorTextChanged' in dir(wdg):
-            wdg.evnt.editorChanged.connect(self.updateOutline)
+        
+
+        if self.alwaysUpdate==1:
+            # Add Text Changed Signal
+            if 'editorTextChanged' in dir(wdg):
+                wdg.evnt.editorChanged.connect(self.updateOutline)
+        
 ##        if 'editingFinished' in  dir(wdg):
 ##            wdg.evnt.editingFinished.connect(self.updateOutline)
 
@@ -59,8 +67,11 @@ class Outline(QtGui.QWidget):
             
         if 'gotoLine' in dir(wdg):
             trwdg.itemDoubleClicked.connect(self.goto)
+        
+        trwdg.contextMenuEvent = self.fileMenu
 
     def updateOutline(self,wdg):
+##        print 'update outline'
         trwdg = self.wdgD[wdg]
         if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
             trwdg.clear()
@@ -179,7 +190,17 @@ class Outline(QtGui.QWidget):
 ##                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
 ##                    trwdg.addTopLevelItem(itm)
 ##                    self.format(itm,typ)
-                    
+    
+    def fileMenu(self,event):
+        menu = QtGui.QMenu('file menu')
+        trwdg = self.ui.sw_outline.currentWidget()
+        menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Update')
+        act = menu.exec_(trwdg.cursor().pos())
+        if act != None:
+            acttxt = str(act.text())
+            if acttxt=='Update':
+                self.updateOutline(self.armadillo.currentWidget())
+        
     def editorTabChanged(self,wdg):
         trwdg = self.wdgD[wdg]
         self.ui.sw_outline.setCurrentWidget(trwdg)

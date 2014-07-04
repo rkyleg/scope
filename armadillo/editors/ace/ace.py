@@ -239,7 +239,7 @@ class WebView(QtWebKit.QWebView):
         self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
         '''var txt =  pythonjs.html;
-        editor.setValue(txt);
+        editor.session.setValue(txt);
         editor.clearSelection();
         editor.moveCursorTo(0,0);
         editor.focus();''')

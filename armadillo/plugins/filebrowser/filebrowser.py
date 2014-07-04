@@ -13,6 +13,11 @@ class DirTree(QtGui.QWidget):
 ##        if self.armadillo != None:
         self.extD = self.armadillo.settings['extensions']
         
+        # Show All
+        self.showAll=0
+        if 'showAll' in self.armadillo.settings['plugins']['filebrowser']:
+            self.showAll = int(self.armadillo.settings['plugins']['filebrowser']['showAll'])
+        
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
@@ -62,7 +67,9 @@ class DirTree(QtGui.QWidget):
             for citm in filecontents:
                 itm.addChild(citm)
             
-            if toggleExpanded:
+            if toggleExpanded==2:
+                itm.setExpanded(1)
+            elif toggleExpanded:
                 itm.setExpanded(not itm.isExpanded())
             
             # Toggle Image
@@ -75,7 +82,13 @@ class DirTree(QtGui.QWidget):
             
         else:
             if self.armadillo != None:
-                self.armadillo.openFile(pth)
+                if toggleExpanded == 2:
+                    if itm.parent() != None:
+                        self.itmClick(itm.parent(),0,toggleExpanded=toggleExpanded)
+                    else:
+                        self.loadRoot()
+                else:
+                    self.armadillo.openFile(pth)
         
     def itmExpanded(self,itm):
         pth = str(itm.text(1))
@@ -111,9 +124,11 @@ class DirTree(QtGui.QWidget):
                 citm = QtGui.QTreeWidgetItem([f,pth+f])
                 
                 ext = os.path.splitext(f)[1][1:]
-                if not f.startswith('.') and not os.path.isdir(pth+f) and ext in self.extD:
+                if not os.path.isdir(pth+f) and ((not f.startswith('.') and ext in self.extD) or self.showAll):
                     
-                    ipth = self.armadillo.iconPath+'files/'+self.extD[ext]+'.png'
+                    ipth = ''
+                    if ext in self.extD:
+                        ipth = self.armadillo.iconPath+'files/'+self.extD[ext]+'.png'
                     if os.path.exists(ipth):
                         citm.setIcon(0,QtGui.QIcon(ipth))
                     elif os.path.exists(self.armadillo.iconPath+'files/'+ext+'.png'):
@@ -171,7 +186,9 @@ class DirTree(QtGui.QWidget):
             # Other File Options
 ##            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'file_open.png'),'Open')
             menu.addAction(QtGui.QIcon(),'Open')
-                
+            
+
+            
             if os.path.isfile(pth):
                 menu.addAction(QtGui.QIcon(),'Rename')
                 menu.addSeparator()
@@ -185,6 +202,12 @@ class DirTree(QtGui.QWidget):
             # New File
             menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
             menu.addSeparator()
+        
+        # Show All files
+        menu.addSeparator()
+        showAct=menu.addAction(QtGui.QIcon(),'Show All Files')
+        showAct.setCheckable(1)
+        showAct.setChecked(self.showAll)
             
         # Launch Menu
         act = menu.exec_(self.ui.tr_dir.cursor().pos())
@@ -198,6 +221,10 @@ class DirTree(QtGui.QWidget):
                     os.startfile(pth)
                 except:
                     subprocess.Popen(['xdg-open', pth])
+            elif acttxt == 'Show All Files':
+                self.showAll = showAct.isChecked()
+                if citm != None:
+                    self.itmClick(citm,0,toggleExpanded=2)
             elif acttxt == 'New File':
                 # New File
                 resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New File','Enter the file name and extension.')

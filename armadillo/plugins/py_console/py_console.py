@@ -47,7 +47,7 @@ class Console(QtGui.QTextEdit):
         if not sys.executable.split('.')[-1][:2]=='py':
             if os.name =='nt':
                 if os.path.exists(r'C:\python27'):
-                    pyflds = ['Lib','Lib\site-packages']
+                    pyflds = ['Lib',r'Lib\site-packages']
                     for fld in pyflds:
                         sys.path.append(r'C:\python27\\'+fld)
             else:
