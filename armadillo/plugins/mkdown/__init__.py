@@ -39,6 +39,7 @@ def generate(file):
             li.cancelled {text-decoration:line-through;color:gray;}
             li.future {font-style:italic;color:gray;}
             li.checked {color:gray;} 
+            pre,code {font-family:Courier New,mono,monospace;font-size:12px;}
     '''
     mhtml = '<style>'+mstyle+'</style>'
     

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.3'
+__version__ = '1.0.4'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -160,6 +160,10 @@ class ArmadilloMenu(QtGui.QMenu):
         # Zen
         icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
         self.zenAction = self.addAction(icn,'Zen Mode (F11)',self.parent.toggleZen)
+        
+        # Print
+        icn = QtGui.QIcon(self.parent.iconPath+'printer.png')
+        self.zenAction = self.addAction(icn,'Print',self.parent.editorPrint)
         
         # Close
         self.addSeparator()
@@ -825,6 +829,29 @@ class Armadillo(QtGui.QMainWindow):
                 wdg.gotoLine(line)
             except:
                 pass
+    
+    def editorPrint(self):
+        wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
+        
+        printer = QtGui.QPrinter()
+        pdlg = QtGui.QPrintDialog(printer,self)
+        resp = pdlg.exec_()
+        if resp:
+            
+            if 'getText' in dir(wdg):
+                txt = wdg.getText()
+                te = QtGui.QTextEdit()
+                
+                te.setFontFamily('Courier')
+                te.setFontPointSize(8)
+                te.setText(txt)
+            elif 'print_' in dir(wdg):
+                te = wdg
+            try:
+                te.print_(printer)
+
+            except:
+                QtGui.QMessageBox.warning(self,'Cannot Print','There was an error printing this document')
             
     #---Plugins
     def addPlugin(self,plug):
