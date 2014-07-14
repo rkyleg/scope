@@ -24,7 +24,7 @@
 - [x] Save As
 - [] show column number and wordcount, total lines? - stats in statusbar
 - [] Make sure default editor settings (wordwrap,etc) are loading correctly
-- [] Print
+- [x] Print
 
 ### Startpage
 - [x] Update theme

@@ -162,6 +162,7 @@ class ArmadilloMenu(QtGui.QMenu):
         self.zenAction = self.addAction(icn,'Zen Mode (F11)',self.parent.toggleZen)
         
         # Print
+        self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'printer.png')
         self.zenAction = self.addAction(icn,'Print',self.parent.editorPrint)
         

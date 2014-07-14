@@ -309,7 +309,8 @@ class Console(QtGui.QTextEdit):
                 self.line=self.line[:self.point]+self.line[self.point+delta_pt:]
         elif key == Qt.Key_Delete:
             self.textCursor().deleteChar()
-            self.point -= delta_pt
+            if delta_pt>1:
+                self.point -= delta_pt
             self.line=self.line[:self.point]+self.line[self.point+delta_pt:]
 
         elif key == Qt.Key_Return or key == Qt.Key_Enter:
