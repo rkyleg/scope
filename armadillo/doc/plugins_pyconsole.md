@@ -11,3 +11,5 @@ The Armadillo Python Shell, PyConsole, is a modified version of [pycute4](http:/
 - You can access Aramdillo from the shell with the *armadillo* object.  **Be careful as you can lose work**.
 
         armadillo.currentWidget() # Gets the current editor widget
+        armadillo.currentWidget().getText() # Gets the text from the current editor widget
+        

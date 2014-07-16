@@ -6,7 +6,7 @@
 - Provides links to get to code sections
 - Special comment formatting will add that comment into the outline
 - Utilizes existing spacing in code to format outline
-- Updates as you type
+- Updates on save or right click update (setting available to update in realtime)
 
 ## Supported languages
 - Python

@@ -22,7 +22,7 @@ The main menu button is on the top left of the tabbar and is available during Ze
 - ![](../img/plugin.png) **Plugins** - Toggle on/off the plugin dockwidgets and toolbars
 - ![](../img/wrench.png) **Settings** - Open and edit the settings file
 - **File Check (changes)** - checks if any of the open files have been modified outside this editor. This also checks to see if the file was deleted outside the editor.
-- ![](../img/zen.png) **Zen Mode** - Toggle Zen mode (F11) to hide plugins and toolbar (tab bar is still visible)
+- ![](../img/zen.png) **Zen Mode** - Toggle Zen mode (F11) to make the current editor full screen
 
 ## Toolbar
 ![](img/toolbar.png)
@@ -56,7 +56,7 @@ The following settings are saved for each workspace:
 ## Editor
 - A given file can only be open in one tab
 - Ctrl + Tab will toggle through the open editor tabs
-- Drag and drop files into the tab area to open them (in Windows this is sometimes finicky)
+- Drag and drop files onto the editor to open them
 - Files are saved as utf-8
 - Tab indentation is 4 spaces
 
@@ -65,3 +65,4 @@ The following settings are saved for each workspace:
     - **Python** - runs in an external process and displays any output in the Output plugin.  (Only one Python file can be run at a time)
     - **HTML** - opens in external browser
     - **Markdown** - loads in a preview tab
+    - You can specify your own command with the run attribute in the fav_lang setting (see [settings](settings.md))
