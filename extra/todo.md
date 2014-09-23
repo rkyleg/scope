@@ -25,6 +25,9 @@
 - [] show column number and wordcount, total lines? - stats in statusbar
 - [] Make sure default editor settings (wordwrap,etc) are loading correctly
 - [x] Print
+- [] compile option (need args as option)
+- [] add run with args menu
+- [] Add header comment button (use outline protocol)
 
 ### Startpage
 - [x] Update theme
@@ -47,6 +50,7 @@
 - [x] have settings folder - in main directory?? or use user directory
 - [f] option to store settings in os or with editor folder
 - [x] add stylesheet to settings (add error checking)
+- [ ] make plugins visible if added for the first time - if possible
 
 ## Editors
 - [] Editor specific plugins view?
@@ -54,6 +58,7 @@
 - [] Add Monkey
 - [x] Store wordwrap preferences with language
 - [f] Show column numbers in status bar
+- [] Allow tabs or spaces
 
 ### Monkey
 - [f] pen monkey file type
@@ -90,6 +95,7 @@
 - [x] add autocomplete
 - [x] fix find/replace with a '
 - [] add javascript custom settings
+- [] wrap to 
 
 ### Webview
 - [x] if markdown, generate
@@ -143,7 +149,8 @@
 - [x] Double click toggles expand
 - [x] Improve tree formatting
 - [x] create new file in main directory
-- [f] copy file
+- [ ] copy file
+- [ ] New folder
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)

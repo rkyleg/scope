@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>756</width>
-    <height>397</height>
+    <width>718</width>
+    <height>381</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -64,6 +64,39 @@ QPushButton:hover,QToolButton:hover {
        <property name="spacing">
         <number>0</number>
        </property>
+       <item row="0" column="3">
+        <widget class="QToolButton" name="b_save">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Save</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/save.png</normaloff>img/save.png</iconset>
+         </property>
+        </widget>
+       </item>
        <item row="0" column="15">
         <widget class="QToolButton" name="b_plugins">
          <property name="minimumSize">
@@ -553,40 +586,7 @@ QPushButton::menu-indicator {
          </property>
         </widget>
        </item>
-       <item row="0" column="3">
-        <widget class="QToolButton" name="b_save">
-         <property name="minimumSize">
-          <size>
-           <width>40</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>40</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Save</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QToolButton {
-	border-left:1px solid rgb(100,100,100);
-	border-top-right-radius:5px;
-	border-bottom-right-radius:5px;
-}</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/save.png</normaloff>img/save.png</iconset>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="12">
+       <item row="0" column="11">
         <widget class="QToolButton" name="b_run">
          <property name="minimumSize">
           <size>
@@ -605,7 +605,10 @@ QPushButton::menu-indicator {
          </property>
          <property name="styleSheet">
           <string notr="true">QToolButton {
-	border-radius:5px;
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
 }</string>
          </property>
          <property name="text">
@@ -728,6 +731,45 @@ QPushButton::menu-indicator {
          <property name="icon">
           <iconset>
            <normaloff>img/indent_remove.png</normaloff>img/indent_remove.png</iconset>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="12">
+        <widget class="QToolButton" name="b_compile">
+         <property name="minimumSize">
+          <size>
+           <width>40</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>40</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Compile</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(100,100,100);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/cog.png</normaloff>img/cog.png</iconset>
+         </property>
+         <property name="toolButtonStyle">
+          <enum>Qt::ToolButtonIconOnly</enum>
+         </property>
+         <property name="arrowType">
+          <enum>Qt::NoArrow</enum>
          </property>
         </widget>
        </item>

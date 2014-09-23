@@ -18,14 +18,14 @@ class Output(QtGui.QWidget):
         self.ui.tb_out.anchorClicked.connect(self.urlClick)
     
         # Get Command dictionary
-        self.runD = {}
-        for runs in os.listdir(os.path.join(os.path.dirname(__file__),'run')):
-            r = runs.split('.')[0]
-            exec('import run.'+r)
-            exec('funcs=dir(run.'+r+')')
-            if 'cmd' in funcs:
-##                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
-                exec('self.runD["'+r+'"]=run.'+r+'.cmd')
+##        self.runD = {}
+##        for runs in os.listdir(os.path.join(os.path.dirname(__file__),'run')):
+##            r = runs.split('.')[0]
+##            exec('import run.'+r)
+##            exec('funcs=dir(run.'+r+')')
+##            if 'cmd' in funcs:
+####                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
+##                exec('self.runD["'+r+'"]=run.'+r+'.cmd')
     
     def urlClick(self,url):
         pth = str(url.toString())
@@ -69,9 +69,15 @@ class Output(QtGui.QWidget):
             self.finished()
         else:
             if cmd == 'webbrowser':
+                # If webbrowser - launch in webbrowser
                 webbrowser.open(filename)
-            elif cmd in self.runD:
-                self.runD[cmd](self,filename)
+##            elif cmd in self.runD:
+##                self.runD[cmd](self,filename)
+            elif cmd == 'markdown':
+                # If markdown generate preview tab
+                import plugins.mkdown as mkdown
+                html = mkdown.generate(filename)
+                self.webview_preview(html,filename)
             else:
             
                 if not self.armadillo.pluginD['output'].isVisible():

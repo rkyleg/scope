@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.4'
+__version__ = '1.0.5'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -239,14 +239,14 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.toolbar.addWidget(self.ui.fr_toolbar)
         
         # Find Toolbar
-        self.ui.findbar = QtGui.QToolBar("findBar",self)
-##        self.ui.findbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
-        self.ui.findbar.setFloatable(False)
-        self.ui.findbar.setMovable(False)
-        self.ui.findbar.setProperty("class","findBar")
-        self.ui.findbar.setObjectName('findBar')
-        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
-        self.ui.findbar.addWidget(self.ui.fr_find)
+##        self.ui.findbar = QtGui.QToolBar("findBar",self)
+####        self.ui.findbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
+##        self.ui.findbar.setFloatable(False)
+##        self.ui.findbar.setMovable(False)
+##        self.ui.findbar.setProperty("class","findBar")
+##        self.ui.findbar.setObjectName('findBar')
+##        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
+##        self.ui.findbar.addWidget(self.ui.fr_find)
 
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -274,7 +274,6 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.b_settings.clicked.connect(self.openSettings)
         self.ui.b_help.clicked.connect(self.addStart)
         self.ui.b_plugins.clicked.connect(self.showPlugins)
-##        self.ui.b_zen.clicked.connect(self.toggleZen)
         
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
@@ -421,7 +420,7 @@ class Armadillo(QtGui.QMainWindow):
         if self.zen:
             self.restoreState(self.dockstate)
             self.ui.statusbar.show()
-            self.ui.findbar.show()
+##            self.ui.findbar.show()
             self.ui.toolbar.show()
             self.ui.tabtoolbar.show()
             self.showNormal()
@@ -431,7 +430,7 @@ class Armadillo(QtGui.QMainWindow):
             self.armadilloMenu.zenAction.setText('Zen mode')
         else:
             self.ui.statusbar.hide()
-            self.ui.findbar.hide()
+##            self.ui.findbar.hide()
             self.ui.toolbar.hide()
 ##            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
 ##            self.show()
@@ -551,6 +550,10 @@ class Armadillo(QtGui.QMainWindow):
             self.ui.b_run.setEnabled(lang in self.settings['run'])
         else:
             self.ui.b_run.setEnabled(0)
+        
+        # Enable Compile
+        self.ui.b_compile.setEnabled(0)
+        self.ui.b_compile.hide()
         
         # Disable buttons based on function availability
         btnD = {
@@ -1061,14 +1064,14 @@ class Armadillo(QtGui.QMainWindow):
             wdg.load2(url)
     
     def findFocus(self):
-        if self.ui.findbar.isHidden():
-            self.ui.findbar.setVisible(1)
+##        if self.ui.findbar.isHidden():
+##            self.ui.findbar.setVisible(1)
         self.ui.le_find.setFocus()
         self.ui.le_find.selectAll()
         
     def gotoFocus(self):
-        if self.ui.findbar.isHidden():
-            self.ui.findbar.setVisible(1)
+##        if self.ui.findbar.isHidden():
+##            self.ui.findbar.setVisible(1)
         self.ui.le_goto.setFocus()
         self.ui.le_goto.selectAll()
     
@@ -1211,7 +1214,10 @@ class Armadillo(QtGui.QMainWindow):
             if not chngs:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
-    
+
+
+        
+
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)

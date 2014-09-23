@@ -7,7 +7,7 @@ except:
 
 #file = r'/media/hdesktop/hmedia/Software/afide/extra/todo.md'
 
-def generate(file):
+def generate(file,extras=[]):
     # Open File
 ##    f = open(file,'r')
     f = codecs.open(file,'r','utf-8')
@@ -22,7 +22,7 @@ def generate(file):
             html += t+'\n'
 
     # Get Markdown
-    md = markdown.markdown(html)#,extras=['cuddled-lists','wiki-tables'])
+    md = markdown.markdown(html,extras=extras)#,extras=['cuddled-lists','wiki-tables'])
     
     # Custom Markdown modifications
     md = md.replace('<li>[ ]','<li class="checkbox"><input type="checkbox" disabled="disabled">')
