@@ -1,8 +1,8 @@
-<link href="doc.css" rel="stylesheet" type="text/css" />
-<p><span style="font-size:18px"><strong><a href="start.html">Home</a>&nbsp;| Keyboard Shortcuts</strong></span></p>
+<link rel="stylesheet" type="text/css" href="doc.css">
 
+# [Home](start.html) | Keyboard Shortcuts
 <hr />
-<p><span style="font-size:18px"><strong>General</strong></span></p>
+## General
 
 <table border="1" cellpadding="2" cellspacing="0">
 	<tbody>
@@ -54,8 +54,7 @@
 	</tbody>
 </table>
 
-<p><br />
-<span style="font-size:18px"><strong>Editor</strong></span></p>
+## Editor
 
 <table border="1" cellpadding="2" cellspacing="0">
 	<tbody>
@@ -195,12 +194,6 @@
 	</tbody>
 </table>
 
-<p>&nbsp;</p>
-
-<hr />
-<p><em><strong>Notes:</strong></em></p>
-
-<ul>
-	<li>More Ace Editor Shortcuts -&nbsp;<a href="https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts">https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts</a></li>
-	<li><em>The shortcuts might not work with every editor</em></li>
-</ul>
+## *Notes*
+- [More Ace Editor Shortcuts](https://github.com/ajaxorg/ace/wiki/Default-Keyboard-Shortcuts)
+- *The shortcuts might not work with every editor*
