@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.5'
+__version__ = '1.0.6'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -216,7 +216,6 @@ class Armadillo(QtGui.QMainWindow):
         
         #--- Setup Tab Toolbar
         self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
-##        self.ui.tabtoolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.tabtoolbar.setFloatable(False)
         self.ui.tabtoolbar.setMovable(False)
         self.ui.tabtoolbar.setProperty("class","editorTabBar")
@@ -230,23 +229,12 @@ class Armadillo(QtGui.QMainWindow):
         
         # Toolbutton Toolbar
         self.ui.toolbar = QtGui.QToolBar("toolBar",self)
-##        self.ui.toolbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
         self.ui.toolbar.setFloatable(False)
         self.ui.toolbar.setMovable(False)
         self.ui.toolbar.setProperty("class","toolBar")
         self.ui.toolbar.setObjectName('toolBar')
         self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.toolbar)
         self.ui.toolbar.addWidget(self.ui.fr_toolbar)
-        
-        # Find Toolbar
-##        self.ui.findbar = QtGui.QToolBar("findBar",self)
-####        self.ui.findbar.setAllowedAreas(QtCore.Qt.BottomToolBarArea | QtCore.Qt.TopToolBarArea)
-##        self.ui.findbar.setFloatable(False)
-##        self.ui.findbar.setMovable(False)
-##        self.ui.findbar.setProperty("class","findBar")
-##        self.ui.findbar.setObjectName('findBar')
-##        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.findbar)
-##        self.ui.findbar.addWidget(self.ui.fr_find)
 
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -282,7 +270,7 @@ class Armadillo(QtGui.QMainWindow):
         self.evnt = Events()
         self.tabD={}
         
-        #--- Shortcuts
+        #--- Key Shortcuts
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
@@ -296,7 +284,8 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
-        QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.updateOutline) # Update Outline
+        QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
+        QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Fullscreen Zen
@@ -1087,8 +1076,15 @@ class Armadillo(QtGui.QMainWindow):
         if 'getText' in dir(wdg):
             if not self.pluginD['outline'].isVisible():
                 self.pluginD['outline'].show()
-            self.pluginD['outline'].raise_()
+        self.pluginD['outline'].raise_()
+        if 'getText' in dir(wdg):
             self.pluginD['outline'].wdg.updateOutline(wdg)
+    
+    def viewFileBrowser(self):
+        if not self.pluginD['filebrowser'].isVisible():
+            self.pluginD['filebrowser'].show()
+        self.pluginD['filebrowser'].raise_()
+        self.pluginD['filebrowser'].setFocus()
     
     def qtHelp(self):
         if not self.pluginD['qt2py'].isVisible():

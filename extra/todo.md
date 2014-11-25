@@ -109,6 +109,7 @@
 - [f] Python code editor to run on current tab - possible split with shell (little code editor)
 - [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 - [] update plugin style
+- [] open files plugin (sort by type)
 
 ### Outline
 - Languages to add
@@ -151,6 +152,9 @@
 - [x] create new file in main directory
 - [ ] copy file
 - [ ] New folder
+- [ ] indicate if file is open
+- [ ] be able to have multiple roots
+- [] reload menu option
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)

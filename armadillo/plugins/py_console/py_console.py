@@ -125,7 +125,9 @@ class Console(QtGui.QTextEdit):
             sys.ps2
         except AttributeError:
             sys.ps2 = "... "
-
+        
+        self.write('# A minimal Python console using Armadillo\'s built in-interpreter (not all functions available).  Ctrl +l to open interpreter with default installed Python<br>')
+        
         self.write(sys.ps1)
         self.prompt = sys.ps1
         self.onKeyHook=lambda e: None
@@ -278,7 +280,10 @@ class Console(QtGui.QTextEdit):
         # Paste
         if e.modifiers() & QtCore.Qt.ControlModifier:
             if key == QtCore.Qt.Key_V:  # paste                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
-                self.syncViewers()            else:
+                self.syncViewers()
+            elif key == QtCore.Qt.Key_L: # launch
+                from subprocess import Popen
+                Popen(["python",os.path.abspath(__file__)])            else:
                 QtGui.QTextEdit.keyPressEvent(self,e)
             return
             
