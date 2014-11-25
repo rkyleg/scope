@@ -80,9 +80,12 @@ class Output(QtGui.QWidget):
                 self.webview_preview(html,filename)
             else:
             
-                if not self.armadillo.pluginD['output'].isVisible():
-                    self.armadillo.pluginD['output'].show()
-                self.armadillo.pluginD['output'].raise_()
+##                if not self.armadillo.pluginD['output'].isVisible():
+##                    self.armadillo.pluginD['output'].show()
+##                self.armadillo.pluginD['output'].raise_()
+                
+                i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
+                self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
                 
                 self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
                 self.process = QtCore.QProcess()

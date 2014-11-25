@@ -126,7 +126,10 @@ class Console(QtGui.QTextEdit):
         except AttributeError:
             sys.ps2 = "... "
         
-        self.write('# A minimal Python console using Armadillo\'s built in-interpreter (not all functions available).  Ctrl +l to open interpreter with default installed Python<br>')
+        if __name__ =='__main__':
+            self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')<br>')
+        else:
+            self.write('# Built in Python interpreter (not all functions available)<br># Ctrl+l to launch external with installed Python<br>')
         
         self.write(sys.ps1)
         self.prompt = sys.ps1

@@ -17,6 +17,9 @@
    <string/>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
+   <property name="margin">
+    <number>4</number>
+   </property>
    <item row="0" column="1" rowspan="2">
     <widget class="QLineEdit" name="le_find"/>
    </item>

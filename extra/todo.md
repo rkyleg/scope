@@ -50,7 +50,7 @@
 - [x] have settings folder - in main directory?? or use user directory
 - [f] option to store settings in os or with editor folder
 - [x] add stylesheet to settings (add error checking)
-- [ ] make plugins visible if added for the first time - if possible
+- [-] make plugins visible if added for the first time - if possible
 
 ## Editors
 - [] Editor specific plugins view?
@@ -109,7 +109,7 @@
 - [f] Python code editor to run on current tab - possible split with shell (little code editor)
 - [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 - [] update plugin style
-- [] open files plugin (sort by type)
+- [] new plugin - open files plugin (sort by type)
 
 ### Outline
 - Languages to add
@@ -126,6 +126,7 @@
 - [x] Test Handling large blocks of text
 - [x] Option to update only on save (or by default)
 - [x] Refresh right click menu
+- [] Other that grabs --- comments
 
 ### Python Console
 - [x] Fix mouse cursor messing up code

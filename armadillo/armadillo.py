@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.0.6'
+__version__ = '1.1.0'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -142,10 +142,10 @@ class ArmadilloMenu(QtGui.QMenu):
         act = self.addAction(icn,'Home',self.parent.addStart)
         
         # Plugins
-        plugmenu = self.parent.createPopupMenu()
-        plugmenu.setTitle('Plugins')
-        plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
-        self.addMenu(plugmenu)
+##        plugmenu = self.parent.createPopupMenu()
+##        plugmenu.setTitle('Plugins')
+##        plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
+##        self.addMenu(plugmenu)
         
         # Settings
         icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
@@ -213,6 +213,11 @@ class Armadillo(QtGui.QMainWindow):
         coords= QtGui.QApplication.desktop().screenGeometry(screen).getCoords() 
         dx = 50
         self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
+        QtGui.QApplication.processEvents()
+        
+        # Set Splitters
+        self.ui.split_right.setSizes([self.height()-180,180])
+        self.ui.split_main.setSizes([260,self.width()-260])
         
         #--- Setup Tab Toolbar
         self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
@@ -224,8 +229,7 @@ class Armadillo(QtGui.QMainWindow):
 
         # add Main Button to tabbar
         self.ui.tabtoolbar.addWidget(self.ui.b_main)
-        
-        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
+##        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
         # Toolbutton Toolbar
         self.ui.toolbar = QtGui.QToolBar("toolBar",self)
@@ -261,11 +265,14 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
         self.ui.b_settings.clicked.connect(self.openSettings)
         self.ui.b_help.clicked.connect(self.addStart)
-        self.ui.b_plugins.clicked.connect(self.showPlugins)
+##        self.ui.b_plugins.clicked.connect(self.showPlugins)
         
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
         
+        
+##        self.ui.tab_left.currentChanged.connect(self.pluginLeftChange)
+##        self.ui.b_show_left_plugins.clicked
         # Editor Signals
         self.evnt = Events()
         self.tabD={}
@@ -317,21 +324,39 @@ class Armadillo(QtGui.QMainWindow):
                         self.settings['extensions'][l]=l
             
         #--- Add Plugins
-        self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
-            'right':QtCore.Qt.RightDockWidgetArea,
-            'top':QtCore.Qt.TopDockWidgetArea,
-            'bottom':QtCore.Qt.BottomDockWidgetArea
-        }
+##        self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
+##            'right':QtCore.Qt.RightDockWidgetArea,
+##            'top':QtCore.Qt.TopDockWidgetArea,
+##            'bottom':QtCore.Qt.BottomDockWidgetArea
+##        }
+        
+        # Plugin tab bar
+        self.ui.fr_left_hidden.hide()
+        
+        self.ui.tabbar_bottom = QtGui.QTabBar()
+        self.ui.fr_bottom.layout().addWidget(self.ui.tabbar_bottom)
+##        self.ui.sw_bottom = QtGui.QStackedWidget()
+##        self.ui.fr_bottom.layout().addWidget(self.ui.sw_bottom)
+##        self.ui.sw_bottom.setObjectName('bottom plugin tabs')
+        self.ui.tabbar_bottom.currentChanged.connect(self.pluginBottomChange)
+        self.ui.tabbar_bottom.setShape(1)
+        self.ui.tabbar_bottom.setExpanding(0)
+        
+        # Add down arrow
+##        self.ui.sw_bottom.addWidget(QtGui.QWidget())
+        self.ui.tabbar_bottom.addTab(QtGui.QIcon(self.iconPath+'tri_down.png'),'')
+        
+        # Add Plugins
         self.pluginD = {}
-        
         curdir = os.path.abspath('.')
-        
         for plug in self.settings['activePlugins']:
             self.addPlugin(plug)
-
         os.chdir(curdir)
         
-        self.dockstate = self.saveState()
+        self.ui.tabbar_bottom.setCurrentIndex(0)
+        
+        
+##        self.dockstate = self.saveState()
         self.zen = 1
         
         #--- Add Start
@@ -367,6 +392,8 @@ class Armadillo(QtGui.QMainWindow):
         if len(sys.argv)>1:
             if os.path.exists(sys.argv[1]) and os.path.isfile(sys.argv[1]):
                 self.openFile(sys.argv[1])
+        
+        self.setFocus()
 
     def closeEvent(self,event):
         cancelled = 0
@@ -406,36 +433,49 @@ class Armadillo(QtGui.QMainWindow):
     
     def toggleZen(self,mode='full'):
         self.zen = not self.zen
+        
+        self.ui.statusbar.setVisible(self.zen)
+        self.ui.toolbar.setVisible(self.zen)
+##        self.ui.tabtoolbar.setVisible(self.zen)
+        self.ui.fr_left.setVisible(self.zen)
+        self.ui.sw_bottom.setVisible(self.zen)
+        self.ui.fr_bottom.setVisible(self.zen)
         if self.zen:
-            self.restoreState(self.dockstate)
-            self.ui.statusbar.show()
-##            self.ui.findbar.show()
-            self.ui.toolbar.show()
+##            self.restoreState(self.dockstate)
+##            self.ui.statusbar.show()
+####            self.ui.findbar.show()
+##            self.ui.toolbar.show()
             self.ui.tabtoolbar.show()
             self.showNormal()
-##            self.setWindowFlags(QtCore.Qt.Window)
-##            self.show()
+####            self.setWindowFlags(QtCore.Qt.Window)
+####            self.show()
+##
+##            self.ui.tab_left.show()
+##            self.ui.sw_bottom.show()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
             self.armadilloMenu.zenAction.setText('Zen mode')
+            self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
         else:
-            self.ui.statusbar.hide()
-##            self.ui.findbar.hide()
-            self.ui.toolbar.hide()
-##            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
-##            self.show()
-            self.dockstate = self.saveState()
+##            self.ui.statusbar.hide()
+####            self.ui.findbar.hide()
+##            self.ui.toolbar.hide()
+####            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
+####            self.show()
+##            self.dockstate = self.saveState()
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
             self.armadilloMenu.zenAction.setText('Exit zen mode')
-            for plug in self.pluginD:
-                self.pluginD[plug].close()
+##            self.ui.tab_left.hide()
+##            self.ui.sw_bottom.hide()
             
             if mode=='full':
                 self.ui.tabtoolbar.hide()
                 self.showFullScreen()
+        
+        
 
-    def showPlugins(self):
-        menu = self.createPopupMenu()
-        menu.exec_(self.cursor().pos())
+##    def showPlugins(self):
+##        menu = self.createPopupMenu()
+##        menu.exec_(self.cursor().pos())
 
     def isFileOpen(self,filename):
         # Check if file open and return tab index
@@ -452,7 +492,7 @@ class Armadillo(QtGui.QMainWindow):
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
-            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.pluginD['filebrowser'].wdg.ui.le_root.text()," (*.*)")
+            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.pluginD['filebrowser'].ui.le_root.text()," (*.*)")
             if filename=='':
                 filename = None
             else:
@@ -463,7 +503,7 @@ class Armadillo(QtGui.QMainWindow):
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
                     self.ui.tab.setCurrentIndex(file_open)
-
+##                    self.updateOutline()
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
                     lang = ext
@@ -726,7 +766,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                fileext += wdg.lang+" ("+exlist+");;"
             fileext += "All (*.*)"
             
-            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].wdg.ui.le_root.text(),fileext)
+            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].ui.le_root.text(),fileext)
             if filename=='':
                 filename=None
             else:
@@ -763,7 +803,7 @@ class Armadillo(QtGui.QMainWindow):
         if wdg.filename != None:
             pth = wdg.filename
         else:
-            pth = self.pluginD['filebrowser'].wdg.ui.le_root.text()
+            pth = self.pluginD['filebrowser'].ui.le_root.text()
             
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
@@ -791,7 +831,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                    self.pluginD['output'].show()
 ##                self.pluginD['output'].raise_()
                 runD = self.settings['run'][wdg.lang]
-                self.pluginD['output'].wdg.newProcess(runD['cmd'],filename,runD['args'])
+                self.pluginD['output'].newProcess(runD['cmd'],filename,runD['args'])
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -855,43 +895,74 @@ class Armadillo(QtGui.QMainWindow):
         else:
             exec('import plugins.'+plug)
             os.chdir(self.pluginPath+plug)
-            exec('dwdg = plugins.'+plug+'.addDock(self)')
-            if plug in self.settings['plugins']:
-                title = self.settings['plugins'][plug]['title']
-                dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
-            else:
-                # Default info
-                title = plug.capitalize()
-                dockarea =self.dockareaD['bottom']
-            if plug == 'py_console': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
-            dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+            exec('pluginWidget = plugins.'+plug+'.addDock(self)')
             
-            dock = QtGui.QDockWidget()
+            title = pluginWidget.title
+            loc = pluginWidget.location
             
-            dock.dockWidgetContents = QtGui.QWidget()
-            dock.setWidget(dock.dockWidgetContents)
-            dock.setWindowTitle(title)
-            dock.gridLayout = QtGui.QGridLayout(dock.dockWidgetContents)
-            dock.gridLayout.setMargin(0)
-            dock.gridLayout.setSpacing(0)
-            dock.gridLayout.addWidget(dwdg, 0, 0, 1, 1)
-            dock.setObjectName(title.replace(' ','_').lower())
-            dock.wdg = dwdg
-            self.addDockWidget(dockarea,dock)
-            self.pluginDocks.append(dock)
+##            if plug in self.settings['plugins']:
+##                title = self.settings['plugins'][plug]['title']
+##                dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
+##            else:
+##                # Default info
+##                title = plug.capitalize()
+##                dockarea =self.dockareaD['bottom']
+##            if plug == 'py_console': title += ' ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+##            dockarea =self.dockareaD[self.settings['plugins'][plug]['dockarea']]
             
-            if os.path.exists(self.pluginPath+plug+'/'+plug+'.png'):
-                dock.setWindowIcon(QtGui.QIcon(self.pluginPath+plug+'/'+plug+'.png'))
+            icn = QtGui.QIcon()
+            if os.path.exists(self.pluginPath+plug+'/icon.png'):
+                icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
             
-            # Tabify Dock with other widgets in its area
-            for idock in self.pluginDocks[:-1]:
-                if self.dockWidgetArea(idock) == dockarea:
-                    self.tabifyDockWidget(idock,dock)
+            if loc == 'left':
+                ti = self.ui.tab_left.addTab(pluginWidget,icn,'')
+                self.ui.tab_left.setTabToolTip(ti,title)
+            elif loc == 'bottom':
+                self.ui.sw_bottom.addWidget(pluginWidget)
+                self.ui.tabbar_bottom.addTab(icn,title)
+            self.pluginD[plug]=pluginWidget
+##            dock = QtGui.QDockWidget()
+##            
+##            dock.dockWidgetContents = QtGui.QWidget()
+##            dock.setWidget(dock.dockWidgetContents)
+##            dock.setWindowTitle(title)
+##            dock.gridLayout = QtGui.QGridLayout(dock.dockWidgetContents)
+##            dock.gridLayout.setMargin(0)
+##            dock.gridLayout.setSpacing(0)
+##            dock.gridLayout.addWidget(dwdg, 0, 0, 1, 1)
+##            dock.setObjectName(title.replace(' ','_').lower())
+##            dock.wdg = dwdg
+##            self.addDockWidget(dockarea,dock)
+##            self.pluginDocks.append(dock)
+##            
+##            if os.path.exists(self.pluginPath+plug+'/'+plug+'.png'):
+##                dock.setWindowIcon(QtGui.QIcon(self.pluginPath+plug+'/'+plug+'.png'))
+##            
+##            # Tabify Dock with other widgets in its area
+##            for idock in self.pluginDocks[:-1]:
+##                if self.dockWidgetArea(idock) == dockarea:
+##                    self.tabifyDockWidget(idock,dock)
             
             os.chdir(curdir)
             
-            self.pluginD[plug] = dock
-
+##            self.pluginD[plug] = dock
+    def pluginLeftChange(self,ind):
+        if ind==0:
+            self.ui.tab_left.hide()
+            self.ui.fr_left_hidden.show()
+##            self.plugin_left_width = self.ui.split_main.sizes()
+            self.ui.split_right.setSizes([26,self.ui.split_main.height()-26])
+##            self.ui.tab_left.setTabPosition(2)
+    def pluginBottomChange(self,ind):
+        self.ui.sw_bottom.setCurrentIndex(ind)
+##        if ind == 0:
+##            self.plugin_bottom_sizes = self.ui.split_right.sizes()
+##            self.ui.split_right.setSizes([self.ui.split_right.height()-26,26])
+##        else:
+##            self.ui.split_right.setSizes(self.plugin_bottom_sizes)
+        self.ui.sw_bottom.setHidden(not ind)
+        
+    
     #---Settings
     def loadSettings(self):
         # Create settings directory
@@ -1065,33 +1136,38 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.le_goto.selectAll()
     
     def replaceFocus(self):
-        if not self.pluginD['find_replace'].isVisible():
-            self.pluginD['find_replace'].show()
-        self.pluginD['find_replace'].raise_()
-        self.pluginD['find_replace'].wdg.ui.le_find.setFocus()
-        self.pluginD['find_replace'].wdg.ui.le_find.selectAll()
+##        if not self.pluginD['find_replace'].isVisible():
+##            self.pluginD['find_replace'].show()
+##        self.pluginD['find_replace'].raise_()
+        if 'find_replace' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['find_replace'].ui.le_find.setFocus()
+            self.pluginD['find_replace'].ui.le_find.selectAll()
     
     def updateOutline(self):
-        wdg = self.ui.sw_main.currentWidget()
-        if 'getText' in dir(wdg):
-            if not self.pluginD['outline'].isVisible():
-                self.pluginD['outline'].show()
-        self.pluginD['outline'].raise_()
-        if 'getText' in dir(wdg):
-            self.pluginD['outline'].wdg.updateOutline(wdg)
+        if 'outline' in self.pluginD:
+            wdg = self.ui.sw_main.currentWidget()
+    ##        if 'getText' in dir(wdg):
+    ##            if not self.pluginD['outline'].isVisible():
+    ##                self.pluginD['outline'].show()
+            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
+            self.ui.tab_left.setCurrentIndex(i)
+    ##        self.pluginD['outline'].raise_()
+            if 'getText' in dir(wdg):
+                self.pluginD['outline'].updateOutline(wdg)
     
     def viewFileBrowser(self):
-        if not self.pluginD['filebrowser'].isVisible():
-            self.pluginD['filebrowser'].show()
-        self.pluginD['filebrowser'].raise_()
-        self.pluginD['filebrowser'].setFocus()
+        if 'filebrowser' in self.pluginD:
+            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
+            self.ui.tab_left.setCurrentIndex(i)
     
     def qtHelp(self):
-        if not self.pluginD['qt2py'].isVisible():
-            self.pluginD['qt2py'].show()
-        self.pluginD['qt2py'].raise_()
-        self.pluginD['qt2py'].wdg.ui.le_help.setFocus()
-        self.pluginD['qt2py'].wdg.ui.le_help.selectAll()
+        if 'qt2py' in self.pluginD:
+            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+        self.pluginD['qt2py'].ui.le_help.setFocus()
+        self.pluginD['qt2py'].ui.le_help.selectAll()
     
     def nextTab(self):
         i = self.ui.tab.currentIndex()+1
@@ -1117,7 +1193,7 @@ class Armadillo(QtGui.QMainWindow):
                     wD['plugins'].append(plug)
             
             # Save workspace dir
-            wD['basefolder']=self.pluginD['filebrowser'].wdg.rootpath
+            wD['basefolder']=self.pluginD['filebrowser'].rootpath
             f = open(self.settingPath+'/workspaces/'+self.workspace,'w')
             f.write(json.dumps(wD))
             f.close()
@@ -1160,15 +1236,15 @@ class Armadillo(QtGui.QMainWindow):
                     self.openFile(f)
             
             # Show/Hide Plugins
-            for p in self.pluginD:
-                self.pluginD[p].close()
-            for p in wD['plugins']:
-                if p in self.pluginD:
-                    self.pluginD[p].setVisible(1)
+##            for p in self.pluginD:
+##                self.pluginD[p].close()
+##            for p in wD['plugins']:
+##                if p in self.pluginD:
+##                    self.pluginD[p].setVisible(1)
             
             if 'basefolder' in wD:
-                self.pluginD['filebrowser'].wdg.ui.le_root.setText(wD['basefolder'])
-                self.pluginD['filebrowser'].wdg.loadRoot()
+                self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
+                self.pluginD['filebrowser'].loadRoot()
             
             self.setWindowTitle('Armadillo | '+wksp)
             

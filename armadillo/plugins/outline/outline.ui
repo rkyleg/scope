@@ -21,7 +21,11 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QStackedWidget" name="sw_outline"/>
+    <widget class="QStackedWidget" name="sw_outline">
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>

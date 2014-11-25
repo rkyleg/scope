@@ -30,7 +30,7 @@ class WebView(QtWebKit.QWebView):
         self.setHtml(txt,baseurl)
         ##self.setHtml(txt)
 
-    def find(self,txt,**kargs):
+    def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
     
     def load2(self,url):

@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Thu May 15 23:09:02 2014
-#      by: PyQt4 UI code generator 4.10.3
+# Created: Mon Nov 24 19:46:18 2014
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 

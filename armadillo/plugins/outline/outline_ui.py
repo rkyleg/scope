@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'outline.ui'
 #
-# Created: Sun Dec  8 18:52:02 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Mon Nov 24 19:43:38 2014
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,6 +32,7 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.sw_outline = QtGui.QStackedWidget(Form)
+        self.sw_outline.setLineWidth(0)
         self.sw_outline.setObjectName(_fromUtf8("sw_outline"))
         self.gridLayout.addWidget(self.sw_outline, 0, 0, 1, 1)
 

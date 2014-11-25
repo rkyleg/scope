@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'output.ui'
 #
-# Created: Thu Oct  3 18:02:32 2013
-#      by: PyQt4 UI code generator 4.10
+# Created: Mon Nov 24 20:12:55 2014
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -32,6 +32,9 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.tb_out = QtGui.QTextBrowser(Form)
+        self.tb_out.setFrameShape(QtGui.QFrame.NoFrame)
+        self.tb_out.setFrameShadow(QtGui.QFrame.Plain)
+        self.tb_out.setLineWidth(0)
         self.tb_out.setOpenExternalLinks(False)
         self.tb_out.setObjectName(_fromUtf8("tb_out"))
         self.gridLayout.addWidget(self.tb_out, 0, 0, 1, 1)

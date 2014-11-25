@@ -22,6 +22,15 @@
    </property>
    <item row="0" column="0">
     <widget class="QTextBrowser" name="tb_out">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="frameShadow">
+      <enum>QFrame::Plain</enum>
+     </property>
+     <property name="lineWidth">
+      <number>0</number>
+     </property>
      <property name="openExternalLinks">
       <bool>false</bool>
      </property>
