@@ -1119,7 +1119,7 @@ class Armadillo(QtGui.QMainWindow):
         elif lnk.startswith('workspace'):
             self.loadWorkspace(lnk.split(':')[1])
         elif lnk.endswith('start.html'):
-            self.addStart(wdg = wdg)
+            self.addStart(wdg=wdg)
         else:
             wdg.load2(url)
     

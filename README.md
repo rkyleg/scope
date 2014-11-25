@@ -40,7 +40,7 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
     - Snippets - store and retreive useful code snippets
 - **[Settings](armadillo/doc/settings.md)** - settings are stored in config file
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
-- **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.html)**
+- **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.md)**
 - **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
 - **[Todo](extra/todo.md)** - List of to do and status
 
