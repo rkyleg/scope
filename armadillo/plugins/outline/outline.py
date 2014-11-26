@@ -113,15 +113,16 @@ class Outline(QtGui.QWidget):
         trwdg = self.wdgD[wdg]
 ##        print 'outline update location',trwdg.topLevelItemCount()
         hi=0
+        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))
             if line>=lines[0] and line<=lines[1]:
-                itm.setBackground(0,QtGui.QBrush(QtGui.QColor(220,220,220)))
+                itm.setBackground(0,brsh)
                 trwdg.scrollToItem(itm)
                 hi=1
             elif line<=lines[0] and not hi:
-                itm.setBackground(0,QtGui.QBrush(QtGui.QColor(220,220,220)))
+                itm.setBackground(0,brsh)
                 trwdg.scrollToItem(itm)
                 hi=1
             else:

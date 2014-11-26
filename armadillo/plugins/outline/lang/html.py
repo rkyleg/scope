@@ -19,10 +19,14 @@ def analyzeLine(txtlines):
             typ = 'object'
         elif tls.lower().startswith('<table'):
             itmText = '<TABLE>'
-            typ = 'object'
+            typ = 'function'
         elif tls.startswith('<!---'):
             itmText =tls[5:].replace('-->','')
             typ = 'heading'
+        if tls.startswith('function'):
+            itmText =tls[9:].rstrip()
+            if itmText.endswith('{'): itmText = itmText[:-1]
+            typ = 'function'
     
         if itmText != None:
             outline.append([spc+itmText,typ,lcnt])
