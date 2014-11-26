@@ -341,6 +341,8 @@ class WebView(QtWebKit.QWebView):
     def gotoLine(self,line):
         js = "editor.gotoLine("+str(line+1)+");"
         self.page().mainFrame().evaluateJavaScript(js)
+        QtGui.QApplication.processEvents()
+        self.visibleLinesChanged()
     
     def jumpToMatching(self):
         js = "editor.jumpToMatching();"

@@ -109,7 +109,6 @@ class Outline(QtGui.QWidget):
                 self.updateLocation(wdg,lines)
     
     def updateLocation(self,wdg,lines):
-    
         trwdg = self.wdgD[wdg]
 ##        print 'outline update location',trwdg.topLevelItemCount()
         hi=0
