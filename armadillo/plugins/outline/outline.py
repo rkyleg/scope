@@ -118,11 +118,11 @@ class Outline(QtGui.QWidget):
             line = int(str(itm.text(1)))
             if line>=lines[0] and line<=lines[1]:
                 itm.setBackground(0,brsh)
-                trwdg.scrollToItem(itm)
+                trwdg.scrollToItem(itm,3)
                 hi=1
             elif line<=lines[0] and not hi:
                 itm.setBackground(0,brsh)
-                trwdg.scrollToItem(itm)
+                trwdg.scrollToItem(itm,3)
                 hi=1
             else:
                 itm.setBackground(0,QtGui.QBrush())
