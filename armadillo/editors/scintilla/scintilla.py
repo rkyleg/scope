@@ -34,6 +34,7 @@ commentD = {
 
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
+    visibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
 ##    editingFinished = QtCore.pyqtSignal(QtGui.QWidget)
 
 class Sci(QtGui.QWidget):
@@ -49,6 +50,8 @@ class Sci(QtGui.QWidget):
         # Events
         self.evnt = Events()
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
+##        self.ui.te_sci.linesChanged.connect(self.visibleLinesChanged)
+        self.ui.te_sci.verticalScrollBar().valueChanged.connect(self.visibleLinesChanged)
 
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
         self.ui.te_sci.dropEvent = self.dropEvent
@@ -154,6 +157,14 @@ class Sci(QtGui.QWidget):
     def editorTextChanged(self):
         if self.okedit:
             self.evnt.editorChanged.emit(self)
+    
+    def getVisibleLines(self):
+        line_first = self.ui.te_sci.firstVisibleLine()
+        line_last = line_first+self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_LINESONSCREEN)
+        return line_first,line_last
+    
+    def visibleLinesChanged(self):
+        self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
     
 ##    def editingFinished(self):
 ##        self.evnt.editingFinished.emit(self)

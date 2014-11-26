@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Nov 24 22:06:03 2014
+# Created: Tue Nov 25 18:17:24 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -34,8 +34,8 @@ class Ui_MainWindow(object):
         self.centralwidget = QtGui.QWidget(MainWindow)
         self.centralwidget.setObjectName(_fromUtf8("centralwidget"))
         self.gridLayout_8 = QtGui.QGridLayout(self.centralwidget)
-        self.gridLayout_8.setMargin(0)
         self.gridLayout_8.setSpacing(0)
+        self.gridLayout_8.setContentsMargins(2, 0, 2, 0)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.fr_toolbar = QtGui.QFrame(self.centralwidget)
         self.fr_toolbar.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
@@ -366,8 +366,8 @@ class Ui_MainWindow(object):
         self.fr_right.setFrameShadow(QtGui.QFrame.Raised)
         self.fr_right.setObjectName(_fromUtf8("fr_right"))
         self.gridLayout_7 = QtGui.QGridLayout(self.fr_right)
+        self.gridLayout_7.setMargin(0)
         self.gridLayout_7.setSpacing(0)
-        self.gridLayout_7.setContentsMargins(0, 0, 8, 0)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
         self.split_right = QtGui.QSplitter(self.fr_right)
         self.split_right.setOrientation(QtCore.Qt.Vertical)

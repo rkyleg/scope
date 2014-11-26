@@ -8,6 +8,7 @@ class jsObject(QtCore.QObject):
         self.editorHtml = ''
         self.cliptxt = ''
         self.parent = parent
+        self.lines = [0,0]
 
     @QtCore.pyqtSlot('QString')
     def getHtml(self,text):
@@ -23,11 +24,23 @@ class jsObject(QtCore.QObject):
     def textChanged(self):
         self.parent.editorTextChanged()
     
+    @QtCore.pyqtSlot()
+    def visibleLinesChanged(self):
+        self.parent.visibleLinesChanged()
+    
+    @QtCore.pyqtSlot('QString')
+    def getLines(self,ltxt):
+        lines = str(ltxt).split(',')
+        fline = float(lines[0])
+        lline = float(lines[1])
+        self.lines = [fline,lline]
+    
     html = QtCore.pyqtProperty(str,fget=insertHtml)
     ctxt = QtCore.pyqtProperty(str,fget=clipHtml)
 
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
+    visibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
     
 # Custom Webpage class
 class WebPage(QtWebKit.QWebPage):
@@ -99,6 +112,7 @@ class WebView(QtWebKit.QWebView):
         # Setup Editor
 ##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
+        js += "editor.getSession().on('changeScrollTop',function (e) {pythonjs.visibleLinesChanged()});"
         
         # Set Javascript settings
         js += 'editor.setTheme("ace/theme/'+self.settings['theme']+'");'
@@ -133,7 +147,8 @@ class WebView(QtWebKit.QWebView):
         if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
             self.okedit = 0
 
-        if event.modifiers() & QtCore.Qt.ControlModifier:            if event.key() == QtCore.Qt.Key_C:
+        if event.modifiers() & QtCore.Qt.ControlModifier:
+            if event.key() == QtCore.Qt.Key_C:
                 self.copy()
                 handled = 1
             elif event.key() == QtCore.Qt.Key_V:
@@ -148,8 +163,10 @@ class WebView(QtWebKit.QWebView):
                 handled = 1
             elif event.key() == QtCore.Qt.Key_Delete:
                 self.removeLines()
-                handled = 1                
-        if not handled:            QtWebKit.QWebView.keyPressEvent(self,event)
+                handled = 1
+                
+        if not handled:
+            QtWebKit.QWebView.keyPressEvent(self,event)
         QtGui.QApplication.processEvents()
         self.okedit = 1
         self.editorTextChanged()
@@ -342,4 +359,15 @@ class WebView(QtWebKit.QWebView):
     
     def dropEvent(self,event):
         self.parent.dropEvent(event)
-        
+    
+    #---Visible Lines
+    def getVisibleLines(self):
+##        self.page().mainFrame().evaluateJavaScript("pythonjs.getLines(editor.getFirstVisibleRow());")
+##        line_first = self.editorJS.lines
+        self.page().mainFrame().evaluateJavaScript("pythonjs.getLines(getVisibleLines());")
+        line_first = self.editorJS.lines[0]
+        line_last = self.editorJS.lines[1]
+        return line_first,line_last
+    
+    def visibleLinesChanged(self):
+        self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.0'
+__version__ = '1.1.1'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -18,6 +18,7 @@ class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
     editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
     editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
+    editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -281,7 +282,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # Goto
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,self,self.updateOutline) # Update/Show Outline
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
@@ -293,9 +294,12 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
+        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.hideBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
+##        QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.viewPythonShell) # View Python Shell
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Fullscreen Zen
+        QtGui.QShortcut(QtCore.Qt.Key_F12,self,self.viewPythonShell) # Fullscreen Zen
         
         # Plugins
         self.pluginDocks = []
@@ -323,7 +327,7 @@ class Armadillo(QtGui.QMainWindow):
                     if l not in self.settings['extensions']:
                         self.settings['extensions'][l]=l
             
-        #--- Add Plugins
+##        #--- Add Plugins
 ##        self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
 ##            'right':QtCore.Qt.RightDockWidgetArea,
 ##            'top':QtCore.Qt.TopDockWidgetArea,
@@ -636,10 +640,13 @@ class Armadillo(QtGui.QMainWindow):
             else:
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
         except:
-            self.ui.statusbar.showMessage('Error: ')
+            self.ui.statusbar.showMessage('Error: text changed signal')
         # Check for file changes
 ##        self.checkFileChanges()
-            
+    
+    def visibleLinesChanged(self,wdg,lines):
+        self.evnt.editorVisibleLinesChanged.emit(wdg,lines)
+    
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
@@ -676,13 +683,16 @@ class Armadillo(QtGui.QMainWindow):
         wdg.id = self.fileCount
         wdg.lang = lang
         wdg.viewOnly = 0
-        wdg.dockstate = None
+##        wdg.dockstate = None
         wdg.modTime = None
         self.tabD[self.fileCount]=wdg
         self.evnt.editorAdded.emit(wdg)
 
         if 'editorTextChanged' in dir(wdg):
             wdg.evnt.editorChanged.connect(self.editorTextChanged)
+        if 'visibleLinesChanged' in dir(wdg):
+            wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
+            
 ##        if 'editingFinished' in  dir(wdg):
 ##            wdg.evnt.editingFinished.connect(self.editingFinished)
             
@@ -723,7 +733,7 @@ class Armadillo(QtGui.QMainWindow):
                 wdg.autocomplete = int(self.settings['fav_lang'][lang]['autocomplete'])
                 if 'toggleAutoComplete' in dir(wdg):
                     wdg.toggleAutoComplete()
-                
+        
         return wdg
 
     def checkSave(self,wdg):
@@ -757,11 +767,11 @@ class Armadillo(QtGui.QMainWindow):
             filename = wdg.filename
         else:
             fileext = ''
-##            exlist = ''
-##            for e in self.settings.ext:
-##                if self.settings.ext[e]==wdg.lang:
+            exlist = ''
+            for e in self.settings['extensions']:
+                if self.settings['extensions'][e]==wdg.lang:
 ##                    if exlist != '': exlist += ' '
-##                    exlist+='*.'+e
+                    fileext+=wdg.lang+' (*.'+e+");;"
 ##            if exlist != '':
 ##                fileext += wdg.lang+" ("+exlist+");;"
             fileext += "All (*.*)"
@@ -784,11 +794,14 @@ class Armadillo(QtGui.QMainWindow):
                 f.close()
                 wdg.lastText = txt
                 wdg.modTime = os.path.getmtime(filename)
-                self.ui.statusbar.showMessage('Saved '+wdg.title+' at '+datetime.datetime.now().ctime())
+##                tmr = QtCore.QTimer()
+##                self.ui.statusbar.show()
+                self.ui.statusbar.showMessage('Saved: '+wdg.title,3000)#+' at '+datetime.datetime.now().ctime(),3000)
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+##                tmr.singleShot(3000,self.ui.statusbar.hide)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
-                self.ui.statusbar.showMessage('Error Saving: '+filename)
+                self.ui.statusbar.showMessage('Error Saving: '+filename,10000)
             
             # Save Signal
             self.evnt.editorSaved.emit(wdg)
@@ -953,6 +966,7 @@ class Armadillo(QtGui.QMainWindow):
 ##            self.plugin_left_width = self.ui.split_main.sizes()
             self.ui.split_right.setSizes([26,self.ui.split_main.height()-26])
 ##            self.ui.tab_left.setTabPosition(2)
+
     def pluginBottomChange(self,ind):
         self.ui.sw_bottom.setCurrentIndex(ind)
 ##        if ind == 0:
@@ -961,7 +975,15 @@ class Armadillo(QtGui.QMainWindow):
 ##        else:
 ##            self.ui.split_right.setSizes(self.plugin_bottom_sizes)
         self.ui.sw_bottom.setHidden(not ind)
-        
+    
+    def hideBottomTab(self):
+        self.ui.tabbar_bottom.setCurrentIndex(0)
+    
+    def viewPythonShell(self):
+        if 'py_console' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['py_console'].setFocus()
     
     #---Settings
     def loadSettings(self):

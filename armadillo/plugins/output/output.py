@@ -51,11 +51,6 @@ class Output(QtGui.QWidget):
         curs.movePosition(QtGui.QTextCursor.End,0)
         self.ui.tb_out.setTextCursor(curs)
         self.ui.tb_out.append(txt.replace('\n','<br>'))
-##        if plaintext:
-##            txt = '<pre>'+txt+'</pre>'
-##        else:
-##            txt = txt.replace('\n','<br>')
-##        curs.insertHtml(txt)
        
     def finished(self):
         if self.process != None:
@@ -71,19 +66,13 @@ class Output(QtGui.QWidget):
             if cmd == 'webbrowser':
                 # If webbrowser - launch in webbrowser
                 webbrowser.open(filename)
-##            elif cmd in self.runD:
-##                self.runD[cmd](self,filename)
             elif cmd == 'markdown':
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
                 html = mkdown.generate(filename)
                 self.webview_preview(html,filename)
             else:
-            
-##                if not self.armadillo.pluginD['output'].isVisible():
-##                    self.armadillo.pluginD['output'].show()
-##                self.armadillo.pluginD['output'].raise_()
-                
+
                 i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
                 self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
                 
@@ -91,7 +80,6 @@ class Output(QtGui.QWidget):
                 self.process = QtCore.QProcess()
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)
                 self.process.setWorkingDirectory(os.path.dirname(filename))
-##                self.process.start(cmd,QtCore.QStringList(['-u',filename]))
                 self.process.start(cmd,QtCore.QStringList(args+[filename]))
 
                 self.process.readyReadStandardOutput.connect(self.readOutput)
@@ -128,12 +116,3 @@ class Output(QtGui.QWidget):
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()
         wdg.load2(url)
-##        lnk = str(url.toString())
-##        wdg = self.armadillo.ui.sw_main.currentWidget()
-##        if lnk.startswith('file:') and lnk.endswith('.md'):
-##            filename = str(url.path())
-##            import plugins.mkdown as mkdown
-##            html = mkdown.generate(filename)
-##            self.webview_preview(html,filename)
-##        else:
-##            wdg.load(url)

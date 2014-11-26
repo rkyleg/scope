@@ -1,4 +1,18 @@
 # TODO
+[] Help plugin (ctrl h) with dropdown of websites to search (google, stack overflow, duckduck go, etc)
+[] bookmark plugin (have categories, searchable)
+[] search in file browser
+[] search in outline
+[] be able to change language
+[x] when saving, pull file extension
+[] add new workspace button to home page
+[] update home page after new workspace (if current tab)
+[] save recent files if no workspace open (still open home first) - or view recent files somehow
+[] info (word count, column row,) function
+[] spell check plugin
+[] cursor that hides bring back to screen
+[] filebrowser grab path function
+
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
