@@ -6,9 +6,9 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.3'
+__version__ = '1.1.5'
 
-import sys, json, codecs, time
+import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
 from armadillo_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, threading
@@ -314,8 +314,11 @@ class Armadillo(QtGui.QMainWindow):
         for e in self.settings['activeEditors']:
             
             try:
-                exec('import editors.'+e)
-                exec('ld = editors.'+e+'.getLang()')
+                
+                mod = importlib.import_module('editors.'+e)
+                ld = mod.getLang()
+##                exec('import editors.'+e)
+##                exec('ld = editors.'+e+'.getLang()')
             except:
                 QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
@@ -673,9 +676,11 @@ class Armadillo(QtGui.QMainWindow):
                 
 ##        if not editor in self.settings['editors'] and not editor in ['webview','settings']:
 ##            editor = self.settings['fav_lang']['default']['editor']
-            
-        exec("import editors."+editor)
-        exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
+        
+        mod = importlib.import_module("editors."+editor)
+        wdg = mod.addEditor(self,lang,filename)
+##        exec("import editors."+editor)
+##        exec("wdg = editors."+editor+".addEditor(self,lang,filename)")
 
         wdg.filename = filename
         wdg.lastText=''
@@ -904,9 +909,12 @@ class Armadillo(QtGui.QMainWindow):
         if not os.path.exists(self.pluginPath+plug):
             QtGui.QMessageBox.warning(self,'Plugin Load Failure','The plugin <b>'+plug+'</b> was not found')
         else:
-            exec('import plugins.'+plug)
+            pmod = importlib.import_module('plugins.'+plug)
             os.chdir(self.pluginPath+plug)
-            exec('pluginWidget = plugins.'+plug+'.addDock(self)')
+            pluginWidget = pmod.addDock(self)
+##            exec('import plugins.'+plug)
+##            os.chdir(self.pluginPath+plug)
+##            exec('pluginWidget = plugins.'+plug+'.addDock(self)')
             
             title = pluginWidget.title
             loc = pluginWidget.location

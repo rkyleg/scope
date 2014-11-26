@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
 from outline_ui import Ui_Form
-import re, os
+import re, os, importlib
 
 class outlineTree(QtGui.QTreeWidget):
     def __init__(self,parent=None):
@@ -42,10 +42,13 @@ class Outline(QtGui.QWidget):
         self.outlineLangD = {}
         for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
             l = lang.split('.')[0]
-            exec('import lang.'+l)
-            exec('funcs=dir(lang.'+l+')')
+            mod = importlib.import_module('plugins.outline.lang.'+l)
+            funcs = dir(mod)
+##            exec('import lang.'+l)
+##            exec('funcs=dir(lang.'+l+')')
             if 'analyzeLine' in funcs:
-                exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
+                self.outlineLangD[l]=mod.analyzeLine
+##                exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
 
         self.alwaysUpdate = int(self.armadillo.settings['plugins']['outline']['alwaysUpdate'])
         if self.alwaysUpdate==0:
