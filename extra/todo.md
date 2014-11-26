@@ -2,7 +2,6 @@
 [] Help plugin (ctrl h) with dropdown of websites to search (google, stack overflow, duckduck go, etc)
 [] bookmark plugin (have categories, searchable)
 [] search in file browser
-[] search in outline
 [] be able to change language
 [x] when saving, pull file extension
 [] add new workspace button to home page
@@ -133,8 +132,8 @@
 - [-] toggle autorefreshing
 - [x] ctrl+o to show outline
 - [] Delete pages when closing tabs
-- [] search outline
-- [f] Highlight current section closest to top of screen
+- [x] search outline
+- [x] Highlight current section closest to top of screen
 - [x] Move outline code to language plugins in separate files
 - [x] Way to turn off
 - [x] Test Handling large blocks of text

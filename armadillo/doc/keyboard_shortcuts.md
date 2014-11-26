@@ -11,10 +11,6 @@
 			<td><strong>Function</strong></td>
 		</tr>
 		<tr>
-			<td>Ctrl + O</td>
-			<td>Update/Show Outline</td>
-		</tr>
-		<tr>
 			<td>Ctrl + N</td>
 			<td>New file (menu)</td>
 		</tr>
@@ -38,7 +34,10 @@
 			<td>F3</td>
 			<td>Refresh/Raise Outline</td>
 		</tr>
-
+		<tr>
+			<td>F4</td>
+			<td>Hide bottom plugin bar</td>
+		</tr>
 		<tr>
 			<td>F5</td>
 			<td>Run</td>
@@ -50,6 +49,10 @@
 		<tr>
 			<td>F11</td>
 			<td>Toggle Zen Mode - full screen and hide everything</td>
+		</tr>
+		<tr>
+			<td>F12</td>
+			<td>Show the Python shell</td>
 		</tr>
 	</tbody>
 </table>

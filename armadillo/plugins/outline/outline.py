@@ -56,6 +56,7 @@ class Outline(QtGui.QWidget):
             self.armadillo.evnt.editorVisibleLinesChanged.connect(self.updateLocation)
         
         self.ui.le_find.textChanged.connect(self.find)
+        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
         
     def analyzeLine(self,wdg,typ):
         return None,None

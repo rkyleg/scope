@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outline.ui'
 #
-# Created: Tue Nov 25 18:28:19 2014
+# Created: Tue Nov 25 19:17:41 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -56,12 +56,30 @@ class Ui_Form(object):
 "color:white;"))
         self.le_find.setObjectName(_fromUtf8("le_find"))
         self.gridLayout_9.addWidget(self.le_find, 0, 0, 1, 1)
+        self.b_find_close = QtGui.QPushButton(self.fr_find)
+        self.b_find_close.setMaximumSize(QtCore.QSize(16777215, 25))
+        self.b_find_close.setStyleSheet(_fromUtf8("QPushButton {\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+"border-top-right-radius:3px;\n"
+"border-bottom-right-radius:3px;\n"
+"}\n"
+"QPushButton:hover,QToolButton:hover {\n"
+"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
+"}"))
+        self.b_find_close.setText(_fromUtf8(""))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../../img/close_hover.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_find_close.setIcon(icon)
+        self.b_find_close.setObjectName(_fromUtf8("b_find_close"))
+        self.gridLayout_9.addWidget(self.b_find_close, 0, 1, 1, 1)
         self.gridLayout.addWidget(self.fr_find, 1, 0, 1, 1)
 
         self.retranslateUi(Form)
+        QtCore.QObject.connect(self.b_find_close, QtCore.SIGNAL(_fromUtf8("clicked()")), self.fr_find.hide)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.le_find.setPlaceholderText(_translate("Form", "Find", None))
+        self.b_find_close.setToolTip(_translate("Form", "Hide Find", None))
 

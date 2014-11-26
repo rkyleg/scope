@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.1'
+__version__ = '1.1.3'
 
 import sys, json, codecs, time
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -283,7 +283,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,self,self.updateOutline) # Update/Show Outline
+##        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,self,self.updateOutline) # Update/Show Outline
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
@@ -767,16 +767,14 @@ class Armadillo(QtGui.QMainWindow):
             filename = wdg.filename
         else:
             fileext = ''
-            exlist = ''
-            for e in self.settings['extensions']:
-                if self.settings['extensions'][e]==wdg.lang:
-##                    if exlist != '': exlist += ' '
-                    fileext+=wdg.lang+' (*.'+e+");;"
-##            if exlist != '':
-##                fileext += wdg.lang+" ("+exlist+");;"
+            # Don't show extensions for now (not working in Linux)
+##            for e in self.settings['extensions']:
+##                if self.settings['extensions'][e]==wdg.lang:
+##                    fileext+=wdg.lang+' (*.'+e+");;"
             fileext += "All (*.*)"
             
             filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].ui.le_root.text(),fileext)
+            print filename
             if filename=='':
                 filename=None
             else:
