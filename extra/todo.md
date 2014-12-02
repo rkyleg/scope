@@ -165,7 +165,7 @@
 - [x] Improve tree formatting
 - [x] create new file in main directory
 - [ ] copy file
-- [ ] New folder
+- [x] New folder
 - [ ] indicate if file is open
 - [ ] be able to have multiple roots
 - [] reload menu option

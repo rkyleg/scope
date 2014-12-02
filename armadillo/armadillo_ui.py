@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Tue Nov 25 18:17:24 2014
+# Created: Tue Dec  2 01:23:56 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -39,14 +39,14 @@ class Ui_MainWindow(object):
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.fr_toolbar = QtGui.QFrame(self.centralwidget)
         self.fr_toolbar.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(115, 115, 115, 255), stop:0.154545 rgba(146, 146, 146, 255), stop:0.831818 rgba(174, 174, 174, 255), stop:1 rgba(182, 182, 182, 255));\n"
 "    border:0px;\n"
 "    padding:3px;\n"
 "    padding-left:6px;\n"
 "    padding-right:6px;\n"
 "}\n"
 "QPushButton:hover,QToolButton:hover {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(114, 114, 114, 255), stop:0.174129 rgba(145, 145, 145, 255), stop:0.890547 rgba(184, 184, 184, 255), stop:1 rgba(208, 208, 208, 255));\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));\n"
 "}"))
         self.fr_toolbar.setFrameShape(QtGui.QFrame.NoFrame)
         self.fr_toolbar.setFrameShadow(QtGui.QFrame.Raised)
@@ -59,7 +59,7 @@ class Ui_MainWindow(object):
         self.b_save.setMinimumSize(QtCore.QSize(40, 0))
         self.b_save.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_save.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "    border-top-right-radius:5px;\n"
 "    border-bottom-right-radius:5px;\n"
 "}"))
@@ -73,7 +73,7 @@ class Ui_MainWindow(object):
         self.b_comment.setMinimumSize(QtCore.QSize(32, 0))
         self.b_comment.setMaximumSize(QtCore.QSize(32, 16777215))
         self.b_comment.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "}"))
         self.b_comment.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
@@ -129,7 +129,7 @@ class Ui_MainWindow(object):
         self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
         self.fr_find_2 = QtGui.QFrame(self.fr_find)
         self.fr_find_2.setStyleSheet(_fromUtf8("QFrame#fr_find_2 {\n"
-"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));\n"
 "color:white;\n"
 "border:0px;\n"
 "border-radius:3px;\n"
@@ -151,12 +151,12 @@ class Ui_MainWindow(object):
         self.b_find = QtGui.QPushButton(self.fr_find_2)
         self.b_find.setMaximumSize(QtCore.QSize(16777215, 25))
         self.b_find.setStyleSheet(_fromUtf8("QPushButton {\n"
-"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));\n"
 "border-top-right-radius:3px;\n"
 "border-bottom-right-radius:3px;\n"
 "}\n"
 "QPushButton:hover,QToolButton:hover {\n"
-"    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
+"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));\n"
 "}"))
         self.b_find.setText(_fromUtf8(""))
         icon5 = QtGui.QIcon()
@@ -168,7 +168,7 @@ class Ui_MainWindow(object):
         self.le_goto = QtGui.QLineEdit(self.fr_find)
         self.le_goto.setMinimumSize(QtCore.QSize(40, 24))
         self.le_goto.setMaximumSize(QtCore.QSize(50, 16777215))
-        self.le_goto.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+        self.le_goto.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));\n"
 "color:white;\n"
 "border:0px;\n"
 "border-radius:3px;"))
@@ -206,7 +206,7 @@ class Ui_MainWindow(object):
         self.b_workspace.setMinimumSize(QtCore.QSize(40, 25))
         self.b_workspace.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_workspace.setStyleSheet(_fromUtf8("QPushButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "}\n"
 "QPushButton::menu-indicator {\n"
 "     image: url(none.png);\n"
@@ -221,7 +221,7 @@ class Ui_MainWindow(object):
         self.b_wordwrap.setMinimumSize(QtCore.QSize(32, 0))
         self.b_wordwrap.setMaximumSize(QtCore.QSize(32, 16777215))
         self.b_wordwrap.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "    border-top-right-radius:5px;\n"
 "    border-bottom-right-radius:5px;\n"
 "}"))
@@ -235,7 +235,7 @@ class Ui_MainWindow(object):
         self.b_open.setMinimumSize(QtCore.QSize(40, 0))
         self.b_open.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_open.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "}"))
         self.b_open.setText(_fromUtf8(""))
         icon9 = QtGui.QIcon()
@@ -247,7 +247,7 @@ class Ui_MainWindow(object):
         self.b_settings.setMinimumSize(QtCore.QSize(32, 0))
         self.b_settings.setMaximumSize(QtCore.QSize(32, 16777215))
         self.b_settings.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "    border-top-right-radius:5px;\n"
 "    border-bottom-right-radius:5px;\n"
 "}"))
@@ -298,7 +298,7 @@ class Ui_MainWindow(object):
         self.b_unindent.setMinimumSize(QtCore.QSize(32, 0))
         self.b_unindent.setMaximumSize(QtCore.QSize(32, 16777215))
         self.b_unindent.setStyleSheet(_fromUtf8("QToolButton {\n"
-"    border-left:1px solid rgb(100,100,100);\n"
+"    border-left:1px solid rgb(130,130,130);\n"
 "}"))
         self.b_unindent.setText(_fromUtf8(""))
         icon13 = QtGui.QIcon()

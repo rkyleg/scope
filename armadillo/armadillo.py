@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.5'
+__version__ = '1.1.6'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -165,7 +165,7 @@ class ArmadilloMenu(QtGui.QMenu):
         # Print
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'printer.png')
-        self.zenAction = self.addAction(icn,'Print',self.parent.editorPrint)
+        self.printAction = self.addAction(icn,'Print',self.parent.editorPrint)
         
         # Close
         self.addSeparator()
@@ -230,7 +230,7 @@ class Armadillo(QtGui.QMainWindow):
 
         # add Main Button to tabbar
         self.ui.tabtoolbar.addWidget(self.ui.b_main)
-##        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
+        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
         
         # Toolbutton Toolbar
         self.ui.toolbar = QtGui.QToolBar("toolBar",self)
@@ -329,28 +329,16 @@ class Armadillo(QtGui.QMainWindow):
                 for l in ld:
                     if l not in self.settings['extensions']:
                         self.settings['extensions'][l]=l
-            
-##        #--- Add Plugins
-##        self.dockareaD = {'left':QtCore.Qt.LeftDockWidgetArea,
-##            'right':QtCore.Qt.RightDockWidgetArea,
-##            'top':QtCore.Qt.TopDockWidgetArea,
-##            'bottom':QtCore.Qt.BottomDockWidgetArea
-##        }
         
+        #--- Plugins
         # Plugin tab bar
         self.ui.fr_left_hidden.hide()
-        
         self.ui.tabbar_bottom = QtGui.QTabBar()
         self.ui.fr_bottom.layout().addWidget(self.ui.tabbar_bottom)
-##        self.ui.sw_bottom = QtGui.QStackedWidget()
-##        self.ui.fr_bottom.layout().addWidget(self.ui.sw_bottom)
-##        self.ui.sw_bottom.setObjectName('bottom plugin tabs')
         self.ui.tabbar_bottom.currentChanged.connect(self.pluginBottomChange)
         self.ui.tabbar_bottom.setShape(1)
         self.ui.tabbar_bottom.setExpanding(0)
-        
         # Add down arrow
-##        self.ui.sw_bottom.addWidget(QtGui.QWidget())
         self.ui.tabbar_bottom.addTab(QtGui.QIcon(self.iconPath+'tri_down.png'),'')
         
         # Add Plugins
@@ -359,24 +347,24 @@ class Armadillo(QtGui.QMainWindow):
         for plug in self.settings['activePlugins']:
             self.addPlugin(plug)
         os.chdir(curdir)
-        
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
+        #--- Other Setup
+        # Default zen mode
+        self.zen = 0
+        self.editor_zen = 0
         
-##        self.dockstate = self.saveState()
-        self.zen = 1
-        
-        #--- Add Start
+        # Add Start
         self.addStart()
         
-        # Load setup
-        self.loadSetup()
+##        # Load setup
+##        self.loadSetup()
         
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
-        # self.fileModD = {}
-        # fmt = threading.Thread(target=self.checkFileChanges,args=(self))
-        # fmt.start()
+##        self.fileModD = {}
+##        fmt = threading.Thread(target=self.checkFileChanges,args=(self))
+##        fmt.start()
 
         # New Button Menu
         self.newMenu = NewMenu(self)
@@ -401,7 +389,8 @@ class Armadillo(QtGui.QMainWindow):
                 self.openFile(sys.argv[1])
         
         self.setFocus()
-
+        
+    #---Events
     def closeEvent(self,event):
         cancelled = 0
         # Check if anything needs saving
@@ -435,50 +424,40 @@ class Armadillo(QtGui.QMainWindow):
     def dragEnterEvent(self,event):
         event.accept()
     
+    #---Zen Modes
     def toggleEditorZen(self):
-        self.toggleZen(mode='editor')
-    
+        self.editor_zen = not self.editor_zen
+        self.setZen(self.editor_zen,editor_zen=1)
+        
     def toggleZen(self,mode='full'):
         self.zen = not self.zen
-        
-        self.ui.statusbar.setVisible(self.zen)
-        self.ui.toolbar.setVisible(self.zen)
-##        self.ui.tabtoolbar.setVisible(self.zen)
-        self.ui.fr_left.setVisible(self.zen)
-        self.ui.sw_bottom.setVisible(self.zen)
-        self.ui.fr_bottom.setVisible(self.zen)
+        self.setZen(self.zen)
         if self.zen:
-##            self.restoreState(self.dockstate)
-##            self.ui.statusbar.show()
-####            self.ui.findbar.show()
-##            self.ui.toolbar.show()
-            self.ui.tabtoolbar.show()
-            self.showNormal()
-####            self.setWindowFlags(QtCore.Qt.Window)
-####            self.show()
-##
-##            self.ui.tab_left.show()
-##            self.ui.sw_bottom.show()
-            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
-            self.armadilloMenu.zenAction.setText('Zen mode')
-            self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
-        else:
-##            self.ui.statusbar.hide()
-####            self.ui.findbar.hide()
-##            self.ui.toolbar.hide()
-####            self.setWindowFlags(QtCore.Qt.CustomizeWindowHint)
-####            self.show()
-##            self.dockstate = self.saveState()
+            self.ui.tabtoolbar.hide()
+            self.showFullScreen()
+            
+    def setZen(self,zen,editor_zen=0):
+        self.ui.statusbar.setVisible(not zen)
+        self.ui.toolbar.setVisible(not zen)
+        self.ui.fr_left.setVisible(not zen)
+        self.ui.sw_bottom.setVisible(not zen)
+        self.ui.fr_bottom.setVisible(not zen)
+        
+        if zen:
             self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
             self.armadilloMenu.zenAction.setText('Exit zen mode')
-##            self.ui.tab_left.hide()
-##            self.ui.sw_bottom.hide()
+            self.pluginBottomChange(0)
+        else:
+            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
+            self.armadilloMenu.zenAction.setText('Zen mode')
             
-            if mode=='full':
-                self.ui.tabtoolbar.hide()
-                self.showFullScreen()
+            self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
+            
+            self.zen = self.editor_zen = 0
         
-        
+        if not zen or editor_zen:
+            self.ui.tabtoolbar.show()
+            self.showNormal()
 
 ##    def showPlugins(self):
 ##        menu = self.createPopupMenu()
@@ -1038,15 +1017,15 @@ class Armadillo(QtGui.QMainWindow):
                             a = [a]
                         self.settings['run'][l]['args']=a
     
-    def loadSetup(self):
-        # Geometry 
-        if os.path.exists(self.settingPath):
-            # Load window settings
-            if os.path.exists(self.settingPath+'/window'):
-                f = open(self.settingPath+'/window','rb')
-                wingeo = f.read()
-                f.close()
-                self.restoreState(wingeo)
+##    def loadSetup(self):
+##        # Geometry 
+##        if os.path.exists(self.settingPath):
+##            # Load window settings
+##            if os.path.exists(self.settingPath+'/window'):
+##                f = open(self.settingPath+'/window','rb')
+##                wingeo = f.read()
+##                f.close()
+##                self.restoreState(wingeo)
         
     def openSettings(self):
         self.openFile(self.settings_filename)
@@ -1060,10 +1039,10 @@ class Armadillo(QtGui.QMainWindow):
         if self.workspace != None and int(self.settings['save_workspace_on_close']):
             self.saveWorkspace()
 
-        # Save Window Geometry
-        f = open(self.settingPath+'/window','wb')
-        f.write(self.saveState())
-        f.close()
+##        # Save Window Geometry
+##        f = open(self.settingPath+'/window','wb')
+##        f.write(self.saveState())
+##        f.close()
 
     #---Shortcuts
     def addStart(self,wdg=None):

@@ -81,13 +81,12 @@ class Outline(QtGui.QWidget):
         if 'gotoLine' in dir(wdg):
             trwdg.itemDoubleClicked.connect(self.goto)
         
-        trwdg.contextMenuEvent = self.fileMenu
+        trwdg.contextMenuEvent = self.outlineMenu
 
     def updateOutline(self,wdg):
         trwdg = self.wdgD[wdg]
         if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
             trwdg.clear()
-##            self.ui.le_find.hide()
             self.ui.le_find.setText('')
             txt = unicode(wdg.getText())
             txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
@@ -98,7 +97,6 @@ class Outline(QtGui.QWidget):
                 itmText = t[0]
                 typ = t[1]
                 lcnt = t[2]
-##                itmText = spc +itmText
                 itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
                 trwdg.addTopLevelItem(itm)
                 self.format(itm,typ)
@@ -110,7 +108,6 @@ class Outline(QtGui.QWidget):
     
     def updateLocation(self,wdg,lines):
         trwdg = self.wdgD[wdg]
-##        print 'outline update location',trwdg.topLevelItemCount()
         hi=0
         brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
@@ -127,7 +124,7 @@ class Outline(QtGui.QWidget):
             else:
                 itm.setBackground(0,QtGui.QBrush())
             
-    def fileMenu(self,event):
+    def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')
         trwdg = self.ui.sw_outline.currentWidget()
         menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Update (F3)')
@@ -135,7 +132,7 @@ class Outline(QtGui.QWidget):
         act = menu.exec_(trwdg.cursor().pos())
         if act != None:
             acttxt = str(act.text())
-            if acttxt=='Update (F3)':
+            if acttxt=='Update (F4)':
                 self.updateOutline(self.armadillo.currentWidget())
             elif acttxt == 'Find':
                 self.ui.fr_find.show()
@@ -155,7 +152,6 @@ class Outline(QtGui.QWidget):
        
     def find(self):
         trwdg = self.ui.sw_outline.currentWidget()
-##        trwdg = self.wdgD[wdg]
         txt = str(self.ui.le_find.text()).lower()
         for t in range(trwdg.topLevelItemCount()):
             itm = trwdg.topLevelItem(t)

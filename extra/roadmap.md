@@ -22,3 +22,4 @@ Features that can be added independent of version
 - [x] Better documentation/integrated help (maybe as a plugin)
 - [ ] syntax checking for Scintilla/Python would be nice.
 - [ ] Native Mac binaries
+- [ ] set OS extensions to open Armadillo

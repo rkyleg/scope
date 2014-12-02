@@ -9,8 +9,6 @@ class DirTree(QtGui.QWidget):
         self.ui.setupUi(self)
         self.armadillo = parent
 
-##        self.extD = ['py','txt','html','htm','css','js','txt']
-##        if self.armadillo != None:
         self.extD = self.armadillo.settings['extensions']
         
         # Show All
@@ -21,8 +19,7 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
-        
-##        self.ui.le_root.setText(os.path.abspath(os.path.dirname(__file__)+'../../../'))
+
         self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
         self.loadRoot()
         
@@ -45,12 +42,6 @@ class DirTree(QtGui.QWidget):
         
         for citm in filecontents:
             self.ui.tr_dir.addTopLevelItem(citm)
-        
-##        for f in sorted(os.listdir(self.rootpath)):
-##            itm = QtGui.QTreeWidgetItem([f,self.rootpath+'/'+f])
-##            if os.path.isdir(self.rootpath+'/'+f):
-##                itm.setIcon(0,QtGui.QIcon(self.iconpth+'folder.png'))
-##                self.ui.tr_dir.addTopLevelItem(itm)
         
     def itmClicked(self,itm,col):
         # Tree Click Signals
@@ -92,13 +83,6 @@ class DirTree(QtGui.QWidget):
         
     def itmExpanded(self,itm):
         pth = str(itm.text(1))
-##        if os.path.isdir(pth):
-##            icn = QtGui.QIcon(self.armadillo.iconPath+'folder.png')
-##            
-##            if itm.isExpanded():
-##                icn = QtGui.QIcon(self.armadillo.iconPath+'folder_open.png')
-##            
-##            itm.setIcon(0,icn)
         
     def getDirContents(self,pth):
         # Return [dirlist,filelist]
@@ -115,7 +99,6 @@ class DirTree(QtGui.QWidget):
             # Add Folders
             for f in dirlist:
                 citm = QtGui.QTreeWidgetItem([f,pth+f])
-##                citm.setChildIndicatorPolicy(QtGui.QTreeWidgetItem.DontShowIndicator)
                 if not f.startswith('.') and  os.path.isdir(pth+f):
                     citm.setIcon(0,QtGui.QIcon(self.armadillo.iconPath+'folder.png'))
                     dircontents.append(citm)
@@ -150,7 +133,6 @@ class DirTree(QtGui.QWidget):
 
         
     def fileMenu(self,event):
-##        print event
         menu = QtGui.QMenu('file menu')
         citm = self.ui.tr_dir.currentItem()
         fitm = None
@@ -179,18 +161,17 @@ class DirTree(QtGui.QWidget):
                 menu.addSeparator()
             
             # New File
-##            if os.path.isdir(pth):
             menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
             
             # Other File Options
-##            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'file_open.png'),'Open')
-            menu.addAction(QtGui.QIcon(),'Open')
+            menu.addAction(QtGui.QIcon(),'Open (external)')
             
 
-            
             if os.path.isfile(pth):
                 menu.addAction(QtGui.QIcon(),'Rename')
+##                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'copy.png'),'Copy File')
                 menu.addSeparator()
                 menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'delete.png'),'Delete File')
                 
@@ -216,7 +197,7 @@ class DirTree(QtGui.QWidget):
             if acttxt == 'Edit':
                 # Open File
                 self.openFile()
-            elif acttxt == 'Open':
+            elif acttxt == 'Open (external)':
                 try:
                     os.startfile(pth)
                 except:
@@ -234,6 +215,19 @@ class DirTree(QtGui.QWidget):
                     else:
                         f = open(fpth+'/'+unicode(resp),'w')
                         f.close()
+                        if fitm != None:
+                            self.itmClick(fitm,0,toggleExpanded=0)
+                            fitm.setExpanded(1)
+                        else:
+                            self.loadRoot()
+            elif acttxt == 'New Folder':
+                # New Folder
+                resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New Folder','Enter the folder name.')
+                if ok and not resp.isEmpty():
+                    if os.path.exists(fpth+'/'+unicode(resp)):
+                        QtGui.QMessageBox.warning(self,'Folder Exists','That folder already exists')
+                    else:
+                        os.mkdir(fpth+'/'+unicode(resp))
                         if fitm != None:
                             self.itmClick(fitm,0,toggleExpanded=0)
                             fitm.setExpanded(1)
@@ -286,7 +280,6 @@ class DirTree(QtGui.QWidget):
             else:
                 # Open file in specific editor
                 lang = acttxt[10:]
-##                    print lang
                 self.armadillo.openFile(pth,editor=lang)
     
     def openFile(self):

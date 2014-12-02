@@ -17,16 +17,6 @@ class Output(QtGui.QWidget):
         self.ui.tb_out.setOpenLinks(0)
         self.ui.tb_out.anchorClicked.connect(self.urlClick)
     
-        # Get Command dictionary
-##        self.runD = {}
-##        for runs in os.listdir(os.path.join(os.path.dirname(__file__),'run')):
-##            r = runs.split('.')[0]
-##            exec('import run.'+r)
-##            exec('funcs=dir(run.'+r+')')
-##            if 'cmd' in funcs:
-####                print 'self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine'
-##                exec('self.runD["'+r+'"]=run.'+r+'.cmd')
-    
     def urlClick(self,url):
         pth = str(url.toString())
         try:
