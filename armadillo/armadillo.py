@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.7'
+__version__ = '1.1.8'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -463,6 +463,7 @@ class Armadillo(QtGui.QMainWindow):
 ##        menu = self.createPopupMenu()
 ##        menu.exec_(self.cursor().pos())
 
+    #---File
     def isFileOpen(self,filename):
         # Check if file open and return tab index
         fileopen = -1
@@ -496,33 +497,45 @@ class Armadillo(QtGui.QMainWindow):
 
                     if ext in self.settings['extensions']:
                         lang = self.settings['extensions'][ext]
-
-                    title = os.path.basename(filename)
-                    if int(self.settings['view_folder']):
-                        title = os.path.split(os.path.dirname(filename))[1]+'/'+title
-                    elif lang == 'python' and title=='__init__.py':
-                        title = os.path.split(os.path.dirname(filename))[1]+'/init'
                     
-                    try:
-                        f = codecs.open(filename,'r','utf-8')
-                        txt = f.read()
-                        f.close()
+                    # Load Image
+                    if lang in ['png','jpg','bmp','gif','ico']:
+                        w = self.ui.sw_main.width()-20
+                        if os.name =='nt':
+                            pfx="file:///"
+                        else:
+                            pfx="file://"
+                        pth=pfx+os.path.abspath(filename).replace('\\','/')
+                        html='<img src="'+pth+'" style="max-width:'+str(w)+';">'
+                        self.webview_preview(html,filename)
+                    else:
+                        title = os.path.basename(filename)
+                        if int(self.settings['view_folder']):
+                            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+                        elif lang == 'python' and title=='__init__.py':
+                            title = os.path.split(os.path.dirname(filename))[1]+'/init'
                         
-                    except:
-                        QtGui.QMessageBox.warning(self,'Error Opening File','The following file could not be read.  Make sure it is ascii or utf-8 encoded<br><br>'+filename)
-                        txt = None
-                    
-                    if txt != None:
-                        # Create Widget
-                        wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
-                        wdg.setText(txt)
-                        QtGui.QApplication.processEvents()
-                        wdg.lastText = txt
-                        self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-                        wdg.modTime = os.path.getmtime(filename)
+                        try:
+                            f = codecs.open(filename,'r','utf-8')
+                            txt = f.read()
+                            f.close()
+                            
+                        except:
+                            QtGui.QMessageBox.warning(self,'Error Opening File','The following file could not be read.  Make sure it is ascii or utf-8 encoded<br><br>'+filename)
+                            txt = None
+                        
+                        if txt != None:
+                            # Create Widget
+                            wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
+                            wdg.setText(txt)
+                            QtGui.QApplication.processEvents()
+                            wdg.lastText = txt
+                            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                            wdg.modTime = os.path.getmtime(filename)
+                        
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
-                        self.updateOutline()
+##                        self.updateOutline()
      
                         # Remove Startpage
                         self.removeStart()
@@ -964,6 +977,12 @@ class Armadillo(QtGui.QMainWindow):
     def hideBottomTab(self):
         self.ui.tabbar_bottom.setCurrentIndex(0)
     
+    def viewPythonShell(self):
+        if 'py_console' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['py_console'].setFocus()
+    
     #---Settings
     def loadSettings(self):
         # Create settings directory
@@ -1025,7 +1044,7 @@ class Armadillo(QtGui.QMainWindow):
         self.openFile(self.settings_filename)
 
     def saveSettings(self):
-        if not self.zen:
+        if self.zen:
             self.toggleZen()
             QtGui.QApplication.processEvents()
         
@@ -1038,7 +1057,35 @@ class Armadillo(QtGui.QMainWindow):
 ##        f.write(self.saveState())
 ##        f.close()
 
-    #---Shortcuts
+    #---Webview Preview
+    def webview_preview(self,html,burl=None):
+        openfile = self.isFileOpen('preview')
+        if openfile==-1:
+            wdg = self.addEditorWidget('webview','Preview','preview')
+            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            wdg.linkClicked.connect(self.urlClicked)
+            self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'page_preview.png'))
+    
+        else:
+            self.ui.tab.setCurrentIndex(openfile)
+            QtGui.QApplication.processEvents()
+            wdg = self.ui.sw_main.currentWidget()
+        
+        if burl != None:
+            if os.name =='nt':
+                pfx="file:///"
+            else:
+                pfx="file://"
+            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+
+        wdg.setText(html,burl)
+
+        wdg.viewOnly = 1
+        wdg.modTime = None
+        QtGui.QApplication.processEvents()
+        self.changeTab(self.ui.tab.currentIndex())
+        
+    #---Startpage
     def addStart(self,wdg=None):
         pth = 'doc/start.html'
         
@@ -1123,7 +1170,8 @@ class Armadillo(QtGui.QMainWindow):
             self.addStart(wdg=wdg)
         else:
             wdg.load2(url)
-    
+        
+    #---Shortcuts
     def findFocus(self):
 ##        if self.ui.findbar.isHidden():
 ##            self.ui.findbar.setVisible(1)
@@ -1152,9 +1200,9 @@ class Armadillo(QtGui.QMainWindow):
     ##        if 'getText' in dir(wdg):
     ##            if not self.pluginD['outline'].isVisible():
     ##                self.pluginD['outline'].show()
+    ##        self.pluginD['outline'].raise_()
             i=self.ui.tab_left.indexOf(self.pluginD['outline'])
             self.ui.tab_left.setCurrentIndex(i)
-    ##        self.pluginD['outline'].raise_()
             if 'getText' in dir(wdg):
                 self.pluginD['outline'].updateOutline(wdg)
     
@@ -1162,13 +1210,7 @@ class Armadillo(QtGui.QMainWindow):
         if 'filebrowser' in self.pluginD:
             i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
             self.ui.tab_left.setCurrentIndex(i)
-
-    def viewPythonShell(self):
-        if 'py_console' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['py_console'].setFocus()
-            
+    
     def qtHelp(self):
         if 'qt2py' in self.pluginD:
             i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])

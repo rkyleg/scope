@@ -86,6 +86,10 @@ class Outline(QtGui.QWidget):
     def updateOutline(self,wdg):
         trwdg = self.wdgD[wdg]
         if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
+            # Select tab if language
+##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
+##            self.armadillo.ui.tab_left.setCurrentIndex(i)
+
             trwdg.clear()
             self.ui.le_find.setText('')
             txt = unicode(wdg.getText())

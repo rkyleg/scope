@@ -69,7 +69,7 @@ class Output(QtGui.QWidget):
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
                 html = mkdown.generate(filename)
-                self.webview_preview(html,filename)
+                self.armadillo.webview_preview(html,filename)
             else:
 
                 i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
@@ -99,32 +99,32 @@ class Output(QtGui.QWidget):
 ##                    self.process.start(cmd +' '+filename)
 ##                    self.process.start('"'+cmd +'" "'+filename+'"')
 
-    def webview_preview(self,html,burl=None):
-        openfile = self.armadillo.isFileOpen('preview')
-        if openfile==-1:
-            wdg = self.armadillo.addEditorWidget('webview','Preview','preview')
-            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-            wdg.linkClicked.connect(self.urlClicked)
-            self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
-    
-        else:
-            self.armadillo.ui.tab.setCurrentIndex(openfile)
-            QtGui.QApplication.processEvents()
-            wdg = self.armadillo.ui.sw_main.currentWidget()
-        
-        if burl != None:
-            if os.name =='nt':
-                pfx="file:///"
-            else:
-                pfx="file://"
-            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
-
-        wdg.setText(html,burl)
-
-        wdg.viewOnly = 1
-        wdg.modTime = None
-        QtGui.QApplication.processEvents()
-        self.armadillo.changeTab(self.armadillo.ui.tab.currentIndex())
+##    def webview_preview(self,html,burl=None):
+##        openfile = self.armadillo.isFileOpen('preview')
+##        if openfile==-1:
+##            wdg = self.armadillo.addEditorWidget('webview','Preview','preview')
+##            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+##            wdg.linkClicked.connect(self.urlClicked)
+##            self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
+##    
+##        else:
+##            self.armadillo.ui.tab.setCurrentIndex(openfile)
+##            QtGui.QApplication.processEvents()
+##            wdg = self.armadillo.ui.sw_main.currentWidget()
+##        
+##        if burl != None:
+##            if os.name =='nt':
+##                pfx="file:///"
+##            else:
+##                pfx="file://"
+##            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+##
+##        wdg.setText(html,burl)
+##
+##        wdg.viewOnly = 1
+##        wdg.modTime = None
+##        QtGui.QApplication.processEvents()
+##        self.armadillo.changeTab(self.armadillo.ui.tab.currentIndex())
         
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()

@@ -110,7 +110,9 @@ class DirTree(QtGui.QWidget):
                 if not os.path.isdir(pth+f) and ((not f.startswith('.') and ext in self.extD) or self.showAll):
                     
                     ipth = ''
-                    if ext in self.extD:
+                    if ext in ['png','jpg','jpeg','gif','bmp','ico']:
+                        ipth = pth+f
+                    elif ext in self.extD:
                         ipth = self.armadillo.iconPath+'files/'+self.extD[ext]+'.png'
                     if os.path.exists(ipth):
                         citm.setIcon(0,QtGui.QIcon(ipth))
@@ -198,10 +200,13 @@ class DirTree(QtGui.QWidget):
                 # Open File
                 self.openFile()
             elif acttxt == 'Open (external)':
-                try:
-                    os.startfile(pth)
-                except:
+                curdir = os.path.abspath('.')
+                os.chdir(os.path.dirname(pth))
+                if os.name == 'nt':
+                    os.startfile(pth.replace('/','\\'))
+                else:
                     subprocess.Popen(['xdg-open', pth])
+                os.chdir(curdir)
             elif acttxt == 'Show All Files':
                 self.showAll = showAct.isChecked()
                 if citm != None:
