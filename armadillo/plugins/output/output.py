@@ -29,13 +29,22 @@ class Output(QtGui.QWidget):
             print('error: could not goto file')
     
     def readOutput(self):
-        self.appendText(QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;')),plaintext=1)
+        txt=QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))
+        self.appendText(txt,plaintext=1)
         
     def readErrors(self):
         txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font><br>"
         txt = re_file.sub(r"<a href='\g<2>'>\g<2></a><br>",txt)
         self.appendText(txt)
 
+    def processError(self,err):
+        errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
+        errtxt = errD[err]
+        txt = "<font color=red>QProcess Error: Process "+errtxt+'</font>'
+        self.appendText(txt)
+        if self.process != None and self.process.state()==0:
+            self.finished()
+        
     def appendText(self,txt,plaintext=0):
         curs = self.ui.tb_out.textCursor()
         curs.movePosition(QtGui.QTextCursor.End,0)
@@ -68,13 +77,27 @@ class Output(QtGui.QWidget):
                 
                 self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
                 self.process = QtCore.QProcess()
+                self.process.waitForStarted(5)
                 self.process.setReadChannel(QtCore.QProcess.StandardOutput)
                 self.process.setWorkingDirectory(os.path.dirname(filename))
-                self.process.start(cmd,QtCore.QStringList(args+[filename]))
-
+                
                 self.process.readyReadStandardOutput.connect(self.readOutput)
                 self.process.readyReadStandardError.connect(self.readErrors)
                 self.process.finished.connect(self.finished)
+                self.process.error.connect(self.processError)
+                
+                
+                if os.name == 'nt':
+                    filename = filename.replace('/','\\')
+
+                self.process.start(cmd,QtCore.QStringList(args+[filename]))
+                
+##                if args != []:
+##                    self.process.start(cmd,QtCore.QStringList(args+[filename]))
+##                else:
+##                    print cmd +' '+filename
+##                    self.process.start(cmd +' '+filename)
+##                    self.process.start('"'+cmd +'" "'+filename+'"')
 
     def webview_preview(self,html,burl=None):
         openfile = self.armadillo.isFileOpen('preview')

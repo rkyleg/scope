@@ -1,17 +1,4 @@
 # TODO
-[] Help plugin (ctrl h) with dropdown of websites to search (google, stack overflow, duckduck go, etc)
-[] bookmark plugin (have categories, searchable)
-[] search in file browser
-[] be able to change language
-[x] when saving, pull file extension
-[] add new workspace button to home page
-[] update home page after new workspace (if current tab)
-[] save recent files if no workspace open (still open home first) - or view recent files somehow
-[] info (word count, column row,) function
-[] spell check plugin
-[] cursor that hides bring back to screen
-[] filebrowser grab path function
-
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -41,16 +28,25 @@
 - [] compile option (need args as option)
 - [] add run with args menu
 - [] Add header comment button (use outline protocol)
+- [] save splitter state
+- [] info (word count, column row,) function
+- [] save recent files if no workspace open (still open home first) - or view recent files somehow
+- [] be able to change language
 
 ### Startpage
 - [x] Update theme
 - [x] Create light theme
+- [] add new workspace button to home page
+- [] update home page after new workspace (if current tab)
 
 ### Documentation
 - [x] Just use markdown viewer
 - [x] Update settings documentation
 - [] py console documentation (armadillo object)
 - [] improve settings documentation
+
+### Workspaces
+- [] save last file open
 
 ### Settings
 - [x] Save settings in separate location (load defaults first)
@@ -118,11 +114,12 @@
 ## Plugins
 - [x] Snippets plugin
 - [f] Spellcheck plugin
-- [f] Help plugin (with search, maybe based on current file language)
+- [f] Help plugin (ctrl h) with dropdown of websites to search (google, stack overflow, duckduck go, etc), maybe based on current file language
 - [f] Python code editor to run on current tab - possible split with shell (little code editor)
 - [f] Simple git plugin (commit, push, pull, diff stats,launch diff tool)
 - [] update plugin style
 - [] new plugin - open files plugin (sort by type)
+- [] bookmark plugin (have categories, searchable)
 
 ### Outline
 - Languages to add
@@ -169,6 +166,8 @@
 - [ ] indicate if file is open
 - [ ] be able to have multiple roots
 - [] reload menu option
+- [] filebrowser grab path function
+- [] search in file browser
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)

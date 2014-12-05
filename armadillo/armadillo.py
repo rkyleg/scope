@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.6'
+__version__ = '1.1.7'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -964,12 +964,6 @@ class Armadillo(QtGui.QMainWindow):
     def hideBottomTab(self):
         self.ui.tabbar_bottom.setCurrentIndex(0)
     
-    def viewPythonShell(self):
-        if 'py_console' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['py_console'].setFocus()
-    
     #---Settings
     def loadSettings(self):
         # Create settings directory
@@ -1168,7 +1162,13 @@ class Armadillo(QtGui.QMainWindow):
         if 'filebrowser' in self.pluginD:
             i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
             self.ui.tab_left.setCurrentIndex(i)
-    
+
+    def viewPythonShell(self):
+        if 'py_console' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['py_console'].setFocus()
+            
     def qtHelp(self):
         if 'qt2py' in self.pluginD:
             i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
