@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.8'
+__version__ = '1.1.9'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -90,14 +90,7 @@ class WorkspaceMenu(QtGui.QMenu):
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
-            # New Workspace
-            resp,ok = QtGui.QInputDialog.getText(self.parent,'Enter Workspace Name','')
-            if ok and not resp.isEmpty():
-                self.parent.workspace = resp
-                self.parent.saveWorkspace()
-                self.loadMenu()
-                self.saveWact.setDisabled(0)
-                self.deleteWact.setDisabled(0)
+            self.parent.newWorkspace()
         elif str(event.text()) == 'Save Workspace':
             self.parent.saveWorkspace()
         elif str(event.text()) == 'Delete Workspace':
@@ -1120,12 +1113,12 @@ class Armadillo(QtGui.QMainWindow):
             wdg.linkClicked.connect(self.urlClicked)
         
         # Add Workspaces
-        wksp = 'Workspaces: '
+        wksp = ''
         icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
         if os.path.exists(self.settingPath+'/workspaces'):
             for w in sorted(os.listdir(self.settingPath+'/workspaces')):
 ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="'+icn_wksp+'"> '+w+'</span></a> '
+                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="'+icn_wksp+'"><br>'+w+'</span></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links
@@ -1165,7 +1158,12 @@ class Armadillo(QtGui.QMainWindow):
             self.addEditorWidget(lang=lnk.split(':')[1])
             self.removeStart()
         elif lnk.startswith('workspace'):
-            self.loadWorkspace(lnk.split(':')[1])
+            w=lnk.split(':')[1]
+            if w=='new':
+                self.newWorkspace()
+                self.addStart(wdg=wdg)
+            else:
+                self.loadWorkspace(w)
         elif lnk.endswith('start.html'):
             self.addStart(wdg=wdg)
         else:
@@ -1301,7 +1299,16 @@ class Armadillo(QtGui.QMainWindow):
             
 ##            QtGui.QApplication.processEvents()
             self.removeStart()
-    
+    def newWorkspace(self):
+        # New Workspace
+        resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
+        if ok and not resp.isEmpty():
+            self.workspace = resp
+            self.saveWorkspace()
+            self.workspaceMenu.loadMenu()
+            self.workspaceMenu.saveWact.setDisabled(0)
+            self.workspaceMenu.deleteWact.setDisabled(0)
+            
     #---FileModify Checker
     def checkFileChanges(self):
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:

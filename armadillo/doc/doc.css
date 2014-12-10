@@ -27,13 +27,18 @@ a {
 a:hover {
     color: rgb(47,127,158);
 }
+
+#logo {
+    text-align:center;
+}
+
 #version {
     color:gray;
     font-size:12px;
     margin-bottom:4px;
 }
 /*---Workspace and New Buttons*/
-.newfile {  
+.newfile, .workspace {  
     background: rgb(140,140,140);
     padding:3px;
     border-radius:4px;
@@ -45,7 +50,7 @@ a:hover {
 .newfile:hover {
     background: rgb(120,120,120);
 }
-.workspace_panel{
+.panel{
     background:rgb(180,180,180);
     text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
     color:rgb(80,80,80);
@@ -56,14 +61,11 @@ a:hover {
     padding-top:3px;
 }
 .workspace {  
-    background: rgb(140,140,140);
-    padding:3px;
-    border-radius:4px;
-    padding-left:6px;
-    padding-right:6px;
-    margin-top:2px;
-    color:white;
     display:inline-block;
+    text-align:center;
+}
+.workspace-add {
+    background:#608a64;
 }
 .workspace:hover {
     background: rgb(120,120,120);

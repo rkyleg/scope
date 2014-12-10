@@ -2,42 +2,45 @@
     <link rel="stylesheet" type="text/css" href="doc.css">
 </head>
 <body>
-
+<br><br>
 <table width=100%>
     <tr>
         <td colspan=2>
             <!---Logo-->
-            <span id="logo">
+            <div id="logo">
                 <img alt="" src="../img/armadillo.png" height="50px" />
-                <img src="../img/armadillo_txt.png" height=22px> <span id="version"></span>
-            </span>
+                <img src="../img/armadillo_txt.png" height=22px> IDE <span id="version"></span>
+                <br><br>
+            </div>
         </td>
     </tr>
     <tr>
-        <td style="padding-right:10px;width:180px;" valign="top">
+        <td style="padding-right:10px;width:200px;" valign="top">
             <!---New-->
-            <div class="workspace_panel">
+            <div class="panel">
                 Create New:
                 <div id="new_files"></div>
             </div>
         </td>
         <td>
             <!---Workspaces-->
-            <div class="workspace_panel" id="workspaces">
-                Workspaces: 
+            <div class="panel" >
+                Workspaces <a href="workspace:new"><span class="workspace workspace-add"><img src="../img/workspace_add.png"> New</span></a><br><br>
+               <div id="workspaces"></div>
             </div>
             <!--<br>-->
-            <div class="main_section">
+            <!--<div class="main_section">-->
             <!---Main Help-->
-            <h4>Getting Started</h4>
-            <ul>
-                <li><b>New</b> - Click the new <img src="../img/new.png"> button and select the language environment.</li>
-                <li><b>Open</b> - Click the open <img src="../img/file_open.png"> button or  drag and drop files to the tab bar to open them.</li>
-            </ul>
+            <!--<h4>Getting Started</h4>-->
+            <!--<ul>-->
+            <!--    <li><b>New</b> - Click the new <img src="../img/new.png"> button and select the language environment.</li>-->
+            <!--    <li><b>Open</b> - Click the open <img src="../img/file_open.png"> button or  drag and drop files to the tab bar to open them.</li>-->
+            <!--</ul>-->
+            <!--<br>-->
+            <!--</div>-->
             <br>
-            </div>
-            <div class="main_section">
-            <h4>More Info</h4>
+            <div class="panel">
+            Documentation<br><br>
             <a href="overview.md" class="toolbutton">Overview</a> 
             <a href="editors.md" class="toolbutton">Editors</a> 
             <a href="plugins.md" class="toolbutton">Plugins</a> 

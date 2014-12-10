@@ -38,12 +38,13 @@ class Output(QtGui.QWidget):
         self.appendText(txt)
 
     def processError(self,err):
-        errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
-        errtxt = errD[err]
-        txt = "<font color=red>QProcess Error: Process "+errtxt+'</font>'
-        self.appendText(txt)
-        if self.process != None and self.process.state()==0:
-            self.finished()
+        if self.dispError:
+            errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
+            errtxt = errD[err]
+            txt = "<font color=red>QProcess Error: Process "+errtxt+'</font>'
+            self.appendText(txt)
+            if self.process != None and self.process.state()==0:
+                self.finished()
         
     def appendText(self,txt,plaintext=0):
         curs = self.ui.tb_out.textCursor()
@@ -59,6 +60,7 @@ class Output(QtGui.QWidget):
     def newProcess(self,cmd,filename,args=[]):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
+            self.dispError = 0
             self.process.kill()
             self.finished()
         else:
@@ -71,7 +73,7 @@ class Output(QtGui.QWidget):
                 html = mkdown.generate(filename)
                 self.armadillo.webview_preview(html,filename)
             else:
-
+                self.dispError = 1
                 i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
                 self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
                 
