@@ -24,7 +24,7 @@ def addEditor(parent,lang,filename):
     except:
         pass
             
-    editor = scintilla.Sci(parent,lex)
+    editor = scintilla.Sci(parent,lex,lang)
     
     return editor
 

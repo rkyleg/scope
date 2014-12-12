@@ -100,6 +100,8 @@ class WebView(QtWebKit.QWebView):
             'showPrintMargin':0,
             'fontSize':12,
             'theme':'twighlight',
+            'newLineMode':'unix',
+            'showInvisibles':'false',
         }
         
         # Load settings
@@ -120,6 +122,8 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.setBehavioursEnabled('+['false','true'][self.settings['behaviours']]+');'
         js += 'editor.setShowPrintMargin('+['false','true'][self.settings['showPrintMargin']]+');'
         js += 'editor.setFontSize('+str(self.settings['fontSize'])+');'
+        js += 'editor.getSession().getDocument().setNewLineMode("'+str(self.settings['newLineMode'])+'");'
+        js += 'editor.setShowInvisibles('+str(self.settings['showInvisibles'])+');'
         
         self.page().mainFrame().evaluateJavaScript(js)
         

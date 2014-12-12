@@ -24,7 +24,7 @@ class Output(QtGui.QWidget):
             fileName    = match.group(1)
             lineno      = int(match.group(2))
             self.armadillo.openFile(fileName)
-            self.armadillo.currentWidget().gotoLine(lineno-1)
+            self.armadillo.currentEditor().gotoLine(lineno-1)
         except:
             print('error: could not goto file')
     
@@ -93,41 +93,7 @@ class Output(QtGui.QWidget):
                     filename = filename.replace('/','\\')
 
                 self.process.start(cmd,QtCore.QStringList(args+[filename]))
-                
-##                if args != []:
-##                    self.process.start(cmd,QtCore.QStringList(args+[filename]))
-##                else:
-##                    print cmd +' '+filename
-##                    self.process.start(cmd +' '+filename)
-##                    self.process.start('"'+cmd +'" "'+filename+'"')
 
-##    def webview_preview(self,html,burl=None):
-##        openfile = self.armadillo.isFileOpen('preview')
-##        if openfile==-1:
-##            wdg = self.armadillo.addEditorWidget('webview','Preview','preview')
-##            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-##            wdg.linkClicked.connect(self.urlClicked)
-##            self.armadillo.ui.tab.setTabIcon(self.armadillo.ui.tab.currentIndex(),QtGui.QIcon(self.armadillo.iconPath+'page_preview.png'))
-##    
-##        else:
-##            self.armadillo.ui.tab.setCurrentIndex(openfile)
-##            QtGui.QApplication.processEvents()
-##            wdg = self.armadillo.ui.sw_main.currentWidget()
-##        
-##        if burl != None:
-##            if os.name =='nt':
-##                pfx="file:///"
-##            else:
-##                pfx="file://"
-##            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
-##
-##        wdg.setText(html,burl)
-##
-##        wdg.viewOnly = 1
-##        wdg.modTime = None
-##        QtGui.QApplication.processEvents()
-##        self.armadillo.changeTab(self.armadillo.ui.tab.currentIndex())
-        
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()
         wdg.load2(url)

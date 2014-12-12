@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.9'
+__version__ = '1.1.10'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -528,14 +528,14 @@ class Armadillo(QtGui.QMainWindow):
                         
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
-##                        self.updateOutline()
+                        self.updateOutline()
      
                         # Remove Startpage
                         self.removeStart()
 
         
     #---Editor
-    def currentWidget(self):
+    def currentEditor(self):
         return self.ui.sw_main.currentWidget()
 
     def changeTab(self,tab_ind):
@@ -620,7 +620,7 @@ class Armadillo(QtGui.QMainWindow):
 
     def editorTextChanged(self):
         # Indicate if text changed
-        wdg = self.currentWidget()
+        wdg = self.currentEditor()
         try:
 ##            if wdg.lastText != unicode(wdg.getText(),'utf-8'):
             if wdg.lastText != wdg.getText():

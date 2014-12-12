@@ -38,7 +38,7 @@ class Events(QtCore.QObject):
 ##    editingFinished = QtCore.pyqtSignal(QtGui.QWidget)
 
 class Sci(QtGui.QWidget):
-    def __init__(self,parent,lex):
+    def __init__(self,parent,lex,lang=None):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
@@ -46,6 +46,8 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setUtf8(True)
         self.armadillo = parent
         self.okedit = 1
+        
+        self.lex = lex
         
         # Events
         self.evnt = Events()
@@ -56,14 +58,33 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
         self.ui.te_sci.dropEvent = self.dropEvent
         
+        # Default settings
+        self.settings = {
+##            'wrapBehaviours':1,
+##            'behaviours':1,
+##            'showPrintMargin':0,
+            'fontSize':10,
+##            'theme':'twighlight',
+            'newLineMode':'unix',
+            'EolVisibility':0,
+        }
+        
+        # Load settings
+        for ky in self.settings:
+            if lang in self.armadillo.settings['fav_lang'] and ky in self.armadillo.settings['fav_lang'][lang]:
+                self.settings[ky]=self.armadillo.settings['fav_lang'][lang][ky]
+            elif ky in self.armadillo.settings['editors']['scintilla']:
+                self.settings[ky]=self.armadillo.settings['editors']['scintilla'][ky]
+                
+        self.setup()
+        
+    def setup(self):
         # Font
         font = QFont()
         font.setFamily('Courier')
         font.setFixedPitch(True)
         
-        xfont = 10
-        if 'fontSize' in self.armadillo.settings['editors']['scintilla']:
-            xfont = self.armadillo.settings['editors']['scintilla'][fontSize]
+        xfont = self.settings['fontSize']
         
         font.setPointSize(xfont)
         self.ui.te_sci.setFont(font)
@@ -98,12 +119,14 @@ class Sci(QtGui.QWidget):
         # Current line visible with special background color
         self.ui.te_sci.setCaretLineVisible(True)
         self.ui.te_sci.setCaretLineBackgroundColor(QColor("#eeeeee"))
+        self.ui.te_sci.setEolMode(Qsci.QsciScintilla.EolUnix)
+        self.ui.te_sci.setEolVisibility(int(self.settings['EolVisibility']))
         
         self.wordwrapmode = 0
         
-        if lex != None:
-            lex.setDefaultFont(font)
-            self.ui.te_sci.setLexer(lex)
+        if self.lex != None:
+            self.lex.setDefaultFont(font)
+            self.ui.te_sci.setLexer(self.lex)
         self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
     
     def keyPressEvent(self,event):
@@ -119,6 +142,8 @@ class Sci(QtGui.QWidget):
     
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
+        if self.settings['newLineMode']=='unix':
+            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
     
 ##    def updateText(self,txt):
 ##        # Update, but keep current undo
@@ -126,6 +151,8 @@ class Sci(QtGui.QWidget):
 ##        self.ui.te_sci.replaceSelectedText(txt)
     
     def getText(self):
+        if self.settings['newLineMode']=='unix':
+            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
         txt = str(self.ui.te_sci.text().toUtf8()).decode('utf-8')
         return txt
 
@@ -170,7 +197,7 @@ class Sci(QtGui.QWidget):
 ##        self.evnt.editingFinished.emit(self)
     
     def toggleComment(self):
-        lang = self.armadillo.currentWidget().lang
+        lang = self.armadillo.currentEditor().lang
         if lang in commentD:
             if self.ui.te_sci.getSelection()[0] != -1:
                 start = self.ui.te_sci.getSelection()[0]

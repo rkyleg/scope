@@ -136,8 +136,8 @@ class Outline(QtGui.QWidget):
         act = menu.exec_(trwdg.cursor().pos())
         if act != None:
             acttxt = str(act.text())
-            if acttxt=='Update (F4)':
-                self.updateOutline(self.armadillo.currentWidget())
+            if acttxt=='Update (F3)':
+                self.updateOutline(self.armadillo.currentEditor())
             elif acttxt == 'Find':
                 self.ui.fr_find.show()
                 self.ui.le_find.setFocus()

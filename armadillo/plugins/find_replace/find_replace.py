@@ -18,7 +18,7 @@ class Find_Replace(QtGui.QWidget):
         
     def find(self):
         ftxt = str(self.ui.le_find.text())
-        wdg = self.armadillo.currentWidget()
+        wdg = self.armadillo.currentEditor()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()
@@ -31,7 +31,7 @@ class Find_Replace(QtGui.QWidget):
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()
-        wdg = self.armadillo.currentWidget()
+        wdg = self.armadillo.currentEditor()
         if 'replace' in dir(wdg):
             wdg.replace(ftxt,rtxt,re,cs,wo)
         
@@ -41,6 +41,6 @@ class Find_Replace(QtGui.QWidget):
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()
-        wdg = self.armadillo.currentWidget()
+        wdg = self.armadillo.currentEditor()
         if 'replaceAll' in dir(wdg):
             wdg.replaceAll(ftxt,rtxt,re,cs,wo)
