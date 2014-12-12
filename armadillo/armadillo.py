@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.13'
+__version__ = '1.2.0'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -81,11 +81,14 @@ class WorkspaceMenu(QtGui.QMenu):
         self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
         self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.saveWact.setDisabled(1)
+        self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
+        self.closeWact.setDisabled(1)
+        self.addSeparator()
         self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
-
+    
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
-            for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces')):
+            for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces'),key=lambda x: x.lower()):
                 self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace.png'),wsp)
                 self.deleteWact.setDisabled(0)
     
@@ -94,6 +97,8 @@ class WorkspaceMenu(QtGui.QMenu):
             self.parent.newWorkspace()
         elif str(event.text()) == 'Save Workspace':
             self.parent.saveWorkspace()
+        elif str(event.text()) == 'Close Current Workspace':
+            self.parent.closeWorkspace(askSave=1,openStart=1)
         elif str(event.text()) == 'Delete Workspace':
             resp,ok = QtGui.QInputDialog.getItem(self.parent,'Delete Workspace','Select the workspace to delete',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
 
@@ -105,6 +110,7 @@ class WorkspaceMenu(QtGui.QMenu):
         else:
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)
+            self.closeWact.setDisabled(0)
 
 class ArmadilloMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -1108,9 +1114,9 @@ class Armadillo(QtGui.QMainWindow):
         wksp = ''
         icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
         if os.path.exists(self.settingPath+'/workspaces'):
-            for w in sorted(os.listdir(self.settingPath+'/workspaces')):
+            for w in sorted(os.listdir(self.settingPath+'/workspaces'),key=lambda x: x.lower()):
 ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                wksp += '<a href="workspace:'+w+'"><span class="workspace"><img src="'+icn_wksp+'"><br>'+w+'</span></a> '
+                wksp += '<a href="workspace:'+w+'"><div class="button"><img src="'+icn_wksp+'"> '+w+'</div></a> '
             wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
         
         # Add New File Links
@@ -1128,7 +1134,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                    else:
                         icn = self.iconPath+'files/_blank.png'
 
-                nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="newfile"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
+                nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="button"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
         
     def removeStart(self):
@@ -1246,30 +1252,9 @@ class Armadillo(QtGui.QMainWindow):
             f.close()
     
     def loadWorkspace(self,wksp):
-        ok = 1
-        # Save current workspace
-        if self.workspace != None:
-            ok=0
-            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.workspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
-            if resp == QtGui.QMessageBox.Yes:
-                self.saveWorkspace()
-                ok =1
-            elif resp == QtGui.QMessageBox.No:
-                ok =1
-                
-        # Close open files
-        cancelled = 0
-        # Check if anything needs saving
-        for i in range(self.ui.tab.count()-1,-1,-1):
-            file_id = self.ui.tab.tabData(i).toInt()[0]
-            wdg = self.tabD[file_id]
-            ok = self.checkSave(wdg)
-            if not ok:
-                cancelled = 1
-                break
-            self.closeTab(i)
-        ok = not cancelled
-        QtGui.QApplication.processEvents()
+        
+        self.saveWorkspace()
+        ok = self.closeWorkspace(askSave=0,openStart=0)
         
         # Load workspace
         if ok:
@@ -1296,9 +1281,11 @@ class Armadillo(QtGui.QMainWindow):
             self.setWindowTitle('Armadillo | '+wksp)
             
             self.workspaceMenu.saveWact.setDisabled(0)
+            self.workspaceMenu.closeWact.setDisabled(0)
             
 ##            QtGui.QApplication.processEvents()
             self.removeStart()
+            
     def newWorkspace(self):
         # New Workspace
         resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
@@ -1308,7 +1295,53 @@ class Armadillo(QtGui.QMainWindow):
             self.workspaceMenu.loadMenu()
             self.workspaceMenu.saveWact.setDisabled(0)
             self.workspaceMenu.deleteWact.setDisabled(0)
-            
+    
+    def closeWorkspace(self,askSave=0,openStart=0):
+        ok = 1
+        # Save current workspace
+        if self.workspace != None and askSave:
+            ok=0
+            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.workspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+            if resp == QtGui.QMessageBox.Yes:
+                self.saveWorkspace()
+                ok =1
+            elif resp == QtGui.QMessageBox.No:
+                ok =1
+                
+        # Close open files
+        cancelled = 0
+        # Check if anything needs saving
+        for i in range(self.ui.tab.count()-1,-1,-1):
+            file_id = self.ui.tab.tabData(i).toInt()[0]
+            wdg = self.tabD[file_id]
+            ok = self.checkSave(wdg)
+            if not ok:
+                cancelled = 1
+                break
+            self.closeTab(i)
+        ok = not cancelled
+        # Close open files
+        cancelled = 0
+        # Check if anything needs saving
+        for i in range(self.ui.tab.count()-1,-1,-1):
+            file_id = self.ui.tab.tabData(i).toInt()[0]
+            wdg = self.tabD[file_id]
+            ok = self.checkSave(wdg)
+            if not ok:
+                cancelled = 1
+                break
+            self.closeTab(i)
+        ok = not cancelled
+##        QtGui.QApplication.processEvents()
+        
+        if ok:
+            self.workspace=None
+        
+        if ok and openStart:
+            self.addStart()
+        
+        return ok
+    
     #---FileModify Checker
     def checkFileChanges(self):
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:

@@ -7,14 +7,14 @@ body,table {
 }
 
 body {
-    background: #dbdbdb; /* Old browsers */
-    background: -moz-linear-gradient(left,  #dbdbdb 0%, #f7f7f7 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, right top, color-stop(0%,#dbdbdb), color-stop(100%,#f7f7f7)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(left,  #dbdbdb 0%,#f7f7f7 100%); /* IE10+ */
-    background: linear-gradient(to right,  #dbdbdb 0%,#f7f7f7 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#dbdbdb', endColorstr='#f7f7f7',GradientType=1 ); /* IE6-9 */
+background: #becfdd; /* Old browsers */
+background: -moz-linear-gradient(left,  #becfdd 0%, #eaf4ff 50%, #becfdd 99%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,#becfdd), color-stop(50%,#eaf4ff), color-stop(99%,#becfdd)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(left,  #becfdd 0%,#eaf4ff 50%,#becfdd 99%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(left,  #becfdd 0%,#eaf4ff 50%,#becfdd 99%); /* Opera 11.10+ */
+background: -ms-linear-gradient(left,  #becfdd 0%,#eaf4ff 50%,#becfdd 99%); /* IE10+ */
+background: linear-gradient(to right,  #becfdd 0%,#eaf4ff 50%,#becfdd 99%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#becfdd', endColorstr='#becfdd',GradientType=1 ); /* IE6-9 */
 
 }
 
@@ -38,7 +38,7 @@ a:hover {
     margin-bottom:4px;
 }
 /*---Workspace and New Buttons*/
-.newfile, .workspace {  
+.button {  
     background: rgb(140,140,140);
     padding:3px;
     border-radius:4px;
@@ -47,28 +47,31 @@ a:hover {
     margin-top:2px;
     color:white;
 }
-.newfile:hover {
+.button:hover {
     background: rgb(120,120,120);
 }
 .panel{
-    background:rgb(180,180,180);
+    background:rgba(180,180,180,0.7);
     text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
     color:rgb(80,80,80);
     border-radius:5px;
     padding-left:10px;
     padding-right:10px;
-    padding-bottom:3px;
+    padding-bottom:10px;
     padding-top:3px;
-}
-.workspace {  
-    display:inline-block;
-    text-align:center;
+    height:100%;
 }
 .workspace-add {
-    background:#608a64;
+    display:inline-block;
+    vertical-align:middle;
+    background: rgba(140,140,140,0.5);
+    border-radius:4px;
+    padding:3px;
+    color:white;
+    font-size:14px;
 }
-.workspace:hover {
-    background: rgb(120,120,120);
+.workspace-add:hover {
+    background: rgba(120,120,120,0.5);
 }
 /*---Main Section*/
 .main_section {

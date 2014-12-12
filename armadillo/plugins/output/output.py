@@ -179,7 +179,7 @@ class OutputPage(QtGui.QWidget):
         if args != '': args = ' '+args
         
 ##        self.process.start(cmd,QtCore.QStringList(args.split()+[self.filename]))
-        print cmd+' "'+self.filename+'"'+args
+##        print cmd+' "'+self.filename+'"'+args
         self.process.start(cmd+' "'+self.filename+'"'+args)
 ##        self.process.start(cmd+' '+self.filename+args)
     
