@@ -91,6 +91,12 @@ class Outline(QtGui.QWidget):
 ##            self.armadillo.ui.tab_left.setCurrentIndex(i)
 
             trwdg.clear()
+            
+            # Add Filename
+            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
+            trwdg.addTopLevelItem(itm)
+            self.format(itm,'filename')
+            
             self.ui.le_find.setText('')
             txt = unicode(wdg.getText())
             txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
@@ -114,7 +120,7 @@ class Outline(QtGui.QWidget):
         trwdg = self.wdgD[wdg]
         hi=0
         brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
-        for t in range(trwdg.topLevelItemCount()-1,-1,-1):
+        for t in range(trwdg.topLevelItemCount()-1,0,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))
             if line>=lines[0] and line<=lines[1]:
@@ -178,3 +184,9 @@ class Outline(QtGui.QWidget):
             fnt.setBold(1)
             itm.setFont(0,fnt)
             itm.setForeground(0,QtGui.QBrush(QtGui.QColor(120,120,120)))
+        elif typ=='filename':
+            fnt=QtGui.QFont()
+            fnt.setBold(1)
+            itm.setFont(0,fnt)
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(250,250,250)))
+            itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))

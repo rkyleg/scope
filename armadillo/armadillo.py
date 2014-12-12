@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.10'
+__version__ = '1.1.11'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -212,27 +212,6 @@ class Armadillo(QtGui.QMainWindow):
         # Set Splitters
         self.ui.split_right.setSizes([self.height()-180,180])
         self.ui.split_main.setSizes([260,self.width()-260])
-        
-        #--- Setup Tab Toolbar
-        self.ui.tabtoolbar = QtGui.QToolBar("editorTabBar",self)
-        self.ui.tabtoolbar.setFloatable(False)
-        self.ui.tabtoolbar.setMovable(False)
-        self.ui.tabtoolbar.setProperty("class","editorTabBar")
-        self.ui.tabtoolbar.setObjectName('editorTabBar')
-        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.tabtoolbar)
-
-        # add Main Button to tabbar
-        self.ui.tabtoolbar.addWidget(self.ui.b_main)
-        self.addToolBarBreak(QtCore.Qt.TopToolBarArea)
-        
-        # Toolbutton Toolbar
-        self.ui.toolbar = QtGui.QToolBar("toolBar",self)
-        self.ui.toolbar.setFloatable(False)
-        self.ui.toolbar.setMovable(False)
-        self.ui.toolbar.setProperty("class","toolBar")
-        self.ui.toolbar.setObjectName('toolBar')
-        self.addToolBar(QtCore.Qt.TopToolBarArea,self.ui.toolbar)
-        self.ui.toolbar.addWidget(self.ui.fr_toolbar)
 
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -241,9 +220,11 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.tab.setMovable(True)
         self.ui.tab.setProperty("class","editorTabs")
         self.ui.tab.setObjectName('editorTabBar')
-        self.ui.tabtoolbar.addWidget(self.ui.tab)
+        self.ui.tab.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
+        self.ui.fr_tabs.layout().addWidget(self.ui.tab)
         self.ui.tab.currentChanged.connect(self.changeTab)
         self.ui.tab.tabCloseRequested.connect(self.closeTab)
+        self.ui.tab.setExpanding(0)
         
         self.setAcceptDrops(1)
         
@@ -287,7 +268,8 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
-        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.hideBottomTab) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.hideBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
 ##        QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.viewPythonShell) # View Python Shell
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
@@ -426,12 +408,12 @@ class Armadillo(QtGui.QMainWindow):
         self.zen = not self.zen
         self.setZen(self.zen)
         if self.zen:
-            self.ui.tabtoolbar.hide()
+            self.ui.fr_tabs.hide()
             self.showFullScreen()
             
     def setZen(self,zen,editor_zen=0):
         self.ui.statusbar.setVisible(not zen)
-        self.ui.toolbar.setVisible(not zen)
+        self.ui.fr_toolbar.setVisible(not zen)
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
@@ -449,7 +431,7 @@ class Armadillo(QtGui.QMainWindow):
             self.zen = self.editor_zen = 0
         
         if not zen or editor_zen:
-            self.ui.tabtoolbar.show()
+            self.ui.fr_tabs.show()
             self.showNormal()
 
 ##    def showPlugins(self):
@@ -764,7 +746,7 @@ class Armadillo(QtGui.QMainWindow):
             fileext += "All (*.*)"
             
             filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].ui.le_root.text(),fileext)
-            print filename
+##            print filename
             if filename=='':
                 filename=None
             else:
@@ -832,7 +814,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                    self.pluginD['output'].show()
 ##                self.pluginD['output'].raise_()
                 runD = self.settings['run'][wdg.lang]
-                self.pluginD['output'].newProcess(runD['cmd'],filename,runD['args'])
+                self.pluginD['output'].newProcess(runD['cmd'],wdg,runD['args'])
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -1171,17 +1153,22 @@ class Armadillo(QtGui.QMainWindow):
         
     #---Shortcuts
     def findFocus(self):
-##        if self.ui.findbar.isHidden():
-##            self.ui.findbar.setVisible(1)
+        if self.ui.fr_toolbar.isHidden():
+            self.ui.fr_toolbar.setVisible(1)
         self.ui.le_find.setFocus()
         self.ui.le_find.selectAll()
         
     def gotoFocus(self):
-##        if self.ui.findbar.isHidden():
-##            self.ui.findbar.setVisible(1)
+        if self.ui.fr_toolbar.isHidden():
+            self.ui.fr_toolbar.setVisible(1)
         self.ui.le_goto.setFocus()
         self.ui.le_goto.selectAll()
-    
+        
+    def nextTab(self):
+        i = self.ui.tab.currentIndex()+1
+        if i == self.ui.tab.count():i=0
+        self.ui.tab.setCurrentIndex(i)
+        
     def replaceFocus(self):
 ##        if not self.pluginD['find_replace'].isVisible():
 ##            self.pluginD['find_replace'].show()
@@ -1192,23 +1179,6 @@ class Armadillo(QtGui.QMainWindow):
             self.pluginD['find_replace'].ui.le_find.setFocus()
             self.pluginD['find_replace'].ui.le_find.selectAll()
     
-    def updateOutline(self):
-        if 'outline' in self.pluginD:
-            wdg = self.ui.sw_main.currentWidget()
-    ##        if 'getText' in dir(wdg):
-    ##            if not self.pluginD['outline'].isVisible():
-    ##                self.pluginD['outline'].show()
-    ##        self.pluginD['outline'].raise_()
-            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
-            self.ui.tab_left.setCurrentIndex(i)
-            if 'getText' in dir(wdg):
-                self.pluginD['outline'].updateOutline(wdg)
-    
-    def viewFileBrowser(self):
-        if 'filebrowser' in self.pluginD:
-            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
-            self.ui.tab_left.setCurrentIndex(i)
-    
     def qtHelp(self):
         if 'qt2py' in self.pluginD:
             i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
@@ -1216,12 +1186,32 @@ class Armadillo(QtGui.QMainWindow):
         self.pluginD['qt2py'].ui.le_help.setFocus()
         self.pluginD['qt2py'].ui.le_help.selectAll()
     
-    def nextTab(self):
-        i = self.ui.tab.currentIndex()+1
-        if i == self.ui.tab.count():i=0
-        self.ui.tab.setCurrentIndex(i)
+    #---   Left Sidebar
+    def updateOutline(self):
+        if 'outline' in self.pluginD:
+            wdg = self.ui.sw_main.currentWidget()
+    ##        if 'getText' in dir(wdg):
+    ##            if not self.pluginD['outline'].isVisible():
+    ##                self.pluginD['outline'].show()
+    ##        self.pluginD['outline'].raise_()
+            if self.ui.fr_left.isHidden():
+                self.ui.fr_left.setVisible(1)
+            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
+            self.ui.tab_left.setCurrentIndex(i)
+            if 'getText' in dir(wdg):
+                self.pluginD['outline'].updateOutline(wdg)
     
-    #--- Workspace
+    def viewFileBrowser(self):
+        if 'filebrowser' in self.pluginD:
+            if self.ui.fr_left.isHidden():
+                self.ui.fr_left.setVisible(1)
+            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
+            self.ui.tab_left.setCurrentIndex(i)
+    
+    def toggleLeftSide(self):
+        self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
+    
+    #---Workspace
     def saveWorkspace(self):
         if self.workspace != None:
             if not os.path.exists(self.settingPath+'/workspaces'):
