@@ -71,6 +71,7 @@ Different settings for the editor can be set for the default and each language. 
     [[javascript]]
         editor=ace
         run=/home/convolutedlogic/nodejs/bin/node
+        run_args=-i
     [[markdown]]
         editor=ace
         wordwrap=1
@@ -87,7 +88,7 @@ The available (and default) parameters are:
     - the run command to run
     - Ex: if you have node installed: run=/home/convolutedlogic/nodejs/bin/node
 - run_args
-    - a list of args to append to the run command
+    - a string of args to append to the run command (before the filename)
     - this is optional
 
 The Ace editor has additional settings:

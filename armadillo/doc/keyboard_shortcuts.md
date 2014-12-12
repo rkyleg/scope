@@ -36,11 +36,15 @@
 		</tr>
 		<tr>
 			<td>F4</td>
-			<td>Hide bottom plugin bar</td>
+			<td>Hide/Show left plugin bar</td>
 		</tr>
 		<tr>
 			<td>F5</td>
 			<td>Run</td>
+		</tr>
+		<tr>
+			<td>F8</td>
+			<td>Hide/Show bottom plugin bar</td>
 		</tr>
 		<tr>
 			<td>F10</td>
