@@ -53,6 +53,21 @@ class Output(QtGui.QWidget):
                 QtGui.QApplication.processEvents()
                 owdg.newProcess(cmd,wdg.filename,args)
 
+    def killAll(self):
+        open = 0
+        for wdg in self.wdgD:
+            owdg = self.wdgD[wdg]
+            if owdg.process != None:
+                open=1
+                break
+        if open:
+            resp=QtGui.QMessageBox.warning(self,'Kill Running Processes','There are still some output processes running.<br><br>Do you want to kill all running processes?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+            if resp == QtGui.QMessageBox.Yes:
+                for wdg in self.wdgD:
+                    owdg = self.wdgD[wdg]
+                    if owdg.process != None:
+                        owdg.stopProcess()
+            
 
 class OutputPage(QtGui.QWidget):
     def __init__(self,parent=None,armadillo=None):
@@ -164,8 +179,9 @@ class OutputPage(QtGui.QWidget):
         if args != '': args = ' '+args
         
 ##        self.process.start(cmd,QtCore.QStringList(args.split()+[self.filename]))
-        print cmd+self.filename+args
-        self.process.start(cmd+' "'+self.filename.replace('"','\"')+'"'+args)
+        print cmd+' "'+self.filename+'"'+args
+        self.process.start(cmd+' "'+self.filename+'"'+args)
+##        self.process.start(cmd+' '+self.filename+args)
     
     def stopProcess(self):
         self.dispError = 0

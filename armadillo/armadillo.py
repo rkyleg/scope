@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.12'
+__version__ = '1.1.13'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -19,6 +19,7 @@ class Events(QtCore.QObject):
     editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
     editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
     editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
+    close=QtCore.pyqtSignal()
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -383,6 +384,9 @@ class Armadillo(QtGui.QMainWindow):
         else:
             # Save Settings
             self.saveSettings()
+            
+            # Other Events
+            self.evnt.close.emit()
 
     def dropEvent(self,event):
         handled=False
