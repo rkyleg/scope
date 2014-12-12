@@ -1,5 +1,6 @@
 from PyQt4 import QtGui, QtCore , QtWebKit
 from output_ui import Ui_Form
+from outputText_ui import Ui_OutWidget
 import sys, os, re, webbrowser, time
 
 re_file     = re.compile('(\s*)(File "(.*))\n')
@@ -12,10 +13,69 @@ class Output(QtGui.QWidget):
         self.ui.setupUi(self)
         self.armadillo = parent
         
-        self.process = None
+        self.wdgD = {}
+        self.outD = {}
+        
+        self.ui.split_pages.setSizes([200,self.armadillo.width()-200])
 
+    def editorTabChanged(self,wdg):
+        if wdg in self.wdgD:
+            owdg = self.wdgD[wdg]
+            self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
+    
+    def newProcess(self,cmd,wdg,args=''):
+        if cmd == 'webbrowser':
+            # If webbrowser - launch in webbrowser
+            webbrowser.open(wdg.filename)
+        else:
+            i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
+            self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
+            if wdg in self.wdgD:
+                owdg = self.wdgD[wdg]
+                owdg.newProcess(cmd,wdg.filename,args)
+                
+                self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
+                
+            else:
+                owdg = OutputPage(parent=self,armadillo=self.armadillo)
+                sw_ind = self.ui.sw_pages.count()
+                self.ui.sw_pages.insertWidget(sw_ind,owdg)
+                itm = QtGui.QListWidgetItem(wdg.title)
+                itm.setIcon(wdg.icon)
+                self.ui.li_pages.addItem(itm)
+                
+    ##            self.ui.sw_pages.setCurrentIndex(sw_ind)
+                
+                self.wdgD[wdg] = owdg
+                self.outD[owdg]=wdg
+                
+                self.ui.li_pages.setCurrentRow(sw_ind)
+                QtGui.QApplication.processEvents()
+                owdg.newProcess(cmd,wdg.filename,args)
+
+
+class OutputPage(QtGui.QWidget):
+    def __init__(self,parent=None,armadillo=None):
+        QtGui.QWidget.__init__(self,parent)
+        curdir = os.path.abspath('.')
+        os.chdir(os.path.abspath(os.path.dirname(__file__)))
+        self.ui = Ui_OutWidget()
+        self.ui.setupUi(self)
+        os.chdir(curdir)
+        self.armadillo = armadillo
+        self.parent = parent
+        
+        self.process = None
+        self.ui.fr_cmd.hide()
+        
         self.ui.tb_out.setOpenLinks(0)
         self.ui.tb_out.anchorClicked.connect(self.urlClick)
+        
+        self.ui.b_run.setEnabled(0)
+        self.ui.b_stop.setEnabled(0)
+        
+        self.ui.b_run.clicked.connect(self.startProcess)
+        self.ui.b_stop.clicked.connect(self.stopProcess)
     
     def urlClick(self,url):
         pth = str(url.toString())
@@ -31,10 +91,11 @@ class Output(QtGui.QWidget):
     def readOutput(self):
         txt=QtCore.QString(self.process.readAllStandardOutput().replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))
         self.appendText(txt,plaintext=1)
+##        QtGui.QApplication.processEvents()
         
     def readErrors(self):
         txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font><br>"
-        txt = re_file.sub(r"<a href='\g<2>'>\g<2></a><br>",txt)
+        txt = re_file.sub(r"<a href='\g<2>'>\g<2></a>",txt)
         self.appendText(txt)
 
     def processError(self,err):
@@ -50,50 +111,67 @@ class Output(QtGui.QWidget):
         curs = self.ui.tb_out.textCursor()
         curs.movePosition(QtGui.QTextCursor.End,0)
         self.ui.tb_out.setTextCursor(curs)
-        self.ui.tb_out.append(txt.replace('\n','<br>'))
+        self.ui.tb_out.append(txt)#.replace('\n','<br>'))
        
     def finished(self):
         if self.process != None:
             self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
         self.process = None
+        self.ui.b_run.setEnabled(1)
+        self.ui.b_stop.setEnabled(0)
     
-    def newProcess(self,cmd,filename,args=[]):
+    def newProcess(self,cmd,filename,args=''):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
-            self.dispError = 0
-            self.process.kill()
-            self.finished()
+            self.stopProcess()
         else:
-            if cmd == 'webbrowser':
-                # If webbrowser - launch in webbrowser
-                webbrowser.open(filename)
-            elif cmd == 'markdown':
+            if cmd == 'markdown':
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
-                html = mkdown.generate(filename)
+                html = mkdown.generate(filename,custom=1)
                 self.armadillo.webview_preview(html,filename)
+                self.ui.tb_out.setPlainText(mkdown.generate(filename))
             else:
-                self.dispError = 1
-                i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
-                self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
-                
-                self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
-                self.process = QtCore.QProcess()
-                self.process.waitForStarted(5)
-                self.process.setReadChannel(QtCore.QProcess.StandardOutput)
-                self.process.setWorkingDirectory(os.path.dirname(filename))
-                
-                self.process.readyReadStandardOutput.connect(self.readOutput)
-                self.process.readyReadStandardError.connect(self.readErrors)
-                self.process.finished.connect(self.finished)
-                self.process.error.connect(self.processError)
-                
-                
                 if os.name == 'nt':
                     filename = filename.replace('/','\\')
-
-                self.process.start(cmd,QtCore.QStringList(args+[filename]))
-
+                self.filename = filename
+                xcmd = cmd
+                if args != '':
+                    xcmd += ' '+args
+                self.ui.le_cmd.setText(xcmd)
+##                self.ui.le_args.setText(str(args))
+##                self.args = str(args)
+                self.startProcess()
+    
+    def startProcess(self):
+        self.ui.b_run.setEnabled(0)
+        self.ui.b_stop.setEnabled(1)
+        self.dispError = 1
+        
+        self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+self.filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
+        self.process = QtCore.QProcess()
+        self.process.waitForStarted(5)
+        self.process.setReadChannel(QtCore.QProcess.StandardOutput)
+        self.process.setWorkingDirectory(os.path.dirname(self.filename))
+        
+        self.process.readyReadStandardOutput.connect(self.readOutput)
+        self.process.readyReadStandardError.connect(self.readErrors)
+        self.process.finished.connect(self.finished)
+        self.process.error.connect(self.processError)
+        
+        args = str(self.ui.le_args.text())
+        cmd = str(self.ui.le_cmd.text())
+        if args != '': args = ' '+args
+        
+##        self.process.start(cmd,QtCore.QStringList(args.split()+[self.filename]))
+        print cmd+self.filename+args
+        self.process.start(cmd+' "'+self.filename.replace('"','\"')+'"'+args)
+    
+    def stopProcess(self):
+        self.dispError = 0
+        self.process.kill()
+        self.finished()
+    
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()
         wdg.load2(url)

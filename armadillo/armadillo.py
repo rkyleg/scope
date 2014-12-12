@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.1.11'
+__version__ = '1.1.12'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -269,7 +269,7 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
-        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.hideBottomTab) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
 ##        QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.viewPythonShell) # View Python Shell
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
@@ -318,6 +318,7 @@ class Armadillo(QtGui.QMainWindow):
         
         # Add Plugins
         self.pluginD = {}
+        self.prevPlugin=0
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
             self.addPlugin(plug)
@@ -692,6 +693,7 @@ class Armadillo(QtGui.QMainWindow):
         elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
             icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
         self.ui.tab.setTabIcon(sw_ind,icn)
+        wdg.icon = icn
 
         # Set wordwrap if in settings
         QtGui.QApplication.processEvents()
@@ -941,6 +943,7 @@ class Armadillo(QtGui.QMainWindow):
 ##            self.ui.tab_left.setTabPosition(2)
 
     def pluginBottomChange(self,ind):
+        self.prevPlugin = self.ui.sw_bottom.currentIndex()
         self.ui.sw_bottom.setCurrentIndex(ind)
 ##        if ind == 0:
 ##            self.plugin_bottom_sizes = self.ui.split_right.sizes()
@@ -949,9 +952,12 @@ class Armadillo(QtGui.QMainWindow):
 ##            self.ui.split_right.setSizes(self.plugin_bottom_sizes)
         self.ui.sw_bottom.setHidden(not ind)
     
-    def hideBottomTab(self):
-        self.ui.tabbar_bottom.setCurrentIndex(0)
-    
+    def toggleBottomTab(self):
+        if self.ui.tabbar_bottom.currentIndex() == 0:
+            self.ui.tabbar_bottom.setCurrentIndex(self.prevPlugin)
+        else:
+            self.ui.tabbar_bottom.setCurrentIndex(0)
+            
     def viewPythonShell(self):
         if 'py_console' in self.pluginD:
             i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
@@ -1001,8 +1007,8 @@ class Armadillo(QtGui.QMainWindow):
                     self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':[]}
                     if 'run_args' in self.settings['fav_lang'][l]:
                         a = self.settings['fav_lang'][l]['run_args']
-                        if type(a) == type(''):
-                            a = [a]
+##                        if type(a) == type(''):
+##                            a = [a]
                         self.settings['run'][l]['args']=a
     
 ##    def loadSetup(self):

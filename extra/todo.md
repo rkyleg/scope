@@ -1,4 +1,14 @@
 # TODO
+[] Save editor with file
+[] fix config file not loading integers correctly
+[] fav_lang settings change to lang, make fav_lang just a list
+[] save editor used to open file with workspace
+[] recent file list (include or not workspaces - or list recent workspaces)
+[] close workspace
+[] custom output command
+[] be able to write to output
+[] run batch and shell filescreat
+[] save splitter state
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -12,7 +22,7 @@
 - [x] if save or load fails - display message
 - [-] if find not found - add statusbar message
 - [x] improve statusbar save formatting
-- [x] Workspace menu icons
+- [x] Workspace menu icons
 - [x] Startpage not showing new favorites
 - [f] Have other Widgets that load in a new tab
 - [x] Compile to exe
