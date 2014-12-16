@@ -55,6 +55,7 @@ class Output(QtGui.QWidget):
 
     def killAll(self):
         open = 0
+        resp = QtGui.QMessageBox.Yes
         for wdg in self.wdgD:
             owdg = self.wdgD[wdg]
             if owdg.process != None:
@@ -67,6 +68,13 @@ class Output(QtGui.QWidget):
                     owdg = self.wdgD[wdg]
                     if owdg.process != None:
                         owdg.stopProcess()
+        
+        # Close all Tabs
+        if resp == QtGui.QMessageBox.Yes:
+            for wdg in self.wdgD:
+                ind = self.ui.sw_pages.indexOf(owdg)
+                self.ui.sw_pages.removeWidget(owdg)
+                self.ui.li_pages.takeItem(ind)
             
 
 class OutputPage(QtGui.QWidget):

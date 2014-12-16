@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.2.0'
+__version__ = '1.2.1'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -1014,7 +1014,7 @@ class Armadillo(QtGui.QMainWindow):
             
                 # add run to settings
                 if 'run' in self.settings['fav_lang'][l]:
-                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':[]}
+                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':''}
                     if 'run_args' in self.settings['fav_lang'][l]:
                         a = self.settings['fav_lang'][l]['run_args']
 ##                        if type(a) == type(''):
@@ -1320,6 +1320,7 @@ class Armadillo(QtGui.QMainWindow):
                 break
             self.closeTab(i)
         ok = not cancelled
+        
         # Close open files
         cancelled = 0
         # Check if anything needs saving
@@ -1336,6 +1337,8 @@ class Armadillo(QtGui.QMainWindow):
         
         if ok:
             self.workspace=None
+            if 'output' in self.pluginD:
+                self.pluginD['output'].killAll()
         
         if ok and openStart:
             self.addStart()
