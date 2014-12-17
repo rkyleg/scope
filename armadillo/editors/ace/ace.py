@@ -240,7 +240,6 @@ class WebView(QtWebKit.QWebView):
     def cut(self):
         js = "editor.insert("");"
         self.page().mainFrame().evaluateJavaScript(js)
-        print 'cut'
     
     def paste(self):
         clip = QtGui.QApplication.clipboard()

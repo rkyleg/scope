@@ -12,7 +12,6 @@ import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
 from armadillo_ui import Ui_MainWindow
 import os,shutil,datetime, webbrowser, threading
-import plugins.output.output
 
 class Events(QtCore.QObject):
     editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
