@@ -2,7 +2,7 @@
 ![Alt text](extra/screenshot.png "Screenshot")
 
 ## About
-Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Development, while also providing an editor for most languages. Armadillo is inspired by SPE, Geany, Notepad++ and Spyder. Armadillo is written in Python with PyQt for the UI. Some HTML5 is utilized for the ui with Qt's built in WebKit (QWebView).
+Armadillo is a lightweight, cross-platform IDE. Many of Armadillo's default tools are focused on Python and HTML5, but most languages are supported. Armadillo is inspired by SPE, Geany, Notepad++ and Spyder. Armadillo is written in Python with PyQt for the UI. Some of the ui is built with HTML5 utilizing Qt's built in WebKit (QWebView).
 
 ## Features:
 - Cross Platform (Linux, Windows, and maybe Mac)
@@ -34,6 +34,7 @@ Armadillo is a lightweight, cross-platform IDE primarily for Python and Web Deve
 - **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
 - **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins
     - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
+    - Output - run your code in a separate process in the IDE.
     - [Python Shell](doc/plugins_pyconsole.md) - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.2.1'
+__version__ = '1.2.2'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -20,6 +20,7 @@ class Events(QtCore.QObject):
     editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
     editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
     close=QtCore.pyqtSignal()
+    editorTabClosed = QtCore.pyqtSignal(QtGui.QWidget)
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -601,12 +602,15 @@ class Armadillo(QtGui.QMainWindow):
             ok = self.checkSave(wdg)
                 
         if ok:
+            # Emit close signal
+            self.evnt.editorTabClosed.emit(wdg)
+            
             self.tabD.pop(file_id)
             # Remove Tab
             self.ui.tab.removeTab(tab_ind)
             # Remove Widget
             self.ui.sw_main.removeWidget(wdg)
-            
+
             # Add start page if no tabs exist
 ##            if self.ui.sw_main.count() == 0:
 ##                self.addStart()

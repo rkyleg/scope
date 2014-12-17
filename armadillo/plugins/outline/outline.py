@@ -154,7 +154,13 @@ class Outline(QtGui.QWidget):
         self.updateOutline(wdg)
         self.ui.le_find.clear()
         self.ui.fr_find.hide()
-    
+        
+    def editorTabClosed(self,wdg):
+        trwdg = self.wdgD[wdg]
+        self.wdgD.pop(wdg)
+        self.ui.sw_outline.removeWidget(trwdg)
+        
+        
     def goto(self,itm,col):
         line = int(str(itm.text(1)))
         wdg = self.treeD[self.ui.sw_outline.currentWidget()]
