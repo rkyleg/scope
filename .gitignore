@@ -8,3 +8,4 @@ afide.sh
 /_exe/build/*
 /_exe/dist/*
 /_cx_freeze/build/*
+__pycache__

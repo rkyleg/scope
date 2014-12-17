@@ -40,15 +40,14 @@ class Outline(QtGui.QWidget):
         self.ui.fr_find.hide()
         
         self.outlineLangD = {}
-        for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):
+        for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):	
             l = lang.split('.')[0]
-            mod = importlib.import_module('plugins.outline.lang.'+l)
-            funcs = dir(mod)
-##            exec('import lang.'+l)
-##            exec('funcs=dir(lang.'+l+')')
-            if 'analyzeLine' in funcs:
-                self.outlineLangD[l]=mod.analyzeLine
-##                exec('self.outlineLangD["'+l+'"]=lang.'+l+'.analyzeLine')
+            if not l.startswith('_'):
+                mod = importlib.import_module('plugins.outline.lang.'+l)
+                funcs = dir(mod)
+
+                if 'analyzeLine' in funcs:
+                    self.outlineLangD[l]=mod.analyzeLine
 
         self.alwaysUpdate = int(self.armadillo.settings['plugins']['outline']['alwaysUpdate'])
         if self.alwaysUpdate==0:

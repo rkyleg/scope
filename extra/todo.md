@@ -1,18 +1,4 @@
 # TODO
-[] Save editor with file
-[] fix config file not loading integers correctly
-[] fav_lang settings change to lang, make fav_lang just a list
-[] save editor used to open file with workspace
-[] recent file list (include or not workspaces - or list recent workspaces)
-[] close workspace
-[] custom output command
-[] be able to write to output
-[] run batch and shell filescreat
-[] save splitter state
-[] save last open file in workspace
-[] add menu and/or close option for output file
-[] run option to filebrowser
-[] clear outline on tab close
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -37,10 +23,10 @@
 - [x] Load workspace closes open files
 - [x] Save As
 - [] show column number and wordcount, total lines? - stats in statusbar
-- [] Make sure default editor settings (wordwrap,etc) are loading correctly
+- [x] Make sure default editor settings (wordwrap,etc) are loading correctly
 - [x] Print
 - [] compile option (need args as option)
-- [] add run with args menu
+- [-] add run with args menu
 - [] Add header comment button (use outline protocol)
 - [] save splitter state
 - [] info (word count, column row,) function
@@ -50,7 +36,7 @@
 ### Startpage
 - [x] Update theme
 - [x] Create light theme
-- [] add new workspace button to home page
+- [x] add new workspace button to home page
 - [] update home page after new workspace (if current tab)
 
 ### Documentation
@@ -61,6 +47,7 @@
 
 ### Workspaces
 - [] save last file open
+- [x] close workspace
 
 ### Settings
 - [x] Save settings in separate location (load defaults first)
@@ -74,6 +61,11 @@
 - [f] option to store settings in os or with editor folder
 - [x] add stylesheet to settings (add error checking)
 - [-] make plugins visible if added for the first time - if possible
+- [] save splitter state
+- [] save editor used to open file with workspace
+- [] recent file list (include or not workspaces - or list recent workspaces)
+- [] fav_lang settings change to lang, make fav_lang just a list
+- [] fix config file not loading integers correctly
 
 ## Editors
 - [] Editor specific plugins view?
@@ -142,7 +134,7 @@
 - [x] Right click refresh (ctrl+o instead)
 - [-] toggle autorefreshing
 - [x] ctrl+o to show outline
-- [] Delete pages when closing tabs
+- [x] Delete pages when closing tabs
 - [x] search outline
 - [x] Highlight current section closest to top of screen
 - [x] Move outline code to language plugins in separate files
@@ -167,7 +159,6 @@
 - [x] be able to launch file with os default (do this for unknown extensions on double click)
 - [x] right click new file (select from extensions
 - [x] delete file option
-- [f] Reload option
 - [x] rename file (also has to rename if file open in editor or at least check first)
 - [f] collapse all/expand all
 - [x] Fix extra / in tab name hover (in Linux at least)
@@ -182,6 +173,7 @@
 - [] reload menu option
 - [] filebrowser grab path function
 - [] search in file browser
+- [] run option to filebrowser
 
 ### Output
 - [x] Add markdown to run (use javascript preview with webview - or see markdown2)
@@ -189,11 +181,14 @@
 - [x] switch to main markdown package
 - [x] add markdown preview
 - [f] have additional markdown settings based on markdown-python extras
-- [f] markdown compile
-- [f] allow running multiple outputs - add tabs for each and stop button
-- [f] goto correct output tab when switching tabs
+- [x] markdown compile
+- [x] allow running multiple outputs - add tabs for each and stop button
+- [x] goto correct output tab when switching tabs
 - [f] when closing a file, will need to stop output
 - [x] Move markdown and preview to separate files for customization
+- [] add menu and/or close option for output file
+- [] custom output command
+- [] be able to write to output
 
 ### Snippets
 - [x] search
