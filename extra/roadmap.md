@@ -13,6 +13,7 @@ Armadillo 2.0 will allow for better/easier user customization
 - [ ] Improve Icon?
 - [ ] Continous checking and alert if open files have changed outside of editor
 - [ ] Maybe more autocomplete functionality - if not to *heavy*
+- [ ] Python 3 support?
 
 # Additional Features
 Features that can be added independent of version

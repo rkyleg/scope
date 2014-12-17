@@ -9,6 +9,10 @@
 [] be able to write to output
 [] run batch and shell filescreat
 [] save splitter state
+[] save last open file in workspace
+[] add menu and/or close option for output file
+[] run option to filebrowser
+[] clear outline on tab close
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
