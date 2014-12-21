@@ -8,7 +8,7 @@ class Qt2Py(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.afide = parent
+        self.armadillo = parent
     
         self.ui.b_open.clicked.connect(self.open)
         self.ui.b_convert.clicked.connect(self.convert)
@@ -19,7 +19,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.afide.currentWidget().filename))
+            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentWidget().filename))
         except:
             cdir = ''
         
@@ -43,7 +43,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.afide.currentWidget().filename))
+            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentWidget().filename))
         except:
             cdir = None
         

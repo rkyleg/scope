@@ -2,6 +2,7 @@ from PyQt4 import QtGui, QtCore
 from snippets_ui import Ui_Form
 import os
 
+ignore_ext = ['pyc']
 
 class Snippets(QtGui.QWidget):
     def __init__(self,parent=None):
@@ -19,14 +20,16 @@ class Snippets(QtGui.QWidget):
         if not self.snip_fldr.endswith('/'):
             self.snip_fldr+='/'
         
-##        print self.snip_fldr        if not os.path.exists(self.snip_fldr):
+##        print self.snip_fldr
+        if not os.path.exists(self.snip_fldr):
             try:
                 os.mkdir(self.snip_fldr)
             except:
                 QtGui.QMessageBox.warning(self,'Snippet Directory Error','There was an error creating the snippets folder')
                 
         
-##        self.ui.split_main.setSizes([200,500])        
+        self.ui.split_main.setSizes([200,500])
+        
         # Signals
         self.ui.cb_ext.currentIndexChanged.connect(self.load_list)
         self.ui.le_search.textChanged.connect(self.search_list)
@@ -42,7 +45,8 @@ class Snippets(QtGui.QWidget):
         
         # Startup
         self.load_ext()
-##        self.load_list()
+##        self.load_list()
+
     def load_ext(self):
         exts = []
         prev_ext = str(self.ui.cb_ext.currentText())
@@ -71,7 +75,7 @@ class Snippets(QtGui.QWidget):
             for f in sorted(os.listdir(self.snip_fldr),key=lambda x: x.lower()):
                 if os.path.isfile(self.snip_fldr+f):
                     ext = f.split('.')[-1].lower()
-                    if filter == 'all' or filter==ext:
+                    if (filter == 'all' or filter==ext) and ext not in ignore_ext:
                         itm = QtGui.QListWidgetItem(f)
                         ipth = '/a'
                         if ext in self.armadillo.settings['extensions']:

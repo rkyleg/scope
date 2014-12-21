@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Mon Nov 24 19:46:18 2014
+# Created: Sun Dec 21 00:04:53 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,8 +52,6 @@ class Ui_Form(object):
         self.cb_ext.setObjectName(_fromUtf8("cb_ext"))
         self.cb_ext.addItem(_fromUtf8(""))
         self.gridLayout.addWidget(self.cb_ext, 0, 1, 1, 1)
-        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
-        self.gridLayout.addItem(spacerItem, 0, 3, 1, 1)
         self.b_reload = QtGui.QPushButton(self.frame)
         self.b_reload.setMaximumSize(QtCore.QSize(26, 16777215))
         self.b_reload.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
@@ -69,7 +67,7 @@ class Ui_Form(object):
         self.li_snips = QtGui.QListWidget(self.frame)
         self.li_snips.setStyleSheet(_fromUtf8("QListWidget {background:transparent;}"))
         self.li_snips.setFrameShape(QtGui.QFrame.NoFrame)
-        self.li_snips.setProperty("isWrapping", True)
+        self.li_snips.setProperty("isWrapping", False)
         self.li_snips.setResizeMode(QtGui.QListView.Adjust)
         self.li_snips.setViewMode(QtGui.QListView.ListMode)
         self.li_snips.setObjectName(_fromUtf8("li_snips"))
@@ -132,8 +130,8 @@ class Ui_Form(object):
         self.te_code.setReadOnly(True)
         self.te_code.setObjectName(_fromUtf8("te_code"))
         self.gridLayout_2.addWidget(self.te_code, 0, 1, 6, 1)
-        spacerItem1 = QtGui.QSpacerItem(20, 2, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem1, 5, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 2, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_2.addItem(spacerItem, 5, 0, 1, 1)
         self.b_fldr = QtGui.QPushButton(self.frame_2)
         self.b_fldr.setMaximumSize(QtCore.QSize(26, 16777215))
         self.b_fldr.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"

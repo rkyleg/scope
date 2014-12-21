@@ -1,35 +1,39 @@
 # <img src="armadillo/img/armadillo.png" height="48px;"> Armadillo IDE
+Armadillo is a lightweight, cross-platform IDE for Python, web development and more. Armadillo is coded in Python with PyQt for the UI and also some html5 interfaces via Qt's built-in WebKit browser (QWebView).
+
+# Screenshots
 ![Alt text](extra/screenshot.png "Screenshot")
 
-## About
-Armadillo is a lightweight, cross-platform IDE. Many of Armadillo's default tools are focused on Python and HTML5, but most languages are supported. Armadillo is inspired by SPE, Geany, Notepad++ and Spyder. Armadillo is written in Python with PyQt for the UI. Some of the ui is built with HTML5 utilizing Qt's built in WebKit (QWebView).
-
-## Features:
-- Cross Platform (Linux, Windows, and maybe Mac)
-- Support for multiple languages (Python, Javascript, HTML,...)
+## Features
+- Cross Platform - Linux, Windows, and Mac (not tested)
+- Support for multiple languages (Python, Javascript, HTML, Markdown, more...)
 - Mostly lightweight
 - Code outline for code organization
 - Easily create plugins with Python and PyQt
-- Multiple options for code editors (Ace, Scintilla, CKEditor, more...)
+- Multiple options for code editors (Ace, Scintilla, CKEditor)
+- Run code from IDE
 
 ## Installing
-### From Source/Python
-1. Install Python (2.6-2.7) and PyQt (4.8-4.10)
-2. Additional Linux requirements
+### Running with Python (source)
+1. Install [Python](https://www.python.org/downloads/release/python-279/) (version 2.7 or 2.6 required)
+2. Install [PyQt](http://www.riverbankcomputing.com/software/pyqt/download) (between versions 4.8-4.11 required)
+2. Additional Linux requirements (installed by default with PyQt on Windows)
     - Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
     - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
-    - For Debian/Ubuntu in command Window:
+    - Easiest way to install for Debian/Ubuntu in command Window:
         - \> su
         - \> apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
-3. Optional
-    - markdown-python (if not installed it includes [markdown2](https://github.com/trentm/python-markdown2))
-4. Run armadillo/armadillo.py
+3. Run armadillo/armadillo.py
 
-### Windows
+### Windows Executable
 1. [Download Windows zip](https://github.com/convolutedlogic/armadillo/archive/windows.zip)
-2. Run windows/Armadillo.exe
+2. Extract zip folder somewhere
+3. Run windows/Armadillo.exe
 
-## More Stuff
+### Development
+The latest development version is available [here](https://github.com/convolutedlogic/armadillo/tree/dev)
+
+## Documentation
 - **[Overview](armadillo/doc/overview.md)** - Overview of main window features
 - **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
 - **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins

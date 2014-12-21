@@ -1,7 +1,7 @@
 <link rel="stylesheet" type="text/css" href="doc.css">
 
 # [Home](start.html) | Keyboard Shortcuts
-<hr />
+
 ## General
 
 <table border="1" cellpadding="2" cellspacing="0">
@@ -87,17 +87,24 @@
 			<td>&nbsp;</td>
 		</tr>
 		<tr>
+			<td>Ctrl &nbsp;+ A</td>
+			<td>Select All</td>
+			<td>x</td>
+			<td>x</td>
+			<td>x</td>
+		</tr>
+		<tr>
 			<td>Ctrl &nbsp;+ C</td>
 			<td>Copy</td>
 			<td>x</td>
-			<td>&nbsp;</td>
+			<td>x</td>
 			<td>x</td>
 		</tr>
 		<tr>
 			<td>Ctrl + D</td>
 			<td>Duplicate current/selected line(s)</td>
 			<td>x</td>
-			<td>&nbsp;</td>
+			<td>x</td>
 			<td>&nbsp;</td>
 		</tr>
 		<tr>

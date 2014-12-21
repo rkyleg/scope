@@ -1,7 +1,7 @@
 from PyQt4 import QtGui, QtCore , QtWebKit
 from output_ui import Ui_Form
 from outputText_ui import Ui_OutWidget
-import sys, os, re, webbrowser, time
+import sys, os, re, webbrowser, time, codecs, datetime
 
 re_file     = re.compile('(\s*)(File "(.*))\n')
 re_loc = re.compile('File "([^"]*)", line (\d+)')
@@ -28,8 +28,9 @@ class Output(QtGui.QWidget):
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
         else:
-            i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
-            self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
+            if cmd != 'markdown':
+                i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
+                self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
                 owdg = self.wdgD[wdg]
                 owdg.newProcess(cmd,wdg.filename,args)
@@ -99,6 +100,8 @@ class OutputPage(QtGui.QWidget):
         
         self.ui.b_run.clicked.connect(self.startProcess)
         self.ui.b_stop.clicked.connect(self.stopProcess)
+        
+        self.ui.b_save.clicked.connect(self.saveFile)
     
     def urlClick(self,url):
         pth = str(url.toString())
@@ -117,7 +120,7 @@ class OutputPage(QtGui.QWidget):
 ##        QtGui.QApplication.processEvents()
         
     def readErrors(self):
-        txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font><br>"
+        txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font>"
         txt = re_file.sub(r"<a href='\g<2>'>\g<2></a>",txt)
         self.appendText(txt)
 
@@ -134,30 +137,34 @@ class OutputPage(QtGui.QWidget):
         curs = self.ui.tb_out.textCursor()
         curs.movePosition(QtGui.QTextCursor.End,0)
         self.ui.tb_out.setTextCursor(curs)
-        self.ui.tb_out.append(txt)#.replace('\n','<br>'))
+        self.ui.tb_out.append(txt.replace('\n','<br>'))
        
     def finished(self):
         if self.process != None:
-            self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
+            txt = self.ui.l_title.text()
+            self.ui.l_title.setText(txt+'&nbsp;&nbsp;<b>Done:</b>&nbsp;'+datetime.datetime.now().strftime('%I:%M:%S.%f'))
+##            self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
         self.process = None
         self.ui.b_run.setEnabled(1)
         self.ui.b_stop.setEnabled(0)
+        self.ui.l_title.setStyleSheet('background-color:rgba(60,60,60);color:white;border-top-right-radius:5px;border-top-left-radius:5px;')
     
     def newProcess(self,cmd,filename,args=''):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
             self.stopProcess()
         else:
+            self.filename = filename
             if cmd == 'markdown':
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
                 html = mkdown.generate(filename,style='',custom=1)
                 self.armadillo.webview_preview(html,filename)
                 self.ui.tb_out.setPlainText(mkdown.generate(filename))
+                self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
             else:
                 if os.name == 'nt':
                     filename = filename.replace('/','\\')
-                self.filename = filename
                 xcmd = cmd
                 if args != '':
                     xcmd += ' '+args
@@ -171,7 +178,8 @@ class OutputPage(QtGui.QWidget):
         self.ui.b_stop.setEnabled(1)
         self.dispError = 1
         
-        self.ui.tb_out.setText('<div style="background:rgb(50,50,50);color:white;padding:4px;padding-left:6px;"><b>&nbsp;Start '+self.filename+'</b>&nbsp;&nbsp;'+time.ctime()+'</div><br>')
+        self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
+        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;')
         self.process = QtCore.QProcess()
         self.process.waitForStarted(5)
         self.process.setReadChannel(QtCore.QProcess.StandardOutput)
@@ -195,7 +203,16 @@ class OutputPage(QtGui.QWidget):
         self.dispError = 0
         self.process.kill()
         self.finished()
-    
+        
     def urlClicked(self,url):
         wdg = self.armadillo.ui.sw_main.currentWidget()
         wdg.load2(url)
+    
+    def saveFile(self):
+        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Output",self.filename)
+        if filename!='':
+            txt = self.ui.tb_out.toPlainText()
+            txt = str(self.ui.tb_out.toPlainText().toUtf8()).decode('utf-8')
+            f = codecs.open(filename,'w','utf8')
+            f.write(txt)
+            f.close()

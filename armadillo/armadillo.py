@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.2.3'
+__version__ = '1.2.4'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -1023,6 +1023,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                        if type(a) == type(''):
 ##                            a = [a]
                         self.settings['run'][l]['args']=a
+                
     
 ##    def loadSetup(self):
 ##        # Geometry 
@@ -1297,6 +1298,7 @@ class Armadillo(QtGui.QMainWindow):
             self.saveWorkspace()
             self.workspaceMenu.loadMenu()
             self.workspaceMenu.saveWact.setDisabled(0)
+            self.workspaceMenu.closeWact.setDisabled(0)
             self.workspaceMenu.deleteWact.setDisabled(0)
     
     def closeWorkspace(self,askSave=0,openStart=0):

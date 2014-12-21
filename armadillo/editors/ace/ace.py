@@ -179,8 +179,8 @@ class WebView(QtWebKit.QWebView):
         menu = QtGui.QMenu('ace menu')
         # Edit Menu
 ##        menu = QtGui.QMenu('edit',menu)
-        menu.addAction(QtGui.QIcon(),'Copy')
         menu.addAction(QtGui.QIcon(),'Cut')
+        menu.addAction(QtGui.QIcon(),'Copy')
         menu.addAction(QtGui.QIcon(),'Paste')
 ##        menu.addMenu(emenu)
         menu.addSeparator()
@@ -263,7 +263,7 @@ class WebView(QtWebKit.QWebView):
         editor.clearSelection();
         editor.moveCursorTo(0,0);
         editor.focus();''')
-    
+
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode
         ww = {0:'true',1:'false'}

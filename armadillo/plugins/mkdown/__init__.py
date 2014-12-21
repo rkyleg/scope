@@ -38,6 +38,7 @@ def generate(file,style='',custom=0):
                 li.future {font-style:italic;color:gray;}
                 li.checked {color:gray;} 
                 pre,code {font-family:Courier New,mono,monospace;font-size:12px;}
+                img{max-width:100%;}
         '''+style
         
     # Add Style
