@@ -151,7 +151,7 @@ class OutputPage(QtGui.QWidget):
             if cmd == 'markdown':
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
-                html = mkdown.generate(filename,custom=1)
+                html = mkdown.generate(filename,style='',custom=1)
                 self.armadillo.webview_preview(html,filename)
                 self.ui.tb_out.setPlainText(mkdown.generate(filename))
             else:

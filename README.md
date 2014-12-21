@@ -56,4 +56,5 @@ Thanks to the following tools that Armadillo is built on:
 - [Silk Icons](http://www.famfamfam.com/lab/icons/silk/) - main ui icon set
 - [cx_Freeze](http://cx-freeze.sourceforge.net/) - for generating Windows and Linux binaries
 - [File Icon Set](https://github.com/teambox/Free-file-icons) - for most file type icons
-- [ConfigObj](http://www.voidspace.org.uk/python/configobj.html) - for settings file
+- [ConfigObj.py](http://www.voidspace.org.uk/python/configobj.html) - for settings file
+- [CommonMark.py](https://github.com/rolandshoemaker/CommonMark-py) - utilized for [markdown](http://commonmark.org/)
