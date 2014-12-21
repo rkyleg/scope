@@ -25,19 +25,18 @@
 - [] show column number and wordcount, total lines? - stats in statusbar
 - [x] Make sure default editor settings (wordwrap,etc) are loading correctly
 - [x] Print
-- [] compile option (need args as option)
+- [-] compile option (need args as option)
 - [-] add run with args menu
 - [] Add header comment button (use outline protocol)
-- [] save splitter state
 - [] info (word count, column row,) function
 - [] save recent files if no workspace open (still open home first) - or view recent files somehow
-- [] be able to change language
+- [f] be able to change language
 
 ### Startpage
 - [x] Update theme
 - [x] Create light theme
 - [x] add new workspace button to home page
-- [] update home page after new workspace (if current tab)
+- [x] update home page after new workspace (if current tab)
 
 ### Documentation
 - [x] Just use markdown viewer
@@ -66,6 +65,7 @@
 - [] recent file list (include or not workspaces - or list recent workspaces)
 - [] fav_lang settings change to lang, make fav_lang just a list
 - [] fix config file not loading integers correctly
+- [] for language/editor be able to hide left tab bar (save open state for other editors)
 
 ## Editors
 - [] Editor specific plugins view?
@@ -180,15 +180,15 @@
 - [x] Create markdown viewer
 - [x] switch to main markdown package
 - [x] add markdown preview
-- [f] have additional markdown settings based on markdown-python extras
+- [-] have additional markdown settings based on markdown-python extras
 - [x] markdown compile
 - [x] allow running multiple outputs - add tabs for each and stop button
 - [x] goto correct output tab when switching tabs
-- [f] when closing a file, will need to stop output
+- [x] when closing a file, will need to stop output
 - [x] Move markdown and preview to separate files for customization
-- [] add menu and/or close option for output file
-- [] custom output command
-- [] be able to write to output
+- [f] add menu and/or close option for output file
+- [f] custom output command
+- [f] be able to write to output
 
 ### Snippets
 - [x] search

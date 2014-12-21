@@ -1,5 +1,5 @@
 # <img src="armadillo/img/armadillo.png" height="48px;"> Armadillo IDE
-Armadillo is a lightweight, cross-platform IDE for Python, web development and more. Armadillo is coded in Python with PyQt for the UI and also some html5 interfaces via Qt's built-in WebKit browser (QWebView).
+Armadillo is a lightweight, cross-platform IDE for Python, web development and more. Armadillo is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 # Screenshots
 ![Alt text](extra/screenshot.png "Screenshot")
