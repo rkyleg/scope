@@ -21,6 +21,10 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
 - Quotes are not needed for this settings file
 
 ### General settings
+        view_folder=0
+        save_workspace_on_close=1
+        widgetstyle=plastique
+        style=default
 - view_folder
     - view folder name in tab
     - default is 0
@@ -32,49 +36,40 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - options are: windows, motif, cde, plastique, windowsxp, macintosh
     - default is plastique
 
-- activePlugins
-    - the list of active plugins to load
-
 ### Editor Settings
+        activeEditors = ace,scintilla,ckeditor
+        [editors]
+            [[ace]]
+                wordwrap=0
+                theme=twilight
+                behavioursEnabled=1
+                wrapBehavioursEnabled=1
+            [[scintilla]]
+                wordwrap=0
+                autocomplete=1
+                newLineMode=unix
+            [[ckeditor]]
 - activeEditors
     - the list of active editors to load
 
 - editors
     - a dictionary of editors and their default settings
-
-**Example**
-
-    activeEditors = ace,scintilla,ckeditor
-    [editors]
-        [[ace]]
-            wordwrap=0
-            theme=twilight
-            behavioursEnabled=1
-            wrapBehavioursEnabled=1
-        [[scintilla]]
-            wordwrap=0
-            autocomplete=1
-        [[ckeditor]]
+    - Not all editors use the same settings
 
 
 ### Favorite Languages (fav_lang)
+        [[default]] # Default settings for all editors
+            editor=scintilla
+            wordwrap=0
+        [[javascript]]
+            editor=ace
+            run=/home/convolutedlogic/nodejs/bin/node
+            run_args=-i
+        [[markdown]]
+            editor=ace
+            wordwrap=1
+
 Different settings for the editor can be set for the default and each language.  If no parameter is specified, the default is used.  The double bracket indicates the language.  For the full list of languages look in the new menu for each editor.  The default for all languages is listed as `[[default]]`
-
-**Example**
-
-    [[default]] # Default settings for all editors
-        editor=scintilla
-        wordwrap=0
-        theme=twilight
-        behavioursEnabled=1
-        wrapBehavioursEnabled=1
-    [[javascript]]
-        editor=ace
-        run=/home/convolutedlogic/nodejs/bin/node
-        run_args=-i
-    [[markdown]]
-        editor=ace
-        wordwrap=1
 
 The available (and default) parameters are:
 
@@ -110,12 +105,27 @@ The Ace editor has additional settings:
 
 
 ### Extensions
+        [extensions]
+            py=python
+            pyw=python
+            js=javascript
+            htm=html
+            style=css
 If you need to specify that a file extension goes with a specific language.
 
 ### Plugins
+        activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,qt2py
+        [plugins]
+            [[outline]]
+                alwaysUpdate=0 # 1 to always update, 0 to update on save
+        
+            [[filebrowser]]
+                showAll=0
+                
+            [[snippets]]
+                path=/home/hdesktop/snippets
+        
 Specify settings for the look and naming of the plugins.  This is only for initial loading.  If you move the plugins around, the window state will be saved on close and this setting will be ignored.
 
-- dockarea
-    - what section of the screen should it load by default.
-- title
-    - the title that shows up in the tab for the plugin.
+- activePlugins - these are the plugins loaded on start
+- plugins - plugin specific settings

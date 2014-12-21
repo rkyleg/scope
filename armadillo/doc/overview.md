@@ -19,7 +19,6 @@ The main menu button is on the top left of the tabbar and is available during Ze
 - ![](../img/save.png) **Save** - Save the current open tab
 - ![](../img/home.png) **Home** - Show the main/start page
 - ![](../img/workspace.png) **Workspaces** - Show the workspace menu (to create, delete, or open an existing workspace)
-- ![](../img/plugin.png) **Plugins** - Toggle on/off the plugin dockwidgets and toolbars
 - ![](../img/wrench.png) **Settings** - Open and edit the settings file
 - **File Check (changes)** - checks if any of the open files have been modified outside this editor. This also checks to see if the file was deleted outside the editor.
 - ![](../img/zen.png) **Zen Mode** - Toggle Zen mode (F11) to make the current editor full screen
@@ -39,7 +38,6 @@ The toolbar is available for convenience, but can also be hidden as all function
 - ![](../img/wordwrap.png) **WordWrap** - Toggle on/off wordwrap for the current open tab
 - ![](../img/tri_right.png) **Run** - Run current file (Supported languages: Python, HTML, Markdown)
 - ![](../img/home.png) **Home** - Show the main/start page
-- ![](../img/plugin.png) **Plugins** - Toggle on/off the plugin dockwidgets and toolbars
 - ![](../img/wrench.png) **Settings** - Open and edit the settings file
 - **Goto** - goto a line (Ctrl + G will place the cursor here)
 - **Find** - find text in the editor (Ctrl + F will place the cursor here). For more advanced find options use the find/replace plugin.
@@ -51,7 +49,6 @@ The following settings are saved for each workspace:
 
 - Base path in file browser
 - Last opened files
-- What plugins and toolbars are visible
 
 ## Editor
 - A given file can only be open in one tab

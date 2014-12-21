@@ -133,10 +133,10 @@ class ArmadilloMenu(QtGui.QMenu):
         self.menuSaveAsAction = self.addAction(icn,'Save As',self.parent.editorSaveAs)
         self.menuSaveAsAction.setEnabled(0) # Default to disabled
         
+        self.addSeparator()
+        
         # Workspace
         self.addMenu(self.parent.workspaceMenu)
-        
-        self.addSeparator()
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
