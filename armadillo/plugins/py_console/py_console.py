@@ -54,7 +54,8 @@ class Console(QtGui.QTextEdit):
 ##                if os.path.exists('/usr/lib/python2.7'):
 ##                    sys.path.append('/usr/lib/python2.7')
 ##                    sys.path.append('/usr/lib/python2.7/dist-packages')
-                            if locals==None:
+                    
+        if locals==None:
             locals={'self':self,'armadillo':parent}
         self.interpreter = Interpreter(locals)
 
@@ -144,7 +145,8 @@ class Console(QtGui.QTextEdit):
         self.line = ''
         self.lines = []
         self.more = 0
-            def syncViewers(self):
+        
+    def syncViewers(self):
         text=self.toPlainText()
         position=self.textCursor().position()
         for viewer in self.viewers:
@@ -214,7 +216,8 @@ class Console(QtGui.QTextEdit):
         (1) the interpreter succeeds
         (2) the interpreter fails, finds no errors and wants more line(s)
         (3) the interpreter fails, finds errors and writes them to sys.stderr
-        """        if self.line.strip():    #Non-empty line
+        """
+        if self.line.strip():    #Non-empty line
             self.history.append(self.line)
             self.pointer = len(self.history)
         else:
@@ -259,7 +262,8 @@ class Console(QtGui.QTextEdit):
             delta_pt=0
         
         self.point -= delta_pt
-        self.line=self.line[:self.point]+text+self.line[self.point+delta_pt:]        self.point += len(text)
+        self.line=self.line[:self.point]+text+self.line[self.point+delta_pt:]
+        self.point += len(text)
         self.insertPlainText(text)
 
     
@@ -282,11 +286,16 @@ class Console(QtGui.QTextEdit):
 
         # Paste
         if e.modifiers() & QtCore.Qt.ControlModifier:
-            if key == QtCore.Qt.Key_V:  # paste                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
+            if key == QtCore.Qt.Key_V:  # paste
+                self.__insertText(unicode(QtGui.QApplication.clipboard().text()))
                 self.syncViewers()
             elif key == QtCore.Qt.Key_L: # launch
                 from subprocess import Popen
-                Popen(["python",os.path.abspath(__file__)])            else:
+                try:
+                    Popen(["python",os.path.abspath(__file__)])
+                except:
+                    QtGui.QMessageBox.warning(self,'Error','The Python Shell could not open with your default Python install.  Please make sure you have Python 2.7 (or 2.6) installed and the Python executable is in your system path')
+            else:
                 QtGui.QTextEdit.keyPressEvent(self,e)
             return
             
@@ -306,7 +315,8 @@ class Console(QtGui.QTextEdit):
             delta_pt=1
             
         if len(text) and ascii>=32 and ascii<127:
-##            self.point = self.textCursor().positionInBlock()-4            self.__insertText(text)
+##            self.point = self.textCursor().positionInBlock()-4
+            self.__insertText(text)
             self.syncViewers()
             return
 
@@ -386,7 +396,8 @@ class Console(QtGui.QTextEdit):
 
     def mousePressEvent(self, e):
         QtGui.QTextEdit.mousePressEvent(self,e)
-        self.point = self.textCursor().positionInBlock()-4
+        self.point = self.textCursor().positionInBlock()-4
+
     def contentsContextMenuEvent(self,ev):
         """
         Suppress the right button context menu.
@@ -399,5 +410,6 @@ if __name__=='__main__':
     import sys
     app=QtGui.QApplication(sys.argv)
     console=Console()
-    console.resize(600,400)    console.show()
+    console.resize(600,400)
+    console.show()
     app.exec_()

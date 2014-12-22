@@ -45,7 +45,7 @@
 - [] improve settings documentation
 
 ### Workspaces
-- [] save last file open
+- [x] save last file open
 - [x] close workspace
 
 ### Settings
@@ -61,7 +61,7 @@
 - [x] add stylesheet to settings (add error checking)
 - [-] make plugins visible if added for the first time - if possible
 - [] save splitter state
-- [] save editor used to open file with workspace
+- [x] save editor used to open file with workspace
 - [] recent file list (include or not workspaces - or list recent workspaces)
 - [] fav_lang settings change to lang, make fav_lang just a list
 - [] fix config file not loading integers correctly

@@ -180,6 +180,7 @@ class OutputPage(QtGui.QWidget):
         
         self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
         self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;')
+        self.ui.tb_out.setText('')
         self.process = QtCore.QProcess()
         self.process.waitForStarted(5)
         self.process.setReadChannel(QtCore.QProcess.StandardOutput)

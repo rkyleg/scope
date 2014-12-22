@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.2.4'
+__version__ = '1.2.5'
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -669,6 +669,7 @@ class Armadillo(QtGui.QMainWindow):
         wdg.id = self.fileCount
         wdg.lang = lang
         wdg.viewOnly = 0
+        wdg.editor = editor
 ##        wdg.dockstate = None
         wdg.modTime = None
         self.tabD[self.fileCount]=wdg
@@ -1237,17 +1238,20 @@ class Armadillo(QtGui.QMainWindow):
             if not os.path.exists(self.settingPath+'/workspaces'):
                 os.mkdir(self.settingPath+'/workspaces')
             
-            wD={'files':[],'plugins':[],'basefolder':None}
+            wD={'files':[],'basefolder':None,'lastOpenFile':None}
+            ci = self.ui.tab.currentIndex()
             # Save workspace files
             for i in range(self.ui.tab.count()):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
-                    wD['files'].append(wdg.filename)
-            # Save workspace plugins
-            for plug in self.pluginD:
-                if self.pluginD[plug].isVisible():
-                    wD['plugins'].append(plug)
+                    wD['files'].append({'filename':wdg.filename,'editor':wdg.editor})
+                    if i==ci:
+                        wD['lastOpenFile']=wdg.filename
+##            # Save workspace plugins
+##            for plug in self.pluginD:
+##                if self.pluginD[plug].isVisible():
+##                    wD['plugins'].append(plug)
             
             # Save workspace dir
             wD['basefolder']=self.pluginD['filebrowser'].rootpath
@@ -1266,10 +1270,25 @@ class Armadillo(QtGui.QMainWindow):
             f = open(self.settingPath+'/workspaces/'+self.workspace,'r')
             wD = json.loads(f.read())
             f.close()
+            
             # Load Files
             for f in wD['files']:
                 if f not in [None,'None','']:
-                    self.openFile(f)
+                    if type(f) == type({}):
+                        self.openFile(f['filename'],editor=f['editor'])
+                    else:
+                        self.openFile(f)
+            
+            # Goto lastopen file
+            if 'lastOpenFile' in wD:
+                for i in range(self.ui.tab.count()):
+                    file_id = self.ui.tab.tabData(i).toInt()[0]
+                    if file_id in self.tabD:
+                        wdg = self.tabD[file_id]
+                        if wdg.filename == wD['lastOpenFile']:
+                            self.ui.tab.setCurrentIndex(i)
+                            break
+                    
             
             # Show/Hide Plugins
 ##            for p in self.pluginD:
@@ -1278,7 +1297,7 @@ class Armadillo(QtGui.QMainWindow):
 ##                if p in self.pluginD:
 ##                    self.pluginD[p].setVisible(1)
             
-            if 'basefolder' in wD:
+            if 'basefolder' in wD and 'filebrowser' in self.pluginD:
                 self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
                 self.pluginD['filebrowser'].loadRoot()
             
