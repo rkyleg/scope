@@ -1,7 +1,7 @@
 import find_replace
 
-def addDock(parent):
-    dock = find_replace.Find_Replace(parent)
-    dock.title = 'Find / Replace'
-    dock.location = 'bottom'
-    return dock
+def addPlugin(parent):
+    plugin = find_replace.Find_Replace(parent)
+    plugin.title = 'Find / Replace'
+    plugin.location = 'bottom'
+    return plugin

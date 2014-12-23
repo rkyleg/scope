@@ -1,7 +1,7 @@
 import snippets
 
-def addDock(parent):
-    dock = snippets.Snippets(parent)
-    dock.title = 'Snippets'
-    dock.location = 'bottom'
-    return dock
+def addPlugin(parent):
+    plugin = snippets.Snippets(parent)
+    plugin.title = 'Snippets'
+    plugin.location = 'bottom'
+    return plugin

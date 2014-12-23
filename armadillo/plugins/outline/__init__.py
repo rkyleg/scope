@@ -1,10 +1,10 @@
 import outline
 
-def addDock(parent):
-    dock = outline.Outline(parent)
-    parent.evnt.editorAdded.connect(dock.addOutline)
-    parent.evnt.editorTabChanged.connect(dock.editorTabChanged)
-    parent.evnt.editorTabClosed.connect(dock.editorTabClosed)
-    dock.title = 'Outline'
-    dock.location = 'left'
-    return dock
+def addPlugin(parent):
+    plugin = outline.Outline(parent)
+    parent.evnt.editorAdded.connect(plugin.addOutline)
+    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
+    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
+    plugin.title = 'Outline'
+    plugin.location = 'left'
+    return plugin

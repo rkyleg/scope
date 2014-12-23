@@ -1,7 +1,7 @@
 import filebrowser
 
-def addDock(parent):
-    dock = filebrowser.DirTree(parent)
-    dock.title = 'File Browser'
-    dock.location = 'left'
-    return dock
+def addPlugin(parent):
+    plugin = filebrowser.DirTree(parent)
+    plugin.title = 'File Browser'
+    plugin.location = 'left'
+    return plugin

@@ -1,9 +1,9 @@
 import output
 
-def addDock(parent):
-    dock = output.Output(parent)
-    parent.evnt.editorTabChanged.connect(dock.editorTabChanged)
-    parent.evnt.close.connect(dock.killAll)
-    dock.title = 'Output'
-    dock.location = 'bottom'
-    return dock
+def addPlugin(parent):
+    plugin = output.Output(parent)
+    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
+    parent.evnt.close.connect(plugin.killAll)
+    plugin.title = 'Output'
+    plugin.location = 'bottom'
+    return plugin

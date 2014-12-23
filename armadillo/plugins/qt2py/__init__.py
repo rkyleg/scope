@@ -1,7 +1,7 @@
 import qt2py
 
-def addDock(parent):
-    dock = qt2py.Qt2Py(parent)
-    dock.title = 'PyQt Converter'
-    dock.location = 'bottom'
-    return dock
+def addPlugin(parent):
+    plugin = qt2py.Qt2Py(parent)
+    plugin.title = 'PyQt Converter'
+    plugin.location = 'bottom'
+    return plugin
