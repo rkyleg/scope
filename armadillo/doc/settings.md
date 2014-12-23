@@ -44,10 +44,12 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
                 theme=twilight
                 behavioursEnabled=1
                 wrapBehavioursEnabled=1
+                showInvisibles=0
             [[scintilla]]
                 wordwrap=0
                 autocomplete=1
                 newLineMode=unix
+                showInvisibles=0
             [[ckeditor]]
 - activeEditors
     - the list of active editors to load

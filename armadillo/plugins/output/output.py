@@ -43,6 +43,7 @@ class Output(QtGui.QWidget):
                 self.ui.sw_pages.insertWidget(sw_ind,owdg)
                 itm = QtGui.QListWidgetItem(wdg.title)
                 itm.setIcon(wdg.icon)
+                itm.setToolTip(wdg.filename)
                 self.ui.li_pages.addItem(itm)
                 
     ##            self.ui.sw_pages.setCurrentIndex(sw_ind)
@@ -52,18 +53,20 @@ class Output(QtGui.QWidget):
                 
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
+                owdg.listItem = self.ui.li_pages.item(sw_ind)
                 owdg.newProcess(cmd,wdg.filename,args)
 
     def killAll(self):
-        open = 0
+        opentxt = ''
         resp = QtGui.QMessageBox.Yes
         for wdg in self.wdgD:
             owdg = self.wdgD[wdg]
             if owdg.process != None:
-                open=1
+                opentxt+='<br>'+'&nbsp;'*5+os.path.split(owdg.filename)[1]
                 break
-        if open:
-            resp=QtGui.QMessageBox.warning(self,'Kill Running Processes','There are still some output processes running.<br><br>Do you want to kill all running processes?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                
+        if opentxt != '':
+            resp=QtGui.QMessageBox.warning(self,'Kill Running Processes','The following output processes are still running:'+opentxt+'<br><br>Do you want to kill all running processes?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:
                 for wdg in self.wdgD:
                     owdg = self.wdgD[wdg]
@@ -73,9 +76,10 @@ class Output(QtGui.QWidget):
         # Close all Tabs
         if resp == QtGui.QMessageBox.Yes:
             for wdg in self.wdgD:
-                ind = self.ui.sw_pages.indexOf(owdg)
+##                ind = self.ui.sw_pages.indexOf(owdg)
+                owdg = self.wdgD[wdg]
                 self.ui.sw_pages.removeWidget(owdg)
-                self.ui.li_pages.takeItem(ind)
+            self.ui.li_pages.clear()
             
 
 class OutputPage(QtGui.QWidget):
@@ -134,21 +138,35 @@ class OutputPage(QtGui.QWidget):
                 self.finished()
         
     def appendText(self,txt,plaintext=0):
-        curs = self.ui.tb_out.textCursor()
-        curs.movePosition(QtGui.QTextCursor.End,0)
-        self.ui.tb_out.setTextCursor(curs)
-        self.ui.tb_out.append(txt.replace('\n','<br>'))
+##        curs = self.ui.tb_out.textCursor()
+##        curs.movePosition(QtGui.QTextCursor.End,0)
+##        self.ui.tb_out.setTextCursor(curs)
+##        self.ui.tb_out.append(txt.replace('\n','<br>').replace('<br><br>','<br>'))
+        # Append to end without extra line space
+        self.ui.tb_out.moveCursor(QtGui.QTextCursor.End)
+        self.ui.tb_out.textCursor().insertHtml(txt.replace('\n','<br>'))
+        self.ui.tb_out.moveCursor(QtGui.QTextCursor.End)
+
+        
+##        self.ui.tb_out.append(txt+QtCore.QString(QtCore.QChar(0x2028)))
        
     def finished(self):
         if self.process != None:
             txt = self.ui.l_title.text()
-            self.ui.l_title.setText(txt+'&nbsp;&nbsp;<b>Done:</b>&nbsp;'+datetime.datetime.now().strftime('%I:%M:%S.%f'))
+            self.ui.l_title.setText(txt+'&nbsp;&nbsp;<b>Finished:</b>&nbsp;'+datetime.datetime.now().strftime('%I:%M:%S.%f'))
 ##            self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
         self.process = None
         self.ui.b_run.setEnabled(1)
         self.ui.b_stop.setEnabled(0)
-        self.ui.l_title.setStyleSheet('background-color:rgba(60,60,60);color:white;border-top-right-radius:5px;border-top-left-radius:5px;')
+        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
+        self.ui.tb_out.setStyleSheet('background-color:rgba(240,240,240);border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
     
+        # Update list pages
+        self.listItem.setForeground(QtGui.QBrush(QtGui.QColor(0,0,0)))
+        fnt = self.listItem.font()
+        fnt.setItalic(0)
+        self.listItem.setFont(fnt)
+        
     def newProcess(self,cmd,filename,args=''):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
@@ -178,9 +196,15 @@ class OutputPage(QtGui.QWidget):
         self.ui.b_stop.setEnabled(1)
         self.dispError = 1
         
-        self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
-        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;')
+        self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;</b><font color=#ccc><b>Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
+        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
+        self.ui.tb_out.setStyleSheet('background-color:white;border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
         self.ui.tb_out.setText('')
+        self.listItem.setForeground(QtGui.QBrush(QtGui.QColor(48, 85, 100)))
+        fnt = self.listItem.font()
+        fnt.setItalic(1)
+        self.listItem.setFont(fnt)
+        
         self.process = QtCore.QProcess()
         self.process.waitForStarted(5)
         self.process.setReadChannel(QtCore.QProcess.StandardOutput)

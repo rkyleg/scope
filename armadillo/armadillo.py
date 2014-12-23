@@ -6,7 +6,8 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.2.5'
+__version__ = '1.2.6'
+
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -670,6 +671,7 @@ class Armadillo(QtGui.QMainWindow):
         wdg.lang = lang
         wdg.viewOnly = 0
         wdg.editor = editor
+        if lang=='Start':wdg.editor='Start'
 ##        wdg.dockstate = None
         wdg.modTime = None
         self.tabD[self.fileCount]=wdg
@@ -1088,7 +1090,7 @@ class Armadillo(QtGui.QMainWindow):
 ##        if wdg in [None,True,False]:
         openfile = self.isFileOpen(pth)
         if openfile==-1:
-            wdg = self.addEditorWidget('webview','Start',pth)
+            wdg = self.addEditorWidget('Start','Start',pth,editor='webview')
         else:
             self.ui.tab.setCurrentIndex(openfile)
             QtGui.QApplication.processEvents()
@@ -1245,9 +1247,11 @@ class Armadillo(QtGui.QMainWindow):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
-                    wD['files'].append({'filename':wdg.filename,'editor':wdg.editor})
-                    if i==ci:
-                        wD['lastOpenFile']=wdg.filename
+                    print wdg.filename,wdg.editor
+                    if wdg.editor != 'Start':
+                        wD['files'].append({'filename':wdg.filename,'editor':wdg.editor})
+                        if i==ci:
+                            wD['lastOpenFile']=wdg.filename
 ##            # Save workspace plugins
 ##            for plug in self.pluginD:
 ##                if self.pluginD[plug].isVisible():
@@ -1321,43 +1325,44 @@ class Armadillo(QtGui.QMainWindow):
             self.workspaceMenu.deleteWact.setDisabled(0)
     
     def closeWorkspace(self,askSave=0,openStart=0):
-        ok = 1
+        wk_ok = 1
         # Save current workspace
         if self.workspace != None and askSave:
-            ok=0
+            wk_ok=0
             resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.workspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
             if resp == QtGui.QMessageBox.Yes:
                 self.saveWorkspace()
-                ok =1
+                wk_ok =1
             elif resp == QtGui.QMessageBox.No:
-                ok =1
+                wk_ok =1
                 
         # Close open files
-        cancelled = 0
-        # Check if anything needs saving
-        for i in range(self.ui.tab.count()-1,-1,-1):
-            file_id = self.ui.tab.tabData(i).toInt()[0]
-            wdg = self.tabD[file_id]
-            ok = self.checkSave(wdg)
-            if not ok:
-                cancelled = 1
-                break
-            self.closeTab(i)
-        ok = not cancelled
+        fl_ok = 1
+        if wk_ok:
+            # Check if anything needs saving
+            for i in range(self.ui.tab.count()-1,-1,-1):
+                file_id = self.ui.tab.tabData(i).toInt()[0]
+                wdg = self.tabD[file_id]
+                ok = self.checkSave(wdg)
+                if not ok:
+                    fl_ok = 0
+                    break
+                self.closeTab(i)
         
-        # Close open files
-        cancelled = 0
-        # Check if anything needs saving
-        for i in range(self.ui.tab.count()-1,-1,-1):
-            file_id = self.ui.tab.tabData(i).toInt()[0]
-            wdg = self.tabD[file_id]
-            ok = self.checkSave(wdg)
-            if not ok:
-                cancelled = 1
-                break
-            self.closeTab(i)
-        ok = not cancelled
+##        # Close open files
+##        cancelled = 0
+##        # Check if anything needs saving
+##        for i in range(self.ui.tab.count()-1,-1,-1):
+##            file_id = self.ui.tab.tabData(i).toInt()[0]
+##            wdg = self.tabD[file_id]
+##            ok = self.checkSave(wdg)
+##            if not ok:
+##                cancelled = 1
+##                break
+##            self.closeTab(i)
+##        ok = not cancelled
 ##        QtGui.QApplication.processEvents()
+        ok=fl_ok*wk_ok
         
         if ok:
             self.workspace=None

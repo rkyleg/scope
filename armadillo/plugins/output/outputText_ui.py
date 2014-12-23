@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outputText.ui'
 #
-# Created: Sun Dec 21 01:14:27 2014
+# Created: Mon Dec 22 18:19:39 2014
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -72,15 +72,6 @@ class Ui_OutWidget(object):
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 0, 2, 1, 1)
         self.gridLayout.addWidget(self.fr_cmd, 1, 1, 1, 1)
-        self.l_title = QtGui.QLabel(OutWidget)
-        self.l_title.setStyleSheet(_fromUtf8("background-color: rgb(60,60,60);\n"
-"color:white;\n"
-"border-top-right-radius:5px;\n"
-"border-top-left-radius:5px;"))
-        self.l_title.setText(_fromUtf8(""))
-        self.l_title.setWordWrap(True)
-        self.l_title.setObjectName(_fromUtf8("l_title"))
-        self.gridLayout.addWidget(self.l_title, 0, 1, 1, 1)
         self.frame_2 = QtGui.QFrame(OutWidget)
         self.frame_2.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));\n"
@@ -96,8 +87,8 @@ class Ui_OutWidget(object):
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.gridLayout_3 = QtGui.QGridLayout(self.frame_2)
-        self.gridLayout_3.setMargin(2)
         self.gridLayout_3.setSpacing(0)
+        self.gridLayout_3.setContentsMargins(0, 0, 0, 2)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.b_stop = QtGui.QPushButton(self.frame_2)
         self.b_stop.setMinimumSize(QtCore.QSize(0, 30))
@@ -128,8 +119,6 @@ class Ui_OutWidget(object):
         self.b_run.setMaximumSize(QtCore.QSize(26, 16777215))
         self.b_run.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-bottom:1px solid rgb(100,100,100);\n"
-"    border-top-right-radius:5px;\n"
-"    border-top-left-radius:5px;\n"
 "}"))
         self.b_run.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
@@ -153,7 +142,14 @@ class Ui_OutWidget(object):
         self.b_save.setCheckable(True)
         self.b_save.setObjectName(_fromUtf8("b_save"))
         self.gridLayout_3.addWidget(self.b_save, 3, 0, 1, 1)
-        self.gridLayout.addWidget(self.frame_2, 0, 0, 4, 1)
+        self.gridLayout.addWidget(self.frame_2, 1, 0, 3, 1)
+        self.l_title = QtGui.QLabel(OutWidget)
+        self.l_title.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));\n"
+"color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;"))
+        self.l_title.setText(_fromUtf8(""))
+        self.l_title.setWordWrap(True)
+        self.l_title.setObjectName(_fromUtf8("l_title"))
+        self.gridLayout.addWidget(self.l_title, 0, 0, 1, 2)
 
         self.retranslateUi(OutWidget)
         QtCore.QObject.connect(self.b_cmd, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.fr_cmd.setVisible)

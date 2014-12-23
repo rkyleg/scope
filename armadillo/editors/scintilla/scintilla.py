@@ -66,7 +66,7 @@ class Sci(QtGui.QWidget):
             'fontSize':10,
 ##            'theme':'twighlight',
             'newLineMode':'unix',
-            'EolVisibility':0,
+            'showInvisibles':0,
         }
         
         # Load settings
@@ -120,7 +120,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setCaretLineVisible(True)
         self.ui.te_sci.setCaretLineBackgroundColor(QColor("#eeeeee"))
         self.ui.te_sci.setEolMode(Qsci.QsciScintilla.EolUnix)
-        self.ui.te_sci.setEolVisibility(int(self.settings['EolVisibility']))
+        self.ui.te_sci.setEolVisibility(int(self.settings['showInvisibles']))
         
         self.wordwrapmode = 0
         

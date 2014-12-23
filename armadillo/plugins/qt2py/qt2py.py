@@ -19,7 +19,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentWidget().filename))
+            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentEditor().filename))
         except:
             cdir = ''
         
@@ -43,7 +43,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentWidget().filename))
+            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentEditor().filename))
         except:
             cdir = None
         

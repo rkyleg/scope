@@ -1,4 +1,9 @@
 # TODO
+[] save plugin profile (separate from workspace)
+[] ctrl+space - autocompletion in ace editor (switch scintilla to that?)
+[] move output title over buttonbar (remove spaces from button bar)
+[] Fix output killAll not removing from list
+[] Rename dock to plugins
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -41,8 +46,11 @@
 ### Documentation
 - [x] Just use markdown viewer
 - [x] Update settings documentation
-- [] py console documentation (armadillo object)
+- [x] py console documentation (armadillo object)
 - [] improve settings documentation
+- [] Output plugin documentation
+- [] Python shell documentation
+- [] Snippets documentation
 
 ### Workspaces
 - [x] save last file open
@@ -69,16 +77,12 @@
 
 ## Editors
 - [] Editor specific plugins view?
-- [] Hide editors - store open editors with a file?
-- [] Add Monkey
+- [-] Hide editors - store open editors with a file?
+- [-] Add Monkey
 - [x] Store wordwrap preferences with language
 - [f] Show column numbers in status bar
 - [] Allow tabs or spaces
-
-### Monkey
-- [f] pen monkey file type
-- [f] get rid of projects tab
-- [f] Run will update preview
+- [] Add function for viewing space characters
 
 ### CKEditor
 - [x] Add text alignment
@@ -110,7 +114,6 @@
 - [x] add autocomplete
 - [x] fix find/replace with a '
 - [] add javascript custom settings
-- [] wrap to 
 
 ### Webview
 - [x] if markdown, generate
