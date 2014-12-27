@@ -106,7 +106,7 @@ QPushButton:hover,QToolButton:hover {
          </property>
         </widget>
        </item>
-       <item row="0" column="13">
+       <item row="0" column="14">
         <spacer name="horizontalSpacer_10">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -122,7 +122,7 @@ QPushButton:hover,QToolButton:hover {
          </property>
         </spacer>
        </item>
-       <item row="0" column="14">
+       <item row="0" column="15">
         <widget class="QToolButton" name="b_help">
          <property name="minimumSize">
           <size>
@@ -217,7 +217,7 @@ QPushButton:hover,QToolButton:hover {
          </property>
         </widget>
        </item>
-       <item row="0" column="9">
+       <item row="0" column="10">
         <widget class="QToolButton" name="b_wordwrap">
          <property name="minimumSize">
           <size>
@@ -350,7 +350,7 @@ QPushButton::menu-indicator {
          </property>
         </widget>
        </item>
-       <item row="0" column="12">
+       <item row="0" column="13">
         <widget class="QToolButton" name="b_compile">
          <property name="minimumSize">
           <size>
@@ -420,7 +420,7 @@ QPushButton::menu-indicator {
          </property>
         </widget>
        </item>
-       <item row="0" column="15">
+       <item row="0" column="16">
         <widget class="QToolButton" name="b_settings">
          <property name="minimumSize">
           <size>
@@ -453,7 +453,7 @@ QPushButton::menu-indicator {
          </property>
         </widget>
        </item>
-       <item row="0" column="17">
+       <item row="0" column="18">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>
@@ -651,7 +651,7 @@ border-radius:3px;</string>
          </layout>
         </widget>
        </item>
-       <item row="0" column="11">
+       <item row="0" column="12">
         <widget class="QToolButton" name="b_run">
          <property name="minimumSize">
           <size>
@@ -701,7 +701,7 @@ border-radius:3px;</string>
          </property>
         </spacer>
        </item>
-       <item row="0" column="10">
+       <item row="0" column="11">
         <spacer name="horizontalSpacer_9">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
@@ -716,6 +716,37 @@ border-radius:3px;</string>
           </size>
          </property>
         </spacer>
+       </item>
+       <item row="0" column="9">
+        <widget class="QToolButton" name="b_whitespace">
+         <property name="minimumSize">
+          <size>
+           <width>32</width>
+           <height>0</height>
+          </size>
+         </property>
+         <property name="maximumSize">
+          <size>
+           <width>32</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="toolTip">
+          <string>Toggle Whitespace</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QToolButton {
+	border-left:1px solid rgb(130,130,130);
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/whitespace.png</normaloff>img/whitespace.png</iconset>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>

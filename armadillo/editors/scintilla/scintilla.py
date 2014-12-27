@@ -66,7 +66,7 @@ class Sci(QtGui.QWidget):
             'fontSize':10,
 ##            'theme':'twighlight',
             'newLineMode':'unix',
-            'showInvisibles':0,
+            'showWhitespace':0,
         }
         
         # Load settings
@@ -120,7 +120,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setCaretLineVisible(True)
         self.ui.te_sci.setCaretLineBackgroundColor(QColor("#eeeeee"))
         self.ui.te_sci.setEolMode(Qsci.QsciScintilla.EolUnix)
-        self.ui.te_sci.setEolVisibility(int(self.settings['showInvisibles']))
+        self.ui.te_sci.setEolVisibility(int(self.settings['showWhitespace']))
         
         self.wordwrapmode = 0
         
@@ -271,6 +271,16 @@ class Sci(QtGui.QWidget):
 ##                ntxt += commentD[lang]+t+'\n'
 ##            
 ##            self.ui.te_sci.replaceSelectedText(ntxt)
+
+    def toggleWhitespace(self):
+        v=not self.ui.te_sci.eolVisibility()
+        self.ui.te_sci.setEolVisibility(v)
+        if v:
+            self.ui.te_sci.setWhitespaceVisibility(Qsci.QsciScintilla.WsVisible)
+        else:
+            self.ui.te_sci.setWhitespaceVisibility(Qsci.QsciScintilla.WsInvisible)
+        
+        
 
     def toggleAutoComplete(self):
         self.autocompletemode = not self.autocompletemode

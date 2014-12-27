@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.3.0'
+__version__ = '1.3.1'
 
 
 import sys, json, codecs, time, importlib
@@ -243,6 +243,8 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.b_indent.clicked.connect(self.editorIndent)
         self.ui.b_unindent.clicked.connect(self.editorUnindent)
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
+        
+        self.ui.b_whitespace.clicked.connect(self.editorToggleWhitespace)
         
         self.ui.b_run.clicked.connect(self.editorRun)
         self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
@@ -545,6 +547,7 @@ class Armadillo(QtGui.QMainWindow):
             'toggleComment':self.ui.b_comment,
             'getText':self.ui.b_save,
             'toggleWordWrap':self.ui.b_wordwrap,
+            'toggleWhitespace':self.ui.b_whitespace,
         }
         for btn in btnD:
             btnD[btn].setEnabled(btn in dir(wdg))
@@ -789,7 +792,12 @@ class Armadillo(QtGui.QMainWindow):
         wdg = self.ui.sw_main.currentWidget()
         if 'toggleComment' in dir(wdg):
             wdg.toggleComment()
-
+            
+    def editorToggleWhitespace(self):
+        wdg = self.ui.sw_main.currentWidget()
+        if 'toggleWhitespace' in dir(wdg):
+            wdg.toggleWhitespace()
+            
     def editorIndent(self):
         wdg = self.ui.sw_main.currentWidget()
         if 'indent' in dir(wdg):
@@ -1137,7 +1145,6 @@ class Armadillo(QtGui.QMainWindow):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
-                    print wdg.filename,wdg.editor
                     if wdg.editor != 'Start':
                         wD['files'].append({'filename':wdg.filename,'editor':wdg.editor})
                         if i==ci:

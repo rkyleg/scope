@@ -9,9 +9,9 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 - Support for multiple languages (Python, Javascript, HTML, Markdown, more...)
 - Mostly lightweight
 - Code outline for code organization
-- Easily create plugins with Python and PyQt
 - Multiple options for code editors (Ace, Scintilla, CKEditor)
-- Run code from IDE
+- Run code from IDE with output screen
+- Extend with your own plugins created with Python and PyQt
 
 ## Installing
 ### Running with Python (source)

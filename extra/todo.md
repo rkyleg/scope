@@ -4,6 +4,7 @@
 [] move output title over buttonbar (remove spaces from button bar)
 [] Fix output killAll not removing from list
 [] Rename dock to plugins
+[] bug when opening workspace with one file - not enabling icons
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)

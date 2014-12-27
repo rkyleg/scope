@@ -101,7 +101,7 @@ class WebView(QtWebKit.QWebView):
             'fontSize':12,
             'theme':'twighlight',
             'newLineMode':'unix',
-            'showInvisibles':'false',
+            'showWhitespace':'false',
         }
         
         # Load settings
@@ -123,7 +123,7 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.setShowPrintMargin('+['false','true'][self.settings['showPrintMargin']]+');'
         js += 'editor.setFontSize('+str(self.settings['fontSize'])+');'
         js += 'editor.getSession().getDocument().setNewLineMode("'+str(self.settings['newLineMode'])+'");'
-        js += 'editor.setShowInvisibles('+str(self.settings['showInvisibles'])+');'
+        js += 'editor.setShowInvisibles('+str(self.settings['showWhitespace'])+');'
         
         self.page().mainFrame().evaluateJavaScript(js)
         
@@ -272,6 +272,10 @@ class WebView(QtWebKit.QWebView):
     
     def toggleComment(self):
         js = "editor.toggleCommentLines();"
+        self.page().mainFrame().evaluateJavaScript(js)
+    
+    def toggleWhitespace(self):
+        js = "editor.setShowInvisibles(! editor.getShowInvisibles());"
         self.page().mainFrame().evaluateJavaScript(js)
     
     def indent(self):
