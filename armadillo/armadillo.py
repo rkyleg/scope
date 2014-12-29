@@ -120,6 +120,9 @@ class ArmadilloMenu(QtGui.QMenu):
         # New
         self.addMenu(self.parent.newMenu)
         
+        # Workspace
+        self.addMenu(self.parent.workspaceMenu)
+        
         # Open
         icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
         act = self.addAction(icn,'Open',self.parent.openFile)
@@ -135,9 +138,6 @@ class ArmadilloMenu(QtGui.QMenu):
         self.menuSaveAsAction.setEnabled(0) # Default to disabled
         
         self.addSeparator()
-        
-        # Workspace
-        self.addMenu(self.parent.workspaceMenu)
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
@@ -1197,6 +1197,9 @@ class Armadillo(QtGui.QMainWindow):
             
 ##            QtGui.QApplication.processEvents()
             self.removeStart()
+            
+            if self.ui.tab.count() ==1:
+                self.changeTab(0)
             
     def newWorkspace(self):
         # New Workspace

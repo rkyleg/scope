@@ -20,6 +20,8 @@ class WebView(QtWebKit.QWebView):
         #web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
         self.baseurl = baseurl
+        
+        self.settings().setObjectCacheCapacities(0,0,0) # Make sure images are reloaded
     
     def setText(self,txt,baseurl=None):
         if self.baseurl != None:

@@ -1,30 +1,21 @@
 # High Level Roadmap
 
-## Current State
-**Armadillo 1.0 has been released with Windows binaries (no installation required)**
+Armadillo tries to balance simplicity and ease-of-use with *enough* features and extensibility. With that in mind, here is the high level roadmap for development.
 
-## Armadillo 1.2
-Soon to be released. See the dev branch for current state. Ui was cleaned up with less customization of plugin location, but better screen utilization. Lots of new features.
+# Ongoing Updates
+Improvements to be made sometime before or for version 2.0
 
-## Armadillo 1.3
-Wish list yet to be determined.
+- be able to set certain file extensions to open with Armadillo (if already open, use existing process)
+- Create a .deb package and make available through apt
+- Spellcheck plugin
+- Help plugin (with quick search tools tied to langauge)
+- Be able to install with pip
+- Native Mac binaries
+- syntax checking option for Scintilla/Python would be nice.
 
-## Armadillo 2.0
-Armadillo 2.0 will allow for better plugin use - updates and installing new ones.
-
-- [ ] Ease of use of adding plugins
-- [ ] Ease of use for users creating and adding their own plugins
-- [ ] Continous checking and alert if open files have changed outside of editor
-- [ ] Maybe more autocomplete functionality - if not to *heavy*
-- [ ] Python 3 support
-- [ ] Handle updates of plugins
-- [ ] Auto update Armadillo would be nice
-
-## Additional Features
-Features that can be added independent of version
-
-- [ ] Spellcheck plugin
-- [ ] syntax checking for Scintilla/Python would be nice.
-- [ ] Native Mac binaries
-- [ ] be able to set certain file extensions to open with Armadillo (if already open, use existing process)
-- [ ] Create .deb package
+# Armadillo 2.0
+- Easily install and update plugins via a plugin manager
+- Continuous checking if open files have changed and alert user (a manual check exists from main menu)
+- Better autocomplete functionality (maybe - if feature does not become to heavy)
+- Python 3 support
+- An update mechanism for Armadillo

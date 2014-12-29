@@ -25,6 +25,9 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
         save_workspace_on_close=1
         widgetstyle=plastique
         style=default
+        activeEditors = ace,scintilla,ckeditor
+        activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,qt2py
+
 - view_folder
     - view folder name in tab
     - default is 0
@@ -35,9 +38,11 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - set the style of the editor (Qt style is used)
     - options are: windows, motif, cde, plastique, windowsxp, macintosh
     - default is plastique
+- activeEditors
+    - the list of active editors to load
+- activePlugins - these are the plugins loaded on start
 
 ### Editor Settings
-        activeEditors = ace,scintilla,ckeditor
         [editors]
             [[ace]]
                 wordwrap=0
@@ -51,8 +56,6 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
                 newLineMode=unix
                 showWhitespace=0
             [[ckeditor]]
-- activeEditors
-    - the list of active editors to load
 
 - editors
     - a dictionary of editors and their default settings
@@ -116,7 +119,7 @@ The Ace editor has additional settings:
 If you need to specify that a file extension goes with a specific language.
 
 ### Plugins
-        activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,qt2py
+        
         [plugins]
             [[outline]]
                 alwaysUpdate=0 # 1 to always update, 0 to update on save
@@ -129,5 +132,4 @@ If you need to specify that a file extension goes with a specific language.
         
 Specify settings for the look and naming of the plugins.  This is only for initial loading.  If you move the plugins around, the window state will be saved on close and this setting will be ignored.
 
-- activePlugins - these are the plugins loaded on start
 - plugins - plugin specific settings
