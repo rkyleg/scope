@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.3.2'
+__version__ = '1.3.3'
 
 
 import sys, json, codecs, time, importlib
@@ -139,25 +139,41 @@ class ArmadilloMenu(QtGui.QMenu):
         
         self.addSeparator()
         
-        # Home
-        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'Home',self.parent.addStart)
-        
         # Plugins
 ##        plugmenu = self.parent.createPopupMenu()
 ##        plugmenu.setTitle('Plugins')
 ##        plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
 ##        self.addMenu(plugmenu)
         
-        # Settings
-        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
-        act = self.addAction(icn,'Settings',self.parent.openSettings)
+        #---Editor
+        self.editorMenu=QtGui.QMenu('Editor')
+        self.addMenu(self.editorMenu)
         
-        self.addSeparator()
+        # Tab Indent
+        icn = QtGui.QIcon(self.parent.iconPath+'indent.png')
+        self.indentAction = self.editorMenu.addAction(icn,'Indent',self.parent.editorIndent)
+        icn = QtGui.QIcon(self.parent.iconPath+'indent_remove.png')
+        self.unindentAction = self.editorMenu.addAction(icn,'Unindent',self.parent.editorUnindent)
         
-        # Check for file changes
-        icn = QtGui.QIcon()
-        act = self.addAction(icn,'Check file changes',self.parent.checkFileChanges)
+        self.editorMenu.addSeparator()
+        
+        # Comment
+        icn = QtGui.QIcon(self.parent.iconPath+'comment.png')
+        self.commentAction = self.editorMenu.addAction(icn,'Comment/Uncomment',self.parent.editorToggleComment)
+        
+        # Whitespace
+        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
+        self.whitespaceAction = self.editorMenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
+        
+        # Wordwrap
+        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
+        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap',self.parent.editorWordWrap)
+        
+        self.editorMenu.addSeparator()
+        
+        # Run
+        icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
+        self.runAction = self.editorMenu.addAction(icn,'Run (F5)',self.parent.editorRun)
         
         #---View
         self.viewMenu=QtGui.QMenu('View')
@@ -178,6 +194,21 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
         self.zenF11Action = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
         
+        
+        # Home
+        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
+        act = self.addAction(icn,'Home',self.parent.addStart)
+        
+        # Settings
+        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
+        act = self.addAction(icn,'Settings',self.parent.openSettings)
+        
+        self.addSeparator()
+        
+        # Check for file changes
+        icn = QtGui.QIcon()
+        act = self.addAction(icn,'Check file changes',self.parent.checkFileChanges)
+
         # -----
         # Print
         self.addSeparator()
@@ -260,10 +291,10 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.b_unindent.clicked.connect(self.editorUnindent)
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
         
-        self.ui.b_whitespace.clicked.connect(self.editorToggleWhitespace)
+##        self.ui.b_whitespace.clicked.connect(self.editorToggleWhitespace)
         
         self.ui.b_run.clicked.connect(self.editorRun)
-        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
+##        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
         self.ui.b_settings.clicked.connect(self.openSettings)
         self.ui.b_help.clicked.connect(self.addStart)
         
@@ -343,9 +374,6 @@ class Armadillo(QtGui.QMainWindow):
         self.zen = 0
         self.editor_zen = 0
         
-        # Add Start
-        self.addStart()
-        
 ##        # Load setup
 ##        self.loadSetup()
         
@@ -366,6 +394,9 @@ class Armadillo(QtGui.QMainWindow):
         # add Main Button to tabbar
         self.armadilloMenu = ArmadilloMenu(self)
         self.ui.b_main.setMenu(self.armadilloMenu)
+        
+        # Add Start
+        self.addStart()
         
         # Open file if in sys arg
         # print "SYS",sys.argv
@@ -545,27 +576,35 @@ class Armadillo(QtGui.QMainWindow):
             lang = None
 
         # Enable Run
+        run_enabled=0
         if lang in self.settings['run']:
-            self.ui.b_run.setEnabled(lang in self.settings['run'])
-        else:
-            self.ui.b_run.setEnabled(0)
+            run_enabled = lang in self.settings['run']
+            
+        self.ui.b_run.setEnabled(run_enabled)
+        self.armadilloMenu.runAction.setEnabled(run_enabled)
         
         # Enable Compile
         self.ui.b_compile.setEnabled(0)
         self.ui.b_compile.hide()
         
         # Disable buttons based on function availability
-        btnD = {
-            'indent':self.ui.b_indent,
-            'unindent':self.ui.b_unindent,
-            'find':self.ui.fr_find,
-            'toggleComment':self.ui.b_comment,
-            'getText':self.ui.b_save,
-            'toggleWordWrap':self.ui.b_wordwrap,
-            'toggleWhitespace':self.ui.b_whitespace,
-        }
+        btnD = [
+            ['indent',self.armadilloMenu.indentAction],
+            ['indent',self.ui.b_indent],
+            ['unindent',self.ui.b_unindent],
+            ['unindent',self.armadilloMenu.unindentAction],
+            ['find',self.ui.fr_find],
+            ['toggleComment',self.ui.b_comment],
+            ['toggleComment',self.armadilloMenu.commentAction],
+            ['getText',self.ui.b_save],
+            ['toggleWordWrap',self.armadilloMenu.wordwrapAction],
+            ['toggleWhitespace',self.armadilloMenu.whitespaceAction],
+            
+##            'toggleWordWrap':self.ui.b_wordwrap,
+##            'toggleWhitespace':self.ui.b_whitespace,
+        ]
         for btn in btnD:
-            btnD[btn].setEnabled(btn in dir(wdg))
+            btn[1].setEnabled(btn[0] in dir(wdg))
         
         try:
             self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))

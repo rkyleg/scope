@@ -37,9 +37,9 @@ The latest development version is available [here](https://github.com/convoluted
 - **[Overview](armadillo/doc/overview.md)** - Overview of main window features
 - **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
 - **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins
-    - [Outline](doc/plugins_outline.md) - Outline plugin for code organization
-    - Output - run your code in a separate process in the IDE.
-    - [Python Shell](doc/plugins_pyconsole.md) - integrated Python Console
+    - [Outline](armadillo/doc/plugins_outline.md) - Outline plugin for code organization
+    - [Output](armadillo/doc/plugins_output.md) - run your code in a separate process in the IDE.
+    - [Python Shell](armadillo/doc/plugins_pyconsole.md) - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool
     - Snippets - store and retreive useful code snippets
