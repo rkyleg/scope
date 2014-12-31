@@ -6,6 +6,8 @@
 [] Rename dock to plugins
 [] bug when opening workspace with one file - not enabling icons
 [] add word wrap, etc. to menu
+[] interact with output
+[] fix outline tracking (not quite right)
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -38,6 +40,8 @@
 - [] info (word count, column row,) function
 - [] save recent files if no workspace open (still open home first) - or view recent files somehow
 - [f] be able to change language
+- [x] Rename Zen mode to Full Editor and Full Screen
+- [x] Add view to menu
 
 ### Startpage
 - [x] Update theme

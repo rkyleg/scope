@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.3.1'
+__version__ = '1.3.2'
 
 
 import sys, json, codecs, time, importlib
@@ -157,12 +157,28 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Check for file changes
         icn = QtGui.QIcon()
-        act = self.addAction(icn,'File check (changes)',self.parent.checkFileChanges)
+        act = self.addAction(icn,'Check file changes',self.parent.checkFileChanges)
         
-        # Zen
-        icn = QtGui.QIcon(self.parent.iconPath+'zen.png')
-        self.zenAction = self.addAction(icn,'Zen Mode (F11)',self.parent.toggleZen)
+        #---View
+        self.viewMenu=QtGui.QMenu('View')
+        self.addMenu(self.viewMenu)
         
+        icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
+        self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftSide)
+        icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
+        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F8)',self.parent.toggleBottomTab)
+        
+        self.viewMenu.addSeparator()
+        
+        # Full Editor Mode
+        icn = QtGui.QIcon(self.parent.iconPath+'full_editor.png')
+        self.fullEditorAction = self.viewMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
+        
+        # Full Screen
+        icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
+        self.zenF11Action = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
+        
+        # -----
         # Print
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'printer.png')
@@ -276,8 +292,8 @@ class Armadillo(QtGui.QMainWindow):
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
-        QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleEditorZen) # Editor full screen, but keep tabs
-        QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleZen) # Fullscreen Zen
+        QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
+        QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
         QtGui.QShortcut(QtCore.Qt.Key_F12,self,self.viewPythonShell) # Fullscreen Zen
         
         # File Dictionary
@@ -396,12 +412,16 @@ class Armadillo(QtGui.QMainWindow):
     def dragEnterEvent(self,event):
         event.accept()
     
-    #---Zen Modes
-    def toggleEditorZen(self):
+    #---Fullscreen/Zen Modes
+    def toggleFullEditor(self):
         self.editor_zen = not self.editor_zen
         self.setZen(self.editor_zen,editor_zen=1)
-        
-    def toggleZen(self,mode='full'):
+        if self.editor_zen:
+            self.armadilloMenu.fullEditorAction.setText('Exit Full Editor Mode')
+        else:
+            self.armadilloMenu.fullEditorAction.setText('Full Editor Mode (F10)')
+            
+    def toggleFullscreen(self):
         self.zen = not self.zen
         self.setZen(self.zen)
         if self.zen:
@@ -416,13 +436,8 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.fr_bottom.setVisible(not zen)
         
         if zen:
-            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen_not.png'))
-            self.armadilloMenu.zenAction.setText('Exit zen mode')
             self.pluginBottomChange(0)
         else:
-            self.armadilloMenu.zenAction.setIcon(QtGui.QIcon(self.iconPath+'zen.png'))
-            self.armadilloMenu.zenAction.setText('Zen mode')
-            
             self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
             
             self.zen = self.editor_zen = 0
@@ -954,7 +969,7 @@ class Armadillo(QtGui.QMainWindow):
 
     def saveSettings(self):
         if self.zen:
-            self.toggleZen()
+            self.toggleFullscreen()
             QtGui.QApplication.processEvents()
         
         # Save Workspace
