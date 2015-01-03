@@ -1,13 +1,20 @@
 # TODO
 [] save plugin profile (separate from workspace)
 [] ctrl+space - autocompletion in ace editor (switch scintilla to that?)
-[] move output title over buttonbar (remove spaces from button bar)
-[] Fix output killAll not removing from list
-[] Rename dock to plugins
-[] bug when opening workspace with one file - not enabling icons
-[] add word wrap, etc. to menu
+[x] move output title over buttonbar (remove spaces from button bar)
+[x] Fix output killAll not removing from list
+[x] Rename dock to plugins
+[x] bug when opening workspace with one file - not enabling icons
+[x] add word wrap, etc. to menu
 [] interact with output
-[] fix outline tracking (not quite right)
+[] fix outline tracking/updating (not quite right)
+[] at right side plugin (for preview, hide by default if no plugins)
+[] add plugin location to settings (as option)
+
+## Settings/Profile Redesign
+- create settings profiles
+- store which profile used for a workspace
+- store which profile as default
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)

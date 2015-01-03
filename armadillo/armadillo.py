@@ -374,9 +374,6 @@ class Armadillo(QtGui.QMainWindow):
         self.zen = 0
         self.editor_zen = 0
         
-##        # Load setup
-##        self.loadSetup()
-        
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
 ##        self.fileModD = {}
@@ -394,6 +391,9 @@ class Armadillo(QtGui.QMainWindow):
         # add Main Button to tabbar
         self.armadilloMenu = ArmadilloMenu(self)
         self.ui.b_main.setMenu(self.armadilloMenu)
+        
+##        # Load custom setup
+##        self.loadSetup()
         
         # Add Start
         self.addStart()

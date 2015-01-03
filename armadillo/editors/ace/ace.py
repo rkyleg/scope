@@ -116,6 +116,11 @@ class WebView(QtWebKit.QWebView):
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
         js += "editor.getSession().on('changeScrollTop',function (e) {pythonjs.visibleLinesChanged()});"
         
+        self.setup()
+        
+    def setup(self):
+        js=''
+        
         # Set Javascript settings
         js += 'editor.setTheme("ace/theme/'+self.settings['theme']+'");'
         js += 'editor.setWrapBehavioursEnabled('+['false','true'][self.settings['wrapBehaviours']]+');'
@@ -130,15 +135,16 @@ class WebView(QtWebKit.QWebView):
         # Additional Settings
 ##        if 'settingJS' in self.parent.settings.editors['ace']:
 ##            jstxt = self.parent.settings.editors['ace']['settingJS']
-        jstxt = 'editor.setHighlightSelectedWord(false); editor.setOptions({enableBasicAutocompletion: true});'
-        js = ''
-        for jt in jstxt.split('\n'):
-            txt = jt.strip()
-            if not txt.endswith(';'): txt = txt=';'
-            js += jstxt
-        
-        if js != '':
-            self.page().mainFrame().evaluateJavaScript(js)
+
+##        jstxt = 'editor.setHighlightSelectedWord(false); editor.setOptions({enableBasicAutocompletion: true});'
+##        js = ''
+##        for jt in jstxt.split('\n'):
+##            txt = jt.strip()
+##            if not txt.endswith(';'): txt = txt=';'
+##            js += jstxt
+##        
+##        if js != '':
+##            self.page().mainFrame().evaluateJavaScript(js)
         
         self.gotoLine(1)
 
