@@ -2,6 +2,9 @@
 
 Armadillo tries to balance simplicity and ease-of-use with *enough* features and extensibility. With that in mind, here is the high level roadmap for development.
 
+# Current State
+The current structure of the core Armadillo, editors, plugins, and settings is fairly stable now, although could change for 2.0.
+
 # Ongoing Updates
 Improvements to be made sometime before or for version 2.0
 
@@ -9,9 +12,14 @@ Improvements to be made sometime before or for version 2.0
 - Create a .deb package and make available through apt
 - Spellcheck plugin
 - Help plugin (with quick search tools tied to langauge)
+- Bookmark and launcher plugin
 - Be able to install with pip
 - Native Mac binaries
 - syntax checking option for Scintilla/Python would be nice.
+
+# Armadillo 1.5
+- Make user customization easy without touching/forking core code
+- Allow multiple profiles of the IDE
 
 # Armadillo 2.0
 - Easily install and update plugins via a plugin manager

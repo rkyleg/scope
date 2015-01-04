@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.3.3'
+__version__ = '1.3.4'
 
 
 import sys, json, codecs, time, importlib
@@ -175,14 +175,17 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
         self.runAction = self.editorMenu.addAction(icn,'Run (F5)',self.parent.editorRun)
         
-        #---View
-        self.viewMenu=QtGui.QMenu('View')
+        #---Window
+        self.viewMenu=QtGui.QMenu('Window')
         self.addMenu(self.viewMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
         self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftSide)
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
         self.viewMenu.addAction(icn,'Toggle Bottom Pane (F8)',self.parent.toggleBottomTab)
+        
+        icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
+        self.viewMenu.addAction(icn,'Toggle Right Pane',self.parent.toggleRightSide)
         
         self.viewMenu.addSeparator()
         
@@ -260,13 +263,35 @@ class Armadillo(QtGui.QMainWindow):
         # Screen Size
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
         coords= QtGui.QApplication.desktop().screenGeometry(screen).getCoords() 
-        dx = 50
-        self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
-        QtGui.QApplication.processEvents()
+        if self.settings['window']['openMode']=='1':
+            # Almost full screen
+            dx = 50
+            self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
+            QtGui.QApplication.processEvents()
+        elif self.settings['window']['openMode']=='2':
+            # Fullscreen
+            self.showMaximized()
+##            self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
+            QtGui.QApplication.processEvents()
+            
+        # Setup plugin views
+        # Bottom
+        h=int(self.settings['window']['pluginBottom']['height'])
+        self.ui.split_bottom.setSizes([self.height()-h,h])
+        if self.settings['window']['pluginBottom']['visible']!='1':
+            self.ui.sw_bottom.setHidden(1)
         
-        # Set Splitters
-        self.ui.split_right.setSizes([self.height()-180,180])
-        self.ui.split_main.setSizes([260,self.width()-260])
+        # Left
+        lw=int(self.settings['window']['pluginLeft']['width'])
+        self.ui.split_left.setSizes([lw,self.width()-lw])
+        if self.settings['window']['pluginLeft']['visible']!='1':
+            self.ui.fr_left.setVisible(0)
+        
+        # Right
+        rw=int(self.settings['window']['pluginRight']['width'])
+        self.ui.split_right.setSizes([self.width()-rw-lw,rw])
+        if self.settings['window']['pluginRight']['visible']!='1':
+            self.ui.tab_right.setVisible(0)
 
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -916,9 +941,16 @@ class Armadillo(QtGui.QMainWindow):
             if os.path.exists(self.pluginPath+plug+'/icon.png'):
                 icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
             
+            # Check settings for location
+            if plug in self.settings['plugins'] and 'location' in self.settings['plugins'][plug]:
+                loc = self.settings['plugins'][plug]['location']
+            
             if loc == 'left':
                 ti = self.ui.tab_left.addTab(pluginWidget,icn,'')
                 self.ui.tab_left.setTabToolTip(ti,title)
+            elif loc=='right':
+                ti = self.ui.tab_right.addTab(pluginWidget,icn,'')
+                self.ui.tab_right.setTabToolTip(ti,title)
             elif loc == 'bottom':
                 self.ui.sw_bottom.addWidget(pluginWidget)
                 self.ui.tabbar_bottom.addTab(icn,title)
@@ -929,7 +961,7 @@ class Armadillo(QtGui.QMainWindow):
         if ind==0:
             self.ui.tab_left.hide()
             self.ui.fr_left_hidden.show()
-            self.ui.split_right.setSizes([26,self.ui.split_main.height()-26])
+            self.ui.split_bottom.setSizes([26,self.ui.split_left.height()-26])
 
     def pluginBottomChange(self,ind):
         self.prevPlugin = self.ui.sw_bottom.currentIndex()
@@ -947,78 +979,45 @@ class Armadillo(QtGui.QMainWindow):
             i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
             self.ui.tabbar_bottom.setCurrentIndex(i)
             self.pluginD['py_console'].setFocus()
+
+    #---   Left Sidebar Plugins
+    def updateOutline(self):
+        if 'outline' in self.pluginD:
+            wdg = self.ui.sw_main.currentWidget()
+            if self.ui.fr_left.isHidden():
+                self.ui.fr_left.setVisible(1)
+            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
+            self.ui.tab_left.setCurrentIndex(i)
+            if 'getText' in dir(wdg):
+                self.pluginD['outline'].updateOutline(wdg)
     
-    #---Settings
-    def loadSettings(self):
-        # Create settings directory
-        if not os.path.exists(self.settingPath):
-            os.mkdir(self.settingPath)
-        
-        if not os.path.exists(self.settingPath+'/settings.conf'):
-            import shutil
-            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
-
-        from plugins.configobj import configobj
-        self.settings_filename = self.settingPath+'/settings.conf'
-        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
-        try:
-            user_config = configobj.ConfigObj(self.settings_filename)
-            if type(user_config['editors'])==type([]): # Check editor settings 
-                error
-            config.merge(user_config)
-        except:
-            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings<Br><br><i>Compare your settings with the default_settings</i>')
-        self.settings = config
-
-        # Configure Settings
-        self.settings['run']={}
-        for l in self.settings['fav_lang']:
-            ok = 1
-            # Remove default languages if not in user config
-            if 'fav_lang' in user_config:
-                if l not in user_config['fav_lang']:
-                    self.settings['fav_lang'].pop(l)
-                    ok = 0
-                    
-            if ok:
-                # Make sure editor in settings
-                if not 'editor' in self.settings['fav_lang'][l]:
-                    self.settings['fav_lang'][l]['editor']=None
-            
-                # add run to settings
-                if 'run' in self.settings['fav_lang'][l]:
-                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':''}
-                    if 'run_args' in self.settings['fav_lang'][l]:
-                        a = self.settings['fav_lang'][l]['run_args']
-                        self.settings['run'][l]['args']=a
-                
+    def viewFileBrowser(self):
+        if 'filebrowser' in self.pluginD:
+            if self.ui.fr_left.isHidden():
+                self.ui.fr_left.setVisible(1)
+            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
+            self.ui.tab_left.setCurrentIndex(i)
     
-##    def loadSetup(self):
-##        # Geometry 
-##        if os.path.exists(self.settingPath):
-##            # Load window settings
-##            if os.path.exists(self.settingPath+'/window'):
-##                f = open(self.settingPath+'/window','rb')
-##                wingeo = f.read()
-##                f.close()
-##                self.restoreState(wingeo)
-        
-    def openSettings(self):
-        self.openFile(self.settings_filename)
-
-    def saveSettings(self):
-        if self.zen:
-            self.toggleFullscreen()
-            QtGui.QApplication.processEvents()
-        
-        # Save Workspace
-        if self.workspace != None and int(self.settings['save_workspace_on_close']):
-            self.saveWorkspace()
-
-##        # Save Window Geometry
-##        f = open(self.settingPath+'/window','wb')
-##        f.write(self.saveState())
-##        f.close()
+    def toggleLeftSide(self):
+        self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
+    
+    def toggleRightSide(self):
+        self.ui.tab_right.setVisible(self.ui.tab_right.isHidden())
+    
+    #---   Bottom Plugins
+    def replaceFocus(self):
+        if 'find_replace' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['find_replace'].ui.le_find.setFocus()
+            self.pluginD['find_replace'].ui.le_find.selectAll()
+    
+    def qtHelp(self):
+        if 'qt2py' in self.pluginD:
+            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+        self.pluginD['qt2py'].ui.le_help.setFocus()
+        self.pluginD['qt2py'].ui.le_help.selectAll()
 
     #---Webview Preview
     def webview_preview(self,html,burl=None):
@@ -1150,41 +1149,6 @@ class Armadillo(QtGui.QMainWindow):
         i = self.ui.tab.currentIndex()+1
         if i == self.ui.tab.count():i=0
         self.ui.tab.setCurrentIndex(i)
-        
-    def replaceFocus(self):
-        if 'find_replace' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['find_replace'].ui.le_find.setFocus()
-            self.pluginD['find_replace'].ui.le_find.selectAll()
-    
-    def qtHelp(self):
-        if 'qt2py' in self.pluginD:
-            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-        self.pluginD['qt2py'].ui.le_help.setFocus()
-        self.pluginD['qt2py'].ui.le_help.selectAll()
-    
-    #---   Left Sidebar
-    def updateOutline(self):
-        if 'outline' in self.pluginD:
-            wdg = self.ui.sw_main.currentWidget()
-            if self.ui.fr_left.isHidden():
-                self.ui.fr_left.setVisible(1)
-            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
-            self.ui.tab_left.setCurrentIndex(i)
-            if 'getText' in dir(wdg):
-                self.pluginD['outline'].updateOutline(wdg)
-    
-    def viewFileBrowser(self):
-        if 'filebrowser' in self.pluginD:
-            if self.ui.fr_left.isHidden():
-                self.ui.fr_left.setVisible(1)
-            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
-            self.ui.tab_left.setCurrentIndex(i)
-    
-    def toggleLeftSide(self):
-        self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
     
     #---Workspace
     def saveWorkspace(self):
@@ -1315,7 +1279,79 @@ class Armadillo(QtGui.QMainWindow):
             self.addStart()
         
         return ok
+
+    #---Settings
+    def loadSettings(self):
+        # Create settings directory
+        if not os.path.exists(self.settingPath):
+            os.mkdir(self.settingPath)
+        
+        if not os.path.exists(self.settingPath+'/settings.conf'):
+            import shutil
+            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
+
+        from plugins.configobj import configobj
+        self.settings_filename = self.settingPath+'/settings.conf'
+        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
+        try:
+            user_config = configobj.ConfigObj(self.settings_filename)
+            if type(user_config['editors'])==type([]): # Check editor settings 
+                error
+            config.merge(user_config)
+        except:
+            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings<Br><br><i>Compare your settings with the default_settings</i>')
+        self.settings = config
+
+        # Configure Settings
+        self.settings['run']={}
+        for l in self.settings['fav_lang']:
+            ok = 1
+            # Remove default languages if not in user config
+            if 'fav_lang' in user_config:
+                if l not in user_config['fav_lang']:
+                    self.settings['fav_lang'].pop(l)
+                    ok = 0
+                    
+            if ok:
+                # Make sure editor in settings
+                if not 'editor' in self.settings['fav_lang'][l]:
+                    self.settings['fav_lang'][l]['editor']=None
+            
+                # add run to settings
+                if 'run' in self.settings['fav_lang'][l]:
+                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':''}
+                    if 'run_args' in self.settings['fav_lang'][l]:
+                        a = self.settings['fav_lang'][l]['run_args']
+                        self.settings['run'][l]['args']=a
+                
     
+##    def loadSetup(self):
+##        # Geometry 
+##        if os.path.exists(self.settingPath):
+##            # Load window settings
+##            if os.path.exists(self.settingPath+'/window'):
+##                f = open(self.settingPath+'/window','rb')
+##                wingeo = f.read()
+##                f.close()
+##                self.restoreState(wingeo)
+        
+    def openSettings(self):
+        self.openFile(self.settings_filename)
+
+    def saveSettings(self):
+        if self.zen:
+            self.toggleFullscreen()
+            QtGui.QApplication.processEvents()
+        
+        # Save Workspace
+        if self.workspace != None and int(self.settings['save_workspace_on_close']):
+            self.saveWorkspace()
+
+##        # Save Window Geometry
+##        f = open(self.settingPath+'/window','wb')
+##        f.write(self.saveState())
+##        f.close()
+
     #---FileModify Checker
     def checkFileChanges(self):
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:

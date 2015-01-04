@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>695</width>
-    <height>381</height>
+    <width>742</width>
+    <height>389</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -73,6 +73,22 @@ QPushButton:hover,QToolButton:hover {
        <property name="spacing">
         <number>0</number>
        </property>
+       <item row="0" column="12">
+        <spacer name="horizontalSpacer_10">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
        <item row="0" column="3">
         <widget class="QToolButton" name="b_save">
          <property name="minimumSize">
@@ -105,22 +121,6 @@ QPushButton:hover,QToolButton:hover {
            <normaloff>img/save.png</normaloff>img/save.png</iconset>
          </property>
         </widget>
-       </item>
-       <item row="0" column="12">
-        <spacer name="horizontalSpacer_10">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>6</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
        </item>
        <item row="0" column="13">
         <widget class="QToolButton" name="b_help">
@@ -252,6 +252,22 @@ QPushButton::menu-indicator {
            <normaloff>img/workspace.png</normaloff>img/workspace.png</iconset>
          </property>
         </widget>
+       </item>
+       <item row="0" column="9">
+        <spacer name="horizontalSpacer_9">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Fixed</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>6</width>
+           <height>20</height>
+          </size>
+         </property>
+        </spacer>
        </item>
        <item row="0" column="0">
         <widget class="QPushButton" name="b_new">
@@ -670,27 +686,72 @@ border-radius:3px;</string>
          </property>
         </spacer>
        </item>
-       <item row="0" column="9">
-        <spacer name="horizontalSpacer_9">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Fixed</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
+      </layout>
+     </widget>
+    </item>
+    <item row="0" column="0">
+     <widget class="QFrame" name="fr_tabs">
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <property name="spacing">
+        <number>2</number>
+       </property>
+       <property name="leftMargin">
+        <number>4</number>
+       </property>
+       <property name="topMargin">
+        <number>2</number>
+       </property>
+       <property name="rightMargin">
+        <number>4</number>
+       </property>
+       <property name="bottomMargin">
+        <number>2</number>
+       </property>
+       <item>
+        <widget class="QPushButton" name="b_main">
+         <property name="minimumSize">
           <size>
-           <width>6</width>
-           <height>20</height>
+           <width>32</width>
+           <height>24</height>
           </size>
          </property>
-        </spacer>
+         <property name="toolTip">
+          <string>Armidillo Menu</string>
+         </property>
+         <property name="styleSheet">
+          <string notr="true">QPushButton::menu-indicator {
+     image: url(none.png);
+}
+QPushButton {
+	border-radius:5px;
+	
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));
+}
+QPushButton:hover {
+	border-radius:3px;
+	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
+}</string>
+         </property>
+         <property name="text">
+          <string/>
+         </property>
+         <property name="icon">
+          <iconset>
+           <normaloff>img/menu.png</normaloff>img/menu.png</iconset>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
     </item>
     <item row="2" column="0">
-     <widget class="QSplitter" name="split_main">
+     <widget class="QSplitter" name="split_left">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -794,33 +855,6 @@ border-radius:3px;</string>
         <property name="spacing">
          <number>0</number>
         </property>
-        <item row="0" column="0">
-         <widget class="QSplitter" name="split_right">
-          <property name="orientation">
-           <enum>Qt::Vertical</enum>
-          </property>
-          <widget class="QStackedWidget" name="sw_main">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-          </widget>
-          <widget class="QStackedWidget" name="sw_bottom">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="currentIndex">
-            <number>0</number>
-           </property>
-           <widget class="QWidget" name="page"/>
-          </widget>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QFrame" name="fr_bottom">
           <property name="frameShape">
@@ -839,69 +873,41 @@ border-radius:3px;</string>
           </layout>
          </widget>
         </item>
+        <item row="0" column="0">
+         <widget class="QSplitter" name="split_bottom">
+          <property name="orientation">
+           <enum>Qt::Vertical</enum>
+          </property>
+          <widget class="QSplitter" name="split_right">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <widget class="QStackedWidget" name="sw_main">
+            <property name="sizePolicy">
+             <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+              <horstretch>0</horstretch>
+              <verstretch>0</verstretch>
+             </sizepolicy>
+            </property>
+           </widget>
+           <widget class="QTabWidget" name="tab_right"/>
+          </widget>
+          <widget class="QStackedWidget" name="sw_bottom">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="currentIndex">
+            <number>0</number>
+           </property>
+           <widget class="QWidget" name="page"/>
+          </widget>
+         </widget>
+        </item>
        </layout>
       </widget>
-     </widget>
-    </item>
-    <item row="0" column="0">
-     <widget class="QFrame" name="fr_tabs">
-      <property name="frameShape">
-       <enum>QFrame::NoFrame</enum>
-      </property>
-      <property name="frameShadow">
-       <enum>QFrame::Raised</enum>
-      </property>
-      <layout class="QHBoxLayout" name="horizontalLayout">
-       <property name="spacing">
-        <number>2</number>
-       </property>
-       <property name="leftMargin">
-        <number>4</number>
-       </property>
-       <property name="topMargin">
-        <number>2</number>
-       </property>
-       <property name="rightMargin">
-        <number>4</number>
-       </property>
-       <property name="bottomMargin">
-        <number>2</number>
-       </property>
-       <item>
-        <widget class="QPushButton" name="b_main">
-         <property name="minimumSize">
-          <size>
-           <width>32</width>
-           <height>24</height>
-          </size>
-         </property>
-         <property name="toolTip">
-          <string>Armidillo Menu</string>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QPushButton::menu-indicator {
-     image: url(none.png);
-}
-QPushButton {
-	border-radius:5px;
-	
-	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));
-}
-QPushButton:hover {
-	border-radius:3px;
-	background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));
-}</string>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>img/menu.png</normaloff>img/menu.png</iconset>
-         </property>
-        </widget>
-       </item>
-      </layout>
      </widget>
     </item>
    </layout>
