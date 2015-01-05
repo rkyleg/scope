@@ -19,8 +19,11 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
         self.ui.le_root.returnPressed.connect(self.loadRoot)
-
+        
+        # Set default path
         self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
+        if self.armadillo.settings['plugins']['filebrowser']['defaultPath']!='':
+            self.ui.le_root.setText(self.armadillo.settings['plugins']['filebrowser']['defaultPath']) 
         self.loadRoot()
         
         self.ui.tr_dir.contextMenuEvent = self.fileMenu

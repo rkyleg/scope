@@ -143,17 +143,18 @@ You can also customize the editor settings like theme, showPrintMargin (for Ace 
 If you need to specify that a file extension goes with a specific language.
 
 ### Plugins
-        
+Settings used by the plugins.
+
         [plugins]
             [[outline]]
                 alwaysUpdate=0 # 1 to always update, 0 to update on save
         
             [[filebrowser]]
                 showAll=0
+                defaultPath= # Default path to open (leave blank to open to user home directory)
                 
             [[snippets]]
                 path=/home/hdesktop/snippets
-        
-Specify settings for the look and naming of the plugins.  This is only for initial loading.  If you move the plugins around, the window state will be saved on close and this setting will be ignored.
+
 
 - plugins - plugin specific settings
