@@ -13,7 +13,7 @@ Settings are stored in the *.armadillo* folder in your user home directory.  Set
 
 *Do not modify the default_settings.conf file as any updates to Armadillo will overwrite the settings here*
 
-## settings.conf
+## ![](../img/wrench.png) settings.conf
 The settings.conf file contains the main settings to customize Armadillo.  The file format is [ConfigObj](http://www.voidspace.org.uk/python/configobj.html)  - a modified ini.
 
 ### Notes
@@ -65,6 +65,8 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - width/height - specify default width or height the plugin window is opened to
 
 ### Editor Settings
+Default settings for the editors. These settings are overwritten by language specific settings (if set).  See Favorite Languages below.
+
         [editors]
             [[ace]]
                 wordwrap=0
@@ -82,6 +84,21 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
 - editors
     - a dictionary of editors and their default settings
     - Not all editors use the same settings
+- **Ace Editor** has additional settings:
+    - theme
+        - theme of editor
+    - behavioursEnabled
+        - ace behavioiurs
+        - default = 1
+    - wrapBehavioursEnabled
+        - ace wrapBehaviours
+        - default = 1
+    - fontSize
+        - font size of editor
+        - default = 12
+    - showPrintMargin
+        - show the print margin
+        - default = 0
 
 
 ### Favorite Languages (fav_lang)
@@ -113,22 +130,7 @@ The available (and default) parameters are:
     - a string of args to append to the run command (before the filename)
     - this is optional
 
-The Ace editor has additional settings:
-
-- theme
-    - theme of editor
-- behavioursEnabled
-    - ace behavioiurs
-    - default = 1
-- wrapBehavioursEnabled
-    - ace wrapBehaviours
-    - default = 1
-- fontSize
-    - font size of editor
-    - default = 12
-- showPrintMargin
-    - show the print margin
-    - default = 0
+You can also customize the editor settings like theme, showPrintMargin (for Ace Editor) for each language. Use the same keys/values as listed for the editors.
 
 
 ### Extensions
