@@ -2,10 +2,10 @@
 Armadillo is a lightweight, cross-platform IDE for Python, web development and more. Armadillo is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 # Screenshots
-<a href="extra/screenshot.png" target="_blank"><img src="extra/screenshot.png" height=150></a>
-<a href="extra/screenshot_home.png" target="_blank"><img src="extra/screenshot_home.png" height=150></a>
-<a href="extra/screenshot_output.png" target="_blank"><img src="extra/screenshot_output.png" height=150></a>
-<a href="extra/screenshot_output.png" target="_blank"><img src="extra/screenshot_full_editor_mode.png" height=150></a>
+<a href="extra/screenshot.png" target="_blank" title="Editor with Outline"><img src="extra/screenshot.png" height=150></a>
+<a href="extra/screenshot_home.png" target="_blank" title="Home/Startup Screen"><img src="extra/screenshot_home.png" height=150></a>
+<a href="extra/screenshot_output.png" target="_blank" title="Running a file"><img src="extra/screenshot_output.png" height=150></a>
+<a href="extra/screenshot_full_editor_mode.png" target="_blank" title="Full Editor Mode"><img src="extra/screenshot_full_editor_mode.png" height=150></a>
 
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)
