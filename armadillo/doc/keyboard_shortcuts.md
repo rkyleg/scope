@@ -48,11 +48,11 @@
 		</tr>
 		<tr>
 			<td>F10</td>
-			<td>Toggle Editor Zen Mode - hide widgets and button toolbar</td>
+			<td>Toggle Full Editor Mode - hide plugins and toolbar, but keep tabs</td>
 		</tr>
 		<tr>
 			<td>F11</td>
-			<td>Toggle Zen Mode - full screen and hide everything</td>
+			<td>Toggle Full Screen Mode - full screen and hide everything</td>
 		</tr>
 		<tr>
 			<td>F12</td>
