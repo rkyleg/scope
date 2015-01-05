@@ -8,8 +8,7 @@
 [x] add word wrap, etc. to menu
 [] interact with output
 [] fix outline tracking/updating (not quite right)
-[] at right side plugin (for preview, hide by default if no plugins)
-[] add plugin location to settings (as option)
+
 
 ## Settings/Profile Redesign
 - create settings profiles
@@ -142,6 +141,8 @@
 - [] update plugin style
 - [] new plugin - open files plugin (sort by type)
 - [] bookmark plugin (have categories, searchable)
+- [x] at right side plugin (for preview, hide by default if no plugins)
+- [x] add plugin location to settings (as option)
 
 ### Outline
 - Languages to add

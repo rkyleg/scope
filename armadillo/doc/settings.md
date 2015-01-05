@@ -42,6 +42,28 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - the list of active editors to load
 - activePlugins - these are the plugins loaded on start
 
+### Window Settings
+        [window]
+            openMode=1
+            [[pluginLeft]]
+                width=260
+                visible=1
+            [[pluginBottom]]
+                visible=1
+                height=180
+            [[pluginRight]]
+                visible=0
+                width=300
+
+- openMode - size the editor opens as
+    - 1 = almost maximum (-50 pixels)
+    - 2 = maximize
+- pluginLeft, pluginBottom, pluginRight
+    - visible 
+        - 1 = visible
+        - 0 = hidden by default (can be made visible through the Main Menu > Window menu
+    - width/height - specify default width or height the plugin window is opened to
+
 ### Editor Settings
         [editors]
             [[ace]]
