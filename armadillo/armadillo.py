@@ -6,12 +6,12 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.3.5'
+__version__ = '1.4.0'
 
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
-from armadillo_ui import Ui_MainWindow
+from armadillo_ui import Ui_Form
 import os,shutil,datetime, webbrowser, threading
 
 class Events(QtCore.QObject):
@@ -175,6 +175,12 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
         self.runAction = self.editorMenu.addAction(icn,'Run (F5)',self.parent.editorRun)
         
+        self.editorMenu.addSeparator()
+        
+        # Stats
+        icn = QtGui.QIcon()
+        self.statsAction = self.editorMenu.addAction(icn,'Statistics',self.parent.editorStats)
+        
         #---Window
         self.viewMenu=QtGui.QMenu('Window')
         self.addMenu(self.viewMenu)
@@ -223,7 +229,7 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
         self.addAction(icn,'Exit',self.parent.close)
         
-class Armadillo(QtGui.QMainWindow):
+class Armadillo(QtGui.QWidget):
     def __init__(self, parent=None):
 
         # Version
@@ -231,7 +237,7 @@ class Armadillo(QtGui.QMainWindow):
 
         # Setup UI
         QtGui.QMainWindow.__init__(self, parent)
-        self.ui = Ui_MainWindow()
+        self.ui = Ui_Form()
         self.ui.setupUi(self)
         
         #--- Paths
@@ -305,8 +311,6 @@ class Armadillo(QtGui.QMainWindow):
         self.ui.tab.currentChanged.connect(self.changeTab)
         self.ui.tab.tabCloseRequested.connect(self.closeTab)
         self.ui.tab.setExpanding(0)
-        
-        self.setAcceptDrops(1)
         
         #--- Signals
         self.ui.b_open.clicked.connect(self.openFile)
@@ -485,7 +489,7 @@ class Armadillo(QtGui.QMainWindow):
             self.showFullScreen()
             
     def setZen(self,zen,editor_zen=0):
-        self.ui.statusbar.setVisible(not zen)
+        self.ui.l_statusbar.setVisible(not zen)
         self.ui.fr_toolbar.setVisible(not zen)
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
@@ -585,7 +589,7 @@ class Armadillo(QtGui.QMainWindow):
         return self.ui.sw_main.currentWidget()
 
     def changeTab(self,tab_ind):
-        self.ui.statusbar.showMessage('')
+        self.ui.l_statusbar.setText('')
 
         if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
@@ -624,6 +628,7 @@ class Armadillo(QtGui.QMainWindow):
             ['getText',self.ui.b_save],
             ['toggleWordWrap',self.armadilloMenu.wordwrapAction],
             ['toggleWhitespace',self.armadilloMenu.whitespaceAction],
+            ['getText',self.armadilloMenu.statsAction],
             
 ##            'toggleWordWrap':self.ui.b_wordwrap,
 ##            'toggleWhitespace':self.ui.b_whitespace,
@@ -673,7 +678,7 @@ class Armadillo(QtGui.QMainWindow):
             else:
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
         except:
-            self.ui.statusbar.showMessage('Error: text changed signal')
+            self.ui.l_statusbar.setText('Error: text changed signal')
         # Check for file changes
 ##        self.checkFileChanges()
     
@@ -787,7 +792,7 @@ class Armadillo(QtGui.QMainWindow):
                         ok =1 
                 except:
                     ok=1
-                    self.ui.statusbar.showMessage('Error: checking save')
+                    self.ui.l_statusbar.setText('Error: checking save')
             else: # Ignore checksave if no getText
                 ok=1
         return ok
@@ -821,11 +826,11 @@ class Armadillo(QtGui.QMainWindow):
                 f.close()
                 wdg.lastText = txt
                 wdg.modTime = os.path.getmtime(filename)
-                self.ui.statusbar.showMessage('Saved: '+wdg.title,3000)#+' at '+datetime.datetime.now().ctime(),3000)
+                self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
                 self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
-                self.ui.statusbar.showMessage('Error Saving: '+filename,10000)
+                self.ui.l_statusbar.setText('Error Saving: '+filename)
             
             # Save Signal
             self.evnt.editorSaved.emit(wdg)
@@ -924,7 +929,15 @@ class Armadillo(QtGui.QMainWindow):
 
             except:
                 QtGui.QMessageBox.warning(self,'Cannot Print','There was an error printing this document')
-            
+    
+    def editorStats(self):
+        wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
+        if 'getText' in dir(wdg):
+            txt = wdg.getText()
+            lines = len(txt.split('\n'))
+            words = len(txt.split())
+            self.ui.l_statusbar.setText('Lines: %d    Words: %d' %(lines,words))
+    
     #---Plugins
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
@@ -1385,9 +1398,6 @@ class Armadillo(QtGui.QMainWindow):
             if not chngs:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
-
-
-
 
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))

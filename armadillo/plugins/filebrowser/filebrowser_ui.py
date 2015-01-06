@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Sun Feb  9 16:24:41 2014
-#      by: PyQt4 UI code generator 4.10.3
+# Created: Mon Jan  5 23:07:57 2015
+#      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -35,10 +35,13 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(8)
         self.le_root.setFont(font)
-        self.le_root.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(34, 34,34, 255), stop:0.174129 rgba(65, 65, 65, 255), stop:0.890547 rgba(104, 104, 104, 255), stop:1 rgba(128, 128, 128, 255));\n"
+        self.le_root.setStyleSheet(_fromUtf8("    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));\n"
 "color:white;\n"
 "border:0px;\n"
-"border-bottom:1px solid gray;"))
+"border-bottom:1px solid gray;\n"
+"padding:2px;\n"
+"border-top-left-radius:3px;\n"
+"border-top-right-radius:3px;"))
         self.le_root.setProperty("class", _fromUtf8(""))
         self.le_root.setObjectName(_fromUtf8("le_root"))
         self.gridLayout.addWidget(self.le_root, 0, 0, 1, 1)

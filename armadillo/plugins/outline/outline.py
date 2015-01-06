@@ -1,16 +1,19 @@
 from PyQt4 import QtGui, QtCore
 from outline_ui import Ui_Form
+from outline_tree_ui import Ui_Outline_Tree
 import re, os, importlib
 
-class outlineTree(QtGui.QTreeWidget):
+class outlineTree(QtGui.QWidget):
     def __init__(self,parent=None):
-        QtGui.QTreeWidget.__init__(self,parent)
-        self.setHeaderHidden(1)
-        self.setRootIsDecorated(0)
-        self.setStyleSheet("""QTreeWidget {
-            border-bottom-left-radius:5px;
-            border-bottom-right-radius:5px;
-            }""")
+        QtGui.QWidget.__init__(self,parent)
+        self.ui = Ui_Outline_Tree()
+        self.ui.setupUi(self)
+##        self.setHeaderHidden(1)
+##        self.setRootIsDecorated(0)
+##        self.setStyleSheet("""QTreeWidget {
+##            border-bottom-left-radius:5px;
+##            border-bottom-right-radius:5px;
+##            }""")
         self.setProperty("class","pluginVertical")
         self.parent = parent
 
@@ -64,13 +67,15 @@ class Outline(QtGui.QWidget):
         return None,None
         
     def addOutline(self,wdg):
-        trwdg = outlineTree(parent=self)
+        owdg = outlineTree(parent=self)
+        owdg.ui.l_title.setText(wdg.title)
+        trwdg = owdg.ui.tr_outline
         sw_ind = self.ui.sw_outline.count()
-        self.ui.sw_outline.insertWidget(sw_ind,trwdg)
+        self.ui.sw_outline.insertWidget(sw_ind,owdg)
         self.ui.sw_outline.setCurrentIndex(sw_ind)
 
-        self.wdgD[wdg] = trwdg
-        self.treeD[trwdg]=wdg
+        self.wdgD[wdg] = owdg
+        self.treeD[owdg]=wdg
 
         if self.alwaysUpdate==1:
             # Add Text Changed Signal
@@ -83,7 +88,7 @@ class Outline(QtGui.QWidget):
         trwdg.contextMenuEvent = self.outlineMenu
 
     def updateOutline(self,wdg):
-        trwdg = self.wdgD[wdg]
+        trwdg = self.wdgD[wdg].ui.tr_outline
         if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
             # Select tab if language
 ##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
@@ -92,9 +97,9 @@ class Outline(QtGui.QWidget):
             trwdg.clear()
             
             # Add Filename
-            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
-            trwdg.addTopLevelItem(itm)
-            self.format(itm,'filename')
+##            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
+##            trwdg.addTopLevelItem(itm)
+##            self.format(itm,'filename')
             
             self.ui.le_find.setText('')
             txt = unicode(wdg.getText())
@@ -116,10 +121,10 @@ class Outline(QtGui.QWidget):
                 self.updateLocation(wdg,lines)
     
     def updateLocation(self,wdg,lines):
-        trwdg = self.wdgD[wdg]
+        trwdg = self.wdgD[wdg].ui.tr_outline
         hi=0
         brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
-        for t in range(trwdg.topLevelItemCount()-1,0,-1):
+        for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))
             if line>=lines[0] and line<=lines[1]:
@@ -135,7 +140,7 @@ class Outline(QtGui.QWidget):
             
     def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')
-        trwdg = self.ui.sw_outline.currentWidget()
+        trwdg = self.ui.sw_outline.currentWidget().ui.tr_outline
         menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Update (F3)')
         menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'search.png'),'Find')
         act = menu.exec_(trwdg.cursor().pos())
@@ -148,17 +153,16 @@ class Outline(QtGui.QWidget):
                 self.ui.le_find.setFocus()
         
     def editorTabChanged(self,wdg):
-        trwdg = self.wdgD[wdg]
-        self.ui.sw_outline.setCurrentWidget(trwdg)
+        owdg = self.wdgD[wdg]
+        self.ui.sw_outline.setCurrentWidget(owdg)
         self.updateOutline(wdg)
         self.ui.le_find.clear()
         self.ui.fr_find.hide()
         
     def editorTabClosed(self,wdg):
-        trwdg = self.wdgD[wdg]
+        owdg = self.wdgD[wdg]
         self.wdgD.pop(wdg)
-        self.ui.sw_outline.removeWidget(trwdg)
-        
+        self.ui.sw_outline.removeWidget(owdg)
         
     def goto(self,itm,col):
         line = int(str(itm.text(1)))

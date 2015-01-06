@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>Form</class>
- <widget class="QWidget" name="Form">
+ <class>Outline_Tree</class>
+ <widget class="QWidget" name="Outline_Tree">
   <property name="geometry">
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>231</width>
-    <height>434</height>
+    <width>196</width>
+    <height>308</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>File Browser</string>
+   <string>Form</string>
   </property>
   <layout class="QGridLayout" name="gridLayout">
    <property name="margin">
@@ -21,10 +21,11 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QLineEdit" name="le_root">
+    <widget class="QLabel" name="l_title">
      <property name="font">
       <font>
-       <pointsize>8</pointsize>
+       <weight>75</weight>
+       <bold>true</bold>
       </font>
      </property>
      <property name="styleSheet">
@@ -37,51 +38,24 @@ border-top-left-radius:3px;
 border-top-right-radius:3px;</string>
      </property>
      <property name="text">
-      <string>/</string>
-     </property>
-     <property name="placeholderText">
-      <string>Enter Root Path</string>
-     </property>
-     <property name="class" stdset="0">
       <string/>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
      </property>
     </widget>
    </item>
    <item row="1" column="0">
-    <widget class="QTreeWidget" name="tr_dir">
+    <widget class="QTreeWidget" name="tr_outline">
      <property name="styleSheet">
       <string notr="true">QTreeWidget {
 border-bottom-left-radius:5px;
 border-bottom-right-radius:5px;
 show-decoration-selected: 0;
-}
-QTreeWidget::branch {  border-image: url(none.png); }
-
- QTreeWidget::branch:has-siblings:!adjoins-item {
-     border-image: url(img/vline.png) 0;
- }
- QTreeWidget::branch:has-siblings:adjoins-item {
-     border-image: url(img/branch-more.png) 0;
- }
-
- QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
-     border-image: url(img/branch-end.png) 0;
- }</string>
-     </property>
-     <property name="frameShape">
-      <enum>QFrame::NoFrame</enum>
-     </property>
-     <property name="indentation">
-      <number>12</number>
+}</string>
      </property>
      <property name="rootIsDecorated">
       <bool>false</bool>
-     </property>
-     <property name="expandsOnDoubleClick">
-      <bool>false</bool>
-     </property>
-     <property name="class" stdset="0">
-      <string>pluginVertical</string>
      </property>
      <attribute name="headerVisible">
       <bool>false</bool>

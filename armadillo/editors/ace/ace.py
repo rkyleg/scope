@@ -385,4 +385,5 @@ class WebView(QtWebKit.QWebView):
         return line_first,line_last
     
     def visibleLinesChanged(self):
+        print 'visible lines changed'
         self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
