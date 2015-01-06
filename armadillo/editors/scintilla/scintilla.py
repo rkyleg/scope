@@ -96,7 +96,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setMarginWidth(0, fontmetrics.width("00000"))
         self.ui.te_sci.setMarginWidth(1, 0)
         self.ui.te_sci.setMarginLineNumbers(0, True)
-        self.ui.te_sci.setMarginsBackgroundColor(QColor("#cccccc"))
+        self.ui.te_sci.setMarginsBackgroundColor(QColor("#dddddd"))
 
         # Default to autocomplete
         self.autocompletemode=0
@@ -120,7 +120,7 @@ class Sci(QtGui.QWidget):
 
         # Current line visible with special background color
         self.ui.te_sci.setCaretLineVisible(True)
-        self.ui.te_sci.setCaretLineBackgroundColor(QColor("#eeeeee"))
+        self.ui.te_sci.setCaretLineBackgroundColor(QColor(195,216,224,50))
         self.ui.te_sci.setEolMode(Qsci.QsciScintilla.EolUnix)
         self.ui.te_sci.setEolVisibility(int(self.settings['showWhitespace']))
         

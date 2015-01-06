@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Jan  5 23:29:09 2015
+# Created: Tue Jan  6 00:05:24 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -401,7 +401,7 @@ class Ui_Form(object):
         self.gridLayout_8.addWidget(self.fr_tabs, 0, 0, 1, 1)
         self.l_statusbar = QtGui.QLabel(Form)
         self.l_statusbar.setStyleSheet(_fromUtf8("QLabel {\n"
-"padding-left:4px;\n"
+"padding-left:2px;\n"
 "padding-top:2px;\n"
 "}"))
         self.l_statusbar.setObjectName(_fromUtf8("l_statusbar"))

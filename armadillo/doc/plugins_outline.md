@@ -3,12 +3,12 @@
 # [Home](start.html) | [Plugins](plugins.md) | Outline
 
 - The Outline plugin outlines the code structure to help with organization
-- Provides links to get to code sections
+- Double click on outline text to goto that section of code
 - Special comment formatting will add that comment into the outline
 - Utilizes existing spacing in code to format outline
-- Updates on save or right click update (setting available to update in realtime)
+- Updates on save or F3 or right click update (setting available to update in realtime)
 
-## Supported languages
+## Current Supported languages
 - Python
 - JavaScript
 - CSS

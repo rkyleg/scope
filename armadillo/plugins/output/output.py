@@ -234,7 +234,8 @@ class OutputPage(QtGui.QWidget):
         wdg.load2(url)
     
     def saveFile(self):
-        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Output",self.filename)
+        fname = os.path.split(self.filename)[-1].split('.')[0]
+        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Output",fname+'_output.txt')
         if filename!='':
             txt = self.ui.tb_out.toPlainText()
             txt = str(self.ui.tb_out.toPlainText().toUtf8()).decode('utf-8')

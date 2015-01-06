@@ -1,19 +1,4 @@
 # TODO
-[] save plugin profile (separate from workspace)
-[] ctrl+space - autocompletion in ace editor (switch scintilla to that?)
-[x] move output title over buttonbar (remove spaces from button bar)
-[x] Fix output killAll not removing from list
-[x] Rename dock to plugins
-[x] bug when opening workspace with one file - not enabling icons
-[x] add word wrap, etc. to menu
-[] interact with output
-[] fix outline tracking/updating (not quite right)
-
-
-## Settings/Profile Redesign
-- create settings profiles
-- store which profile used for a workspace
-- store which profile as default
 
 ## Armadillo Main
 - [x] Check if files edited/saved outside of editor at least some of the time (menu option)
@@ -48,6 +33,7 @@
 - [f] be able to change language
 - [x] Rename Zen mode to Full Editor and Full Screen
 - [x] Add view to menu
+- [] load widgets other than files
 
 ### Startpage
 - [x] Update theme
@@ -143,6 +129,7 @@
 - [] bookmark plugin (have categories, searchable)
 - [x] at right side plugin (for preview, hide by default if no plugins)
 - [x] add plugin location to settings (as option)
+- [] Grep like plugin (maybe combine with Find)
 
 ### Outline
 - Languages to add
@@ -160,6 +147,7 @@
 - [x] Option to update only on save (or by default)
 - [x] Refresh right click menu
 - [] Other that grabs --- comments
+- [] fix outline tracking/updating (not quite right)
 
 ### Python Console
 - [x] Fix mouse cursor messing up code

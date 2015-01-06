@@ -910,7 +910,7 @@ QPushButton:hover {
     <widget class="QLabel" name="l_statusbar">
      <property name="styleSheet">
       <string notr="true">QLabel {
-padding-left:4px;
+padding-left:2px;
 padding-top:2px;
 }</string>
      </property>
