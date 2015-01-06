@@ -116,6 +116,8 @@ class WebView(QtWebKit.QWebView):
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
         js += "editor.getSession().on('changeScrollTop',function (e) {pythonjs.visibleLinesChanged()});"
         
+        self.page().mainFrame().evaluateJavaScript(js)
+        
         self.setup()
         
     def setup(self):
@@ -385,5 +387,4 @@ class WebView(QtWebKit.QWebView):
         return line_first,line_last
     
     def visibleLinesChanged(self):
-        print 'visible lines changed'
         self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
