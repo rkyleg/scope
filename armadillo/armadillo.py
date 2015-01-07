@@ -253,6 +253,8 @@ class Armadillo(QtGui.QWidget):
         self.fileLastCheck = time.time()
         QtGui.QApplication.setStyle(self.settings['widgetstyle'])
         
+        self.setAcceptDrops(1)
+        
 ##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
 ##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
