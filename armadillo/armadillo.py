@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.4.0'
+__version__ = '1.4.1'
 
 
 import sys, json, codecs, time, importlib
@@ -236,7 +236,7 @@ class Armadillo(QtGui.QWidget):
         self.version = __version__
 
         # Setup UI
-        QtGui.QMainWindow.__init__(self, parent)
+        QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         
@@ -380,7 +380,7 @@ class Armadillo(QtGui.QWidget):
         
         #--- Plugins
         # Plugin tab bar
-        self.ui.fr_left_hidden.hide()
+##        self.ui.fr_left_hidden.hide()
         self.ui.tabbar_bottom = QtGui.QTabBar()
         self.ui.fr_bottom.layout().addWidget(self.ui.tabbar_bottom)
         self.ui.tabbar_bottom.currentChanged.connect(self.pluginBottomChange)
@@ -464,7 +464,7 @@ class Armadillo(QtGui.QWidget):
             handled=True
 
         if not handled:
-            QtGui.QMainWindow.dropEvent(self,event)
+            QtGui.QWidget.dropEvent(self,event)
 
     def dragEvent(self,event):
         event.accept()
@@ -611,10 +611,6 @@ class Armadillo(QtGui.QWidget):
             
         self.ui.b_run.setEnabled(run_enabled)
         self.armadilloMenu.runAction.setEnabled(run_enabled)
-        
-        # Enable Compile
-        self.ui.b_compile.setEnabled(0)
-        self.ui.b_compile.hide()
         
         # Disable buttons based on function availability
         btnD = [

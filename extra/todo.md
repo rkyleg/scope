@@ -34,6 +34,7 @@
 - [x] Rename Zen mode to Full Editor and Full Screen
 - [x] Add view to menu
 - [] load widgets other than files
+- [] hide statusbar text after a given time
 
 ### Startpage
 - [x] Update theme
@@ -130,6 +131,7 @@
 - [x] at right side plugin (for preview, hide by default if no plugins)
 - [x] add plugin location to settings (as option)
 - [] Grep like plugin (maybe combine with Find)
+- [] Plugin Tab Text show setting
 
 ### Outline
 - Languages to add
