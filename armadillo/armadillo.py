@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.4.1'
+__version__ = '1.4.2'
 
 
 import sys, json, codecs, time, importlib
@@ -201,8 +201,7 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Full Screen
         icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
-        self.zenF11Action = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
-        
+        self.fullScreenAction = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
@@ -352,7 +351,7 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
-        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleBottomTab) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
@@ -402,8 +401,8 @@ class Armadillo(QtGui.QWidget):
         
         #--- Other Setup
         # Default zen mode
-        self.zen = 0
-        self.editor_zen = 0
+        self.fullscreen_mode = 0
+        self.editor_fullmode = 0
         
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
@@ -474,23 +473,10 @@ class Armadillo(QtGui.QWidget):
     def dragEnterEvent(self,event):
         event.accept()
     
-    #---Fullscreen/Zen Modes
+    #---Fullscreen Modes
     def toggleFullEditor(self):
-        self.editor_zen = not self.editor_zen
-        self.setZen(self.editor_zen,editor_zen=1)
-        if self.editor_zen:
-            self.armadilloMenu.fullEditorAction.setText('Exit Full Editor Mode')
-        else:
-            self.armadilloMenu.fullEditorAction.setText('Full Editor Mode (F10)')
-            
-    def toggleFullscreen(self):
-        self.zen = not self.zen
-        self.setZen(self.zen)
-        if self.zen:
-            self.ui.fr_tabs.hide()
-            self.showFullScreen()
-            
-    def setZen(self,zen,editor_zen=0):
+        self.editor_fullmode = not self.editor_fullmode
+        zen=self.editor_fullmode
         self.ui.l_statusbar.setVisible(not zen)
         self.ui.fr_toolbar.setVisible(not zen)
         self.ui.fr_left.setVisible(not zen)
@@ -501,12 +487,24 @@ class Armadillo(QtGui.QWidget):
             self.pluginBottomChange(0)
         else:
             self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
-            
-            self.zen = self.editor_zen = 0
         
-        if not zen or editor_zen:
-            self.ui.fr_tabs.show()
+        if self.editor_fullmode:
+            self.armadilloMenu.fullEditorAction.setText('Exit Full Editor Mode')
+        else:
+            self.armadilloMenu.fullEditorAction.setText('Full Editor Mode (F10)')
+            
+    def toggleFullscreen(self):
+        self.fullscreen_mode = not self.fullscreen_mode
+        if self.fullscreen_mode:
+            self.showFullScreen()
+            self.editor_fullmode=0
+            self.toggleFullEditor()
+            self.armadilloMenu.fullScreenAction.setText('Exit Full Screen Mode (F11)')
+        else:
+            self.armadilloMenu.fullScreenAction.setText('Full Screen (F11)')
             self.showNormal()
+            if self.editor_fullmode:
+                self.toggleFullEditor()
 
     #---File
     def isFileOpen(self,filename):
@@ -1350,7 +1348,7 @@ class Armadillo(QtGui.QWidget):
         self.openFile(self.settings_filename)
 
     def saveSettings(self):
-        if self.zen:
+        if self.fullscreen_mode:
             self.toggleFullscreen()
             QtGui.QApplication.processEvents()
         

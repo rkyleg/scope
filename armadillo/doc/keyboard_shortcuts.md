@@ -28,11 +28,11 @@
 		</tr>
 		<tr>
 			<td>F2</td>
-			<td>Raise/Open File Browser</td>
+			<td>Raise File Browser plugin</td>
 		</tr>
 		<tr>
 			<td>F3</td>
-			<td>Refresh/Raise Outline</td>
+			<td>Refresh/Raise Outline plugin</td>
 		</tr>
 		<tr>
 			<td>F4</td>
@@ -43,7 +43,7 @@
 			<td>Run</td>
 		</tr>
 		<tr>
-			<td>F8</td>
+			<td>F9</td>
 			<td>Hide/Show bottom plugin bar</td>
 		</tr>
 		<tr>

@@ -116,7 +116,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setFolding(Qsci.QsciScintilla.BoxedTreeFoldStyle)
         self.ui.te_sci.setTabWidth(4)
         
-        self.ui.te_sci.setWrapIndentMode(Qsci.QsciScintilla.WrapIndentIndented)
+##        self.ui.te_sci.setWrapIndentMode(Qsci.QsciScintilla.WrapIndentIndented)
 
         # Current line visible with special background color
         self.ui.te_sci.setCaretLineVisible(True)

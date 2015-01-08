@@ -24,8 +24,7 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
     - Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
     - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
     - Easiest way to install for Debian/Ubuntu in command Window:
-        - \> su
-        - \> apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
+        - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 3. Run armadillo/armadillo.py
 
 ### Windows Executable
