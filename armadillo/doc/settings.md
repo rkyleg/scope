@@ -101,19 +101,24 @@ Default settings for the editors. These settings are overwritten by language spe
         - default = 0
 
 
-### Favorite Languages (fav_lang)
-        [[default]] # Default settings for all editors
-            editor=scintilla
-            wordwrap=0
-        [[javascript]]
-            editor=ace
-            run=/home/convolutedlogic/nodejs/bin/node
-            run_args=-i
-        [[markdown]]
-            editor=ace
-            wordwrap=1
+### Programming Languages (prog_lang)
+Programming language specific settings. Set theme and editor for each language. If no parameter is specified, the default is used.  The double bracket indicates the language.  For the full list of languages available to each editor, look in the new menu for each editor.  The default settings for all languages not specified is listed as `[[default]]`
 
-Different settings for the editor can be set for the default and each language.  If no parameter is specified, the default is used.  The double bracket indicates the language.  For the full list of languages look in the new menu for each editor.  The default for all languages is listed as `[[default]]`
+        [prog_lang]
+            [[default]] # Default settings for all editors
+                editor=scintilla
+                wordwrap=0
+            [[javascript]]
+                editor=ace
+                run=/home/convolutedlogic/nodejs/bin/node
+                run_args=-i
+            [[markdown]]
+                editor=ace
+                wordwrap=1
+            [[ini]]
+                editor=ace
+                theme=vibrant_ink
+                fave=0  # default is 1
 
 The available (and default) parameters are:
 
@@ -129,18 +134,23 @@ The available (and default) parameters are:
 - run_args
     - a string of args to append to the run command (before the filename)
     - this is optional
+- fave
+    - a favorite language and shows up in New menu and on home page
+    - this defaults to true (1) if not specified. set to 0 to not show in new menu
 
-You can also customize the editor settings like theme, showPrintMargin (for Ace Editor) for each language. Use the same keys/values as listed for the editors.
+You can also customize the editor settings like theme, showPrintMargin (for Ace Editor) for each language. Use the same keys/values as listed for the editor's settings.
 
 
 ### Extensions
+If you need to specify that a file extension goes with a specific language (languages are defined by the editor).
+
         [extensions]
             py=python
             pyw=python
             js=javascript
             htm=html
             style=css
-If you need to specify that a file extension goes with a specific language.
+            conf=ini
 
 ### Plugins
 Settings used by the plugins.

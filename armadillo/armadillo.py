@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.4.2'
+__version__ = '1.4.3'
 
 
 import sys, json, codecs, time, importlib
@@ -30,7 +30,7 @@ class NewMenu(QtGui.QMenu):
         self.setIcon(QtGui.QIcon(self.parent.iconPath+'new.png'))
         
         # Add Favorites First
-        for lang in sorted(parent.settings['fav_lang']):
+        for lang in sorted(parent.settings['prog_lang']):
             if lang != 'default':
                 icn = None
                 if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
@@ -689,15 +689,15 @@ class Armadillo(QtGui.QWidget):
         if filename == None and title=='New': title = 'New '+lang
         
         if editor == None:
-            if lang in self.settings['fav_lang']:
-                editor = self.settings['fav_lang'][lang]['editor']
+            if lang in self.settings['prog_lang']:
+                editor = self.settings['prog_lang'][lang]['editor']
             if editor == None:
                 if lang == 'webview':
                     editor = 'webview'
                 elif lang == 'settings':
                     editor = 'settings'
                 else:
-                    editor = self.settings['fav_lang']['default']['editor']
+                    editor = self.settings['prog_lang']['default']['editor']
                     
                     if lang not in self.editorD[editor]:
                         for e in self.editorD:
@@ -756,14 +756,14 @@ class Armadillo(QtGui.QWidget):
 
         # Set wordwrap if in settings
         QtGui.QApplication.processEvents()
-        if lang in self.settings['fav_lang']:
-            if 'wordwrap' in self.settings['fav_lang'][lang]:
-                wdg.wordwrapmode = int(self.settings['fav_lang'][lang]['wordwrap'])
+        if lang in self.settings['prog_lang']:
+            if 'wordwrap' in self.settings['prog_lang'][lang]:
+                wdg.wordwrapmode = int(self.settings['prog_lang'][lang]['wordwrap'])
                 self.editorWordWrap()
         
             # Set Autocomplete Toggle
-            if 'autocomplete' in self.settings['fav_lang'][lang]:
-                wdg.autocomplete = int(self.settings['fav_lang'][lang]['autocomplete'])
+            if 'autocomplete' in self.settings['prog_lang'][lang]:
+                wdg.autocomplete = int(self.settings['prog_lang'][lang]['autocomplete'])
                 if 'toggleAutoComplete' in dir(wdg):
                     wdg.toggleAutoComplete()
         
@@ -1099,8 +1099,8 @@ class Armadillo(QtGui.QWidget):
         
         # Add New File Links
         nfiles = ''
-        for lang in sorted(self.settings['fav_lang']):
-            if lang != 'default':
+        for lang in sorted(self.settings['prog_lang']):
+            if lang != 'default' and self.settings['prog_lang'][lang]['fave']:
                 icn = None
                 if os.path.exists(self.iconPath+'files/'+lang+'.png'):
                     icn = self.iconPath+'files/'+lang+'.png'
@@ -1313,25 +1313,31 @@ class Armadillo(QtGui.QWidget):
 
         # Configure Settings
         self.settings['run']={}
-        for l in self.settings['fav_lang']:
+        for l in self.settings['prog_lang']:
             ok = 1
             # Remove default languages if not in user config
-            if 'fav_lang' in user_config:
-                if l not in user_config['fav_lang']:
-                    self.settings['fav_lang'].pop(l)
+            if 'prog_lang' in user_config:
+                if l not in user_config['prog_lang']:
+                    self.settings['prog_lang'].pop(l)
                     ok = 0
                     
             if ok:
                 # Make sure editor in settings
-                if not 'editor' in self.settings['fav_lang'][l]:
-                    self.settings['fav_lang'][l]['editor']=None
+                if not 'editor' in self.settings['prog_lang'][l]:
+                    self.settings['prog_lang'][l]['editor']=None
             
                 # add run to settings
-                if 'run' in self.settings['fav_lang'][l]:
-                    self.settings['run'][l]={'cmd':self.settings['fav_lang'][l]['run'],'args':''}
-                    if 'run_args' in self.settings['fav_lang'][l]:
-                        a = self.settings['fav_lang'][l]['run_args']
+                if 'run' in self.settings['prog_lang'][l]:
+                    self.settings['run'][l]={'cmd':self.settings['prog_lang'][l]['run'],'args':''}
+                    if 'run_args' in self.settings['prog_lang'][l]:
+                        a = self.settings['prog_lang'][l]['run_args']
                         self.settings['run'][l]['args']=a
+                
+                # Add fave to settings by default
+                if 'fave' not in self.settings['prog_lang'][l]:
+                    self.settings['prog_lang'][l]['fave']=1
+                else:
+                    self.settings['prog_lang'][l]['fave']=int(self.settings['prog_lang'][l]['fave'])
                 
     
 ##    def loadSetup(self):

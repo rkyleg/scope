@@ -106,8 +106,8 @@ class WebView(QtWebKit.QWebView):
         
         # Load settings
         for ky in self.settings:
-            if lang in self.parent.settings['fav_lang'] and ky in self.parent.settings['fav_lang'][lang]:
-                self.settings[ky]=self.parent.settings['fav_lang'][lang][ky]
+            if lang in self.parent.settings['prog_lang'] and ky in self.parent.settings['prog_lang'][lang]:
+                self.settings[ky]=self.parent.settings['prog_lang'][lang][ky]
             elif ky in self.parent.settings['editors']['ace']:
                 self.settings[ky]=self.parent.settings['editors']['ace'][ky]
         

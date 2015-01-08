@@ -71,8 +71,8 @@ class Sci(QtGui.QWidget):
         
         # Load settings
         for ky in self.settings:
-            if lang in self.armadillo.settings['fav_lang'] and ky in self.armadillo.settings['fav_lang'][lang]:
-                self.settings[ky]=self.armadillo.settings['fav_lang'][lang][ky]
+            if lang in self.armadillo.settings['prog_lang'] and ky in self.armadillo.settings['prog_lang'][lang]:
+                self.settings[ky]=self.armadillo.settings['prog_lang'][lang][ky]
             elif ky in self.armadillo.settings['editors']['scintilla']:
                 self.settings[ky]=self.armadillo.settings['editors']['scintilla'][ky]
                 
