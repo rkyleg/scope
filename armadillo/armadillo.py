@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.4.3'
+__version__ = '1.4.4'
 
 
 import sys, json, codecs, time, importlib
@@ -392,7 +392,7 @@ class Armadillo(QtGui.QWidget):
         
         # Add Plugins
         self.pluginD = {}
-        self.prevPlugin=0
+        self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
             self.addPlugin(plug)
@@ -834,6 +834,8 @@ class Armadillo(QtGui.QWidget):
             # If Settings File, reload
             if filename == self.settings_filename:
                 self.loadSettings()
+            
+            
                 
     def editorSaveAs(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -973,13 +975,17 @@ class Armadillo(QtGui.QWidget):
             self.ui.split_bottom.setSizes([26,self.ui.split_left.height()-26])
 
     def pluginBottomChange(self,ind):
-        self.prevPlugin = self.ui.sw_bottom.currentIndex()
+        if self.ui.sw_bottom.currentIndex() != 0:
+            self.prevPlugin = self.ui.sw_bottom.currentIndex()
         self.ui.sw_bottom.setCurrentIndex(ind)
         self.ui.sw_bottom.setHidden(not ind)
     
     def toggleBottomTab(self):
         if self.ui.tabbar_bottom.currentIndex() == 0:
+            if self.prevPlugin==0:self.prevPlugin=1
             self.ui.tabbar_bottom.setCurrentIndex(self.prevPlugin)
+            if self.ui.fr_bottom.isHidden():
+                self.ui.fr_bottom.setHidden(0)
         else:
             self.ui.tabbar_bottom.setCurrentIndex(0)
             
@@ -1404,6 +1410,12 @@ class Armadillo(QtGui.QWidget):
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
+    
+    # Setup font
+##    fdb = QtGui.QFontDatabase()
+##    fdb.addApplicationFont('styles/DejaVuSansMono.ttf')
+##    app.setFont(QtGui.QFont('DejaVu Sans Mono',10))
+    
     armadilloApp = Armadillo()
     armadilloApp.show()
     sys.exit(app.exec_())

@@ -201,7 +201,7 @@
 		<tr>
 			<td>Ctrl + (space)</td>
 			<td>Show autocomplete menu</td>
-			<td>&nbsp;</td>
+			<td>x</td>
 			<td>x</td>
 			<td>&nbsp;</td>
 		</tr>

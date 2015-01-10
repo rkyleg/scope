@@ -6,8 +6,11 @@ import re, os, importlib
 class outlineTree(QtGui.QWidget):
     def __init__(self,parent=None):
         QtGui.QWidget.__init__(self,parent)
+        curdir=os.path.abspath('.')
+        os.chdir(os.path.abspath(os.path.dirname(__file__)))
         self.ui = Ui_Outline_Tree()
         self.ui.setupUi(self)
+        os.chdir(curdir)
 ##        self.setHeaderHidden(1)
 ##        self.setRootIsDecorated(0)
 ##        self.setStyleSheet("""QTreeWidget {
@@ -16,6 +19,11 @@ class outlineTree(QtGui.QWidget):
 ##            }""")
         self.setProperty("class","pluginVertical")
         self.parent = parent
+        
+        self.ui.fr_find.hide()
+        self.ui.l_title.hide()
+        self.ui.le_find.textChanged.connect(self.find)
+        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
 
 ##    def keyPressEvent(self,event):
 ##        ky = event.key()
@@ -30,7 +38,17 @@ class outlineTree(QtGui.QWidget):
 ##            handled=1
 ##        if not handled:
 ##            QtGui.QTreeWidget.keyPressEvent(self,event)
-        
+
+    def find(self):
+        trwdg = self.ui.tr_outline
+        txt = str(self.ui.le_find.text()).lower()
+        for t in range(trwdg.topLevelItemCount()):
+            itm = trwdg.topLevelItem(t)
+            if txt =='' or txt in str(itm.text(0)).lower():
+                itm.setHidden(0)
+            else:
+                itm.setHidden(1)
+
 class Outline(QtGui.QWidget):
     def __init__(self,parent=None):
         QtGui.QWidget.__init__(self,parent)
@@ -40,7 +58,7 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
         self.treeD = {}
         
-        self.ui.fr_find.hide()
+##        self.ui.fr_find.hide()
         
         self.outlineLangD = {}
         for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):	
@@ -59,9 +77,6 @@ class Outline(QtGui.QWidget):
         # Update location
         if 1:
             self.armadillo.evnt.editorVisibleLinesChanged.connect(self.updateLocation)
-        
-        self.ui.le_find.textChanged.connect(self.find)
-        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
         
     def analyzeLine(self,wdg,typ):
         return None,None
@@ -101,7 +116,7 @@ class Outline(QtGui.QWidget):
 ##            trwdg.addTopLevelItem(itm)
 ##            self.format(itm,'filename')
             
-            self.ui.le_find.setText('')
+            self.wdgD[wdg].ui.b_find_close.click()
             txt = unicode(wdg.getText())
             txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
             
@@ -140,24 +155,25 @@ class Outline(QtGui.QWidget):
             
     def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')
-        trwdg = self.ui.sw_outline.currentWidget().ui.tr_outline
+        trwdg = self.ui.sw_outline.currentWidget()
         menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Update (F3)')
         menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'search.png'),'Find')
-        act = menu.exec_(trwdg.cursor().pos())
+        act = menu.exec_(trwdg.ui.tr_outline.cursor().pos())
         if act != None:
             acttxt = str(act.text())
             if acttxt=='Update (F3)':
                 self.updateOutline(self.armadillo.currentEditor())
             elif acttxt == 'Find':
-                self.ui.fr_find.show()
-                self.ui.le_find.setFocus()
+                trwdg.ui.fr_find.show()
+                trwdg.ui.le_find.setFocus()
         
     def editorTabChanged(self,wdg):
         owdg = self.wdgD[wdg]
         self.ui.sw_outline.setCurrentWidget(owdg)
-        self.updateOutline(wdg)
-        self.ui.le_find.clear()
-        self.ui.fr_find.hide()
+##        self.updateOutline(wdg)
+
+##        self.ui.le_find.clear()
+##        self.ui.fr_find.hide()
         
     def editorTabClosed(self,wdg):
         owdg = self.wdgD[wdg]
@@ -168,16 +184,6 @@ class Outline(QtGui.QWidget):
         line = int(str(itm.text(1)))
         wdg = self.treeD[self.ui.sw_outline.currentWidget()]
         wdg.gotoLine(line)
-       
-    def find(self):
-        trwdg = self.ui.sw_outline.currentWidget()
-        txt = str(self.ui.le_find.text()).lower()
-        for t in range(trwdg.topLevelItemCount()):
-            itm = trwdg.topLevelItem(t)
-            if txt =='' or txt in str(itm.text(0)).lower():
-                itm.setHidden(0)
-            else:
-                itm.setHidden(1)
     
     def format(self,itm,typ):
         # Format the tree widget item

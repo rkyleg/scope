@@ -65,7 +65,7 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - width/height - specify default width or height the plugin window is opened to
 
 ### Editor Settings
-Default settings for the editors. These settings are overwritten by language specific settings (if set).  See Favorite Languages below.
+Default settings for the editors. These settings are overwritten by language specific settings (if set).  See Programming Languages below.
 
         [editors]
             [[ace]]
@@ -79,6 +79,8 @@ Default settings for the editors. These settings are overwritten by language spe
                 autocomplete=1
                 newLineMode=unix
                 showWhitespace=0
+                fontFamily=Courier
+                fontSize=10
             [[ckeditor]]
 
 - editors

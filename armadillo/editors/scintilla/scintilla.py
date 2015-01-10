@@ -63,6 +63,7 @@ class Sci(QtGui.QWidget):
 ##            'wrapBehaviours':1,
 ##            'behaviours':1,
 ##            'showPrintMargin':0,
+            'fontFamily':'Courier',
             'fontSize':10,
 ##            'theme':'twighlight',
             'newLineMode':'unix',
@@ -81,7 +82,9 @@ class Sci(QtGui.QWidget):
     def setup(self):
         # Font
         font = QFont()
-        font.setFamily('Courier')
+##        font.setFamily('Ubuntu Mono')
+##        font.setFamily('DejaVu Sans Mono')
+        font.setFamily(self.settings['fontFamily'])
         font.setFixedPitch(True)
         
         xfont = self.settings['fontSize']
@@ -133,14 +136,22 @@ class Sci(QtGui.QWidget):
     
     def keyPressEvent(self,event):
         ky = event.key()
+        handled = 0
         if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace,QtCore.Qt.Key_Z,QtCore.Qt.Key_Y]:
             self.okedit = 0
-        Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
-        QtGui.QApplication.processEvents()
-##        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace]:
-##            self.editingFinished()
-        self.okedit = 1
-        self.editorTextChanged()
+        
+        if event.modifiers() & QtCore.Qt.ControlModifier:
+            if event.key() == QtCore.Qt.Key_Space:
+                self.ui.te_sci.autoCompleteFromAll()
+                handled = 1
+                
+        if not handled:
+            Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
+            QtGui.QApplication.processEvents()
+    ##        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return,QtCore.Qt.Key_Tab,QtCore.Qt.Key_Backtab,QtCore.Qt.Key_Delete,QtCore.Qt.Key_Backspace]:
+    ##            self.editingFinished()
+            self.okedit = 1
+            self.editorTextChanged()
     
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
@@ -282,7 +293,6 @@ class Sci(QtGui.QWidget):
         else:
             self.ui.te_sci.setWhitespaceVisibility(Qsci.QsciScintilla.WsInvisible)
         
-        
 
     def toggleAutoComplete(self):
         self.autocompletemode = not self.autocompletemode
@@ -290,7 +300,8 @@ class Sci(QtGui.QWidget):
             # Enabled autocompletion
             self.ui.te_sci.setAutoCompletionFillupsEnabled(1)
             self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsAll)
-            self.ui.te_sci.setAutoCompletionThreshold(3)
+##            self.ui.te_sci.setAutoCompletionThreshold(3)
+            self.ui.te_sci.AutoCompletionUseSingle(Qsci.QsciScintilla.AcusExplicit)
         else:
             self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsNone)
     
