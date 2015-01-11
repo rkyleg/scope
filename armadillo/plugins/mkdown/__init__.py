@@ -1,12 +1,14 @@
 import os, sys, codecs
 import CommonMark
 
-def generate(file,style='',custom=0):
+def generate(file=None,text=None,style='',custom=0):
     # Open File
-    f = codecs.open(file,'r','utf-8')
-    rawhtml = f.read()
-    f.close()
-    
+    if file != None:
+        f = codecs.open(file,'r','utf-8')
+        rawhtml = f.read()
+        f.close()
+    else:
+        rawhtml=text
     # Parse
     html = ''
     txtlines = rawhtml.replace('\r\n','\n').replace('\r','\n').split('\n')

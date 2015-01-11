@@ -110,10 +110,11 @@ Programming language specific settings. Set theme and editor for each language. 
             [[default]] # Default settings for all editors
                 editor=scintilla
                 wordwrap=0
+            [[python]]
+                run=python -u
             [[javascript]]
                 editor=ace
-                run=/home/convolutedlogic/nodejs/bin/node
-                run_args=-i
+                run=/home/convolutedlogic/nodejs/bin/node -i
             [[markdown]]
                 editor=ace
                 wordwrap=1
@@ -133,9 +134,7 @@ The available (and default) parameters are:
 - run
     - the run command to run
     - Ex: if you have node installed: run=/home/convolutedlogic/nodejs/bin/node
-- run_args
-    - a string of args to append to the run command (before the filename)
-    - this is optional
+    - you can add arguments with the command like -u to make Python print as it goes instead of at the end.
 - fave
     - a favorite language and shows up in New menu and on home page
     - this defaults to true (1) if not specified. set to 0 to not show in new menu

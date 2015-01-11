@@ -13,16 +13,15 @@ The Output plugin will run code and display any output from the code. The approp
 
         [fav_lang]
             [[python]]
-                run=python
-                run_args=-u
+                run=python -u
 
     - The run argument contains the command or path to the executable to run your code against.
-    - run_args is an optional setting for specifying additional arguments. For Python -u makes the output update as the code runs instead displaying only when it finishes.
+    - Include additional arguments at the end. For Python -u makes the output update as the code runs instead displaying only when it finishes.
 
 3. Before executing the code, the current directory is changed to the file being run.
 4. The command is built as:
 
-        <run> <run_args> <filename>
+        <run> <filename>
         python -u test.py
 
 # How to Run Code
@@ -34,12 +33,10 @@ The Output plugin will run code and display any output from the code. The approp
         [fav_lang]
             # Javascript/Node
             [[javascript]] 
-                run=/home/username/nodejs/bin/node
-                run_args=-i
+                run=/home/username/nodejs/bin/node -i
             
             # CoffeeScript
             [[coffee]] 
-                run=coffee
-                run_args=-p --print
+                run=coffee -p --print
 
 *Appropriate software needs to be installed before this will work.*

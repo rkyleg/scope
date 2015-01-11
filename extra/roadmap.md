@@ -17,6 +17,7 @@ Improvements to be made sometime before or for version 2.0
 - Native Mac binaries
 - syntax checking option for Scintilla/Python would be nice.
 - Make output interactive
+- Settings checking, error handling
 
 # Armadillo 1.5
 - Make user customization easy without touching/forking core code

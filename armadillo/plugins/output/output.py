@@ -23,7 +23,7 @@ class Output(QtGui.QWidget):
             owdg = self.wdgD[wdg]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
-    def newProcess(self,cmd,wdg,args=''):
+    def newProcess(self,cmd,wdg):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
@@ -33,7 +33,7 @@ class Output(QtGui.QWidget):
                 self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
                 owdg = self.wdgD[wdg]
-                owdg.newProcess(cmd,wdg.filename,args)
+                owdg.newProcess(cmd,wdg.filename)
                 
                 self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
                 
@@ -54,7 +54,7 @@ class Output(QtGui.QWidget):
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
                 owdg.listItem = self.ui.li_pages.item(sw_ind)
-                owdg.newProcess(cmd,wdg.filename,args)
+                owdg.newProcess(cmd,wdg.filename)
 
     def killAll(self):
         opentxt = ''
@@ -167,7 +167,7 @@ class OutputPage(QtGui.QWidget):
         fnt.setItalic(0)
         self.listItem.setFont(fnt)
         
-    def newProcess(self,cmd,filename,args=''):
+    def newProcess(self,cmd,filename):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
             self.stopProcess()
@@ -177,15 +177,16 @@ class OutputPage(QtGui.QWidget):
                 # If markdown generate preview tab
                 import plugins.mkdown as mkdown
                 html = mkdown.generate(filename,style='',custom=1)
-                self.armadillo.webview_preview(html,filename)
+##                self.armadillo.webview_preview(html,filename)
+##                self.armadillo.pluginD['preview'].editorRun(self.armadillo.currentEditor(),html)
                 self.ui.tb_out.setPlainText(mkdown.generate(filename))
                 self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
             else:
                 if os.name == 'nt':
                     filename = filename.replace('/','\\')
                 xcmd = cmd
-                if args != '':
-                    xcmd += ' '+args
+##                if args != '':
+##                    xcmd += ' '+args
                 self.ui.le_cmd.setText(xcmd)
 ##                self.ui.le_args.setText(str(args))
 ##                self.args = str(args)

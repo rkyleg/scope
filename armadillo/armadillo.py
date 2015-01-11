@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.4.4'
+__version__ = '1.5.0'
 
 
 import sys, json, codecs, time, importlib
@@ -188,10 +188,10 @@ class ArmadilloMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
         self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftSide)
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F8)',self.parent.toggleBottomTab)
+        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomTab)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane',self.parent.toggleRightSide)
+        self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightSide)
         
         self.viewMenu.addSeparator()
         
@@ -267,13 +267,38 @@ class Armadillo(QtGui.QWidget):
         f.close()
         self.setStyleSheet(style)
         
-        # Screen Size
+        #--- Window Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
         coords= QtGui.QApplication.desktop().screenGeometry(screen).getCoords() 
         if self.settings['window']['openMode']=='1':
+            # get margins from settings
+            dl=int(self.settings['window']['margin']['left'])
+            dr=int(self.settings['window']['margin']['right'])
+            dt=int(self.settings['window']['margin']['top'])
+            db=int(self.settings['window']['margin']['bottom'])
+            
+            # set up width and height
+            ws=coords[2]-coords[0] # screen width
+            hs=coords[3]-coords[1] # screen height
+            wd = self.settings['window']['size']['width'].strip()
+            hd = self.settings['window']['size']['height'].strip()
+            if wd.endswith('%'):
+                w=float(wd[:-1])/100.0*ws
+            else:
+                try:
+                    w=int(wd)
+                except:
+                    w=ws
+            if hd.endswith('%'):
+                h=float(hd[:-1])/100.0*hs
+            else:
+                try:
+                    h=int(hd)
+                except:
+                    h=hs
             # Almost full screen
-            dx = 50
-            self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
+##            dx = 50
+            self.setGeometry(coords[0]+dl,coords[1]+dt,(w-dl-dr),(h-dt-db))
             QtGui.QApplication.processEvents()
         elif self.settings['window']['openMode']=='2':
             # Fullscreen
@@ -295,10 +320,20 @@ class Armadillo(QtGui.QWidget):
             self.ui.fr_left.setVisible(0)
         
         # Right
-        rw=int(self.settings['window']['pluginRight']['width'])
+        rw=self.settings['window']['pluginRight']['width']
+        if rw.endswith('%'):
+            rw = float(rw[:-1])/100*(self.width()-lw)
+        else:
+            rw=int(rw)
+        
         self.ui.split_right.setSizes([self.width()-rw-lw,rw])
         if self.settings['window']['pluginRight']['visible']!='1':
             self.ui.tab_right.setVisible(0)
+
+        # Tab Direction
+        tabLocD = {'top':QtGui.QTabWidget.North,'bottom':QtGui.QTabWidget.South}
+        self.ui.tab_left.setTabPosition(tabLocD[self.settings['window']['pluginLeft']['tabPosition']])
+        self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
         # File Tabs
         self.ui.tab = QtGui.QTabBar()
@@ -351,6 +386,8 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Toggle Hide editor
+        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleRightSide) # Toggle RIght Plugins
         QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomTab) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
@@ -569,7 +606,7 @@ class Armadillo(QtGui.QWidget):
                         
                         if txt != None:
                             # Create Widget
-                            wdg = self.addEditorWidget(lang,title,str(filename),editor=editor)
+                            wdg = self.addEditorWidget(lang,title,str(filename),editor=editor,code=txt)
                             wdg.setText(txt)
                             QtGui.QApplication.processEvents()
                             wdg.lastText = txt
@@ -637,7 +674,14 @@ class Armadillo(QtGui.QWidget):
             self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
         except:
             pass
-            
+        
+        # Hide Right side
+        pluginRightVisible=0
+        if wdg != None:
+            pluginRightVisible = wdg.pluginRightVisible
+        if pluginRightVisible != self.ui.tab_right.isVisible():
+            self.toggleRightSide()
+        
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
                 
@@ -681,7 +725,7 @@ class Armadillo(QtGui.QWidget):
     def visibleLinesChanged(self,wdg,lines):
         self.evnt.editorVisibleLinesChanged.emit(wdg,lines)
     
-    def addEditorWidget(self,lang=None,title='New',filename=None,editor=None):
+    def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
         wdg = None
@@ -711,11 +755,14 @@ class Armadillo(QtGui.QWidget):
 
         wdg.filename = filename
         wdg.lastText=''
+##        wdg.lastText=code
         wdg.title = title
         wdg.id = self.fileCount
         wdg.lang = lang
         wdg.viewOnly = 0
         wdg.editor = editor
+        wdg.pluginRightVisible=0
+##        wdg.setText(code)
         if lang=='Start':wdg.editor='Start'
         wdg.modTime = None
         self.tabD[self.fileCount]=wdg
@@ -863,12 +910,19 @@ class Armadillo(QtGui.QWidget):
 
     def editorRun(self):
         wdg = self.ui.sw_main.currentWidget()
-        ok = self.checkSave(wdg)
-        filename = str(wdg.filename)
-        if ok and filename != 'None':
-            if wdg.lang in self.settings['run']:
-                runD = self.settings['run'][wdg.lang]
-                self.pluginD['output'].newProcess(runD['cmd'],wdg,runD['args'])
+        if wdg.lang in self.settings['run']:
+            if self.settings['run'][wdg.lang]['cmd']=='preview':
+                self.pluginD['preview'].previewRun(wdg)
+                if self.ui.tab_right.isHidden():
+                    self.toggleRightSide()
+            else:
+                ok = self.checkSave(wdg)
+                filename = str(wdg.filename)
+                if ok and filename != 'None':
+                    if wdg.lang in self.settings['run']:
+                        # Otherwise run in output
+                        runD = self.settings['run'][wdg.lang]
+                        self.pluginD['output'].newProcess(runD['cmd'],wdg)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -956,15 +1010,20 @@ class Armadillo(QtGui.QWidget):
             if plug in self.settings['plugins'] and 'location' in self.settings['plugins'][plug]:
                 loc = self.settings['plugins'][plug]['location']
             
+            tabtext = title
+            
             if loc == 'left':
-                ti = self.ui.tab_left.addTab(pluginWidget,icn,'')
+                if self.settings['window']['pluginLeft']['showTabText']!='1': tabtext=''
+                ti = self.ui.tab_left.addTab(pluginWidget,icn,tabtext)
                 self.ui.tab_left.setTabToolTip(ti,title)
             elif loc=='right':
-                ti = self.ui.tab_right.addTab(pluginWidget,icn,'')
+                if self.settings['window']['pluginRight']['showTabText']!='1': tabtext=''
+                ti = self.ui.tab_right.addTab(pluginWidget,icn,tabtext)
                 self.ui.tab_right.setTabToolTip(ti,title)
             elif loc == 'bottom':
+                if self.settings['window']['pluginBottom']['showTabText']!='1': tabtext=''
                 self.ui.sw_bottom.addWidget(pluginWidget)
-                self.ui.tabbar_bottom.addTab(icn,title)
+                self.ui.tabbar_bottom.addTab(icn,tabtext)
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
 
@@ -988,7 +1047,11 @@ class Armadillo(QtGui.QWidget):
                 self.ui.fr_bottom.setHidden(0)
         else:
             self.ui.tabbar_bottom.setCurrentIndex(0)
-            
+    
+    def toggleRightPluginFull(self):
+        if self.ui.tab_right.isVisible():
+            self.ui.sw_main.setVisible(self.ui.sw_main.isHidden())
+    
     def viewPythonShell(self):
         if 'py_console' in self.pluginD:
             i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
@@ -1017,7 +1080,11 @@ class Armadillo(QtGui.QWidget):
         self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
     
     def toggleRightSide(self):
+##        if self.ui.tab_right.isVisible():
+        if self.ui.tab_right.isVisible() and self.ui.sw_main.isHidden():
+            self.toggleRightPluginFull()
         self.ui.tab_right.setVisible(self.ui.tab_right.isHidden())
+        self.currentEditor().pluginRightVisible=self.ui.tab_right.isVisible()
     
     #---   Bottom Plugins
     def replaceFocus(self):
@@ -1184,7 +1251,8 @@ class Armadillo(QtGui.QWidget):
                             wD['lastOpenFile']=wdg.filename
             
             # Save workspace dir
-            wD['basefolder']=self.pluginD['filebrowser'].rootpath
+            if 'filebrowser' in self.pluginD:
+                wD['basefolder']=self.pluginD['filebrowser'].rootpath
             f = open(self.settingPath+'/workspaces/'+self.workspace,'w')
             f.write(json.dumps(wD))
             f.close()
@@ -1220,8 +1288,9 @@ class Armadillo(QtGui.QWidget):
                             break
             
             if 'basefolder' in wD and 'filebrowser' in self.pluginD:
-                self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
-                self.pluginD['filebrowser'].loadRoot()
+                if wD['basefolder'] != None:
+                    self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
+                    self.pluginD['filebrowser'].loadRoot()
             
             self.setWindowTitle('Armadillo | '+wksp)
             
@@ -1319,8 +1388,10 @@ class Armadillo(QtGui.QWidget):
 
         # Configure Settings
         self.settings['run']={}
+##        self.settings['run_preview']={}
         for l in self.settings['prog_lang']:
             ok = 1
+            #~ self.settings['run_preview'][l]=0
             # Remove default languages if not in user config
             if 'prog_lang' in user_config:
                 if l not in user_config['prog_lang']:
@@ -1334,10 +1405,14 @@ class Armadillo(QtGui.QWidget):
             
                 # add run to settings
                 if 'run' in self.settings['prog_lang'][l]:
-                    self.settings['run'][l]={'cmd':self.settings['prog_lang'][l]['run'],'args':''}
-                    if 'run_args' in self.settings['prog_lang'][l]:
-                        a = self.settings['prog_lang'][l]['run_args']
-                        self.settings['run'][l]['args']=a
+                    self.settings['run'][l]={'cmd':self.settings['prog_lang'][l]['run']}
+##                    if 'run_args' in self.settings['prog_lang'][l]:
+##                        a = self.settings['prog_lang'][l]['run_args']
+##                        self.settings['run'][l]['args']=a
+                
+##                if 'preview' in self.settings['prog_lang'][l]:
+##                    if self.settings['prog_lang'][l]['preview']=='1':
+##                        self.settings['run_preview'][l]=1
                 
                 # Add fave to settings by default
                 if 'fave' not in self.settings['prog_lang'][l]:
