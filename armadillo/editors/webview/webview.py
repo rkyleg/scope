@@ -71,9 +71,9 @@ class WebView(QtWebKit.QWebView):
         self.webInspector = QtWebKit.QWebInspector(self)
         self.webInspector.setPage(page)
 
-##        shortcut = QtGui.QShortcut(self)
-##        shortcut.setKey(QtCore.Qt.Key_F12)
-##        shortcut.activated.connect(self.toggleInspector)
+        shortcut = QtGui.QShortcut(self)
+        shortcut.setKey(QtCore.Qt.Key_F12)
+        shortcut.activated.connect(self.toggleInspector)
         self.webInspector.setVisible(False)
 
     def toggleInspector(self):

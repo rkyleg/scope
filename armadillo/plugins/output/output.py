@@ -23,17 +23,17 @@ class Output(QtGui.QWidget):
             owdg = self.wdgD[wdg]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
-    def newProcess(self,cmd,wdg):
+    def newProcess(self,cmd,wdg,text=''):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
         else:
-            if cmd != 'markdown':
+            if cmd != 'preview':
                 i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
                 self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
                 owdg = self.wdgD[wdg]
-                owdg.newProcess(cmd,wdg.filename)
+                owdg.newProcess(cmd,wdg.filename,text=text)
                 
                 self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
                 
@@ -54,7 +54,7 @@ class Output(QtGui.QWidget):
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
                 owdg.listItem = self.ui.li_pages.item(sw_ind)
-                owdg.newProcess(cmd,wdg.filename)
+                owdg.newProcess(cmd,wdg.filename,text=text)
 
     def killAll(self):
         opentxt = ''
@@ -167,19 +167,19 @@ class OutputPage(QtGui.QWidget):
         fnt.setItalic(0)
         self.listItem.setFont(fnt)
         
-    def newProcess(self,cmd,filename):
+    def newProcess(self,cmd,filename,text=''):
         
         if self.process != None and cmd not in ['webbrowser','markdown']:
             self.stopProcess()
         else:
             self.filename = filename
-            if cmd == 'markdown':
+            if cmd == 'preview':
                 # If markdown generate preview tab
-                import plugins.mkdown as mkdown
-                html = mkdown.generate(filename,style='',custom=1)
+##                import plugins.mkdown as mkdown
+##                html = mkdown.generate(filename,style='',custom=1)
 ##                self.armadillo.webview_preview(html,filename)
 ##                self.armadillo.pluginD['preview'].editorRun(self.armadillo.currentEditor(),html)
-                self.ui.tb_out.setPlainText(mkdown.generate(filename))
+                self.ui.tb_out.setPlainText(text)
                 self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
             else:
                 if os.name == 'nt':

@@ -385,14 +385,17 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
-        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Toggle Left Plugin
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F4,self,self.nextLeftPlugin) # show next left plugin
+        QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Toggle Hide editor
         QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleRightSide) # Toggle RIght Plugins
         QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomTab) # Hide Bottom Tab
-        QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F9,self,self.nextBottomTab) # Show next bottom tab
+        
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
-        QtGui.QShortcut(QtCore.Qt.Key_F12,self,self.viewPythonShell) # Fullscreen Zen
+##        QtGui.QShortcut(QtCore.Qt.Key_F12,self,self.viewPythonShell) # Fullscreen Zen
         
         # File Dictionary
         self.fileCount = -1
@@ -1048,6 +1051,13 @@ class Armadillo(QtGui.QWidget):
         else:
             self.ui.tabbar_bottom.setCurrentIndex(0)
     
+    def nextBottomTab(self):
+        i=self.ui.tabbar_bottom.currentIndex()
+        i+=1
+        if i>= self.ui.tabbar_bottom.count():
+            i=0
+        self.ui.tabbar_bottom.setCurrentIndex(i)
+    
     def toggleRightPluginFull(self):
         if self.ui.tab_right.isVisible():
             self.ui.sw_main.setVisible(self.ui.sw_main.isHidden())
@@ -1078,6 +1088,14 @@ class Armadillo(QtGui.QWidget):
     
     def toggleLeftSide(self):
         self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
+    
+    def nextLeftPlugin(self):
+        self.ui.fr_left.setVisible(1)
+        i=self.ui.tab_left.currentIndex()
+        i+=1
+        if i >= self.ui.tab_left.count():
+            i=0
+        self.ui.tab_left.setCurrentIndex(i)
     
     def toggleRightSide(self):
 ##        if self.ui.tab_right.isVisible():

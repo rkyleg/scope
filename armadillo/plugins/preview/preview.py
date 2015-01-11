@@ -87,10 +87,14 @@ class Preview(QtGui.QWidget):
             html = mkdown.generate(text=html,style='',custom=1)
 ##                self.armadillo.webview_preview(html,filename)
 
-##            self.armadillo.pluginD['output'].newProcess('markdown',wdg)
         elif cmd != None:
             html = subprocess.check_output(cmd+' '+wdg.filename,shell=True)
+            
         pwdg.webview.setText(html,burl)
+        if html != '':
+            self.armadillo.pluginD['output'].newProcess('preview',wdg,text=html)
+            self.armadillo.prevPlugin=self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
+            
 ##        QtGui.QApplication.processEvents()
 ##        time.sleep(0.01)
 ##        pwdg.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,sbv)
