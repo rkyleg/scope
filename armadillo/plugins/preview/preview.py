@@ -16,13 +16,29 @@ class Preview(QtGui.QWidget):
     def addPreview(self,wdg):
         
 ##        if wdg.lang in ['html','markdown']:
-        pwdg = webview.WebView(self)
+        pwdg = QtGui.QWidget(parent=self)
+        
+        pwdg.webview = webview.WebView(self)
+        layout=QtGui.QGridLayout(pwdg)
+        pwdg.setLayout(layout)
+        splitter=QtGui.QSplitter(QtCore.Qt.Vertical,self)
+        pwdg.layout().addWidget(splitter)
+        splitter.addWidget(pwdg.webview)
 ##        if wdg.filename !=None:
 ##            pwdg.setHtml(wdg.filename)
-        pwdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-        pwdg.linkClicked.connect(self.urlClicked)
-        pwdg.lastScrollValue=0
-        pwdg.loadFinished.connect(self.load_finished)
+        pwdg.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+        pwdg.webview.linkClicked.connect(self.urlClicked)
+        pwdg.webview.lastScrollValue=0
+        pwdg.webview.loadFinished.connect(self.load_finished)
+        
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.PluginsEnabled,True)
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavaEnabled,True)
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptEnabled,True)
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptCanOpenWindows,True)
+        
+        pwdg.webview.setupInspector()
+        splitter.addWidget(pwdg.webview.webInspector)
+        
         sw_ind = self.ui.sw_prev.count()
         self.ui.sw_prev.insertWidget(sw_ind,pwdg)
         self.ui.sw_prev.setCurrentIndex(sw_ind)
@@ -46,7 +62,7 @@ class Preview(QtGui.QWidget):
             self.addPreview(wdg)
         else:
             pwdg = self.wdgD[wdg]
-            pwdg.lastScrollValue = pwdg.page().currentFrame().scrollBarValue(QtCore.Qt.Vertical)
+            pwdg.webview.lastScrollValue = pwdg.webview.page().currentFrame().scrollBarValue(QtCore.Qt.Vertical)
 
         pwdg = self.wdgD[wdg]
 
@@ -74,7 +90,7 @@ class Preview(QtGui.QWidget):
 ##            self.armadillo.pluginD['output'].newProcess('markdown',wdg)
         elif cmd != None:
             html = subprocess.check_output(cmd+' '+wdg.filename,shell=True)
-        pwdg.setText(html,burl)
+        pwdg.webview.setText(html,burl)
 ##        QtGui.QApplication.processEvents()
 ##        time.sleep(0.01)
 ##        pwdg.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,sbv)
@@ -88,7 +104,7 @@ class Preview(QtGui.QWidget):
     
     def load_finished(self):
         pwdg = self.ui.sw_prev.currentWidget()
-        pwdg.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,pwdg.lastScrollValue)
+        pwdg.webview.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,pwdg.webview.lastScrollValue)
     
     def urlClicked(self,url):
         lnk = str(url.toString())
@@ -100,11 +116,11 @@ class Preview(QtGui.QWidget):
             html = mkdown.generate(filename,custom=1)
             
             burl = url
-            pwdg.setText(html,burl)
+            pwdg.webview.setText(html,burl)
             
         elif lnk.startswith('http') or lnk.startswith('www'):
             # External links
             import webbrowser
             webbrowser.open(lnk)
         else:
-            pwdg.load(url)
+            pwdg.webview.load2(url)

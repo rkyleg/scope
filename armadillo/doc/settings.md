@@ -1,6 +1,6 @@
 <link rel="stylesheet" type="text/css" href="doc.css">
 
-# [Home](start.html) | Settings
+# [Home](home.md) | Settings
 
 Settings are stored in the *.armadillo* folder in your user home directory.  Settings consist of:
 

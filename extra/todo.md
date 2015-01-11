@@ -206,6 +206,11 @@
 - [f] search within files
 - [x] double click to copy to clipboard
 
+### Preview
+- [] Way to hide inspector
+- [] find
+- [] show link statusbar (maybe use current statusbar)
+
 ## Other Random TODO
 - [x] Add Preview editor/widget that is tied to another editor and can refresh (markdown, html)
 - [] Add other widgets as tabs (that aren't editors)

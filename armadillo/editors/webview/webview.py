@@ -64,3 +64,17 @@ class WebView(QtWebKit.QWebView):
 
     def dropEvent(self,event):
         self.parent.dropEvent(event)
+
+    def setupInspector(self):
+        page = self.page()
+        page.settings().setAttribute(QtWebKit.QWebSettings.DeveloperExtrasEnabled, True)
+        self.webInspector = QtWebKit.QWebInspector(self)
+        self.webInspector.setPage(page)
+
+##        shortcut = QtGui.QShortcut(self)
+##        shortcut.setKey(QtCore.Qt.Key_F12)
+##        shortcut.activated.connect(self.toggleInspector)
+        self.webInspector.setVisible(False)
+
+    def toggleInspector(self):
+        self.webInspector.setVisible(not self.webInspector.isVisible())

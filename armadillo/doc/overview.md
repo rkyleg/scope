@@ -5,12 +5,12 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 - Lightweight and simple interface
 - **Multiple editors** to choose from (Scintilla, Ace, CKEditor). For example, you can use Scintilla for Python and Ace for javascript.
 - **Plugins** - Armadillo comes with default plugins located to the left and botttom of the editor. You can create your own plugins with Python and PyQt.
-    - File Browser - view files for the current workspace
-    - Outline - Provides an outline of objects and functions for some languages
-    - Python Shell - an interactive Python shell
-    - Snippets - create and manage snippets of code you may want to reuse
+    - **File Browser** - view files for the current workspace
+    - **Outline** - Provides an outline of objects and functions for some languages
+    - **Python Shell** - an interactive Python shell
+    - **Snippets** - create and manage snippets of code you may want to reuse
 - **Run code** - run code from the IDE and see any output through the Output plugin. Depending on the language, you may need to install additional tools.
-- Full Editor/Full Screen Modes - Multiple quick keys to show/hide plugins to make the best use of screenspace.
+- **Full Editor/Full Screen Modes** - Multiple quick keys to show/hide plugins to make the best use of screenspace.
 - **Workspaces** - Armadillo will keep track of open files and the file browser path for multiple workspaces.
 - Customize with the settings file.
 

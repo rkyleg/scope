@@ -1085,6 +1085,10 @@ class Armadillo(QtGui.QWidget):
             self.toggleRightPluginFull()
         self.ui.tab_right.setVisible(self.ui.tab_right.isHidden())
         self.currentEditor().pluginRightVisible=self.ui.tab_right.isVisible()
+        
+        if 'leftToggle' in self.settings['window']['pluginRight']:
+            if self.settings['window']['pluginRight']['leftToggle']=='1':
+                self.ui.fr_left.setVisible(self.ui.tab_right.isHidden())
     
     #---   Bottom Plugins
     def replaceFocus(self):
