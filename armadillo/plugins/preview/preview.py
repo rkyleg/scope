@@ -20,12 +20,14 @@ class Preview(QtGui.QWidget):
         
         pwdg.webview = webview.WebView(self)
         layout=QtGui.QGridLayout(pwdg)
+        layout.setSpacing(0)
+        layout.setContentsMargins(0,0,0,0)
         pwdg.setLayout(layout)
         splitter=QtGui.QSplitter(QtCore.Qt.Vertical,self)
+
         pwdg.layout().addWidget(splitter)
         splitter.addWidget(pwdg.webview)
-##        if wdg.filename !=None:
-##            pwdg.setHtml(wdg.filename)
+
         pwdg.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         pwdg.webview.linkClicked.connect(self.urlClicked)
         pwdg.webview.lastScrollValue=0
@@ -45,8 +47,6 @@ class Preview(QtGui.QWidget):
 
         self.wdgD[wdg] = pwdg
         self.prevD[pwdg]=wdg
-            
-##            self.previewRun(wdg)
     
     def editorTabChanged(self,wdg):
         if wdg in self.wdgD:
