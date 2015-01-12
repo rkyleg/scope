@@ -56,7 +56,11 @@ class Preview(QtGui.QWidget):
                 self.previewRun(wdg)
         else:
             self.ui.sw_prev.setCurrentIndex(0)
-            
+    
+    def updatePreview(self,wdg):
+        if wdg in self.wdgD:
+            self.previewRun(wdg)
+    
     def previewRun(self,wdg):
         if wdg not in self.wdgD:
             self.addPreview(wdg)

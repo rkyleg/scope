@@ -1,13 +1,12 @@
 # --------------------------------------------------------------------------------
 # Armadillo IDE
-# Copyright 2013-2014 Cole Hagen
+# Copyright 2013-2015 Cole Hagen
 #
 # Armadillo is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
 # VERSION
 __version__ = '1.5.1'
-
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -138,12 +137,6 @@ class ArmadilloMenu(QtGui.QMenu):
         self.menuSaveAsAction.setEnabled(0) # Default to disabled
         
         self.addSeparator()
-        
-        # Plugins
-##        plugmenu = self.parent.createPopupMenu()
-##        plugmenu.setTitle('Plugins')
-##        plugmenu.setIcon(QtGui.QIcon(self.parent.iconPath+'plugin.png'))
-##        self.addMenu(plugmenu)
         
         #---Editor
         self.editorMenu=QtGui.QMenu('Editor')
@@ -355,9 +348,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.b_indent.clicked.connect(self.editorIndent)
         self.ui.b_unindent.clicked.connect(self.editorUnindent)
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
-        
-##        self.ui.b_whitespace.clicked.connect(self.editorToggleWhitespace)
-        
+
         self.ui.b_run.clicked.connect(self.editorRun)
 ##        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
         self.ui.b_settings.clicked.connect(self.openSettings)
@@ -374,6 +365,7 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_main.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
@@ -421,7 +413,6 @@ class Armadillo(QtGui.QWidget):
         
         #--- Plugins
         # Plugin tab bar
-##        self.ui.fr_left_hidden.hide()
         self.ui.tabbar_bottom = QtGui.QTabBar()
         self.ui.fr_bottom.layout().addWidget(self.ui.tabbar_bottom)
         self.ui.tabbar_bottom.currentChanged.connect(self.pluginBottomChange)
@@ -522,7 +513,8 @@ class Armadillo(QtGui.QWidget):
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
-        self.ui.tab_right.setVisible(not zen)
+        if zen:
+            self.ui.tab_right.setVisible(not zen)
         if zen:
             self.pluginBottomChange(0)
         else:
@@ -623,111 +615,7 @@ class Armadillo(QtGui.QWidget):
                         # Remove Startpage
                         self.removeStart()
 
-        
     #---Editor
-    def currentEditor(self):
-        return self.ui.sw_main.currentWidget()
-
-    def changeTab(self,tab_ind):
-        self.ui.l_statusbar.setText('')
-
-        if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
-        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
-        if file_id in self.tabD:
-            wdg = self.tabD[file_id]
-            self.ui.sw_main.setCurrentWidget(wdg)
-            self.evnt.editorTabChanged.emit(wdg)
-            
-            # Show/Hide plugins
-            lang = wdg.lang
-        else:
-            wdg = None
-            lang = None
-
-        # Enable Run
-        run_enabled=0
-        if lang in self.settings['run']:
-            run_enabled = lang in self.settings['run']
-            
-        self.ui.b_run.setEnabled(run_enabled)
-        self.armadilloMenu.runAction.setEnabled(run_enabled)
-        
-        # Disable buttons based on function availability
-        btnD = [
-            ['indent',self.armadilloMenu.indentAction],
-            ['indent',self.ui.b_indent],
-            ['unindent',self.ui.b_unindent],
-            ['unindent',self.armadilloMenu.unindentAction],
-            ['find',self.ui.fr_find],
-            ['toggleComment',self.ui.b_comment],
-            ['toggleComment',self.armadilloMenu.commentAction],
-            ['getText',self.ui.b_save],
-            ['toggleWordWrap',self.armadilloMenu.wordwrapAction],
-            ['toggleWhitespace',self.armadilloMenu.whitespaceAction],
-            ['getText',self.armadilloMenu.statsAction],
-            
-##            'toggleWordWrap':self.ui.b_wordwrap,
-##            'toggleWhitespace':self.ui.b_whitespace,
-        ]
-        for btn in btnD:
-            btn[1].setEnabled(btn[0] in dir(wdg))
-        
-        try:
-            self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
-            self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
-        except:
-            pass
-        
-        # Hide Right side
-        pluginRightVisible=0
-        if wdg != None:
-            pluginRightVisible = wdg.pluginRightVisible
-        if pluginRightVisible != self.ui.tab_right.isVisible():
-            self.toggleRightPlugin()
-        
-            # Check for file changes (Disabled for now)
-##            self.checkFileChanges()
-                
-            
-    def closeTab(self,tab_ind):
-        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
-        wdg = self.tabD[file_id]
-        ok = 1
-        
-        # Check Save
-        if 'getText' in dir(wdg):
-            ok = self.checkSave(wdg)
-                
-        if ok:
-            # Emit close signal
-            self.evnt.editorTabClosed.emit(wdg)
-            
-            self.tabD.pop(file_id)
-            # Remove Tab
-            self.ui.tab.removeTab(tab_ind)
-            # Remove Widget
-            self.ui.sw_main.removeWidget(wdg)
-
-            # Add start page if no tabs exist
-##            if self.ui.sw_main.count() == 0:
-##                self.addStart()
-
-    def editorTextChanged(self):
-        # Indicate if text changed
-        wdg = self.currentEditor()
-        try:
-            if wdg.lastText != wdg.getText():
-                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
-            else:
-                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-        except:
-            self.ui.l_statusbar.setText('Error: text changed signal')
-        # Check for file changes
-##        self.checkFileChanges()
-    
-    def visibleLinesChanged(self,wdg,lines):
-        self.evnt.editorVisibleLinesChanged.emit(wdg,lines)
-    
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
         self.fileCount+=1
         sw_ind = self.ui.sw_main.count()
@@ -819,6 +707,106 @@ class Armadillo(QtGui.QWidget):
         
         return wdg
 
+    def currentEditor(self):
+        return self.ui.sw_main.currentWidget()
+
+    def changeTab(self,tab_ind):
+        self.ui.l_statusbar.setText('')
+
+        if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
+        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
+        if file_id in self.tabD:
+            wdg = self.tabD[file_id]
+            self.ui.sw_main.setCurrentWidget(wdg)
+            self.evnt.editorTabChanged.emit(wdg)
+            
+            # Show/Hide plugins
+            lang = wdg.lang
+        else:
+            wdg = None
+            lang = None
+
+        # Enable Run
+        run_enabled=0
+        if lang in self.settings['run']:
+            run_enabled = lang in self.settings['run']
+            
+        self.ui.b_run.setEnabled(run_enabled)
+        self.armadilloMenu.runAction.setEnabled(run_enabled)
+        
+        # Disable buttons based on function availability
+        btnD = [
+            ['indent',self.armadilloMenu.indentAction],
+            ['indent',self.ui.b_indent],
+            ['unindent',self.ui.b_unindent],
+            ['unindent',self.armadilloMenu.unindentAction],
+            ['find',self.ui.fr_find],
+            ['toggleComment',self.ui.b_comment],
+            ['toggleComment',self.armadilloMenu.commentAction],
+            ['getText',self.ui.b_save],
+            ['toggleWordWrap',self.armadilloMenu.wordwrapAction],
+            ['toggleWhitespace',self.armadilloMenu.whitespaceAction],
+            ['getText',self.armadilloMenu.statsAction],
+        ]
+        for btn in btnD:
+            btn[1].setEnabled(btn[0] in dir(wdg))
+        
+        try:
+            self.armadilloMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
+            self.armadilloMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+        except:
+            pass
+        
+        # Hide Right side
+        pluginRightVisible=0
+        if wdg != None:
+            pluginRightVisible = wdg.pluginRightVisible
+        if pluginRightVisible != self.ui.tab_right.isVisible():
+            self.toggleRightPlugin()
+        
+            # Check for file changes (Disabled for now)
+##            self.checkFileChanges()
+                
+            
+    def closeTab(self,tab_ind):
+        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
+        wdg = self.tabD[file_id]
+        ok = 1
+        
+        # Check Save
+        if 'getText' in dir(wdg):
+            ok = self.checkSave(wdg)
+                
+        if ok:
+            # Emit close signal
+            self.evnt.editorTabClosed.emit(wdg)
+            
+            self.tabD.pop(file_id)
+            # Remove Tab
+            self.ui.tab.removeTab(tab_ind)
+            # Remove Widget
+            self.ui.sw_main.removeWidget(wdg)
+
+            # Add start page if no tabs exist
+##            if self.ui.sw_main.count() == 0:
+##                self.addStart()
+
+    def editorTextChanged(self):
+        # Indicate if text changed
+        wdg = self.currentEditor()
+        try:
+            if wdg.lastText != wdg.getText():
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
+            else:
+                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+        except:
+            self.ui.l_statusbar.setText('Error: text changed signal')
+        # Check for file changes
+##        self.checkFileChanges()
+    
+    def visibleLinesChanged(self,wdg,lines):
+        self.evnt.editorVisibleLinesChanged.emit(wdg,lines)
+
     def checkSave(self,wdg):
         ok = 0
         if wdg.viewOnly:
@@ -843,6 +831,7 @@ class Armadillo(QtGui.QWidget):
                 ok=1
         return ok
 
+    #---Editor Tools
     def editorSave(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         
@@ -857,7 +846,6 @@ class Armadillo(QtGui.QWidget):
             fileext += "All (*.*)"
             
             filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].ui.le_root.text(),fileext)
-##            print filename
             if filename=='':
                 filename=None
             else:
@@ -884,9 +872,7 @@ class Armadillo(QtGui.QWidget):
             # If Settings File, reload
             if filename == self.settings_filename:
                 self.loadSettings()
-            
-            
-                
+
     def editorSaveAs(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         fileext = ''
@@ -969,7 +955,6 @@ class Armadillo(QtGui.QWidget):
         pdlg = QtGui.QPrintDialog(printer,self)
         resp = pdlg.exec_()
         if resp:
-            
             if 'getText' in dir(wdg):
                 txt = wdg.getText()
                 te = QtGui.QTextEdit()
@@ -1029,12 +1014,6 @@ class Armadillo(QtGui.QWidget):
                 self.ui.tabbar_bottom.addTab(icn,tabtext)
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
-
-
-
-
-    
-
 
     #---   Left Plugins
     def toggleLeftPlugin(self):
@@ -1116,7 +1095,6 @@ class Armadillo(QtGui.QWidget):
 
     #---   Right Plugins
     def toggleRightPlugin(self):
-##        if self.ui.tab_right.isVisible():
         if self.ui.tab_right.isVisible() and self.ui.sw_main.isHidden():
             self.toggleRightPluginFull()
         self.ui.tab_right.setVisible(self.ui.tab_right.isHidden())
@@ -1287,7 +1265,6 @@ class Armadillo(QtGui.QWidget):
             f.close()
     
     def loadWorkspace(self,wksp):
-        
         self.saveWorkspace()
         ok = self.closeWorkspace(askSave=0,openStart=0)
         
@@ -1435,20 +1412,12 @@ class Armadillo(QtGui.QWidget):
                 # add run to settings
                 if 'run' in self.settings['prog_lang'][l]:
                     self.settings['run'][l]={'cmd':self.settings['prog_lang'][l]['run']}
-##                    if 'run_args' in self.settings['prog_lang'][l]:
-##                        a = self.settings['prog_lang'][l]['run_args']
-##                        self.settings['run'][l]['args']=a
-                
-##                if 'preview' in self.settings['prog_lang'][l]:
-##                    if self.settings['prog_lang'][l]['preview']=='1':
-##                        self.settings['run_preview'][l]=1
-                
+
                 # Add fave to settings by default
                 if 'fave' not in self.settings['prog_lang'][l]:
                     self.settings['prog_lang'][l]['fave']=1
                 else:
                     self.settings['prog_lang'][l]['fave']=int(self.settings['prog_lang'][l]['fave'])
-                
     
 ##    def loadSetup(self):
 ##        # Geometry 

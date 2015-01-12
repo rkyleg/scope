@@ -11,6 +11,10 @@
 			<td><strong>Function</strong></td>
 		</tr>
 		<tr>
+			<td>Ctrl + M</td>
+			<td>Show main menu</td>
+		</tr>
+		<tr>
 			<td>Ctrl + N</td>
 			<td>New file (menu)</td>
 		</tr>
