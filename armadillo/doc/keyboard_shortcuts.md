@@ -39,12 +39,28 @@
 			<td>Hide/Show left plugin bar</td>
 		</tr>
 		<tr>
+			<td>Ctrl + F4</td>
+			<td>Go to next left tab</td>
+		</tr>
+		<tr>
 			<td>F5</td>
 			<td>Run</td>
 		</tr>
 		<tr>
+			<td>F7</td>
+			<td>Toggle to expand right plugin and hide editor</td>
+		</tr>
+		<tr>
+			<td>F8</td>
+			<td>Hide/Show right side plugins</td>
+		</tr>
+		<tr>
 			<td>F9</td>
 			<td>Hide/Show bottom plugin bar</td>
+		</tr>
+		<tr>
+			<td>Ctrl + F9</td>
+			<td>Go to next bottom tab</td>
 		</tr>
 		<tr>
 			<td>F10</td>
@@ -53,10 +69,6 @@
 		<tr>
 			<td>F11</td>
 			<td>Toggle Full Screen Mode - full screen and hide everything</td>
-		</tr>
-		<tr>
-			<td>F12</td>
-			<td>Show the Python shell</td>
 		</tr>
 	</tbody>
 </table>

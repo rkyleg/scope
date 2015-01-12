@@ -19,13 +19,11 @@ Improvements to be made sometime before or for version 2.0
 - Make output interactive
 - Settings checking, error handling
 
-# Armadillo 1.5
-- Make user customization easy without touching/forking core code
-- Allow multiple profiles of the IDE
-
 # Armadillo 2.0
 - Easily install and update plugins via a plugin manager
 - Continuous checking if open files have changed and alert user (a manual check exists from main menu)
 - Better autocomplete functionality (maybe - if feature does not become to heavy)
 - Python 3 support
 - An update mechanism for Armadillo
+- Make user customization easy without touching/forking core code
+- Allow multiple profiles of the IDE

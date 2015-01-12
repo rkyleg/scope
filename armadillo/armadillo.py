@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.5.0'
+__version__ = '1.5.1'
 
 
 import sys, json, codecs, time, importlib
@@ -186,12 +186,12 @@ class ArmadilloMenu(QtGui.QMenu):
         self.addMenu(self.viewMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftSide)
+        self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftPlugin)
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomTab)
+        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightSide)
+        self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightPlugin)
         
         self.viewMenu.addSeparator()
         
@@ -385,13 +385,13 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
-        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftSide) # Toggle Left Plugin
+        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftPlugin) # Toggle Left Plugin
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F4,self,self.nextLeftPlugin) # show next left plugin
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Toggle Hide editor
-        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleRightSide) # Toggle RIght Plugins
-        QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomTab) # Hide Bottom Tab
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F9,self,self.nextBottomTab) # Show next bottom tab
+        QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleRightPlugin) # Toggle RIght Plugins
+        QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomPlugin) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F9,self,self.nextBottomPlugin) # Show next bottom tab
         
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
@@ -522,7 +522,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
-        
+        self.ui.tab_right.setVisible(not zen)
         if zen:
             self.pluginBottomChange(0)
         else:
@@ -683,7 +683,7 @@ class Armadillo(QtGui.QWidget):
         if wdg != None:
             pluginRightVisible = wdg.pluginRightVisible
         if pluginRightVisible != self.ui.tab_right.isVisible():
-            self.toggleRightSide()
+            self.toggleRightPlugin()
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -917,7 +917,7 @@ class Armadillo(QtGui.QWidget):
             if self.settings['run'][wdg.lang]['cmd']=='preview':
                 self.pluginD['preview'].previewRun(wdg)
                 if self.ui.tab_right.isHidden():
-                    self.toggleRightSide()
+                    self.toggleRightPlugin()
             else:
                 ok = self.checkSave(wdg)
                 filename = str(wdg.filename)
@@ -1030,45 +1030,30 @@ class Armadillo(QtGui.QWidget):
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
 
-    def pluginLeftChange(self,ind):
-        if ind==0:
-            self.ui.tab_left.hide()
-            self.ui.fr_left_hidden.show()
-            self.ui.split_bottom.setSizes([26,self.ui.split_left.height()-26])
 
-    def pluginBottomChange(self,ind):
-        if self.ui.sw_bottom.currentIndex() != 0:
-            self.prevPlugin = self.ui.sw_bottom.currentIndex()
-        self.ui.sw_bottom.setCurrentIndex(ind)
-        self.ui.sw_bottom.setHidden(not ind)
+
+
     
-    def toggleBottomTab(self):
-        if self.ui.tabbar_bottom.currentIndex() == 0:
-            if self.prevPlugin==0:self.prevPlugin=1
-            self.ui.tabbar_bottom.setCurrentIndex(self.prevPlugin)
-            if self.ui.fr_bottom.isHidden():
-                self.ui.fr_bottom.setHidden(0)
-        else:
-            self.ui.tabbar_bottom.setCurrentIndex(0)
+
+
+    #---   Left Plugins
+    def toggleLeftPlugin(self):
+        self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
     
-    def nextBottomTab(self):
-        i=self.ui.tabbar_bottom.currentIndex()
+    def nextLeftPlugin(self):
+        self.ui.fr_left.setVisible(1)
+        i=self.ui.tab_left.currentIndex()
         i+=1
-        if i>= self.ui.tabbar_bottom.count():
+        if i >= self.ui.tab_left.count():
             i=0
-        self.ui.tabbar_bottom.setCurrentIndex(i)
+        self.ui.tab_left.setCurrentIndex(i)
+        
+##    def pluginLeftChange(self,ind):
+##        if ind==0:
+##            self.ui.tab_left.hide()
+##            self.ui.fr_left_hidden.show()
+##            self.ui.split_bottom.setSizes([26,self.ui.split_left.height()-26])
     
-    def toggleRightPluginFull(self):
-        if self.ui.tab_right.isVisible():
-            self.ui.sw_main.setVisible(self.ui.sw_main.isHidden())
-    
-    def viewPythonShell(self):
-        if 'py_console' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['py_console'].setFocus()
-
-    #---   Left Sidebar Plugins
     def updateOutline(self):
         if 'outline' in self.pluginD:
             wdg = self.ui.sw_main.currentWidget()
@@ -1086,18 +1071,51 @@ class Armadillo(QtGui.QWidget):
             i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
             self.ui.tab_left.setCurrentIndex(i)
     
-    def toggleLeftSide(self):
-        self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
+    #---   Bottom Plugins
+    def pluginBottomChange(self,ind):
+        if self.ui.sw_bottom.currentIndex() != 0:
+            self.prevPlugin = self.ui.sw_bottom.currentIndex()
+        self.ui.sw_bottom.setCurrentIndex(ind)
+        self.ui.sw_bottom.setHidden(not ind)
     
-    def nextLeftPlugin(self):
-        self.ui.fr_left.setVisible(1)
-        i=self.ui.tab_left.currentIndex()
+    def toggleBottomPlugin(self):
+        if self.ui.tabbar_bottom.currentIndex() == 0:
+            if self.prevPlugin==0:self.prevPlugin=1
+            self.ui.tabbar_bottom.setCurrentIndex(self.prevPlugin)
+            if self.ui.fr_bottom.isHidden():
+                self.ui.fr_bottom.setHidden(0)
+        else:
+            self.ui.tabbar_bottom.setCurrentIndex(0)
+    
+    def nextBottomPlugin(self):
+        i=self.ui.tabbar_bottom.currentIndex()
         i+=1
-        if i >= self.ui.tab_left.count():
+        if i>= self.ui.tabbar_bottom.count():
             i=0
-        self.ui.tab_left.setCurrentIndex(i)
-    
-    def toggleRightSide(self):
+        self.ui.tabbar_bottom.setCurrentIndex(i)
+        
+    def replaceFocus(self):
+        if 'find_replace' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['find_replace'].ui.le_find.setFocus()
+            self.pluginD['find_replace'].ui.le_find.selectAll()
+
+    def viewPythonShell(self):
+        if 'py_console' in self.pluginD:
+            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+            self.pluginD['py_console'].setFocus()
+
+    def qtHelp(self):
+        if 'qt2py' in self.pluginD:
+            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
+            self.ui.tabbar_bottom.setCurrentIndex(i)
+        self.pluginD['qt2py'].ui.le_help.setFocus()
+        self.pluginD['qt2py'].ui.le_help.selectAll()
+
+    #---   Right Plugins
+    def toggleRightPlugin(self):
 ##        if self.ui.tab_right.isVisible():
         if self.ui.tab_right.isVisible() and self.ui.sw_main.isHidden():
             self.toggleRightPluginFull()
@@ -1107,21 +1125,10 @@ class Armadillo(QtGui.QWidget):
         if 'leftToggle' in self.settings['window']['pluginRight']:
             if self.settings['window']['pluginRight']['leftToggle']=='1':
                 self.ui.fr_left.setVisible(self.ui.tab_right.isHidden())
-    
-    #---   Bottom Plugins
-    def replaceFocus(self):
-        if 'find_replace' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['find_replace'].ui.le_find.setFocus()
-            self.pluginD['find_replace'].ui.le_find.selectAll()
-    
-    def qtHelp(self):
-        if 'qt2py' in self.pluginD:
-            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-        self.pluginD['qt2py'].ui.le_help.setFocus()
-        self.pluginD['qt2py'].ui.le_help.selectAll()
+                
+    def toggleRightPluginFull(self):
+        if self.ui.tab_right.isVisible():
+            self.ui.sw_main.setVisible(self.ui.sw_main.isHidden())
 
     #---Webview Preview
     def webview_preview(self,html,burl=None):
@@ -1150,7 +1157,7 @@ class Armadillo(QtGui.QWidget):
         wdg.modTime = None
         QtGui.QApplication.processEvents()
         self.changeTab(self.ui.tab.currentIndex())
-        
+    
     #---Startpage
     def addStart(self,wdg=None):
         pth = 'doc/start.html'
