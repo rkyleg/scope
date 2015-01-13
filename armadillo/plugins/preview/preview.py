@@ -88,7 +88,7 @@ class Preview(QtGui.QWidget):
         if cmd == 'markdown':
             # If markdown generate preview tab
             import plugins.mkdown as mkdown
-            html = mkdown.generate(text=html,style='',custom=1)
+            html = mkdown.generate(text=html,style='',custom=0)
 ##                self.armadillo.webview_preview(html,filename)
 
         elif cmd != None:
