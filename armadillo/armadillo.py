@@ -901,9 +901,12 @@ class Armadillo(QtGui.QWidget):
         wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
             if self.settings['run'][wdg.lang]['cmd']=='preview':
-                self.pluginD['preview'].previewRun(wdg)
-                if self.ui.tab_right.isHidden():
-                    self.toggleRightPlugin()
+                if 'preview' in self.pluginD:
+                    self.pluginD['preview'].previewRun(wdg)
+                    if self.ui.tab_right.isHidden():
+                        self.toggleRightPlugin()
+                else:
+                    QtGui.QMessageBox.warning(self,'No Preview Plugin','The Preview plugin is not available.<br><br>Please add it to the activePlugins settings')
             else:
                 ok = self.checkSave(wdg)
                 filename = str(wdg.filename)
@@ -1252,7 +1255,7 @@ class Armadillo(QtGui.QWidget):
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 if file_id in self.tabD:
                     wdg = self.tabD[file_id]
-                    if wdg.editor != 'Start':
+                    if wdg.editor != 'Start' and wdg.filename != None:
                         wD['files'].append({'filename':wdg.filename,'editor':wdg.editor})
                         if i==ci:
                             wD['lastOpenFile']=wdg.filename

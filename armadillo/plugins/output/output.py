@@ -43,7 +43,8 @@ class Output(QtGui.QWidget):
                 self.ui.sw_pages.insertWidget(sw_ind,owdg)
                 itm = QtGui.QListWidgetItem(wdg.title)
                 itm.setIcon(wdg.icon)
-                itm.setToolTip(wdg.filename)
+                if wdg.filename != None:
+                    itm.setToolTip(wdg.filename)
                 self.ui.li_pages.addItem(itm)
                 
     ##            self.ui.sw_pages.setCurrentIndex(sw_ind)
@@ -180,7 +181,8 @@ class OutputPage(QtGui.QWidget):
 ##                self.armadillo.webview_preview(html,filename)
 ##                self.armadillo.pluginD['preview'].editorRun(self.armadillo.currentEditor(),html)
                 self.ui.tb_out.setPlainText(text)
-                self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
+                if self.filename != None:
+                    self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
             else:
                 if os.name == 'nt':
                     filename = filename.replace('/','\\')

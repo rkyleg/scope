@@ -20,8 +20,15 @@ import os,sys, time
 commentD = {
     'python':'##',
     'javascript':'//',
-    'yaml':'##'
-    
+    'yaml':'##',
+    'perl':'##',
+    'ruby':'##',
+    'php':'#',
+    'r':'##',
+    'cpp':'//',
+    'csharp':'//',
+    'java':'//',
+    'd':'//',
 }
 
 ##def addEditor(parent,lang,filename):
