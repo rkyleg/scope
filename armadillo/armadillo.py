@@ -8,6 +8,7 @@
 # VERSION
 __version__ = '1.5.2'
 
+
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
 from armadillo_ui import Ui_Form
@@ -601,13 +602,16 @@ class Armadillo(QtGui.QWidget):
                         
                         if txt != None:
                             # Create Widget
-                            wdg = self.addEditorWidget(lang,title,str(filename),editor=editor,code=txt)
-                            wdg.setText(txt)
+                            wdg = self.addEditorWidget(lang,title,str(filename),editor=editor) #,code=txt)
+                            wdg.setEnabled(0)
+                            self.ui.l_statusbar.setText('Loading...'+os.path.basename(filename))
                             QtGui.QApplication.processEvents()
+                            wdg.setText(txt)
                             wdg.lastText = txt
-                            self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                            self.ui.tab.setTabText(self.ui.sw_main.indexOf(wdg),wdg.title)
                             wdg.modTime = os.path.getmtime(filename)
-                        
+                            wdg.setEnabled(1)
+                            self.ui.l_statusbar.setText('')
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
                         self.updateOutline()

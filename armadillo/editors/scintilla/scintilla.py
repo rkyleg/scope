@@ -73,7 +73,7 @@ class Sci(QtGui.QWidget):
             'fontFamily':'Courier',
             'fontSize':10,
 ##            'theme':'twighlight',
-            'newLineMode':'unix',
+##            'newLineMode':'unix',
             'showWhitespace':0,
         }
         
@@ -162,8 +162,8 @@ class Sci(QtGui.QWidget):
     
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
-        if self.settings['newLineMode']=='unix':
-            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
+##        if self.settings['newLineMode']=='unix':
+##            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
     
 ##    def updateText(self,txt):
 ##        # Update, but keep current undo
@@ -171,8 +171,8 @@ class Sci(QtGui.QWidget):
 ##        self.ui.te_sci.replaceSelectedText(txt)
     
     def getText(self):
-        if self.settings['newLineMode']=='unix':
-            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
+##        if self.settings['newLineMode']=='unix':
+##            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
         txt = str(self.ui.te_sci.text().toUtf8()).decode('utf-8')
         return txt
 
