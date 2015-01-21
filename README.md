@@ -10,13 +10,24 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)
 - Support for multiple languages (Python, Javascript, HTML, Markdown, more...)
-- Mostly lightweight
-- Code outline for code organization
+- Focus on lightweight
+- Outline for code organization
 - Multiple options for code editors (Ace, Scintilla, CKEditor)
 - Run code from IDE with output screen
+- Splitview preview for html and markdown
 - Extend with your own plugins created with Python and PyQt
 
 ## Installing
+### Windows Executable
+1. [Download Windows zip](https://github.com/convolutedlogic/armadillo/archive/windows.zip)
+2. Extract zip folder somewhere
+3. Run windows/Armadillo.exe
+
+### Linux Executable (x64)
+1. Download Linux64 zip
+2. Extract zip folder somewhere
+3. Run linux64/Armadillo (may need to set permission as executable)
+
 ### Running with Python (source)
 1. Install [Python](https://www.python.org/downloads/release/python-279/) (version 2.7 or 2.6 required)
 2. Install [PyQt](http://www.riverbankcomputing.com/software/pyqt/download) (between versions 4.8-4.11 required)
@@ -27,10 +38,7 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
         - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 3. Run armadillo/armadillo.py
 
-### Windows Executable
-1. [Download Windows zip](https://github.com/convolutedlogic/armadillo/archive/windows.zip)
-2. Extract zip folder somewhere
-3. Run windows/Armadillo.exe
+
 
 ### Development
 The latest development version is available [here](https://github.com/convolutedlogic/armadillo/tree/dev)

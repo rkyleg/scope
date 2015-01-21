@@ -15,7 +15,7 @@ build_exe_options = {
         'PyQt4.QtNetwork',
         'PyQt4.Qsci',
         'code',
-        'markdown',
+##        'markdown',
         'shutil',
         'webbrowser',
         'threading',
@@ -33,7 +33,7 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 setup(  name = "Armadillo",
-        version = "1.2.2",
+        version = "1.5.3",
         description = "IDE",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Armadillo.py", base=base)])
