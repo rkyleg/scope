@@ -15,8 +15,6 @@ Armadillo comes with standard plugins to the left and bottom of the editor windo
 
 - **[Output](plugins_output.md)** - Displays output of running file (only works for Python)
 
-- **PyQt Converter** - Convert Qt Designer ui files to python
-
 - **[Python Shell](plugins_pyconsole.md)** - An interactive Python shell
 
 - **Snippets** - view/store snippets of code
@@ -26,10 +24,16 @@ Armadillo comes with standard plugins to the left and bottom of the editor windo
                 [[snippets]]
                     path=/home/username/scripts
 
+- **Preview** - a built in WebKit webbrowser for previwing html and markdown. A file does not need to be saved to use the preview.
+
+
+- **PyQt Converter** - Convert Qt Designer ui files to python. *This plugin is not active by default*
+
+
 ## Select Active Plugins
 To specify which plugins are active, edit the **activePlugins** key of the General Settings. Use the foldername of the plugins and separate by commas.
 
-        activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,qt2py
+        activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,preview,qt2py
 
 ## Custom Plugins
 You can create your own plugins with Python and PyQt.
@@ -40,12 +44,10 @@ You can create your own plugins with Python and PyQt.
 4. The QWidget must have a title and location (left or bottom) attribute.
 5. Make the plugin active by adding the foldername of the plugin to the activePlugins key of the settings (comma separated).
 
-### Example Custom Plugin
-Create a plugin called test
+### Example of a custom Plugin
+To create a plugin called 'test', create a folder named test in plugins directory that would yield: /armadillo/plugins/test.
 
-Directory: /armadillo/plugins/test
-
-\_\_init\_\_.py
+\_\_init\_\_.py file in the test folder would look like:
     
         from PyQt4 import QtGui, QtCore
         def addPlugin(armadillo):

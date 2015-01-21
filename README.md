@@ -55,8 +55,6 @@ The latest development version is available [here](https://github.com/convoluted
 - **[Settings](armadillo/doc/settings.md)** - settings are stored in config file
 - **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.md)**
-- **[Roadmap](extra/roadmap.md)** - The current state of Armadillo and future plans
-- **[Todo](extra/todo.md)** - List of to do and status
 
 ## Reference
 Thanks to the following tools that Armadillo is built on:

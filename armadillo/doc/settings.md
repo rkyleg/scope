@@ -7,7 +7,6 @@ Settings are stored in the *.armadillo* folder in your user home directory.  Set
 - **workspaces folder** - saves the following settings for each workspace (json file).  )*do not modify the workspace files directly*)
     - Base path in file browser
     - Last opened files
-    - What plugins and toolbars are visible
 - **settings.conf** - this contains the main settings for Armadillo. You can edit this by clicking the ![](../img/wrench.png) button
 - **window** - a binary file with window/plugin location settings
 
@@ -38,6 +37,7 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - set the style of the editor (Qt style is used)
     - options are: windows, motif, cde, plastique, windowsxp, macintosh
     - default is plastique
+    - leave blank to use os default (widgetstyle=)
 - activeEditors
     - the list of active editors to load
 - activePlugins - these are the plugins loaded on start
@@ -77,7 +77,6 @@ Default settings for the editors. These settings are overwritten by language spe
             [[scintilla]]
                 wordwrap=0
                 autocomplete=1
-                newLineMode=unix
                 showWhitespace=0
                 fontFamily=Courier
                 fontSize=10
@@ -132,9 +131,13 @@ The available (and default) parameters are:
     - start in wordwrap mode
     - default = 0
 - run
-    - the run command to run
-    - Ex: if you have node installed: run=/home/convolutedlogic/nodejs/bin/node
+    - the command to run (dos or shell command) which is passed the filename.
     - you can add arguments with the command like -u to make Python print as it goes instead of at the end.
+    - Special Commands - there are some reserved commands that perform a specific function in Armadillo.
+        - *preview* - html and markdown use this by default to load in the split preview plugin.
+        - *webbrowser* - use this command to launch the file in your default web browser.
+    - Example: if you have node installed you can set your path to node:
+            *run=/home/convolutedlogic/nodejs/bin/node -i*
 - fave
     - a favorite language and shows up in New menu and on home page
     - this defaults to true (1) if not specified. set to 0 to not show in new menu
@@ -154,7 +157,7 @@ If you need to specify that a file extension goes with a specific language (lang
             conf=ini
 
 ### Plugins
-Settings used by the plugins.
+Settings specific to each plugin that they can use.
 
         [plugins]
             [[outline]]
@@ -166,6 +169,3 @@ Settings used by the plugins.
                 
             [[snippets]]
                 path=/home/hdesktop/snippets
-
-
-- plugins - plugin specific settings
