@@ -24,7 +24,7 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 3. Run windows/Armadillo.exe
 
 ### Linux Executable (x64)
-1. Download Linux64 zip
+1. [Download Linux64 zip](https://github.com/convolutedlogic/armadillo/archive/linux64.zip)
 2. Extract zip folder somewhere
 3. Run linux64/Armadillo (may need to set permission as executable)
 
@@ -37,8 +37,6 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
     - Easiest way to install for Debian/Ubuntu in command Window:
         - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 3. Run armadillo/armadillo.py
-
-
 
 ### Development
 The latest development version is available [here](https://github.com/convolutedlogic/armadillo/tree/dev)
