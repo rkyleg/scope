@@ -9,4 +9,4 @@ afide.sh
 /_exe/dist/*
 /_cx_freeze/build/*
 __pycache__
-/_archive
+/_archive/*

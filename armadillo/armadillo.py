@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.5.2'
+__version__ = '1.5.3'
 
 
 import sys, json, codecs, time, importlib
@@ -244,7 +244,8 @@ class Armadillo(QtGui.QWidget):
         self.loadSettings()
 ##        self.startinit = 1
         self.fileLastCheck = time.time()
-        QtGui.QApplication.setStyle(self.settings['widgetstyle'])
+        if self.settings['widgetstyle'] != 'None':
+            QtGui.QApplication.setStyle(self.settings['widgetstyle'])
         
         self.setAcceptDrops(1)
         
