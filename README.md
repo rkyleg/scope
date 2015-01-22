@@ -23,10 +23,8 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 2. Extract zip folder somewhere
 3. Run windows/Armadillo.exe
 
-### Linux Executable (x64)
-1. [Download Linux64 zip](https://github.com/convolutedlogic/armadillo/archive/linux64.zip)
-2. Extract zip folder somewhere
-3. Run linux64/Armadillo (may need to set permission as executable)
+### Linux and Mac 
+See next section (Running with Python)
 
 ### Running with Python (source)
 1. Install [Python](https://www.python.org/downloads/release/python-279/) (version 2.7 or 2.6 required)
