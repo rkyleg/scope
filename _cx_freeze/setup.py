@@ -15,6 +15,7 @@ build_exe_options = {
         'PyQt4.QtNetwork',
         'PyQt4.Qsci',
         'code',
+        'importlib',
 ##        'markdown',
         'shutil',
         'webbrowser',
