@@ -10,7 +10,7 @@ class WebPage(QtWebKit.QWebPage):
         """
         QWebPage that prints Javascript errors to stderr.
         """
-        print('JS ERROR: %s line %d: %s' % (source, line, msg))
+##        print('JS ERROR: %s line %d: %s' % (source, line, msg))
 
 class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,baseurl=None):
@@ -78,3 +78,6 @@ class WebView(QtWebKit.QWebView):
 
     def toggleInspector(self):
         self.webInspector.setVisible(not self.webInspector.isVisible())
+
+    def dropEvent(self,event):
+        self.parent.dropEvent(event)

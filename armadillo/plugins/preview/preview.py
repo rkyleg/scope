@@ -18,7 +18,7 @@ class Preview(QtGui.QWidget):
 ##        if wdg.lang in ['html','markdown']:
         pwdg = QtGui.QWidget(parent=self)
         
-        pwdg.webview = webview.WebView(self)
+        pwdg.webview = webview.WebView(parent=self.armadillo)
         layout=QtGui.QGridLayout(pwdg)
         layout.setSpacing(0)
         layout.setContentsMargins(0,0,0,0)
