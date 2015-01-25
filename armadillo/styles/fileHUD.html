@@ -1,0 +1,99 @@
+<html>
+<head>
+<style>
+    html,body {
+        height:100%;
+        min-height: 100%;
+        margin:0px;
+        padding:0px;
+        /*border-radius:10px;*/
+    }
+    body {
+        background:rgba(50,50,50,0.7);
+        
+    }
+    .main {
+        vertical-align:middle;
+        height:100%;
+        text-align:center;
+    }
+    .centered {
+        position:absolute;
+        margin:auto;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+        height:{{height}}; /*Half the height*/
+        padding:8px;
+    }
+    .file {
+        display:inline-block;
+        border-radius:8px;
+        background:rgba(200,200,200,0.7);
+        padding:8px;
+        margin:8px;
+        color:black;
+    }
+    .file:hover {
+        background:rgba(150,150,150,0.5);
+    }
+    .current, .current:hover {
+        background:rgba(250,250,250,0.9);
+    }
+    .file-icon {
+        max-height:32px;
+        min-height:32px;
+    }
+    .section-title {
+        color:white;
+    }
+    .close {
+        position:absolute;
+        top:0px;
+        right:0px;
+        color:white;
+        background:rgba(200,200,200,0.5);
+        padding:6px;
+        padding-left:20px;
+        padding-right:20px;
+        /*border-top-right-radius:10px;*/
+        border-bottom-left-radius:8px;
+    }
+    .close:hover {
+        background:rgba(200,200,200,0.7);
+    }
+</style>
+</head>
+
+<!--BODY-->
+<body>
+
+<div class="main">
+    <div class="centered">
+        <h2 class="section-title"><hr>Open Files</h2>
+        {{files}}
+        <h2 class="section-title"><hr>Create New</h2>
+        {{new_files}}
+    </div>
+</div>
+<a href="close"><span class="close">close</span></a>
+
+    
+<script>
+function checkTabPress(e) {
+    // "use strict";
+    // pick passed event or global event object if passed one is empty
+    e = e || event;
+    // var activeElement;
+    if (e.keyCode == 9) {
+        console.log('tab')
+        // activeElement = document.activeElement
+        // alert(activeElement)
+    }
+}
+var body = document.querySelector('body');
+body.addEventListener('keyup', checkTabPress);
+</script>
+    
+</body></html>

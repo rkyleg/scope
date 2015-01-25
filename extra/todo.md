@@ -57,6 +57,8 @@ Unplanned updates for any version and may or may not happen.
 - [_] pip package
 - [_] right click main menu
 - [_] Python3 compatible
+- [_] FileHUD - tab, shift+tab to move between tabs
+- [_] FileHUD - hovering or current changed (before keyup) will change tab
 
 ### Editors
 - [_] be able to change language-maybe

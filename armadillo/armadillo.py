@@ -242,18 +242,20 @@ class Armadillo(QtGui.QWidget):
         self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.armadillo'
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
+        self.armadilloPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')
         
         # Settings
         self.workspace = None
         self.loadSettings()
-##        self.startinit = 1
-        self.fileLastCheck = time.time()
+
         if self.settings['widgetstyle'] != 'None':
             QtGui.QApplication.setStyle(self.settings['widgetstyle'])
         
         self.setAcceptDrops(1)
         
 ##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
+##        self.startinit = 1
+        self.fileLastCheck = time.time()
 ##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
@@ -381,7 +383,7 @@ class Armadillo(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
-        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.addStart) # Add Start Page
+        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleFileHUD) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftPlugin) # Toggle Left Plugin
@@ -441,6 +443,8 @@ class Armadillo(QtGui.QWidget):
         # Default zen mode
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
+        
+        self.fileHUDWidget = None
         
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
@@ -1253,7 +1257,102 @@ class Armadillo(QtGui.QWidget):
             self.addStart(wdg=wdg)
         else:
             wdg.load2(url)
+
+    #---File HUD
+    def toggleFileHUD(self):
+        if self.fileHUDWidget == None:
+            # Create hud widget
+            from editors.webview import webview
+            self.fileHUDWidget=webview.WebView(self)
+            self.fileHUDWidget.setWindowOpacity(0.6)
+            self.fileHUDWidget.setStyleSheet("background:transparent")
+            self.fileHUDWidget.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
+            self.fileHUDWidget.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            self.fileHUDWidget.linkClicked.connect(self.fileHUDClicked)
+        
+        if self.fileHUDWidget.isVisible():
+            self.fileHUDWidget.hide()
+        else:
+            
+            if os.name =='nt':
+                pfx="file:///"
+            else:
+                pfx="file://"
+            
+            f = open(self.armadilloPath+'/styles/fileHUD.html','r')
+            txt=f.read()
+            f.close()
+            
+            # Get Open Files
+            file_txt = ''
+            for i in range(self.ui.tab.count()):
+                t = int(self.ui.tab.tabData(i).toInt()[0])
+                wdg = self.tabD[t]
+                lang = wdg.lang
+                filename = str(self.ui.tab.tabText(t))
+                # Icon
+                ipth = self.iconPath+'/files/_blank.png'
+                fipth = self.iconPath+'files/'+str(lang)+'.png'
+                if os.path.exists(fipth):
+                    ipth = fipth
+                elif filename != None:
+                    ext = os.path.splitext(filename)[1][1:]
+                    if os.path.exists(self.iconPath+'files/'+ext+'.png'):
+                        ipth = self.iconPath+'files/'+ext+'.png'
+                elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
+                    ipth = self.editorPath+editor+'/'+editor+'.png'
+
+                ipth = pfx+ipth
+                
+                cls=''
+                if i == self.ui.tab.currentIndex():
+                    cls='current'
+                
+                file_txt += '<a href="opentab:'+str(i)+'">'
+                file_txt+='<span class="file '+cls+'">'
+                file_txt += '<img class="file-icon" src="'+ipth+'"><br>'
+                file_txt +=str(self.ui.tab.tabText(i))
+                file_txt += '</span></a>'
+            
+             # Add New File Links
+            nfiles = ''
+            for lang in sorted(self.settings['prog_lang']):
+                if lang != 'default' and self.settings['prog_lang'][lang]['fave']:
+                    icn = None
+                    if os.path.exists(self.iconPath+'files/'+lang+'.png'):
+                        icn = self.iconPath+'files/'+lang+'.png'
+                    # Set default Icon if language not found
+                    if icn == None:
+                        icn = self.iconPath+'files/_blank.png'
+
+                    nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><span class="file"><img class="file-icon" src="'+pfx+icn+'""><br>'+lang+'</span></a>'
+            
+            # Generate HTML
+            g=self.geometry()
+            contentD={
+                'files':file_txt,
+                'height':g.height()/2,
+                'new_files':nfiles
+            }
+            for ky in contentD:
+                txt=txt.replace('{{'+ky+'}}',str(contentD[ky]))
+            self.fileHUDWidget.setText(txt)
+            
+            self.fileHUDWidget.setGeometry(0,0,g.width(),g.height())
+            self.fileHUDWidget.show()
+    
+    def fileHUDClicked(self,url):
+        lnk = str(url.toString())
+        print(lnk)
+        if lnk.startswith('opentab:'):
+            i=int(lnk.split('opentab:')[1])
+            self.ui.tab.setCurrentIndex(i)
+            self.toggleFileHUD()
+        
+        elif lnk=='close':
+            self.toggleFileHUD()
+    
     #---Shortcuts
     def findFocus(self):
         if self.ui.fr_toolbar.isHidden():

@@ -28,7 +28,7 @@
 		</tr>
 		<tr>
 			<td>F1</td>
-			<td>Help / Start Page</td>
+			<td>Toggle Heads-up-dislpay (HUD)</td>
 		</tr>
 		<tr>
 			<td>F2</td>
