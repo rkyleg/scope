@@ -179,6 +179,11 @@ class Sci(QtGui.QWidget):
         txt = str(self.ui.te_sci.text().toUtf8()).decode('utf-8')
         return txt
 
+    def insertText(self,txt):
+##        self.ui.te_sci.removeSelectedText()
+##        self.ui.te_sci.insert(txt)
+        self.ui.te_sci.replaceSelectedText(txt)
+
     def find(self,txt,re=0,cs=0,wo=0):
         return self.ui.te_sci.findFirst(txt,re,cs,wo,1)
     

@@ -272,6 +272,12 @@ class WebView(QtWebKit.QWebView):
         editor.moveCursorTo(0,0);
         editor.focus();''')
 
+    def insertText(self,txt):
+        self.editorJS.editorHtml = txt#.replace("'","''")
+        self.page().mainFrame().evaluateJavaScript(
+        '''var txt =  pythonjs.html;
+        editor.insert(txt);''')
+
     def toggleWordWrap(self):
         self.wordwrapmode = not self.wordwrapmode
         ww = {0:'true',1:'false'}

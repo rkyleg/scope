@@ -253,8 +253,6 @@ QPushButton:hover,QToolButton:hover {
         <property name="styleSheet">
          <string notr="true">QToolButton {
 	border-left:1px solid rgb(130,130,130);
-	border-top-right-radius:5px;
-	border-bottom-right-radius:5px;
 }</string>
         </property>
         <property name="text">
@@ -739,6 +737,39 @@ border-radius:3px;</string>
         <property name="icon">
          <iconset>
           <normaloff>img/home.png</normaloff>img/home.png</iconset>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="11">
+       <widget class="QToolButton" name="b_color_picker">
+        <property name="minimumSize">
+         <size>
+          <width>32</width>
+          <height>0</height>
+         </size>
+        </property>
+        <property name="maximumSize">
+         <size>
+          <width>32</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>Color Picker</string>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QToolButton {
+	border-left:1px solid rgb(130,130,130);
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+}</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>img/color_swatch.png</normaloff>img/color_swatch.png</iconset>
         </property>
        </widget>
       </item>

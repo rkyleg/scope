@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Tue Jan  6 17:57:26 2015
+# Created: Sun Jan 25 11:55:08 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -147,8 +147,6 @@ class Ui_Form(object):
         self.b_comment.setMaximumSize(QtCore.QSize(32, 16777215))
         self.b_comment.setStyleSheet(_fromUtf8("QToolButton {\n"
 "    border-left:1px solid rgb(130,130,130);\n"
-"    border-top-right-radius:5px;\n"
-"    border-bottom-right-radius:5px;\n"
 "}"))
         self.b_comment.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
@@ -334,6 +332,20 @@ class Ui_Form(object):
         self.b_help.setIcon(icon11)
         self.b_help.setObjectName(_fromUtf8("b_help"))
         self.gridLayout_2.addWidget(self.b_help, 0, 5, 1, 1)
+        self.b_color_picker = QtGui.QToolButton(self.fr_toolbar)
+        self.b_color_picker.setMinimumSize(QtCore.QSize(32, 0))
+        self.b_color_picker.setMaximumSize(QtCore.QSize(32, 16777215))
+        self.b_color_picker.setStyleSheet(_fromUtf8("QToolButton {\n"
+"    border-left:1px solid rgb(130,130,130);\n"
+"    border-top-right-radius:5px;\n"
+"    border-bottom-right-radius:5px;\n"
+"}"))
+        self.b_color_picker.setText(_fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/color_swatch.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_color_picker.setIcon(icon12)
+        self.b_color_picker.setObjectName(_fromUtf8("b_color_picker"))
+        self.gridLayout_2.addWidget(self.b_color_picker, 0, 11, 1, 1)
         self.gridLayout_8.addWidget(self.fr_toolbar, 1, 0, 1, 1)
         self.fr_tabs = QtGui.QFrame(Form)
         self.fr_tabs.setFrameShape(QtGui.QFrame.NoFrame)
@@ -358,9 +370,9 @@ class Ui_Form(object):
 "    background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));\n"
 "}"))
         self.b_main.setText(_fromUtf8(""))
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_main.setIcon(icon12)
+        icon13 = QtGui.QIcon()
+        icon13.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_main.setIcon(icon13)
         self.b_main.setObjectName(_fromUtf8("b_main"))
         self.horizontalLayout.addWidget(self.b_main)
         self.gridLayout_8.addWidget(self.fr_tabs, 0, 0, 1, 1)
@@ -393,5 +405,6 @@ class Ui_Form(object):
         self.b_run.setToolTip(_translate("Form", "Run", None))
         self.b_settings.setToolTip(_translate("Form", "Edit Settings", None))
         self.b_help.setToolTip(_translate("Form", "Armadillo start page and help links", None))
+        self.b_color_picker.setToolTip(_translate("Form", "Color Picker", None))
         self.b_main.setToolTip(_translate("Form", "Armidillo Menu", None))
 

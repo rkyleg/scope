@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.0'
+__version__ = '1.6.1'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -354,6 +354,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.b_indent.clicked.connect(self.editorIndent)
         self.ui.b_unindent.clicked.connect(self.editorUnindent)
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
+        self.ui.b_color_picker.clicked.connect(self.colorPicker)
 
         self.ui.b_run.clicked.connect(self.editorRun)
 ##        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
@@ -997,6 +998,19 @@ class Armadillo(QtGui.QWidget):
             words = len(txt.split())
             self.ui.l_statusbar.setText('Lines: %d    Words: %d' %(lines,words))
     
+    def colorPicker(self):
+        clrdlg = QtGui.QColorDialog(self)
+        clr=clrdlg.getColor(QtGui.QColor(255,255,255),self,'Select color',QtGui.QColorDialog.ShowAlphaChannel)
+        if clr.isValid():
+            r,g,b,a = clr.getRgb()
+            atxt=apfx=''
+            if a < 255:
+                atxt=',%0.2g' %(a/255.0)
+                apfx='a'
+            txt = 'rgb%s(%d,%d,%d%s)' %(apfx,r,g,b,atxt)
+            if 'insertText' in dir(self.currentEditor()):
+                self.currentEditor().insertText(txt)
+
     #---Plugins
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')

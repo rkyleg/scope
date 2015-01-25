@@ -19,10 +19,12 @@
 ## Armadillo 1.6
 ### Main
 - [_] Install script to create shortcut
-- [_] Python3 compatible imports
+- [x] Python3 compatible imports (not full Python3 compatibility - yet)
 
 ### Editors
-- [_] Add insertText function
+- [x] Add insertText function
+- [x] Add color picker
+- [_] Improve Ace right click menu layout and available functions
 
 ### Plugins
 - [_] Plugin menu for extra, not default open plugins
@@ -54,6 +56,7 @@ Unplanned updates for any version and may or may not happen.
 - [_] Linux, Mac binaries
 - [_] pip package
 - [_] right click main menu
+- [_] Python3 compatible
 
 ### Editors
 - [_] be able to change language-maybe
@@ -66,7 +69,7 @@ Unplanned updates for any version and may or may not happen.
 - [_] Find - Grep like plugin (maybe combine with Find)
 - [_] New - Spellcheck
 - [_] New - Add vertical tabs (sortable)
-- [_] New - color picker
+- [_] New - color picker (save palette with workspace)
 - [_] New - scratch - just a textbox that saves with workspace
 - [_] Preview - add find
 - [_] Preview - show link in statusbar when hovering (maybe use current statusbar)
@@ -82,4 +85,4 @@ Unplanned updates for any version and may or may not happen.
 - [_] Install plugins from zip url
 - [_] Python Shell - fix syntax highlighting
 - [_] Python Shell - add autocomplete
-- 
+- [_] open file selection overlay (sortable)
