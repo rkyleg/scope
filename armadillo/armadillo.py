@@ -1344,7 +1344,7 @@ class Armadillo(QtGui.QWidget):
     
     def fileHUDClicked(self,url):
         lnk = str(url.toString())
-        print(lnk)
+##        print(lnk)
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.ui.tab.setCurrentIndex(i)
