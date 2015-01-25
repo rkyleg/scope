@@ -1,4 +1,4 @@
-import scintilla
+from . import scintilla
 from PyQt4 import Qsci
 
 # Setup languages

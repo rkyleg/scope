@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from qt2py_ui import Ui_Form
+from .qt2py_ui import Ui_Form
 import os, datetime, subprocess, sys
 import webbrowser
     

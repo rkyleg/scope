@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore
-from outline_ui import Ui_Form
-from outline_tree_ui import Ui_Outline_Tree
+from .outline_ui import Ui_Form
+from .outline_tree_ui import Ui_Outline_Tree
 import re, os, importlib
 
 class outlineTree(QtGui.QWidget):
@@ -117,7 +117,7 @@ class Outline(QtGui.QWidget):
 ##            self.format(itm,'filename')
             
             self.wdgD[wdg].ui.b_find_close.click()
-            txt = unicode(wdg.getText())
+            txt = wdg.getText()
             txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
             
             txt_outline = self.outlineLangD[wdg.lang](txtlines)

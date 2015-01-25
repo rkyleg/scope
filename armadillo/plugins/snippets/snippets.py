@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from snippets_ui import Ui_Form
+from .snippets_ui import Ui_Form
 import os
 
 ignore_ext = ['pyc']
@@ -118,7 +118,7 @@ class Snippets(QtGui.QWidget):
         resp,ok = QtGui.QInputDialog.getText(self,'New Snippet','Enter the filename for the new snippet (including the extension)')
         if ok and not resp.isEmpty():
             filename = self.snip_fldr+str(resp)
-            print filename
+##            print filename
             if os.path.exists(filename):
                 QtGui.QMessageBox.warning(self,'Snippet Exists','A snippet with that name already exists')
             else:

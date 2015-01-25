@@ -1,4 +1,4 @@
-import qt2py
+from . import qt2py
 
 def addPlugin(parent):
     plugin = qt2py.Qt2Py(parent)

@@ -7,6 +7,7 @@ Armadillo is a lightweight, cross-platform IDE for Python, web development and m
 <a href="extra/screenshotpreview.png" target="_blank" title="Markdown with preview"><img src="extra/screenshot_preview.png" height=200></a>
 <a href="extra/screenshot_output.png" target="_blank" title="Running a file"><img src="extra/screenshot_output.png" height=200></a>
 <a href="extra/screenshot_full_editor_mode.png" target="_blank" title="Full Editor Mode"><img src="extra/screenshot_full_editor_mode.png" height=200></a>
+<a href="extra/screenshot_preview.png" target="_blank" title="Markdown with preview"><img src="extra/screenshot_preview.png" height=200></a>
 
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)

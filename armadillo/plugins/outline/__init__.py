@@ -1,4 +1,4 @@
-import outline
+from . import outline
 
 def addPlugin(parent):
     plugin = outline.Outline(parent)

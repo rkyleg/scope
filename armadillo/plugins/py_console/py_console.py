@@ -16,7 +16,10 @@ from code import InteractiveInterpreter as Interpreter
 from PyQt4 import QtGui,QtCore#, Qsci
 from PyQt4.QtCore import Qt
 
-import highlighter
+if sys.version_info.major==3:
+    from . import highlighter
+else:
+    import highlighter
 
 class Console(QtGui.QTextEdit):
     
@@ -106,7 +109,8 @@ class Console(QtGui.QTextEdit):
         elif os.name == 'nt' or os.name == 'dos':
             font = QtGui.QFont("Courier New", fontSize)
         else:
-            raise SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'"
+            print(SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'")
+##            raise Exception(SystemExit, "FIXME for 'os2', 'mac', 'ce' or 'riscos'")
         font.setFixedPitch(1)
         self.setFont(font)
 

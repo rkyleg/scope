@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
-from preview_ui import Ui_Form
+from .preview_ui import Ui_Form
 from editors.webview import webview
 import re, os, importlib, subprocess, time
 

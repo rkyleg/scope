@@ -6,8 +6,12 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.5.4'
+__version__ = '1.6.0'
 
+# Make sure qvariant works for Python 2 and 3
+import sip
+##sip.setapi('QString',1)
+sip.setapi('QVariant',1)
 
 import sys, json, codecs, time, importlib
 from PyQt4 import QtCore, QtGui, QtWebKit
@@ -719,7 +723,11 @@ class Armadillo(QtGui.QWidget):
         self.ui.l_statusbar.setText('')
 
         if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
+##        if sys.version_info.major==3:
+##            file_id = self.ui.tab.tabData(tab_ind)  # Python3 compatible code
+##        else:
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
+        
         if file_id in self.tabD:
             wdg = self.tabD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
@@ -774,6 +782,9 @@ class Armadillo(QtGui.QWidget):
                 
             
     def closeTab(self,tab_ind):
+##        if sys.version_info.major==3:
+##            file_id = self.ui.tab.tabData(tab_ind)
+##        else:
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
         wdg = self.tabD[file_id]
         ok = 1
@@ -1345,6 +1356,9 @@ class Armadillo(QtGui.QWidget):
         if wk_ok:
             # Check if anything needs saving
             for i in range(self.ui.tab.count()-1,-1,-1):
+##                if sys.version_info.major==3:
+##                    file_id = self.ui.tab.tabData(i)
+##                else:
                 file_id = self.ui.tab.tabData(i).toInt()[0]
                 wdg = self.tabD[file_id]
                 ok = self.checkSave(wdg)

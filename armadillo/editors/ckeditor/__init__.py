@@ -1,4 +1,4 @@
-import ckeditor
+from . import ckeditor
 from PyQt4 import QtGui, QtCore
 import os
 

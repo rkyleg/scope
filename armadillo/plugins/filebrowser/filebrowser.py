@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore
-from filebrowser_ui import Ui_Form
+from .filebrowser_ui import Ui_Form
 import os,sys, subprocess
 
 class DirTree(QtGui.QWidget):

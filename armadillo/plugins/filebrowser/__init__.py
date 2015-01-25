@@ -1,4 +1,4 @@
-import filebrowser
+from . import filebrowser
 
 def addPlugin(parent):
     plugin = filebrowser.DirTree(parent)

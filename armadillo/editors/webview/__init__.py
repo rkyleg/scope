@@ -1,4 +1,4 @@
-import webview
+from . import webview
 import os
 from PyQt4 import QtGui, QtCore
 

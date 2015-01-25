@@ -1,4 +1,4 @@
-import preview
+from . import preview
 
 def addPlugin(parent):
     plugin = preview.Preview(parent)

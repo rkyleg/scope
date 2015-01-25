@@ -1,4 +1,4 @@
-import output
+from . import output
 
 def addPlugin(parent):
     plugin = output.Output(parent)

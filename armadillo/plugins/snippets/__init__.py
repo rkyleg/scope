@@ -1,4 +1,4 @@
-import snippets
+from . import snippets
 
 def addPlugin(parent):
     plugin = snippets.Snippets(parent)

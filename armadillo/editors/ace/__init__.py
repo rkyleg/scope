@@ -1,4 +1,4 @@
-import ace
+from . import ace
 from PyQt4 import QtGui, QtCore
 import os
 

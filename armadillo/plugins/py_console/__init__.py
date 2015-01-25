@@ -1,4 +1,5 @@
-import py_console, sys
+from . import py_console
+import sys
 
 #---Code to add to afide
 def addPlugin(parent):

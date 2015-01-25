@@ -1,4 +1,4 @@
-import find_replace
+from . import find_replace
 
 def addPlugin(parent):
     plugin = find_replace.Find_Replace(parent)

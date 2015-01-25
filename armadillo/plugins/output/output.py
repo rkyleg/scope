@@ -1,6 +1,6 @@
 from PyQt4 import QtGui, QtCore , QtWebKit
-from output_ui import Ui_Form
-from outputText_ui import Ui_OutWidget
+from .output_ui import Ui_Form
+from .outputText_ui import Ui_OutWidget
 import sys, os, re, webbrowser, time, codecs, datetime
 
 re_file     = re.compile('(\s*)(File "(.*))\n')
