@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.5.3'
+__version__ = '1.5.4'
 
 
 import sys, json, codecs, time, importlib
@@ -31,7 +31,7 @@ class NewMenu(QtGui.QMenu):
         
         # Add Favorites First
         for lang in sorted(parent.settings['prog_lang']):
-            if lang != 'default':
+            if lang != 'default' and parent.settings['prog_lang'][lang]['fave']:
                 icn = None
                 if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
                     icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
@@ -1194,7 +1194,7 @@ class Armadillo(QtGui.QWidget):
                     icn = self.iconPath+'files/'+lang+'.png'
                 # Set default Icon if language not found
                 if icn == None:
-                        icn = self.iconPath+'files/_blank.png'
+                    icn = self.iconPath+'files/_blank.png'
 
                 nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="button"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
         wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")

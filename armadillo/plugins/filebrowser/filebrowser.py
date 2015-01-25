@@ -18,6 +18,7 @@ class DirTree(QtGui.QWidget):
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
+        self.ui.tr_dir.mousePressEvent = self.mousePressEvent
         self.ui.le_root.returnPressed.connect(self.loadRoot)
         
         # Set default path
@@ -83,7 +84,12 @@ class DirTree(QtGui.QWidget):
                         self.loadRoot()
                 else:
                     self.armadillo.openFile(pth)
-        
+    
+    def mousePressEvent(self, event):
+        self.ui.tr_dir.clearSelection()
+        self.ui.tr_dir.setCurrentItem(None)
+        QtGui.QTreeView.mousePressEvent(self.ui.tr_dir, event)
+    
     def itmExpanded(self,itm):
         pth = str(itm.text(1))
         
@@ -139,6 +145,7 @@ class DirTree(QtGui.QWidget):
         
     def fileMenu(self,event):
         menu = QtGui.QMenu('file menu')
+        open_icon = QtGui.QIcon(self.armadillo.iconPath+'folder_go.png')
         citm = self.ui.tr_dir.currentItem()
         fitm = None
         if citm != None:
@@ -149,7 +156,18 @@ class DirTree(QtGui.QWidget):
             if os.path.isfile(pth):
                 fpth = os.path.dirname(pth)
                 fitm = citm.parent()
-                
+            
+                open_icon = QtGui.QIcon(self.armadillo.iconPath+'file_go.png')
+            
+        menu.addAction(open_icon,'Open (external)')
+        menu.addSeparator()
+        
+        if citm != None:
+            # New File
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
+            menu.addSeparator()
+            
             if ext != '':
                 # Open menu
                 lang = None
@@ -165,36 +183,38 @@ class DirTree(QtGui.QWidget):
             
                 menu.addSeparator()
             
-            # New File
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
-            menu.addSeparator()
-            
-            # Other File Options
-            menu.addAction(QtGui.QIcon(),'Open (external)')
+##            # Other File Options
+##            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'forward.png'),'Open (external)')
             
 
             if os.path.isfile(pth):
-                menu.addAction(QtGui.QIcon(),'Rename')
+                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'edit.png'),'Rename')
 ##                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'copy.png'),'Copy File')
-                menu.addSeparator()
+##                menu.addSeparator()
                 menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'delete.png'),'Delete File')
-                
             
             for act in menu.actions():  # Set Icon to visible
                 act.setIconVisibleInMenu(1)
         else:
             fpth = unicode(self.ui.le_root.text())
+            pth = fpth
             # New File
             menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
-        
+##            menu.addAction(QtGui.QIcon(),'Open (external)')
+##            menu.addSeparator()
+            
         # Show All files
         menu.addSeparator()
         showAct=menu.addAction(QtGui.QIcon(),'Show All Files')
+        
         showAct.setCheckable(1)
         showAct.setChecked(self.showAll)
-            
+        
+        menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Refresh')
+        
+        
         # Launch Menu
         act = menu.exec_(self.ui.tr_dir.cursor().pos())
         if act != None:
@@ -214,6 +234,13 @@ class DirTree(QtGui.QWidget):
                 self.showAll = showAct.isChecked()
                 if citm != None:
                     self.itmClick(citm,0,toggleExpanded=2)
+                else:
+                    self.loadRoot()
+            elif acttxt=='Refresh':
+                if citm != None:
+                    self.itmClick(citm,0,toggleExpanded=2)
+                else:
+                    self.loadRoot()
             elif acttxt == 'New File':
                 # New File
                 resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New File','Enter the file name and extension.')
