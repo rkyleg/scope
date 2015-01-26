@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.1'
+__version__ = '1.6.2'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -383,7 +383,7 @@ class Armadillo(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
-        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleFileHUD) # Add Start Page
+        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleHUD) # Add Start Page
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftPlugin) # Toggle Left Plugin
@@ -444,7 +444,7 @@ class Armadillo(QtGui.QWidget):
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
         
-        self.fileHUDWidget = None
+        self.HUDWidget = None
         
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
@@ -524,12 +524,15 @@ class Armadillo(QtGui.QWidget):
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
-        if zen:
-            self.ui.tab_right.setVisible(not zen)
+        self.ui.fr_tabs.setVisible(not self.fullscreen_mode)
+##        if zen:
+##            self.ui.tab_right.setVisible(not zen)
+            
         if zen:
             self.pluginBottomChange(0)
         else:
             self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
+            self.ui.fr_tabs.setVisible(1)
         
         if self.editor_fullmode:
             self.armadilloMenu.fullEditorAction.setText('Exit Full Editor Mode')
@@ -542,6 +545,7 @@ class Armadillo(QtGui.QWidget):
             self.showFullScreen()
             self.editor_fullmode=0
             self.toggleFullEditor()
+            
             self.armadilloMenu.fullScreenAction.setText('Exit Full Screen Mode (F11)')
         else:
             self.armadilloMenu.fullScreenAction.setText('Full Screen (F11)')
@@ -1259,20 +1263,20 @@ class Armadillo(QtGui.QWidget):
             wdg.load2(url)
 
     #---File HUD
-    def toggleFileHUD(self):
-        if self.fileHUDWidget == None:
+    def toggleHUD(self):
+        if self.HUDWidget == None:
             # Create hud widget
             from editors.webview import webview
-            self.fileHUDWidget=webview.WebView(self)
-            self.fileHUDWidget.setWindowOpacity(0.6)
-            self.fileHUDWidget.setStyleSheet("background:transparent")
-            self.fileHUDWidget.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+            self.HUDWidget=webview.WebView(self)
+            self.HUDWidget.setWindowOpacity(0.6)
+            self.HUDWidget.setStyleSheet("background:transparent")
+            self.HUDWidget.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
-            self.fileHUDWidget.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-            self.fileHUDWidget.linkClicked.connect(self.fileHUDClicked)
+            self.HUDWidget.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            self.HUDWidget.linkClicked.connect(self.HUDClicked)
         
-        if self.fileHUDWidget.isVisible():
-            self.fileHUDWidget.hide()
+        if self.HUDWidget.isVisible():
+            self.HUDWidget.hide()
         else:
             
             if os.name =='nt':
@@ -1280,7 +1284,7 @@ class Armadillo(QtGui.QWidget):
             else:
                 pfx="file://"
             
-            f = open(self.armadilloPath+'/styles/fileHUD.html','r')
+            f = open(self.armadilloPath+'/styles/HUD.html','r')
             txt=f.read()
             f.close()
             
@@ -1308,12 +1312,12 @@ class Armadillo(QtGui.QWidget):
                 cls=''
                 if i == self.ui.tab.currentIndex():
                     cls='current'
+                    cur_itm=i
                 
-                file_txt += '<a href="opentab:'+str(i)+'">'
-                file_txt+='<span class="file '+cls+'">'
+                file_txt += '<a href="opentab:'+str(i)+'" class="file '+cls+'" id="'+str(i)+'">'
                 file_txt += '<img class="file-icon" src="'+ipth+'"><br>'
                 file_txt +=str(self.ui.tab.tabText(i))
-                file_txt += '</span></a>'
+                file_txt += '</a>'
             
              # Add New File Links
             nfiles = ''
@@ -1326,32 +1330,34 @@ class Armadillo(QtGui.QWidget):
                     if icn == None:
                         icn = self.iconPath+'files/_blank.png'
 
-                    nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><span class="file"><img class="file-icon" src="'+pfx+icn+'""><br>'+lang+'</span></a>'
+                    nfiles += '<a href="new:'+lang+'" title="new '+lang+'" class="newfile"><img class="file-icon" src="'+pfx+icn+'""><br>'+lang+'</a>'
             
             # Generate HTML
             g=self.geometry()
             contentD={
                 'files':file_txt,
                 'height':g.height()/2,
-                'new_files':nfiles
+                'new_files':nfiles,
+                'current_item':cur_itm
             }
             for ky in contentD:
                 txt=txt.replace('{{'+ky+'}}',str(contentD[ky]))
-            self.fileHUDWidget.setText(txt)
+            self.HUDWidget.setText(txt)
             
-            self.fileHUDWidget.setGeometry(0,0,g.width(),g.height())
-            self.fileHUDWidget.show()
+            self.HUDWidget.setGeometry(0,0,g.width(),g.height())
+            self.HUDWidget.show()
+            self.HUDWidget.setFocus()
     
-    def fileHUDClicked(self,url):
+    def HUDClicked(self,url):
         lnk = str(url.toString())
 ##        print(lnk)
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.ui.tab.setCurrentIndex(i)
-            self.toggleFileHUD()
+            self.toggleHUD()
         
         elif lnk=='close':
-            self.toggleFileHUD()
+            self.toggleHUD()
     
     #---Shortcuts
     def findFocus(self):
