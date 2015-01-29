@@ -24,7 +24,8 @@ class DirTree(QtGui.QWidget):
         # Set default path
         self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
         if self.armadillo.settings['plugins']['filebrowser']['defaultPath']!='':
-            self.ui.le_root.setText(self.armadillo.settings['plugins']['filebrowser']['defaultPath']) 
+            if os.path.exists(self.armadillo.settings['plugins']['filebrowser']['defaultPath']):
+                self.ui.le_root.setText(self.armadillo.settings['plugins']['filebrowser']['defaultPath']) 
         self.loadRoot()
         
         self.ui.tr_dir.contextMenuEvent = self.fileMenu
@@ -35,7 +36,7 @@ class DirTree(QtGui.QWidget):
         if not newpath.endswith('/'): newpath +='/'
         if os.path.exists(newpath):
             self.rootpath = newpath
-
+        
         self.ui.le_root.setText(self.rootpath)
         self.ui.tr_dir.clear()
         
