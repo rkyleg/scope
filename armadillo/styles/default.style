@@ -5,6 +5,10 @@ QTabBar::close-button:hover{
 	image: url(img/close_hover.png);
 }
 
+QPushButton {
+    outline:none;
+}
+
 /*.pluginVertical {*/
 /*    	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0.00425532 rgba(213, 213, 213, 255), stop:0.0468085 rgba(226, 226, 226, 255), stop:0.944681 rgba(243, 243, 243, 255), stop:1 rgba(255, 255, 255, 255));*/
 /*}*/

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.2'
+__version__ = '1.6.3'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -429,6 +429,13 @@ class Armadillo(QtGui.QWidget):
         self.ui.tabbar_bottom.setExpanding(0)
         # Add down arrow
         self.ui.tabbar_bottom.addTab(QtGui.QIcon(self.iconPath+'tri_down.png'),'')
+        self.ui.tabbar_bottom.setTabToolTip(0,'Hide bottom plugins')
+        
+        # Add button
+##        plugin_add_btn = QtGui.QPushButton('Add')
+##        self.ui.fr_bottom.layout().addItem(QtGui.QSpacerItem(1,1,QtGui.QSizePolicy.Expanding))
+##        self.ui.fr_bottom.layout().addWidget(plugin_add_btn)
+##        plugin_add_btn.setMenu(self.addPluginMenu)
         
         # Add Plugins
         self.pluginD = {}
@@ -438,6 +445,11 @@ class Armadillo(QtGui.QWidget):
             self.addPlugin(plug)
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
+        
+        # Add Menu Plugins
+##        self.addPluginMenu = QtGui.QMenu()
+##        for plug in self.settings['otherPlugins']:
+##            self.addPluginMenu.addAction()
         
         #--- Other Setup
         # Default zen mode
@@ -1052,7 +1064,8 @@ class Armadillo(QtGui.QWidget):
             elif loc == 'bottom':
                 if self.settings['window']['pluginBottom']['showTabText']!='1': tabtext=''
                 self.ui.sw_bottom.addWidget(pluginWidget)
-                self.ui.tabbar_bottom.addTab(icn,tabtext)
+                ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
+                self.ui.tabbar_bottom.setTabToolTip(ti,title)
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
 
