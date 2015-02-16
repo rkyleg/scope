@@ -175,7 +175,7 @@ QPushButton:hover,QToolButton:hover {
         </widget>
        </item>
        <item row="0" column="0">
-        <widget class="QPushButton" name="b_copy">
+        <widget class="QPushButton" name="b_insert">
          <property name="maximumSize">
           <size>
            <width>26</width>
@@ -183,7 +183,7 @@ QPushButton:hover,QToolButton:hover {
           </size>
          </property>
          <property name="toolTip">
-          <string>copy snippet to clipboard</string>
+          <string>insert into current editor</string>
          </property>
          <property name="styleSheet">
           <string notr="true">QPushButton,QToolButton {
@@ -197,7 +197,7 @@ QPushButton:hover,QToolButton:hover {
          </property>
          <property name="icon">
           <iconset>
-           <normaloff>../../img/copy.png</normaloff>../../img/copy.png</iconset>
+           <normaloff>../../img/up.png</normaloff>../../img/up.png</iconset>
          </property>
         </widget>
        </item>

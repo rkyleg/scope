@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Sun Dec 21 00:04:53 2014
+# Created: Sun Feb 15 21:14:36 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,19 +103,19 @@ class Ui_Form(object):
         self.b_new.setIcon(icon1)
         self.b_new.setObjectName(_fromUtf8("b_new"))
         self.gridLayout_2.addWidget(self.b_new, 3, 0, 1, 1)
-        self.b_copy = QtGui.QPushButton(self.frame_2)
-        self.b_copy.setMaximumSize(QtCore.QSize(26, 16777215))
-        self.b_copy.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
+        self.b_insert = QtGui.QPushButton(self.frame_2)
+        self.b_insert.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.b_insert.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-bottom:1px solid rgb(100,100,100);\n"
 "    border-top-right-radius:5px;\n"
 "    border-top-left-radius:5px;\n"
 "}"))
-        self.b_copy.setText(_fromUtf8(""))
+        self.b_insert.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../img/copy.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_copy.setIcon(icon2)
-        self.b_copy.setObjectName(_fromUtf8("b_copy"))
-        self.gridLayout_2.addWidget(self.b_copy, 0, 0, 1, 1)
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../img/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_insert.setIcon(icon2)
+        self.b_insert.setObjectName(_fromUtf8("b_insert"))
+        self.gridLayout_2.addWidget(self.b_insert, 0, 0, 1, 1)
         self.b_edit = QtGui.QPushButton(self.frame_2)
         self.b_edit.setMaximumSize(QtCore.QSize(26, 16777215))
         self.b_edit.setText(_fromUtf8(""))
@@ -157,7 +157,7 @@ class Ui_Form(object):
         self.cb_ext.setItemText(0, _translate("Form", "All", None))
         self.b_reload.setToolTip(_translate("Form", "reload snippets directory", None))
         self.b_new.setToolTip(_translate("Form", "new snippet", None))
-        self.b_copy.setToolTip(_translate("Form", "copy snippet to clipboard", None))
+        self.b_insert.setToolTip(_translate("Form", "insert into current editor", None))
         self.b_edit.setToolTip(_translate("Form", "edit snippet", None))
         self.b_fldr.setToolTip(_translate("Form", "open snippet directory", None))
 

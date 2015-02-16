@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.3'
+__version__ = '1.6.4'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -336,7 +336,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.tab_left.setTabPosition(tabLocD[self.settings['window']['pluginLeft']['tabPosition']])
         self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
-        # File Tabs
+        #--- Editor Tabs
         self.ui.tab = QtGui.QTabBar()
         self.ui.tab.setObjectName('editorTabs')
         self.ui.tab.setTabsClosable(True)
@@ -348,6 +348,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.tab.currentChanged.connect(self.changeTab)
         self.ui.tab.tabCloseRequested.connect(self.closeTab)
         self.ui.tab.setExpanding(0)
+        self.ui.tab.mousePressEvent=self.tabMousePressEvent
         
         #--- Signals
         self.ui.b_open.clicked.connect(self.openFile)
@@ -526,6 +527,14 @@ class Armadillo(QtGui.QWidget):
     
     def dragEnterEvent(self,event):
         event.accept()
+    
+    def tabMousePressEvent(self,event):
+        print event.button(),event.button() == QtCore.Qt.MidButton
+        if event.button() == QtCore.Qt.MidButton:
+            i = self.ui.tab.tabAt(event.pos())
+            self.closeTab(i)
+        else:
+            QtGui.QTabBar.mousePressEvent(self.ui.tab, event)
     
     #---Fullscreen Modes
     def toggleFullEditor(self):

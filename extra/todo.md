@@ -20,6 +20,7 @@
 ### Main
 - [_] Install script to create shortcut
 - [x] Python3 compatible imports (not full Python3 compatibility - yet)
+- [x] Add middle click to close tab
 
 ### Editors
 - [x] Add insertText function
@@ -29,6 +30,13 @@
 ### Plugins
 - [_] Plugin menu for extra, not default open plugins
 - [x] Filebrowser - add refresh menu
+- [x] Snippets - change copy to insert
+- [_] Preview - option to utilize github markdown generation
+
+---
+## Armadillo 1.7
+- [_] Plugins manager for importing plugins
+- [_] store activePlugin settings separate from other settings - handled by Armadillo and not user editable
 
 ---
 ## Armadillo 2.0
@@ -70,9 +78,7 @@ Unplanned updates for any version and may or may not happen.
 - [_] New - Help/reference plugin
 - [_] Find - Grep like plugin (maybe combine with Find)
 - [_] New - Spellcheck
-- [_] New - Add vertical tabs (sortable)
-- [_] New - color picker (save palette with workspace)
-- [_] New - scratch - just a textbox that saves with workspace
+- [x] New - scratch - just a textbox that saves with workspace
 - [_] Preview - add find
 - [_] Preview - show link in statusbar when hovering (maybe use current statusbar)
 - [_] Filebrowser - copy file

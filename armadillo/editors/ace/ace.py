@@ -185,6 +185,7 @@ class WebView(QtWebKit.QWebView):
 
     def contextMenuEvent(self,event):
         menu = QtGui.QMenu('ace menu')
+        
         # Edit Menu
 ##        menu = QtGui.QMenu('edit',menu)
         menu.addAction(QtGui.QIcon(),'Cut')
@@ -193,7 +194,7 @@ class WebView(QtWebKit.QWebView):
 ##        menu.addMenu(emenu)
         menu.addSeparator()
         # Settings Menu
-        smenu = QtGui.QMenu('settings',menu)
+        smenu = QtGui.QMenu('Ace',menu)
         tmenu = QtGui.QMenu('theme',smenu)
         fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
         for f in sorted(os.listdir(fld)):

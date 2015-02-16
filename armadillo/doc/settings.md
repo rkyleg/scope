@@ -166,6 +166,7 @@ Settings specific to each plugin that they can use.
             [[filebrowser]]
                 showAll=0
                 defaultPath= # Default path to open (leave blank to open to user home directory)
+                externalFileBrowser=C:\portableapps\explorer++.exe  # to use a specific file browser when launching externally, specify program here
                 
             [[snippets]]
                 path=/home/hdesktop/snippets

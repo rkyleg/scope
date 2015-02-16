@@ -34,9 +34,9 @@ class Snippets(QtGui.QWidget):
         self.ui.cb_ext.currentIndexChanged.connect(self.load_list)
         self.ui.le_search.textChanged.connect(self.search_list)
         self.ui.li_snips.currentItemChanged.connect(self.sel_snip)
-        self.ui.li_snips.itemDoubleClicked.connect(self.copy_snip)
+        self.ui.li_snips.itemDoubleClicked.connect(self.insert_snip)
         
-        self.ui.b_copy.clicked.connect(self.copy_snip)
+        self.ui.b_insert.clicked.connect(self.insert_snip)
         self.ui.b_edit.clicked.connect(self.edit_snip)
         self.ui.b_new.clicked.connect(self.new_snip)
         self.ui.b_fldr.clicked.connect(self.open_snip_dir)
@@ -134,9 +134,15 @@ class Snippets(QtGui.QWidget):
             pth=self.snip_fldr+str(itm.text())
             self.armadillo.openFile(pth)
     
-    def copy_snip(self):
-        clip = QtGui.QApplication.clipboard()
-        clip.setText(self.ui.te_code.toPlainText())
+##    def copy_snip(self):
+##        clip = QtGui.QApplication.clipboard()
+##        clip.setText(self.ui.te_code.toPlainText())
+    
+    def insert_snip(self):
+        txt=self.ui.te_code.toPlainText()
+        wdg=self.armadillo.currentEditor()
+        if 'insertText' in dir(wdg):
+            wdg.insertText(txt)
     
     def open_snip_dir(self):
         try:
