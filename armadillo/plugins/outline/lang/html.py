@@ -23,10 +23,19 @@ def analyzeLine(txtlines):
         elif tls.startswith('<!---'):
             itmText =tls[5:].replace('-->','')
             typ = 'heading'
-        if tls.startswith('function'):
+        # Javascript
+        elif tls.startswith('function '):
             itmText =tls[9:].rstrip()
             if itmText.endswith('{'): itmText = itmText[:-1]
             typ = 'function'
+        elif tls.startswith('//---'):
+            itmText =tls[5:]
+            typ = 'heading'
+        # CSS
+        elif tls.startswith('/*---'):
+            itmText =tls[5:].split('*/')[0]
+            typ = 'heading'
+
     
         if itmText != None:
             outline.append([spc+itmText,typ,lcnt])

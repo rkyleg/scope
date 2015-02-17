@@ -21,7 +21,7 @@
 - [_] Install script to create shortcut
 - [x] Python3 compatible imports (not full Python3 compatibility - yet)
 - [x] Add middle click to close tab
-- [_] Edit Workspace
+- [x] Edit Workspace
 
 ### Editors
 - [x] Add insertText function

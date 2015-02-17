@@ -11,7 +11,7 @@ def analyzeLine(txtlines):
         spc = (len(line) -len(line.lstrip()))*' '
         tls = line.lstrip()
         
-        if tls.startswith('function'):
+        if tls.startswith('function '):
             itmText =tls[9:].rstrip()
             if itmText.endswith('{'): itmText = itmText[:-1]
             typ = 'function'

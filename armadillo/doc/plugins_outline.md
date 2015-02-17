@@ -6,7 +6,7 @@
 - Double click on outline text to goto that section of code
 - Special comment formatting will add that comment into the outline
 - Utilizes existing spacing in code to format outline
-- Updates on save or F3 or right click update (setting available to update in realtime)
+- Updates on save or F3 or right click update (there is a setting to update in realtime: alwaysUpdate=1 )
 
 ## Current Supported languages
 - Python

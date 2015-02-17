@@ -551,7 +551,7 @@ class Armadillo(QtGui.QWidget):
         event.accept()
     
     def tabMousePressEvent(self,event):
-        print event.button(),event.button() == QtCore.Qt.MidButton
+##        print event.button(),event.button() == QtCore.Qt.MidButton
         if event.button() == QtCore.Qt.MidButton:
             i = self.ui.tab.tabAt(event.pos())
             self.closeTab(i)
