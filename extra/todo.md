@@ -21,6 +21,7 @@
 - [_] Install script to create shortcut
 - [x] Python3 compatible imports (not full Python3 compatibility - yet)
 - [x] Add middle click to close tab
+- [_] Edit Workspace
 
 ### Editors
 - [x] Add insertText function
@@ -37,6 +38,8 @@
 ## Armadillo 1.7
 - [_] Plugins manager for importing plugins
 - [_] store activePlugin settings separate from other settings - handled by Armadillo and not user editable
+- [_] Github markdown option
+- [_] markdown preview - image max width
 
 ---
 ## Armadillo 2.0

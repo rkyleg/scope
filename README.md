@@ -43,7 +43,8 @@ See next section (Running with Python)
 The latest development version is available [here](https://github.com/convolutedlogic/armadillo/tree/dev)
 
 ## Documentation
-- **[Overview](armadillo/doc/overview.md)** - Overview of main window features
+- **[About](armadillo/doc/about.md)** - About Armadillo
+- **[UI Overview](armadillo/doc/overview.md)** - Overview of main window features
 - **[Editors](armadillo/doc/editors.md)** - multiple code editors are available
 - **[Plugins](armadillo/doc/plugins.md)** - comes with default plugins
     - [Outline](armadillo/doc/plugins_outline.md) - Outline plugin for code organization

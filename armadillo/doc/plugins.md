@@ -24,10 +24,12 @@ Armadillo comes with standard plugins to the left and bottom of the editor windo
                 [[snippets]]
                     path=/home/username/scripts
 
-- **Preview** - a built in WebKit webbrowser for previwing html and markdown. A file does not need to be saved to use the preview.
+- **Preview** - a built in WebKit webbrowser for previewing html and markdown. A file does not need to be saved to use the preview.
 
 
 - **PyQt Converter** - Convert Qt Designer ui files to python. *This plugin is not active by default*
+
+- **Scratchpad** - A simple textbox for temporarily storing text/code. *currently this is not saved when Armadillo closes*
 
 
 ## Select Active Plugins

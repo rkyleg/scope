@@ -86,16 +86,19 @@ class WorkspaceMenu(QtGui.QMenu):
         self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
         self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.saveWact.setDisabled(1)
-        self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
-        self.closeWact.setDisabled(1)
-        self.addSeparator()
-        self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
-    
+        
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
             for wsp in sorted(os.listdir(self.parent.settingPath+'/workspaces'),key=lambda x: x.lower()):
                 self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace.png'),wsp)
-                self.deleteWact.setDisabled(0)
+                
+        self.addSeparator()
+        self.renameWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_edit.png'),'Rename Workspace')
+        self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
+        
+        self.addSeparator()
+        self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
+        self.closeWact.setDisabled(1)
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
@@ -105,13 +108,32 @@ class WorkspaceMenu(QtGui.QMenu):
         elif str(event.text()) == 'Close Current Workspace':
             self.parent.closeWorkspace(askSave=1,openStart=1)
         elif str(event.text()) == 'Delete Workspace':
-            resp,ok = QtGui.QInputDialog.getItem(self.parent,'Delete Workspace','Select the workspace to delete',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
+            if os.path.exists(self.parent.settingPath+'/workspaces'):
+                resp,ok = QtGui.QInputDialog.getItem(self.parent,'Delete Workspace','Select the workspace to delete',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
 
-            if ok:
-                os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
-                if str(resp) == self.parent.workspace:
-                    self.parent.workspace=None
-                self.loadMenu()
+                if ok:
+                    os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
+                    if str(resp) == self.parent.workspace:
+                        self.parent.workspace=None
+                    self.loadMenu()
+            else:
+                QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
+        elif str(event.text()) == 'Rename Workspace':
+            if os.path.exists(self.parent.settingPath+'/workspaces'):
+                resp,ok = QtGui.QInputDialog.getItem(self.parent,'Rename Workspace','Select the workspace to rename',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
+
+                if ok:
+                    owskp=str(resp)
+                    pth = self.parent.settingPath+'/workspaces/'+owskp
+                    resp,ok = QtGui.QInputDialog.getText(self,'Rename Workspace','Enter Workspace Name',QtGui.QLineEdit.Normal,str(owskp))
+                    if ok and not resp.isEmpty():
+                        npth = self.parent.settingPath+'/workspaces/'+str(resp)
+                        os.rename(pth,npth)
+                        self.loadMenu()
+                        if owskp == self.parent.workspace:
+                            self.parent.workspace=str(resp)
+            else:
+                QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
         else:
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)
@@ -1461,6 +1483,7 @@ class Armadillo(QtGui.QWidget):
             self.setWindowTitle('Armadillo | '+wksp)
             
             self.workspaceMenu.saveWact.setDisabled(0)
+            self.workspaceMenu.renameWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
             
 ##            QtGui.QApplication.processEvents()
@@ -1478,7 +1501,6 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.loadMenu()
             self.workspaceMenu.saveWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
-            self.workspaceMenu.deleteWact.setDisabled(0)
     
     def closeWorkspace(self,askSave=0,openStart=0):
         wk_ok = 1
@@ -1527,6 +1549,9 @@ class Armadillo(QtGui.QWidget):
             self.workspace=None
             if 'output' in self.pluginD:
                 self.pluginD['output'].killAll()
+            
+            self.workspaceMenu.saveWact.setDisabled(1)
+            self.workspaceMenu.closeWact.setDisabled(1)
         
         if ok and openStart:
             self.addStart()
