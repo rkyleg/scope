@@ -42,6 +42,9 @@ See next section (Running with Python)
 ### Development
 The latest development version is available [here](https://github.com/convolutedlogic/armadillo/tree/dev)
 
+## License
+- **[License](LICENSE.txt)** - GNU General Public License (GPL 3)
+
 ## Documentation
 - **[About](armadillo/doc/about.md)** - About Armadillo
 - **[UI Overview](armadillo/doc/overview.md)** - Overview of main window features
@@ -55,7 +58,6 @@ The latest development version is available [here](https://github.com/convoluted
     - Find / Replace - advanced find/replace tool
     - Snippets - store and retreive useful code snippets
 - **[Settings](armadillo/doc/settings.md)** - settings are stored in config file
-- **[License](LICENSE)** - GNU General Public License (GPL 3)
 - **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.md)**
 
 ## Reference
