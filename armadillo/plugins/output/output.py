@@ -23,7 +23,7 @@ class Output(QtGui.QWidget):
             owdg = self.wdgD[wdg]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
-    def newProcess(self,cmd,wdg,text=''):
+    def runProcess(self,cmd,wdg,text=''):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
@@ -32,13 +32,14 @@ class Output(QtGui.QWidget):
                 i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
                 self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
+                # Process was run
                 owdg = self.wdgD[wdg]
-                owdg.newProcess(cmd,wdg.filename,text=text)
-                
                 self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
-                
+
             else:
-                owdg = OutputPage(parent=self,armadillo=self.armadillo)
+                # Create new process
+                owdg = OutputPage(parent=self,armadillo=self.armadillo,filename=wdg.filename)
+                owdg.ui.le_cmd.setText(cmd)
                 sw_ind = self.ui.sw_pages.count()
                 self.ui.sw_pages.insertWidget(sw_ind,owdg)
                 itm = QtGui.QListWidgetItem(wdg.title)
@@ -46,16 +47,20 @@ class Output(QtGui.QWidget):
                 if wdg.filename != None:
                     itm.setToolTip(wdg.filename)
                 self.ui.li_pages.addItem(itm)
-                
-    ##            self.ui.sw_pages.setCurrentIndex(sw_ind)
-                
+
                 self.wdgD[wdg] = owdg
                 self.outD[owdg]=wdg
                 
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
                 owdg.listItem = self.ui.li_pages.item(sw_ind)
-                owdg.newProcess(cmd,wdg.filename,text=text)
+            
+            # Toggle/Run Process
+            if cmd=='preview':
+                owdg.setOutputText(text=text)
+                owdg.ui.l_title.setText('<b>&nbsp;'+os.path.split(wdg.filename)[1]+'</b>')
+            else:
+                owdg.toggleProcess()
 
     def killAll(self):
         opentxt = ''
@@ -84,7 +89,7 @@ class Output(QtGui.QWidget):
             
 
 class OutputPage(QtGui.QWidget):
-    def __init__(self,parent=None,armadillo=None):
+    def __init__(self,parent=None,armadillo=None,filename=None):
         QtGui.QWidget.__init__(self,parent)
         curdir = os.path.abspath('.')
         os.chdir(os.path.abspath(os.path.dirname(__file__)))
@@ -93,6 +98,7 @@ class OutputPage(QtGui.QWidget):
         os.chdir(curdir)
         self.armadillo = armadillo
         self.parent = parent
+        self.filename = filename
         
         self.process = None
         self.ui.fr_cmd.hide()
@@ -133,7 +139,9 @@ class OutputPage(QtGui.QWidget):
         if self.dispError:
             errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
             errtxt = errD[err]
-            txt = "<font color=red>QProcess Error: Process "+errtxt+'</font>'
+            txt = "<font color=red>Error: Process "+errtxt+'</font>'
+            if err==0:
+                txt += "<br>Check to make sure command is correct:<br>"+self.ui.le_cmd.text()+' "'+self.filename+'" ' + self.ui.le_args.text()
             self.appendText(txt)
             if self.process != None and self.process.state()==0:
                 self.finished()
@@ -168,31 +176,14 @@ class OutputPage(QtGui.QWidget):
         fnt.setItalic(0)
         self.listItem.setFont(fnt)
         
-    def newProcess(self,cmd,filename,text=''):
-        
-        if self.process != None and cmd not in ['webbrowser','markdown']:
+    def toggleProcess(self):
+        if self.process != None:
             self.stopProcess()
         else:
-            self.filename = filename
-            if cmd == 'preview':
-                # If markdown generate preview tab
-##                import plugins.mkdown as mkdown
-##                html = mkdown.generate(filename,style='',custom=1)
-##                self.armadillo.webview_preview(html,filename)
-##                self.armadillo.pluginD['preview'].editorRun(self.armadillo.currentEditor(),html)
-                self.ui.tb_out.setPlainText(text)
-                if self.filename != None:
-                    self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1])
-            else:
-                if os.name == 'nt':
-                    filename = filename.replace('/','\\')
-                xcmd = cmd
-##                if args != '':
-##                    xcmd += ' '+args
-                self.ui.le_cmd.setText(xcmd)
-##                self.ui.le_args.setText(str(args))
-##                self.args = str(args)
-                self.startProcess()
+            self.startProcess()
+    
+    def setOutputText(self,text):
+        self.ui.tb_out.setPlainText(text)
     
     def startProcess(self):
         self.ui.b_run.setEnabled(0)

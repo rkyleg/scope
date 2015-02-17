@@ -96,7 +96,7 @@ class Preview(QtGui.QWidget):
             
         pwdg.webview.setText(html,burl)
         if html != '':
-            self.armadillo.pluginD['output'].newProcess('preview',wdg,text=html)
+            self.armadillo.pluginD['output'].runProcess('preview',wdg,text=html)
             self.armadillo.prevPlugin=self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
             
 ##        QtGui.QApplication.processEvents()

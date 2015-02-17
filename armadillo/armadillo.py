@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.4'
+__version__ = '1.6.5'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -306,7 +306,7 @@ class Armadillo(QtGui.QWidget):
             self.showMaximized()
 ##            self.setGeometry(coords[0]+dx,coords[1]+dx,(coords[2]-coords[0]-2*dx),(coords[3]-coords[1]-2*dx))
             QtGui.QApplication.processEvents()
-            
+
         # Setup plugin views
         # Bottom
         h=int(self.settings['window']['pluginBottom']['height'])
@@ -960,7 +960,7 @@ class Armadillo(QtGui.QWidget):
                     if wdg.lang in self.settings['run']:
                         # Otherwise run in output
                         runD = self.settings['run'][wdg.lang]
-                        self.pluginD['output'].newProcess(runD['cmd'],wdg)
+                        self.pluginD['output'].runProcess(runD['cmd'],wdg)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -1166,7 +1166,7 @@ class Armadillo(QtGui.QWidget):
         if 'leftToggle' in self.settings['window']['pluginRight']:
             if self.settings['window']['pluginRight']['leftToggle']=='1':
                 self.ui.fr_left.setVisible(self.ui.tab_right.isHidden())
-                
+
     def toggleRightPluginFull(self):
         if self.ui.tab_right.isVisible():
             self.ui.sw_main.setVisible(self.ui.sw_main.isHidden())

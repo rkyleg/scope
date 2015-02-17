@@ -45,6 +45,7 @@
 - [_] Continuously check for file changes and alert
 - [_] Themes
 - [_] Auto or manual easy updates of Armadillo
+- [_] Redo keyboard shortcuts F1-F12 to fit with overall strategy?
 
 ### Editors
 
