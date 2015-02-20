@@ -7,9 +7,10 @@
         margin:0px;
         padding:0px;
         /*border-radius:10px;*/
+        font-family:ubuntu,helvetica;
     }
     body {
-        background:rgba(50,50,50,0.7);
+        background:rgba(50,50,50,0.8);
         
     }
     a {
@@ -33,7 +34,7 @@
     .file,.newfile {
         display:inline-block;
         border-radius:8px;
-        background:rgba(200,200,200,0.7);
+        background:rgba(200,200,200,0.5);
         padding:8px;
         margin:8px;
         color:black;
@@ -41,7 +42,7 @@
         outline:none;
     }
     .file:hover,.newfile:hover {
-        background:rgba(200,200,200,0.5);
+        background:rgba(200,200,200,0.7);
     }
     .current, .current:hover {
         background:rgba(250,250,250,0.9);
@@ -51,7 +52,13 @@
         min-height:32px;
     }
     .section-title {
-        color:white;
+        color:rgba(15,15,15,0.6);
+        text-shadow: rgba(85,85,85,0.5) 1px 1px;
+        font-size:1.6em;
+        display:inline-block;
+        text-align:center;
+        margin-left:20px;
+        margin-right:20px;
     }
     .close {
         position:absolute;
@@ -63,10 +70,25 @@
         padding-left:20px;
         padding-right:20px;
         /*border-top-right-radius:10px;*/
-        border-bottom-left-radius:8px;
+        border-bottom-left-radius:6px;
     }
     .close:hover {
         background:rgba(200,200,200,0.7);
+    }
+    hr {
+        background:rgba(255,255,255,0.5);
+        height:2px;
+        border:0px;
+        width:80%;
+        border-radius:2px;
+    }
+    .panel {
+        background:rgba(200,200,200,0.2);
+        display:inline-block;
+        border-radius:6px;
+        margin-top:20px;
+        margin-bottom:20px;
+        padding:10px;
     }
 </style>
 </head>
@@ -76,16 +98,21 @@
 
 <div class="main">
     <div class="centered">
-        <h2 class="section-title"><hr>Open Files</h2>
-        {{files}}
+
+        <div class="panel">
+            <span class="section-title">Open<br>Files</span>
+            {{files}}
+        </div>
         <!--For Testing-->
             <!--<a href="#" class="file" id=0>file 1</a>-->
             <!--<a href="#" class="file" id=1>file 1</a>-->
             <!--<a href="#" class="file" id=2>file 1</a>-->
             <!--<a href="#" class="file current" id=3>file 4</a>-->
             <!--<a href="#" class="file" id=4>file 1</a>-->
-        <h2 class="section-title"><hr>Create New</h2>
-        {{new_files}}
+        <div class="panel">
+            <span class="section-title">Create<br>New</span>
+            {{new_files}}
+        </div>
     </div>
 </div>
 <a href="close"><span class="close">close</span></a>

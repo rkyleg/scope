@@ -406,7 +406,7 @@ class Armadillo(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
-        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleHUD) # Add Start Page
+        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleHUD) # Show Heads up display
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftPlugin) # Toggle Left Plugin
@@ -1403,6 +1403,10 @@ class Armadillo(QtGui.QWidget):
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.ui.tab.setCurrentIndex(i)
+            self.toggleHUD()
+        elif lnk.startswith('new:'):
+            lang = lnk.split('new:')[1]
+            self.addEditorWidget(lang)
             self.toggleHUD()
         
         elif lnk=='close':
