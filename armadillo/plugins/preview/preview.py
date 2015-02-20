@@ -59,7 +59,8 @@ class Preview(QtGui.QWidget):
     
     def updatePreview(self,wdg):
         if wdg in self.wdgD:
-            self.previewRun(wdg)
+            if self.wdgD[wdg].isVisible():
+                self.previewRun(wdg)
     
     def previewRun(self,wdg):
         if wdg not in self.wdgD:

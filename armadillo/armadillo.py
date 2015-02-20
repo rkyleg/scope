@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.5'
+__version__ = '1.6.6'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -669,6 +669,10 @@ class Armadillo(QtGui.QWidget):
                             wdg.modTime = os.path.getmtime(filename)
                             wdg.setEnabled(1)
                             self.ui.l_statusbar.setText('')
+                            
+                        if self.ui.tab.count() ==1:
+                            self.changeTab(0)
+                            
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
                         self.updateOutline()
@@ -858,6 +862,7 @@ class Armadillo(QtGui.QWidget):
             # Add start page if no tabs exist
 ##            if self.ui.sw_main.count() == 0:
 ##                self.addStart()
+        return ok
 
     def editorTextChanged(self):
         # Indicate if text changed
@@ -884,7 +889,7 @@ class Armadillo(QtGui.QWidget):
                 try:
 ##                    if wdg.lastText != unicode(wdg.getText(),'utf-8'):
                     if wdg.lastText != wdg.getText():
-                        resp = QtGui.QMessageBox.warning(self,'Save Tab',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+                        resp = QtGui.QMessageBox.warning(self,'Save File',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
                         if resp == QtGui.QMessageBox.Yes:
                             self.editorSave()
                             ok =1
@@ -1523,11 +1528,11 @@ class Armadillo(QtGui.QWidget):
 ##                    file_id = self.ui.tab.tabData(i)
 ##                else:
                 file_id = self.ui.tab.tabData(i).toInt()[0]
-                wdg = self.tabD[file_id]
-                ok = self.checkSave(wdg)
-                if not ok:
-                    fl_ok = 0
-                    break
+##                wdg = self.tabD[file_id]
+##                ok = self.checkSave(wdg)
+##                if not ok:
+##                    fl_ok = 0
+##                    break
                 self.closeTab(i)
         
 ##        # Close open files
@@ -1553,7 +1558,7 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
         
-        if ok and openStart:
+        if ok and openStart and self.ui.tab.count()==0:
             self.addStart()
         
         return ok

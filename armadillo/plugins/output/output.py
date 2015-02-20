@@ -58,7 +58,11 @@ class Output(QtGui.QWidget):
             # Toggle/Run Process
             if cmd=='preview':
                 owdg.setOutputText(text=text)
-                owdg.ui.l_title.setText('<b>&nbsp;'+os.path.split(wdg.filename)[1]+'</b>')
+                if wdg.filename==None:
+                    title = wdg.title
+                else:
+                    title = os.path.split(wdg.filename)[1]
+                owdg.ui.l_title.setText('<b>&nbsp;'+title+'</b>')
             else:
                 owdg.toggleProcess()
 

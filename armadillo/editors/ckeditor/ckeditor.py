@@ -155,7 +155,7 @@ class WebView(QtWebKit.QWebView):
             # Spreadsheet
             txt = str(mimeData.text().toUtf8()).decode('utf-8')
             if mimeData.hasFormat("XML Spreadsheet"):
-                pasteTable(webview,txt)
+                self.pasteTable(txt)
                 handled=1
             else:
                 # Ask to paste as table
