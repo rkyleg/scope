@@ -7,6 +7,8 @@
 - Special comment formatting will add that comment into the outline
 - Utilizes existing spacing in code to format outline
 - Updates on save or F3 or right click update (there is a setting to update in realtime: alwaysUpdate=1 )
+- Right click menu to access a refresh (F3) and a Find function
+- The current visible code in the editor is highlighted blue
 
 ## Current Supported languages
 - Python

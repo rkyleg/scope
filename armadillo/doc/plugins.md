@@ -5,15 +5,13 @@ Armadillo comes with standard plugins to the left and bottom of the editor windo
 
 ## Standard Plugins
 
-- **File Browser** - Browse the workspace directory.
-    - Right click for a menu with file browser options
-    - To edit the path, just click on the path, edit and press return. The last path used will be stored with the workspace.
+- **[File Browser](plugins_filebrowser.md)** - Browse files
 
 - **[Outline](plugins_outline.md)** - Outline of code structure
 
 - **Find/Replace** - Common find/replace functions
 
-- **[Output](plugins_output.md)** - Displays output of running file (only works for Python)
+- **[Output](plugins_output.md)** - Runs code in separate process and displays output.
 
 - **[Python Shell](plugins_pyconsole.md)** - An interactive Python shell
 
