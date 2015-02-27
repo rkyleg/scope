@@ -4,11 +4,10 @@
 
 Settings are stored in the *.armadillo* folder in your user home directory.  Settings consist of:
 
-- **workspaces folder** - saves the following settings for each workspace (json file).  )*do not modify the workspace files directly*)
+- **settings.conf** - this contains the main settings for Armadillo. You can edit this by clicking the ![](../img/wrench.png) button
+- **workspaces folder** - saves the following settings for each workspace (json file).  (*do not modify the workspace files directly*)
     - Base path in file browser
     - Last opened files
-- **settings.conf** - this contains the main settings for Armadillo. You can edit this by clicking the ![](../img/wrench.png) button
-- **window** - a binary file with window/plugin location settings
 
 *Do not modify the default_settings.conf file as any updates to Armadillo will overwrite the settings here*
 
@@ -28,7 +27,7 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
         activePlugins = filebrowser,outline,py_console,find_replace,output,snippets,qt2py
 
 - view_folder
-    - view folder name in tab
+    - view parent folder name in tab along with filename
     - default is 0
 - save_workspace_on_close
     - save workspace settings on close (if this is set to 0, then you must use the Workspace Save menu to save the current workspace state)
@@ -37,7 +36,7 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
     - set the style of the editor (Qt style is used)
     - options are: windows, motif, cde, plastique, windowsxp, macintosh
     - default is plastique
-    - leave blank to use os default (widgetstyle=)
+    - leave blank to use OS default (widgetstyle=)
 - activeEditors
     - the list of active editors to load
 - activePlugins - these are the plugins loaded on start
@@ -45,19 +44,35 @@ The settings.conf file contains the main settings to customize Armadillo.  The f
 ### Window Settings
         [window]
             openMode=1
+            [[size]]
+                width=100%
+                height=100%
+            [[margin]]
+                left=50
+                right=50
+                top=50
+                bottom=50 
+            
+            # Plugin Window settings
             [[pluginLeft]]
                 width=260
                 visible=1
+                tabPosition=top
+                showTabText=0
             [[pluginBottom]]
                 visible=1
                 height=180
+                showTabText=1
             [[pluginRight]]
                 visible=0
-                width=300
+                width=50%
+                tabPosition=bottom
+                showTabText=1
+                leftToggle=1 # Hide left plugins when right plugin toggled (show left when right is hidden)
 
 - openMode - size the editor opens as
-    - 1 = almost maximum (-50 pixels)
-    - 2 = maximize
+    - 1 = custom - use size and margin attributes
+    - 2 = maximize window
 - pluginLeft, pluginBottom, pluginRight
     - visible 
         - 1 = visible
@@ -139,7 +154,7 @@ The available (and default) parameters are:
     - Example: if you have node installed you can set your path to node:
             *run=/home/convolutedlogic/nodejs/bin/node -i*
 - fave
-    - a favorite language and shows up in New menu and on home page
+    - considered a favorite language and shows up in New menu and on home page and HUD
     - this defaults to true (1) if not specified. set to 0 to not show in new menu
 
 You can also customize the editor settings like theme, showPrintMargin (for Ace Editor) for each language. Use the same keys/values as listed for the editor's settings.
@@ -157,7 +172,7 @@ If you need to specify that a file extension goes with a specific language (lang
             conf=ini
 
 ### Plugins
-Settings specific to each plugin that they can use.
+Settings specific to each plugin, that the plugins can use.
 
         [plugins]
             [[outline]]

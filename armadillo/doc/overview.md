@@ -55,7 +55,9 @@ The toolbar is available for convenience, but can also be hidden as all function
 ## Workspaces
 Multiple projects can be managed in Armadillo by using workspaces. Each workspace keeps track of the following:
 
-- Last open files/tabs and order (on close) 
+- Last open files/tabs (on close) 
+- What editor the file was open with
+- The last open file
 - The base path of the project (in the file browser)
 
 ## Heads Up Display (HUD)
