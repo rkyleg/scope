@@ -1,5 +1,16 @@
 # TODO
 
+- [] Move HUD to plugin (and keyboard shortcut)
+- [] Move styles to stylesheet
+- [] Move start page ? or at least formatting
+- [] handle plugins that aren't windows??
+- [] move plugin settings
+- [] use button classes for styling
+- [] update outline on load
+- [] spellcheck plugin launches and can go off of selection or whole document
+- [] toolbar button - use class
+- [] fix outline not highlighting on open (at least for ace)
+
 ---
 ## Bugs
 ### Main
