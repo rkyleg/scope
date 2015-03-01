@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.6'
+__version__ = '1.6.7'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -282,9 +282,9 @@ class Armadillo(QtGui.QWidget):
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
         
         # Style
-        style_path = 'styles/'+self.settings['style']+'.style'
+        style_path = self.settings['style']
         if not os.path.exists(style_path):
-            style_path = 'styles/default.style'
+            style_path = 'styles/default.css'
         f = open(style_path,'r')
         style = f.read()
         f.close()
@@ -1232,6 +1232,8 @@ class Armadillo(QtGui.QWidget):
         openfile = self.isFileOpen(pth)
         if openfile==-1:
             wdg = self.addEditorWidget('Start','Start',pth,editor='webview')
+            wdg.setStyleSheet("background:transparent")
+            wdg.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         else:
             self.ui.tab.setCurrentIndex(openfile)
             QtGui.QApplication.processEvents()
