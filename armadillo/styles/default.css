@@ -1,3 +1,4 @@
+/*---Widget Styles*/
 QTabBar::close-button{
 	image: url(img/close.png);
 }
@@ -8,6 +9,79 @@ QTabBar::close-button:hover{
 QPushButton {
     outline:none;
 }
+
+/*--- Main Menu Button*/
+QPushButton.main_menu::menu-indicator {
+     image: url(none.png);
+}
+QPushButton.main_menu {
+	border-radius:5px;
+	outline:none;
+	/*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));*/
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));
+}
+QPushButton.main_menu:hover {
+	border-radius:5px;
+	/*background-color: qlineargradient(spread:pad, x1:0.98, y1:1, x2:1, y2:0, stop:0 rgba(138, 138, 138, 255), stop:0.0646766 rgba(157, 157, 157, 255), stop:0.935323 rgba(198, 198, 198, 255), stop:1 rgba(231, 231, 231, 255));*/
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 120, 205), stop:0.21267 rgba(61, 107, 127, 205), stop:0.831818 rgba(72, 127, 150, 205), stop:1 rgba(104, 166, 175, 205));
+}
+
+
+/*---  Toolbar Buttons*/
+QPushButton.toolbar {
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(115, 115, 115, 255), stop:0.154545 rgba(146, 146, 146, 255), stop:0.831818 rgba(174, 174, 174, 255), stop:1 rgba(182, 182, 182, 255));
+	border:0px;
+	padding:3px;
+	padding-left:6px;
+	padding-right:6px;
+	outline:none;
+	min-height:20px;
+	max-height:20px;
+	max-width:32px;
+	min-width:32px;
+}
+QPushButton.toolbar:hover,QToolButton.toolbar:hover {
+	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
+}
+
+QPushButton.toolbar-left {
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	border-right:1px solid rgb(130,130,130);
+}
+QPushButton.toolbar::menu-indicator {
+     image: url(none.png);
+}
+
+QPushButton.toolbar-middle {
+	border-right:1px solid rgb(130,130,130);
+}
+
+QPushButton.toolbar-right {
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	margin-right:8px;
+}
+
+QPushButton.toolbar-individual {
+	border-top-left-radius:5px;
+	border-bottom-left-radius:5px;
+	border-top-right-radius:5px;
+	border-bottom-right-radius:5px;
+	min-width:40px;
+	max-width:40px;
+	margin-right:8px;
+}
+
+/*---Toolbar Find/Goto*/
+QLineEdit.toolbar, QFrame.toolbarLineEdit {
+    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));
+    color:white;
+    border:0px;
+    border-radius:3px;
+}
+
+/*---Other Styles*/
 
 /*.pluginVertical {*/
 /*    	background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0.00425532 rgba(213, 213, 213, 255), stop:0.0468085 rgba(226, 226, 226, 255), stop:0.944681 rgba(243, 243, 243, 255), stop:1 rgba(255, 255, 255, 255));*/

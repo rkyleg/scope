@@ -208,11 +208,12 @@ class ArmadilloMenu(QtGui.QMenu):
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
         self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftPlugin)
-        icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
         self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightPlugin)
+        
+        icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
+        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomPlugin)
         
         self.viewMenu.addSeparator()
         
@@ -560,7 +561,7 @@ class Armadillo(QtGui.QWidget):
         self.editor_fullmode = not self.editor_fullmode
         zen=self.editor_fullmode
         self.ui.l_statusbar.setVisible(not zen)
-        self.ui.fr_toolbar.setVisible(not zen)
+        self.ui.fr_topbar.setVisible(not zen)
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
@@ -1281,14 +1282,14 @@ class Armadillo(QtGui.QWidget):
     
     #---Shortcuts
     def findFocus(self):
-        if self.ui.fr_toolbar.isHidden():
-            self.ui.fr_toolbar.setVisible(1)
+        if self.ui.fr_topbar.isHidden():
+            self.ui.fr_topbar.setVisible(1)
         self.ui.le_find.setFocus()
         self.ui.le_find.selectAll()
         
     def gotoFocus(self):
-        if self.ui.fr_toolbar.isHidden():
-            self.ui.fr_toolbar.setVisible(1)
+        if self.ui.fr_topbar.isHidden():
+            self.ui.fr_topbar.setVisible(1)
         self.ui.le_goto.setFocus()
         self.ui.le_goto.selectAll()
         
