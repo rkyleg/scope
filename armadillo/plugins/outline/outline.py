@@ -101,10 +101,24 @@ class Outline(QtGui.QWidget):
             trwdg.itemDoubleClicked.connect(self.goto)
         
         trwdg.contextMenuEvent = self.outlineMenu
+        
+        self.updateOutline(toggle_view=0)
 
-    def updateOutline(self,wdg):
+    def updateOutlineToggle(self):
+        self.updateOutline(toggle_view=1)
+
+    def updateOutline(self,wdg=None,toggle_view=0):
+        # Get current widget from Armadillo
+        wdg = self.armadillo.currentEditor()
+        
+        if toggle_view:
+            if self.armadillo.ui.fr_left.isHidden():
+                self.armadillo.ui.fr_left.setVisible(1)
+            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
+            self.armadillo.ui.tab_left.setCurrentIndex(i)
+
         trwdg = self.wdgD[wdg].ui.tr_outline
-        if wdg.lang != 'Text' and wdg.lang in self.outlineLangD:
+        if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
             # Select tab if language
 ##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
 ##            self.armadillo.ui.tab_left.setCurrentIndex(i)
@@ -162,14 +176,15 @@ class Outline(QtGui.QWidget):
         if act != None:
             acttxt = str(act.text())
             if acttxt=='Update (F3)':
-                self.updateOutline(self.armadillo.currentEditor())
+                self.updateOutline()
             elif acttxt == 'Find':
                 trwdg.ui.fr_find.show()
                 trwdg.ui.le_find.setFocus()
         
     def editorTabChanged(self,wdg):
-        owdg = self.wdgD[wdg]
-        self.ui.sw_outline.setCurrentWidget(owdg)
+        if wdg in self.wdgD:
+            owdg = self.wdgD[wdg]
+            self.ui.sw_outline.setCurrentWidget(owdg)
 ##        self.updateOutline(wdg)
 
 ##        self.ui.le_find.clear()
@@ -182,7 +197,7 @@ class Outline(QtGui.QWidget):
         
     def goto(self,itm,col):
         line = int(str(itm.text(1)))
-        wdg = self.treeD[self.ui.sw_outline.currentWidget()]
+        wdg = self.armadillo.currentEditor()
         wdg.gotoLine(line)
     
     def format(self,itm,typ):

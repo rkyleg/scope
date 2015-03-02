@@ -31,6 +31,12 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.contextMenuEvent = self.fileMenu
         self.ui.tr_dir.keyPressEvent = self.ikeyPressEvent
     
+    def viewFileBrowser(self):
+        if self.armadillo.ui.fr_left.isHidden():
+            self.armadillo.ui.fr_left.setVisible(1)
+        i=self.armadillo.ui.tab_left.indexOf(self)
+        self.armadillo.ui.tab_left.setCurrentIndex(i)
+    
     def loadRoot(self):
         newpath = str(self.ui.le_root.text()).replace('\\','/')
         if not newpath.endswith('/'): newpath +='/'
@@ -39,6 +45,9 @@ class DirTree(QtGui.QWidget):
         
         self.ui.le_root.setText(self.rootpath)
         self.ui.tr_dir.clear()
+        
+        # Set Armadilo path
+        self.armadillo.currentPath = self.rootpath
         
         # Add to Tree
         dircontents,filecontents = self.getDirContents(self.rootpath)

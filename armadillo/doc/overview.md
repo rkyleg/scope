@@ -52,13 +52,15 @@ The toolbar is available for convenience, but can also be hidden as all function
 - **Goto** - goto a line (Ctrl + G to focus)
 - **Find** - find text in the editor (Ctrl + F to focus). For more advanced find options use the find/replace plugin.
 
-## Workspaces
+## ![](../img/workspace.png) Workspaces
 Multiple projects can be managed in Armadillo by using workspaces. Each workspace keeps track of the following:
 
 - Last open files/tabs (on close) 
 - What editor the file was open with
 - The last open file
 - The base path of the project (in the file browser)
+
+Workspace settings are automatically saved on close or when switching workspaces.
 
 ## Heads Up Display (HUD)
 When many tabs are open, it can be a pain to navigate between the first and last tabs. The HUD aims to fix this and can be utilized with just the keyboard.

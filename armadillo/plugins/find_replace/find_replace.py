@@ -15,7 +15,13 @@ class Find_Replace(QtGui.QWidget):
         self.ui.b_find.clicked.connect(self.find)
         self.ui.b_replace.clicked.connect(self.replace)
         self.ui.b_replace_all.clicked.connect(self.replace_all)
-        
+    
+    def replaceFocus(self):
+        i = self.armadillo.ui.sw_bottom.indexOf(self)
+        self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
+        self.ui.le_find.setFocus()
+        self.ui.le_find.selectAll()
+    
     def find(self):
         ftxt = str(self.ui.le_find.text())
         wdg = self.armadillo.currentEditor()

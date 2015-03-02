@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.6.7'
+__version__ = '1.7.0'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -25,6 +25,7 @@ class Events(QtCore.QObject):
     editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
     close=QtCore.pyqtSignal()
     editorTabClosed = QtCore.pyqtSignal(QtGui.QWidget)
+    fileOpened = QtCore.pyqtSignal(QtGui.QWidget)
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -265,6 +266,7 @@ class Armadillo(QtGui.QWidget):
         self.pluginPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/plugins/'
         self.editorPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editors/'
         self.armadilloPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')
+        self.currentPath = os.path.expanduser('~')
         
         # Settings
         self.workspace = None
@@ -399,26 +401,22 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_main.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Q,self,self.qtHelp) # Qt Help
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_R,self,self.replaceFocus) # Replace
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
-        QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.viewFileBrowser) # View Filebrowser
-        QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.updateOutline) # Update Outline
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleLeftPlugin) # Toggle Left Plugin
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F4,self,self.nextLeftPlugin) # show next left plugin
+        
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
-        QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Toggle Hide editor
+        QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
         QtGui.QShortcut(QtCore.Qt.Key_F8,self,self.toggleRightPlugin) # Toggle RIght Plugins
+        
         QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleBottomPlugin) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F9,self,self.nextBottomPlugin) # Show next bottom tab
-        
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
-##        QtGui.QShortcut(QtCore.Qt.Key_F12,self,self.viewPythonShell) # Fullscreen Zen
         
         # File Dictionary
         self.fileCount = -1
@@ -611,7 +609,7 @@ class Armadillo(QtGui.QWidget):
     def openFile(self,filename=None,editor=None):
         if not filename:
             # Ask for filename if not specified
-            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.pluginD['filebrowser'].ui.le_root.text()," (*.*)")
+            filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.currentPath," (*.*)")
             if filename=='':
                 filename = None
             else:
@@ -674,10 +672,12 @@ class Armadillo(QtGui.QWidget):
                             
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
-                        self.updateOutline()
+##                        self.updateOutline()
      
                         # Remove Startpage
                         self.removeStart()
+                        
+                        self.evnt.fileOpened.emit(wdg)
 
     #---Editor
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
@@ -721,15 +721,17 @@ class Armadillo(QtGui.QWidget):
         if lang=='Start':wdg.editor='Start'
         wdg.modTime = None
         self.tabD[self.fileCount]=wdg
-        self.evnt.editorAdded.emit(wdg)
-
-        if 'editorTextChanged' in dir(wdg):
-            wdg.evnt.editorChanged.connect(self.editorTextChanged)
-        if 'visibleLinesChanged' in dir(wdg):
-            wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
-            
-##        if 'editingFinished' in  dir(wdg):
-##            wdg.evnt.editingFinished.connect(self.editingFinished)
+        
+        # MOVED to end
+##        self.evnt.editorAdded.emit(wdg)
+##
+##        if 'editorTextChanged' in dir(wdg):
+##            wdg.evnt.editorChanged.connect(self.editorTextChanged)
+##        if 'visibleLinesChanged' in dir(wdg):
+##            wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
+##            
+####        if 'editingFinished' in  dir(wdg):
+####            wdg.evnt.editingFinished.connect(self.editingFinished)
             
         # Insert widget to page
         self.ui.sw_main.insertWidget(sw_ind,wdg)
@@ -769,6 +771,14 @@ class Armadillo(QtGui.QWidget):
                 if 'toggleAutoComplete' in dir(wdg):
                     wdg.toggleAutoComplete()
         
+        # Emit Signals
+        self.evnt.editorAdded.emit(wdg)
+
+        if 'editorTextChanged' in dir(wdg):
+            wdg.evnt.editorChanged.connect(self.editorTextChanged)
+        if 'visibleLinesChanged' in dir(wdg):
+            wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
+##        
         return wdg
 
     def currentEditor(self):
@@ -917,7 +927,7 @@ class Armadillo(QtGui.QWidget):
 ##                    fileext+=wdg.lang+' (*.'+e+");;"
             fileext += "All (*.*)"
             
-            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.pluginD['filebrowser'].ui.le_root.text(),fileext)
+            filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.currentPath,fileext)
             if filename=='':
                 filename=None
             else:
@@ -951,7 +961,7 @@ class Armadillo(QtGui.QWidget):
         if wdg.filename != None:
             pth = wdg.filename
         else:
-            pth = self.pluginD['filebrowser'].ui.le_root.text()
+            pth = self.currentPath
             
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
@@ -1116,29 +1126,6 @@ class Armadillo(QtGui.QWidget):
             i=0
         self.ui.tab_left.setCurrentIndex(i)
         
-##    def pluginLeftChange(self,ind):
-##        if ind==0:
-##            self.ui.tab_left.hide()
-##            self.ui.fr_left_hidden.show()
-##            self.ui.split_bottom.setSizes([26,self.ui.split_left.height()-26])
-    
-    def updateOutline(self):
-        if 'outline' in self.pluginD:
-            wdg = self.ui.sw_main.currentWidget()
-            if self.ui.fr_left.isHidden():
-                self.ui.fr_left.setVisible(1)
-            i=self.ui.tab_left.indexOf(self.pluginD['outline'])
-            self.ui.tab_left.setCurrentIndex(i)
-            if 'getText' in dir(wdg):
-                self.pluginD['outline'].updateOutline(wdg)
-    
-    def viewFileBrowser(self):
-        if 'filebrowser' in self.pluginD:
-            if self.ui.fr_left.isHidden():
-                self.ui.fr_left.setVisible(1)
-            i=self.ui.tab_left.indexOf(self.pluginD['filebrowser'])
-            self.ui.tab_left.setCurrentIndex(i)
-    
     #---   Bottom Plugins
     def pluginBottomChange(self,ind):
         if self.ui.sw_bottom.currentIndex() != 0:
@@ -1161,26 +1148,6 @@ class Armadillo(QtGui.QWidget):
         if i>= self.ui.tabbar_bottom.count():
             i=0
         self.ui.tabbar_bottom.setCurrentIndex(i)
-        
-    def replaceFocus(self):
-        if 'find_replace' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['find_replace'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['find_replace'].ui.le_find.setFocus()
-            self.pluginD['find_replace'].ui.le_find.selectAll()
-
-    def viewPythonShell(self):
-        if 'py_console' in self.pluginD:
-            i = self.ui.sw_bottom.indexOf(self.pluginD['py_console'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-            self.pluginD['py_console'].setFocus()
-
-    def qtHelp(self):
-        if 'qt2py' in self.pluginD:
-            i=self.ui.sw_bottom.indexOf(self.pluginD['qt2py'])
-            self.ui.tabbar_bottom.setCurrentIndex(i)
-        self.pluginD['qt2py'].ui.le_help.setFocus()
-        self.pluginD['qt2py'].ui.le_help.selectAll()
 
     #---   Right Plugins
     def toggleRightPlugin(self):
@@ -1349,8 +1316,7 @@ class Armadillo(QtGui.QWidget):
                             wD['lastOpenFile']=wdg.filename
             
             # Save workspace dir
-            if 'filebrowser' in self.pluginD:
-                wD['basefolder']=self.pluginD['filebrowser'].rootpath
+            wD['basefolder']=self.currentPath
             f = open(self.settingPath+'/workspaces/'+self.workspace,'w')
             f.write(json.dumps(wD))
             f.close()
@@ -1384,8 +1350,8 @@ class Armadillo(QtGui.QWidget):
                             self.ui.tab.setCurrentIndex(i)
                             break
             
-            if 'basefolder' in wD and 'filebrowser' in self.pluginD:
-                if wD['basefolder'] != None:
+            if 'basefolder' in wD and wD['basefolder'] != None:
+                if 'filebrowser' in self.pluginD:
                     self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
                     self.pluginD['filebrowser'].loadRoot()
             
