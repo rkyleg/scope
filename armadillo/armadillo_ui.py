@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Sun Mar  1 21:34:17 2015
+# Created: Sun Mar  1 22:47:10 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -239,20 +239,20 @@ class Ui_Form(object):
         self.b_comment.setIcon(icon10)
         self.b_comment.setObjectName(_fromUtf8("b_comment"))
         self.gridLayout.addWidget(self.b_comment, 0, 8, 1, 1)
-        self.b_color_picker = QtGui.QPushButton(self.fr_toolbar)
-        self.b_color_picker.setText(_fromUtf8(""))
-        icon11 = QtGui.QIcon()
-        icon11.addPixmap(QtGui.QPixmap(_fromUtf8("img/color_swatch.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_color_picker.setIcon(icon11)
-        self.b_color_picker.setObjectName(_fromUtf8("b_color_picker"))
-        self.gridLayout.addWidget(self.b_color_picker, 0, 9, 1, 1)
         self.b_run = QtGui.QPushButton(self.fr_toolbar)
         self.b_run.setText(_fromUtf8(""))
-        icon12 = QtGui.QIcon()
-        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_run.setIcon(icon12)
+        icon11 = QtGui.QIcon()
+        icon11.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_run.setIcon(icon11)
         self.b_run.setObjectName(_fromUtf8("b_run"))
         self.gridLayout.addWidget(self.b_run, 0, 10, 1, 1)
+        self.b_color_picker = QtGui.QPushButton(self.fr_toolbar)
+        self.b_color_picker.setText(_fromUtf8(""))
+        icon12 = QtGui.QIcon()
+        icon12.addPixmap(QtGui.QPixmap(_fromUtf8("img/color_swatch.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_color_picker.setIcon(icon12)
+        self.b_color_picker.setObjectName(_fromUtf8("b_color_picker"))
+        self.gridLayout.addWidget(self.b_color_picker, 0, 9, 1, 1)
         self.gridLayout_2.addWidget(self.fr_toolbar, 0, 0, 1, 1)
         self.gridLayout_8.addWidget(self.fr_topbar, 1, 0, 1, 1)
         self.fr_tabs = QtGui.QFrame(Form)
@@ -265,7 +265,6 @@ class Ui_Form(object):
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.b_main = QtGui.QPushButton(self.fr_tabs)
         self.b_main.setMinimumSize(QtCore.QSize(32, 24))
-        self.b_main.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));"))
         self.b_main.setText(_fromUtf8(""))
         icon13 = QtGui.QIcon()
         icon13.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -312,10 +311,10 @@ class Ui_Form(object):
         self.b_unindent.setProperty("class", _translate("Form", "toolbar toolbar-middle", None))
         self.b_comment.setToolTip(_translate("Form", "Comment/Uncomment", None))
         self.b_comment.setProperty("class", _translate("Form", "toolbar toolbar-middle", None))
-        self.b_color_picker.setToolTip(_translate("Form", "<html><head/><body><p>Insert rgb color</p></body></html>", None))
-        self.b_color_picker.setProperty("class", _translate("Form", "toolbar toolbar-right", None))
         self.b_run.setToolTip(_translate("Form", "Run", None))
         self.b_run.setProperty("class", _translate("Form", "toolbar toolbar-individual", None))
+        self.b_color_picker.setToolTip(_translate("Form", "<html><head/><body><p>Insert rgb color</p></body></html>", None))
+        self.b_color_picker.setProperty("class", _translate("Form", "toolbar toolbar-right", None))
         self.b_main.setToolTip(_translate("Form", "Main Menu", None))
         self.b_main.setProperty("class", _translate("Form", "main_menu", None))
 

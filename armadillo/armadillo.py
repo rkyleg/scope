@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.0'
+__version__ = '1.7.1'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -292,6 +292,7 @@ class Armadillo(QtGui.QWidget):
         style = f.read()
         f.close()
         self.setStyleSheet(style)
+        self.stylePath = os.path.abspath(style_path)
         
         #--- Window Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
@@ -1206,6 +1207,7 @@ class Armadillo(QtGui.QWidget):
             QtGui.QApplication.processEvents()
             wdg = self.ui.sw_main.currentWidget()
         
+        # Get Base Text
         f = open(pth,'r')
         txt = f.read()
         f.close()
@@ -1215,18 +1217,6 @@ class Armadillo(QtGui.QWidget):
             pfx="file://"
         burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/doc/')
 
-        wdg.setText(txt,burl)
-        wdg.viewOnly = 1
-        wdg.modTime = os.path.getmtime(pth)
-        QtGui.QApplication.processEvents()
-        self.changeTab(self.ui.tab.currentIndex())
-        self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
-        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML=' version "+str(self.version)+"'")
-        
-        if openfile==-1:
-            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-            wdg.linkClicked.connect(self.urlClicked)
-        
         # Add Workspaces
         wksp = ''
         icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
@@ -1234,8 +1224,7 @@ class Armadillo(QtGui.QWidget):
             for w in sorted(os.listdir(self.settingPath+'/workspaces'),key=lambda x: x.lower()):
 ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
                 wksp += '<a href="workspace:'+w+'"><div class="button"><img src="'+icn_wksp+'"> '+w+'</div></a> '
-            wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
-        
+
         # Add New File Links
         nfiles = ''
         for lang in sorted(self.settings['prog_lang']):
@@ -1248,7 +1237,34 @@ class Armadillo(QtGui.QWidget):
                     icn = self.iconPath+'files/_blank.png'
 
                 nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="button"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
-        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
+
+        contentD = {
+            'version':str(self.version),
+            'style':pfx+self.stylePath.replace('\\','/'),
+            'workspaces':str(wksp),
+            'new_files':str(nfiles),
+        }
+        
+        for cont in contentD:
+            txt=txt.replace('{{{'+cont+'}}}',contentD[cont])
+        
+        wdg.setText(txt,burl)
+        wdg.viewOnly = 1
+        wdg.modTime = os.path.getmtime(pth)
+        QtGui.QApplication.processEvents()
+        self.changeTab(self.ui.tab.currentIndex())
+        self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
+##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML=' version "+str(self.version)+"'")
+        
+        if openfile==-1:
+            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+            wdg.linkClicked.connect(self.urlClicked)
+        
+
+##            wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
+        
+
+##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
         
     def removeStart(self):
         # Remove startpage

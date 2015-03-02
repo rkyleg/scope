@@ -1,5 +1,5 @@
 <head>
-    <link rel="stylesheet" type="text/css" href="doc.css">
+    <link rel="stylesheet" type="text/css" href="{{{style}}}">
 </head>
 <body>
 <br><br>
@@ -9,7 +9,7 @@
             <!---Logo-->
             <div id="logo">
                 <img alt="" src="../img/armadillo.png" height="50px" />
-                <img src="../img/armadillo_txt.png" height=22px> IDE <span id="version"></span>
+                <img src="../img/armadillo_txt.png" height=22px> IDE <span id="version">{{{version}}}</span>
                 <br><br>
             </div>
         </td>
@@ -19,7 +19,7 @@
             <!---New-->
             <div class="panel">
                 New File<br><br>
-                <div id="new_files"></div>
+                <div id="new_files">{{{new_files}}}</div>
             </div>
         </td>
         <td style="padding-right:10px;width:33%;" valign=top>
@@ -28,7 +28,7 @@
                 Workspaces &nbsp;
                 <a href="workspace:new" title="New workspace"><span class="workspace-add"> <img src="../img/add.png"> </span></a>
                 <br><br>
-               <div id="workspaces"></div>
+               <div id="workspaces">{{{workspaces}}}</div>
                
             </div>
         </td>

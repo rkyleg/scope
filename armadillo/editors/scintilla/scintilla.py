@@ -178,7 +178,10 @@ class Sci(QtGui.QWidget):
 ##            self.ui.te_sci.convertEols(Qsci.QsciScintilla.EolUnix)
         txt = str(self.ui.te_sci.text().toUtf8()).decode('utf-8')
         return txt
-
+    
+    def getSelectedText(self):
+        return self.ui.te_sci.selectedText()
+    
     def insertText(self,txt):
 ##        self.ui.te_sci.removeSelectedText()
 ##        self.ui.te_sci.insert(txt)

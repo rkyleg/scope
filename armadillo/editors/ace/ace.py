@@ -264,6 +264,12 @@ class WebView(QtWebKit.QWebView):
         txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
         return txt
     
+    def getSelectedText(self):
+        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));")
+##        print self.editorJS.editorHtml
+        txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
+        return txt
+    
     def setText(self,txt):
         self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
@@ -276,7 +282,8 @@ class WebView(QtWebKit.QWebView):
     def insertText(self,txt):
         self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(
-        '''var txt =  pythonjs.html;
+        '''var txt =  pythonjs.
+        html;
         editor.insert(txt);''')
 
     def toggleWordWrap(self):
