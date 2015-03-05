@@ -669,6 +669,11 @@ class Armadillo(QtGui.QWidget):
                             wdg.setEnabled(1)
                             self.ui.l_statusbar.setText('')
                             
+                            # Remove Startpage
+                            self.removeStart()
+                            
+                            self.evnt.fileOpened.emit(wdg)
+                            
                         if self.ui.tab.count() ==1:
                             self.changeTab(0)
                             
@@ -676,10 +681,7 @@ class Armadillo(QtGui.QWidget):
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
 ##                        self.updateOutline()
      
-                        # Remove Startpage
-                        self.removeStart()
-                        
-                        self.evnt.fileOpened.emit(wdg)
+
 
     #---Editor
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
