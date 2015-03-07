@@ -35,6 +35,11 @@
         return editor.getFirstVisibleRow()+','+editor.getLastVisibleRow()
     }
     
+    editor.getSelectedText = function() { 
+        return this.session.getTextRange(this.getSelectionRange()) 
+        // return this.session.doc.getTextRange(this.selection.getRange()) 
+    } 
+    
 </script>
 
 </body>

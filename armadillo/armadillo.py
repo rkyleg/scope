@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.2'
+__version__ = '1.7.3'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -464,7 +464,10 @@ class Armadillo(QtGui.QWidget):
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
-            self.addPlugin(plug)
+            try:
+                self.addPlugin(plug)
+            except:
+                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
         

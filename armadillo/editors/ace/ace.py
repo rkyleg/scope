@@ -265,9 +265,12 @@ class WebView(QtWebKit.QWebView):
         return txt
     
     def getSelectedText(self):
-        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));")
+##        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));")
+        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getSelectedText());")
+##        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getCopyText());")
 ##        print self.editorJS.editorHtml
         txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
+##        print txt
         return txt
     
     def setText(self,txt):
