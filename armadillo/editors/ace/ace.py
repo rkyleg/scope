@@ -273,6 +273,9 @@ class WebView(QtWebKit.QWebView):
 ##        print txt
         return txt
     
+    def selectAll(self):
+        self.page().mainFrame().evaluateJavaScript('editor.selectAll();')
+    
     def setText(self,txt):
         self.editorJS.editorHtml = txt#.replace("'","''")
         self.page().mainFrame().evaluateJavaScript(

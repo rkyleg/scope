@@ -56,7 +56,7 @@ The latest development version is available [here](https://github.com/convoluted
     - [Python Shell](armadillo/doc/plugins_pyconsole.md) - integrated Python Console
     - PyQt Converter - convert Qt ui files to PyQt .py files
     - Find / Replace - advanced find/replace tool
-    - Snippets - store and retreive useful code snippets
+    - Snippets - store and retrieve useful code snippets
 - **[Settings](armadillo/doc/settings.md)** - settings are stored in config file
 - **[Keyboard Shortcuts](armadillo/doc/keyboard_shortcuts.md)**
 

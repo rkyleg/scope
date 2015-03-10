@@ -60,7 +60,7 @@
 - [_] Themes
 - [_] Auto or manual easy updates of Armadillo
 - [_] Redo keyboard shortcuts F1-F12 to fit with overall strategy?
-- [_] Customizeable toolbar - users can add their own tools/shortcuts
+- [_] Customizable toolbar - users can add their own tools/shortcuts
 
 ### Editors
 

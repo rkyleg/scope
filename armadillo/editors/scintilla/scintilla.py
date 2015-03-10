@@ -182,6 +182,9 @@ class Sci(QtGui.QWidget):
     def getSelectedText(self):
         return self.ui.te_sci.selectedText()
     
+    def selectAll(self):
+        self.ui.te_sci.selectAll()
+    
     def insertText(self,txt):
 ##        self.ui.te_sci.removeSelectedText()
 ##        self.ui.te_sci.insert(txt)

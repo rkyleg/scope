@@ -52,16 +52,19 @@ class SpellChecker(QtGui.QWidget):
             # Get Text
             self.currentEditor=self.armadillo.currentEditor()
             
-            txt=self.armadillo.currentEditor().getSelectedText()
-            if txt == '':
-                txt = self.armadillo.currentEditor().selectAll()
-            self.ui.te_text.setPlainText(txt)
-##            self.currentEditor.setEnabled(0)
-            self.show()
+            if 'getSelectedText' in dir(self.armadillo.currentEditor()):
+                txt=self.armadillo.currentEditor().getSelectedText()
+                if txt == '':
+                    self.armadillo.currentEditor().selectAll()
+                    txt=self.armadillo.currentEditor().getSelectedText()
+                if txt != '':
+                    self.ui.te_text.setPlainText(txt)
+    ##                self.currentEditor.setEnabled(0)
+                    self.show()
             
     
     def cancel(self):
-        self.currentEditor.setEnabled(1)
+##        self.currentEditor.setEnabled(1)
         self.hide()
         
     def update(self):

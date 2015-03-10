@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'spellcheck.ui'
 #
-# Created: Thu Mar  5 21:14:20 2015
+# Created: Mon Mar  9 22:24:19 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -27,10 +27,6 @@ class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
         Form.resize(502, 322)
-        Form.setStyleSheet(_fromUtf8("QWidget#Form {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));\n"
-"border-radius:8px;\n"
-"}"))
         self.gridLayout_2 = QtGui.QGridLayout(Form)
         self.gridLayout_2.setMargin(4)
         self.gridLayout_2.setSpacing(4)
