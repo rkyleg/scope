@@ -119,6 +119,11 @@ class WebView(QtWebKit.QWebView):
         var txt = pythonjs.html;
         CKEDITOR.instances.editor1.insertHtml(txt)''')
     
+    def getSelectedText(self):
+        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(CKEDITOR.instances.editor1.getSelection().getSelectedText());")
+        txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
+        return txt
+    
     def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
 

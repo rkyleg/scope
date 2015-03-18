@@ -3,18 +3,10 @@ import sys, os, re
 from .spellcheck_ui import Ui_Form
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+##print os.path.abspath(os.path.dirname(__file__))
+##os.environ['PYENCHANT_IGNORE_MISSING_LIB']='True'
 import enchant
 
-from PyQt4.Qt import QAction
-from PyQt4.Qt import QApplication
-from PyQt4.Qt import QEvent
-from PyQt4.Qt import QMenu
-from PyQt4.Qt import QMouseEvent
-from PyQt4.Qt import QPlainTextEdit
-from PyQt4.Qt import QSyntaxHighlighter
-from PyQt4.Qt import QTextCharFormat
-from PyQt4.Qt import QTextCursor
-from PyQt4.Qt import Qt
 from PyQt4.QtCore import pyqtSignal
 
 class SpellChecker(QtGui.QWidget):
@@ -23,6 +15,12 @@ class SpellChecker(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.armadillo = parent
+        
+##        self.setWindowModality(1)
+        
+##        self.setWindowOpacity(0.6)
+##        self.setStyleSheet("#Form {background:white;}")
+##        self.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
         self.ui.b_cancel.clicked.connect(self.cancel)
         self.ui.b_ok.clicked.connect(self.update)
@@ -43,6 +41,7 @@ class SpellChecker(QtGui.QWidget):
         if self.isVisible():
             self.hide()
         else:
+            
             x=self.armadillo.width()*.05
             y=self.armadillo.ui.split_left.pos().y()
             w=self.armadillo.width()*.9
@@ -55,8 +54,9 @@ class SpellChecker(QtGui.QWidget):
             if 'getSelectedText' in dir(self.armadillo.currentEditor()):
                 txt=self.armadillo.currentEditor().getSelectedText()
                 if txt == '':
-                    self.armadillo.currentEditor().selectAll()
-                    txt=self.armadillo.currentEditor().getSelectedText()
+                    if 'selectAll' in dir(self.armadillo.currentEditor()):
+                        self.armadillo.currentEditor().selectAll()
+                        txt=self.armadillo.currentEditor().getSelectedText()
                 if txt != '':
                     self.ui.te_text.setPlainText(txt)
     ##                self.currentEditor.setEnabled(0)
@@ -73,12 +73,12 @@ class SpellChecker(QtGui.QWidget):
             self.cancel()
     
     def mousePressEvent2(self, event):
-        if event.button() == Qt.RightButton:
+        if event.button() == QtCore.Qt.RightButton:
             # Rewrite the mouse event to a left button event so the cursor is
             # moved to the location of the pointer.
-            event = QMouseEvent(QEvent.MouseButtonPress, event.pos(),
-                Qt.LeftButton, Qt.LeftButton, Qt.NoModifier)
-        QPlainTextEdit.mousePressEvent(self.ui.te_text, event)
+            event = QtGui.QMouseEvent(QtCore.QEvent.MouseButtonPress, event.pos(),
+                QtCore.Qt.LeftButton, QtCore.Qt.LeftButton, QtCore.Qt.NoModifier)
+        QtGui.QPlainTextEdit.mousePressEvent(self.ui.te_text, event)
 
     def keyPressEvent(self,event):
         # Override tab to spaces
@@ -89,15 +89,16 @@ class SpellChecker(QtGui.QWidget):
 
         # Select the word under the cursor.
         cursor = self.ui.te_text.textCursor()
-        cursor.select(QTextCursor.WordUnderCursor)
+        cursor.select(QtGui.QTextCursor.WordUnderCursor)
         self.ui.te_text.setTextCursor(cursor)
 
         # Check if the selected word is misspelled and offer spelling
         # suggestions if it is.
+        spell_menu = QtGui.QMenu('Spelling Suggestions')
         if self.ui.te_text.textCursor().hasSelection():
             text = unicode(self.ui.te_text.textCursor().selectedText())
             if not self.dict.check(text):
-                spell_menu = QMenu('Spelling Suggestions')
+                
                 for word in self.dict.suggest(text):
                     action = SpellAction(word, spell_menu)
                     action.correct.connect(self.correctWord)
@@ -136,12 +137,12 @@ class SpellChecker(QtGui.QWidget):
             else:
                 self.highlighter.setDocument(None)
 
-class Highlighter(QSyntaxHighlighter):
+class Highlighter(QtGui.QSyntaxHighlighter):
 
     WORDS = u'(?iu)[\w\']+'
 
     def __init__(self, *args):
-        QSyntaxHighlighter.__init__(self, *args)
+        QtGui.QSyntaxHighlighter.__init__(self, *args)
 
         self.dict = None
 
@@ -154,9 +155,9 @@ class Highlighter(QSyntaxHighlighter):
 
         text = unicode(text)
 
-        format = QTextCharFormat()
-        format.setUnderlineColor(Qt.red)
-        format.setUnderlineStyle(QTextCharFormat.SpellCheckUnderline)
+        format = QtGui.QTextCharFormat()
+        format.setUnderlineColor(QtCore.Qt.red)
+        format.setUnderlineStyle(QtGui.QTextCharFormat.SpellCheckUnderline)
 
         for word_object in re.finditer(self.WORDS, text):
             if not self.dict.check(word_object.group()):
@@ -164,7 +165,7 @@ class Highlighter(QSyntaxHighlighter):
                     word_object.end() - word_object.start(), format)
 
 
-class SpellAction(QAction):
+class SpellAction(QtGui.QAction):
 
     '''
     A special QAction that returns the text in a signal.
@@ -173,7 +174,7 @@ class SpellAction(QAction):
     correct = pyqtSignal(unicode)
 
     def __init__(self, *args):
-        QAction.__init__(self, *args)
+        QtGui.QAction.__init__(self, *args)
 
         self.triggered.connect(lambda x: self.correct.emit(
             unicode(self.text())))

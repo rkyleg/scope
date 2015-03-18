@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.3'
+__version__ = '1.7.4'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -621,6 +621,7 @@ class Armadillo(QtGui.QWidget):
                 filename = str(filename)
         if filename != None:
             if os.path.isfile(filename):
+                filename = filename.replace('\\','/')
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
