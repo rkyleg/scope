@@ -113,7 +113,8 @@ class Preview(QtGui.QWidget):
     
     def load_finished(self):
         pwdg = self.ui.sw_prev.currentWidget()
-        pwdg.webview.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,pwdg.webview.lastScrollValue)
+        if 'webview' in dir(pwdg):
+            pwdg.webview.page().currentFrame().setScrollBarValue(QtCore.Qt.Vertical,pwdg.webview.lastScrollValue)
     
     def urlClicked(self,url):
         lnk = str(url.toString())

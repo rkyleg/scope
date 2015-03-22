@@ -23,6 +23,22 @@ class Output(QtGui.QWidget):
             owdg = self.wdgD[wdg]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
+    def editorTabClosed(self,wdg):
+        if wdg in self.wdgD:
+            owdg = self.wdgD[wdg]
+            ok=1
+            if owdg.process != None:
+                ok=0
+                opentxt=os.path.split(owdg.filename)[1]
+                resp=QtGui.QMessageBox.warning(self,'Kill Running Proces','The following output process is still running:'+opentxt+'<br><br>Do you want to kill it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                if resp == QtGui.QMessageBox.Yes:
+                    owdg.stopProcess()
+                    ok=1
+            if ok:
+                self.ui.li_pages.takeItem(self.ui.li_pages.row(owdg.listItem))
+                self.ui.sw_pages.removeWidget(owdg)
+                    
+    
     def runProcess(self,cmd,wdg,text=''):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser

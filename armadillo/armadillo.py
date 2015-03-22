@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.4'
+__version__ = '1.7.5'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1445,8 +1445,8 @@ class Armadillo(QtGui.QWidget):
         
         if ok:
             self.workspace=None
-            if 'output' in self.pluginD:
-                self.pluginD['output'].killAll()
+##            if 'output' in self.pluginD:
+##                self.pluginD['output'].killAll()
             
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
