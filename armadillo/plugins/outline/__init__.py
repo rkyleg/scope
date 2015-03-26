@@ -7,7 +7,7 @@ def addPlugin(parent):
     parent.evnt.editorAdded.connect(plugin.addOutline)
     parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
     parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
-    parent.evnt.fileOpened.connect(plugin.updateOutline)
+    parent.evnt.fileOpened.connect(plugin.updateOutlineToggle)
     
     QtGui.QShortcut(QtCore.Qt.Key_F3,parent,plugin.updateOutlineToggle) 
     

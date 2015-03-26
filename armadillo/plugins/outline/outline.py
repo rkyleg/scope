@@ -107,7 +107,7 @@ class Outline(QtGui.QWidget):
     def updateOutlineToggle(self):
         self.updateOutline(toggle_view=1)
 
-    def updateOutline(self,wdg=None,toggle_view=1):
+    def updateOutline(self,wdg=None,toggle_view=0):
         # Get current widget from Armadillo
         wdg = self.armadillo.currentEditor()
         
