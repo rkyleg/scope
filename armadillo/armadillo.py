@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.5'
+__version__ = '1.7.6'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1549,7 +1549,7 @@ class Armadillo(QtGui.QWidget):
                             chngs = 1
                         elif os.path.getmtime(wdg.filename) > wdg.modTime:
                             resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                            wdg.modTime = os.path.getmtime(wdg.filename)
+                            
                             chngs=1
                             if resp == QtGui.QMessageBox.Yes:
                                 QtGui.QApplication.processEvents()
@@ -1557,6 +1557,7 @@ class Armadillo(QtGui.QWidget):
                                 txt = f.read()
                                 f.close()
                                 wdg.setText(txt)
+                                wdg.modTime = os.path.getmtime(wdg.filename)
             
             if close_tabs != []:
                 close_tabs.reverse()
