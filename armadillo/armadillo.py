@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.6'
+__version__ = '1.7.7'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -605,7 +605,7 @@ class Armadillo(QtGui.QWidget):
         for i in range(self.ui.tab.count()):
             file_id = self.ui.tab.tabData(i).toInt()[0]
             wdg = self.tabD[file_id]
-            if wdg.filename != None and os.path.abspath(wdg.filename) == os.path.abspath(filename):
+            if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 self.ui.tab.setCurrentIndex(i)
                 fileopen = i
                 break

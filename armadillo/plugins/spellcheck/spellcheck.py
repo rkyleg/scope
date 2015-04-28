@@ -25,6 +25,9 @@ class SpellChecker(QtGui.QWidget):
         self.ui.b_cancel.clicked.connect(self.cancel)
         self.ui.b_ok.clicked.connect(self.update)
         
+        self.ui.b_undo.clicked.connect(self.undo_word)
+        self.ui.b_redo.clicked.connect(self.redo_word)
+        
         # Setup Text Editor
         self.ui.te_text.mousePressEvent = self.mousePressEvent2
         self.ui.te_text.contextMenuEvent = self.contextMenuEvent2
@@ -41,7 +44,8 @@ class SpellChecker(QtGui.QWidget):
         if self.isVisible():
             self.hide()
         else:
-            
+            self.count = 0
+            self.ui.b_ok.setEnabled(0)
             x=self.armadillo.width()*.05
             y=self.armadillo.ui.split_left.pos().y()
             w=self.armadillo.width()*.9
@@ -116,16 +120,35 @@ class SpellChecker(QtGui.QWidget):
         '''
         Replaces the selected text with word.
         '''
-
+        fmt = QtGui.QTextCharFormat()
         cursor = self.ui.te_text.textCursor()
+        fmt.setBackground(QtGui.QColor(184, 215, 255))
+        
 ##        cursor = self.cursorForPosition(event.pos())
         cursor.beginEditBlock()
-
+        
         cursor.removeSelectedText()
+        cursor.setCharFormat(fmt)
         cursor.insertText(word)
 
+        cursor.setCharFormat(fmt)
         cursor.endEditBlock()
-        
+        # Update count
+        self.count+=1
+        self.ui.b_ok.setEnabled(1)
+        self.ui.l_count.setText(str(self.count)+' changes')
+    
+    def undo_word(self):
+        self.count -=1
+        self.ui.l_count.setText(str(self.count)+' changes')
+        if self.count <=0:
+            self.ui.b_ok.setEnabled(0)
+
+    def redo_word(self):
+        self.count +=1
+        self.ui.l_count.setText(str(self.count)+' changes')
+        self.ui.b_ok.setEnabled(1)
+
     def highlighterEnabled(self):
          return self.highlighter.document() is not None
 

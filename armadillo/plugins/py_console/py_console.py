@@ -235,7 +235,7 @@ class Console(QtGui.QTextEdit):
             self.indent = self.line[0:len(self.line)-len(self.line.lstrip())]
             if self.line.rstrip():
                 if self.line.rstrip()[-1]==':':
-                    self.indent+='\t'
+                    self.indent+='    '
         else:
             self.prompt = sys.ps1
             self.lines = []
@@ -342,7 +342,7 @@ class Console(QtGui.QTextEdit):
             else:
                 self.__run()
         elif key == Qt.Key_Tab:
-            self.__insertText(text)
+            self.__insertText('   ')
         elif key == Qt.Key_Left:
             if self.point:
                 self.moveCursor(QtGui.QTextCursor.PreviousCharacter, 0)
