@@ -68,6 +68,6 @@ class Qt2Py(QtGui.QWidget):
         txt = str(self.ui.le_help.text()).lower()
         if not txt.startswith('q'):
             txt = 'q' +txt
-        lnk = 'http://qt-project.org/doc/qt-4.8/%s.html' %txt
+        lnk = 'http://doc.qt.io/qt-4.8/%s.html' %txt
         
         webbrowser.open(lnk)

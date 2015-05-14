@@ -16,11 +16,11 @@ class HUD(object):
         
             self.armadillo.HUDWidget.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
             self.armadillo.HUDWidget.linkClicked.connect(self.HUDClicked)
-        
+
         if self.armadillo.HUDWidget.isVisible():
             self.armadillo.HUDWidget.hide()
         else:
-            
+            cur_itm=0
             if os.name =='nt':
                 pfx="file:///"
             else:
