@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.7.8'
+__version__ = '1.8.0'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -26,6 +26,7 @@ class Events(QtCore.QObject):
     close=QtCore.pyqtSignal()
     editorTabClosed = QtCore.pyqtSignal(QtGui.QWidget)
     fileOpened = QtCore.pyqtSignal(QtGui.QWidget)
+    resized = QtCore.pyqtSignal()
     
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -71,7 +72,7 @@ class NewMenu(QtGui.QMenu):
         editor = str(event.data().toString())
         if editor == '': editor = None
         self.parent.addEditorWidget(str(event.text()),editor=editor)
-        self.parent.removeStart()
+##        self.parent.removeStart()
 
 class WorkspaceMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -269,6 +270,8 @@ class Armadillo(QtGui.QWidget):
         self.armadilloPath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')
         self.currentPath = os.path.expanduser('~')
         
+        self.recentTabs = [] # Keep track of most recent tabs
+        
         # Settings
         self.workspace = None
         self.loadSettings()
@@ -387,8 +390,8 @@ class Armadillo(QtGui.QWidget):
 
         self.ui.b_run.clicked.connect(self.editorRun)
 ##        self.ui.b_wordwrap.clicked.connect(self.editorWordWrap)
-        self.ui.b_settings.clicked.connect(self.openSettings)
-        self.ui.b_help.clicked.connect(self.addStart)
+##        self.ui.b_settings.clicked.connect(self.openSettings)
+##        self.ui.b_help.clicked.connect(self.addStart)
         
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
@@ -460,14 +463,15 @@ class Armadillo(QtGui.QWidget):
 ##        plugin_add_btn.setMenu(self.addPluginMenu)
         
         # Add Plugins
+        self.HUDWidget = None
         self.pluginD = {}
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
-            try:
+##            try:
                 self.addPlugin(plug)
-            except:
-                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+##            except:
+##                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
@@ -481,7 +485,7 @@ class Armadillo(QtGui.QWidget):
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
         
-        self.HUDWidget = None
+        
         
         # Load FileCheck Thread
         self.fileLastCheck = time.time()
@@ -504,8 +508,8 @@ class Armadillo(QtGui.QWidget):
 ##        # Load custom setup
 ##        self.loadSetup()
         
-        # Add Start
-        self.addStart()
+
+##        self.addStart()
         
         # Open file if in sys arg
         # print "SYS",sys.argv
@@ -514,6 +518,10 @@ class Armadillo(QtGui.QWidget):
                 self.openFile(sys.argv[1])
         
         self.setFocus()
+        
+        # Add Start/HUD
+        self.addStart()
+
         
     #---Events
     def closeEvent(self,event):
@@ -551,6 +559,9 @@ class Armadillo(QtGui.QWidget):
     
     def dragEnterEvent(self,event):
         event.accept()
+    
+    def resizeEvent(self,event):
+        self.evnt.resized.emit()
     
     def tabMousePressEvent(self,event):
 ##        print event.button(),event.button() == QtCore.Qt.MidButton
@@ -612,6 +623,7 @@ class Armadillo(QtGui.QWidget):
         return fileopen
         
     def openFile(self,filename=None,editor=None):
+        print 'open',filename
         if not filename:
             # Ask for filename if not specified
             filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.currentPath," (*.*)")
@@ -674,13 +686,16 @@ class Armadillo(QtGui.QWidget):
                             self.ui.l_statusbar.setText('')
                             
                             # Remove Startpage
-                            self.removeStart()
+##                            self.removeStart()
                             
                             self.evnt.fileOpened.emit(wdg)
                             
                         if self.ui.tab.count() ==1:
                             self.changeTab(0)
                             
+                # Close HUD if visible
+                if self.HUDWidget != None and self.HUDWidget.webview.isVisible():
+                    self.HUDWidget.webview.hide()
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
 ##                        self.updateOutline()
@@ -850,6 +865,11 @@ class Armadillo(QtGui.QWidget):
         if pluginRightVisible != self.ui.tab_right.isVisible():
             self.toggleRightPlugin()
         
+        # Update recent tabs list
+        if wdg in self.recentTabs:
+            self.recentTabs.remove(wdg)
+        self.recentTabs=[wdg]+self.recentTabs
+        
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
                 
@@ -859,6 +879,7 @@ class Armadillo(QtGui.QWidget):
 ##            file_id = self.ui.tab.tabData(tab_ind)
 ##        else:
         file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
+##        print 'close',file_id
         wdg = self.tabD[file_id]
         ok = 1
         
@@ -1202,105 +1223,107 @@ class Armadillo(QtGui.QWidget):
     
     #---Startpage
     def addStart(self,wdg=None):
-        pth = 'doc/start.html'
-        openfile = self.isFileOpen(pth)
-        if openfile==-1:
-            wdg = self.addEditorWidget('Start','Start',pth,editor='webview')
-            wdg.setStyleSheet("background:transparent")
-            wdg.setAttribute(QtCore.Qt.WA_TranslucentBackground)
-        else:
-            self.ui.tab.setCurrentIndex(openfile)
-            QtGui.QApplication.processEvents()
-            wdg = self.ui.sw_main.currentWidget()
-        
-        # Get Base Text
-        f = open(pth,'r')
-        txt = f.read()
-        f.close()
-        if os.name =='nt':
-            pfx="file:///"
-        else:
-            pfx="file://"
-        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/doc/')
-
-        # Add Workspaces
-        wksp = ''
-        icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
-        if os.path.exists(self.settingPath+'/workspaces'):
-            for w in sorted(os.listdir(self.settingPath+'/workspaces'),key=lambda x: x.lower()):
-##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                wksp += '<a href="workspace:'+w+'"><div class="button"><img src="'+icn_wksp+'"> '+w+'</div></a> '
-
-        # Add New File Links
-        nfiles = ''
-        for lang in sorted(self.settings['prog_lang']):
-            if lang != 'default' and self.settings['prog_lang'][lang]['fave']:
-                icn = None
-                if os.path.exists(self.iconPath+'files/'+lang+'.png'):
-                    icn = self.iconPath+'files/'+lang+'.png'
-                # Set default Icon if language not found
-                if icn == None:
-                    icn = self.iconPath+'files/_blank.png'
-
-                nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="button"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
-
-        contentD = {
-            'version':str(self.version),
-            'style':pfx+self.stylePath.replace('\\','/'),
-            'workspaces':str(wksp),
-            'new_files':str(nfiles),
-        }
-        
-        for cont in contentD:
-            txt=txt.replace('{{{'+cont+'}}}',contentD[cont])
-        
-        wdg.setText(txt,burl)
-        wdg.viewOnly = 1
-        wdg.modTime = os.path.getmtime(pth)
-        QtGui.QApplication.processEvents()
-        self.changeTab(self.ui.tab.currentIndex())
-        self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
-##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML=' version "+str(self.version)+"'")
-        
-        if openfile==-1:
-            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-            wdg.linkClicked.connect(self.urlClicked)
-        
-
-##            wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
-        
-
-##        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
-        
-    def removeStart(self):
-        # Remove startpage
-##        if self.startinit:
-            for i in range(self.ui.tab.count()):
-                file_id = self.ui.tab.tabData(i).toInt()[0]
-                if file_id == 0:
-                    self.closeTab(i)
-##                    self.startinit=0
-                    break
+        if self.HUDWidget != None:
+            self.HUDWidget.toggleHUD()
+##        pth = 'doc/start.html'
+##        openfile = self.isFileOpen(pth)
+##        if openfile==-1:
+##            wdg = self.addEditorWidget('Start','Start',pth,editor='webview')
+##            wdg.setStyleSheet("background:transparent")
+##            wdg.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+##        else:
+##            self.ui.tab.setCurrentIndex(openfile)
+##            QtGui.QApplication.processEvents()
+##            wdg = self.ui.sw_main.currentWidget()
+##        
+##        # Get Base Text
+##        f = open(pth,'r')
+##        txt = f.read()
+##        f.close()
+##        if os.name =='nt':
+##            pfx="file:///"
+##        else:
+##            pfx="file://"
+##        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/doc/')
+##
+##        # Add Workspaces
+##        wksp = ''
+##        icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
+##        if os.path.exists(self.settingPath+'/workspaces'):
+##            for w in sorted(os.listdir(self.settingPath+'/workspaces'),key=lambda x: x.lower()):
+####                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
+##                wksp += '<a href="workspace:'+w+'"><div class="button"><img src="'+icn_wksp+'"> '+w+'</div></a> '
+##
+##        # Add New File Links
+##        nfiles = ''
+##        for lang in sorted(self.settings['prog_lang']):
+##            if lang != 'default' and self.settings['prog_lang'][lang]['fave']:
+##                icn = None
+##                if os.path.exists(self.iconPath+'files/'+lang+'.png'):
+##                    icn = self.iconPath+'files/'+lang+'.png'
+##                # Set default Icon if language not found
+##                if icn == None:
+##                    icn = self.iconPath+'files/_blank.png'
+##
+##                nfiles += '<a href="new:'+lang+'" title="new '+lang+'"><div class="button"><img src="'+pfx+icn+'" style="height:14px;"> '+lang+'</div></a>'
+##
+##        contentD = {
+##            'version':str(self.version),
+##            'style':pfx+self.stylePath.replace('\\','/'),
+##            'workspaces':str(wksp),
+##            'new_files':str(nfiles),
+##        }
+##        
+##        for cont in contentD:
+##            txt=txt.replace('{{{'+cont+'}}}',contentD[cont])
+##        
+##        wdg.setText(txt,burl)
+##        wdg.viewOnly = 1
+##        wdg.modTime = os.path.getmtime(pth)
+##        QtGui.QApplication.processEvents()
+##        self.changeTab(self.ui.tab.currentIndex())
+##        self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'home.png'))
+####        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('version').innerHTML=' version "+str(self.version)+"'")
+##        
+##        if openfile==-1:
+##            wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
+##            wdg.linkClicked.connect(self.urlClicked)
+##        
+##
+####            wdg.page().mainFrame().evaluateJavaScript("document.getElementById('workspaces').innerHTML='"+str(wksp)+"'")
+##        
+##
+####        wdg.page().mainFrame().evaluateJavaScript("document.getElementById('new_files').innerHTML='"+str(nfiles)+"'")
+##        
+####    def removeStart(self):
+####        # Remove startpage
+######        if self.startinit:
+####            for i in range(self.ui.tab.count()):
+####                file_id = self.ui.tab.tabData(i).toInt()[0]
+####                if file_id == 0:
+####                    self.closeTab(i)
+######                    self.startinit=0
+####                    break
     
-    def urlClicked(self,url):
-        # Mainly used for startpage urls
-        lnk = str(url.toString())
-##        print url
-        wdg = self.ui.sw_main.currentWidget()
-        if lnk.startswith('new:'):
-            self.addEditorWidget(lang=lnk.split(':')[1])
-            self.removeStart()
-        elif lnk.startswith('workspace'):
-            w=lnk.split(':')[1]
-            if w=='new':
-                self.newWorkspace()
-                self.addStart(wdg=wdg)
-            else:
-                self.loadWorkspace(w)
-        elif lnk.endswith('start.html'):
-            self.addStart(wdg=wdg)
-        else:
-            wdg.load2(url)
+##    def urlClicked(self,url):
+##        # Mainly used for startpage urls
+##        lnk = str(url.toString())
+####        print url
+##        wdg = self.ui.sw_main.currentWidget()
+##        if lnk.startswith('new:'):
+##            self.addEditorWidget(lang=lnk.split(':')[1])
+####            self.removeStart()
+##        elif lnk.startswith('workspace'):
+##            w=lnk.split(':')[1]
+##            if w=='new':
+##                self.newWorkspace()
+##                self.addStart(wdg=wdg)
+##            else:
+##                self.loadWorkspace(w)
+##        elif lnk.endswith('start.html'):
+##            self.addStart(wdg=wdg)
+##        else:
+##            wdg.load2(url)
     
     #---Shortcuts
     def findFocus(self):
@@ -1316,6 +1339,9 @@ class Armadillo(QtGui.QWidget):
         self.ui.le_goto.selectAll()
         
     def nextTab(self):
+        
+##        i = self.ui.sw_main.indexOf(self.recentTabs[1])
+        
         i = self.ui.tab.currentIndex()+1
         if i == self.ui.tab.count():i=0
         self.ui.tab.setCurrentIndex(i)
@@ -1385,7 +1411,7 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.closeWact.setDisabled(0)
             
 ##            QtGui.QApplication.processEvents()
-            self.removeStart()
+##            self.removeStart()
             
             if self.ui.tab.count() ==1:
                 self.changeTab(0)
@@ -1452,7 +1478,10 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.closeWact.setDisabled(1)
         
         if ok and openStart and self.ui.tab.count()==0:
-            self.addStart()
+##            self.addStart()
+##            print self.HUDWidget
+            if self.HUDWidget != None:
+                self.HUDWidget.toggleHUD()
         
         return ok
 

@@ -116,38 +116,39 @@ class Outline(QtGui.QWidget):
                 self.armadillo.ui.fr_left.setVisible(1)
             i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
             self.armadillo.ui.tab_left.setCurrentIndex(i)
+        
+        if wdg != None:
+            trwdg = self.wdgD[wdg].ui.tr_outline
+            if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
+                # Select tab if language
+    ##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
+    ##            self.armadillo.ui.tab_left.setCurrentIndex(i)
 
-        trwdg = self.wdgD[wdg].ui.tr_outline
-        if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
-            # Select tab if language
-##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
-##            self.armadillo.ui.tab_left.setCurrentIndex(i)
-
-            trwdg.clear()
-            
-            # Add Filename
-##            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
-##            trwdg.addTopLevelItem(itm)
-##            self.format(itm,'filename')
-            
-            self.wdgD[wdg].ui.b_find_close.click()
-            txt = wdg.getText()
-            txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
-            
-            txt_outline = self.outlineLangD[wdg.lang](txtlines)
-            
-            for t in txt_outline:
-                itmText = t[0]
-                typ = t[1]
-                lcnt = t[2]
-                itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
-                trwdg.addTopLevelItem(itm)
-                self.format(itm,typ)
-            
-            # Update Location if possible
-            if 'getVisibleLines' in dir(wdg):
-                lines = wdg.getVisibleLines()
-                self.updateLocation(wdg,lines)
+                trwdg.clear()
+                
+                # Add Filename
+    ##            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
+    ##            trwdg.addTopLevelItem(itm)
+    ##            self.format(itm,'filename')
+                
+                self.wdgD[wdg].ui.b_find_close.click()
+                txt = wdg.getText()
+                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
+                
+                txt_outline = self.outlineLangD[wdg.lang](txtlines)
+                
+                for t in txt_outline:
+                    itmText = t[0]
+                    typ = t[1]
+                    lcnt = t[2]
+                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
+                    trwdg.addTopLevelItem(itm)
+                    self.format(itm,typ)
+                
+                # Update Location if possible
+                if 'getVisibleLines' in dir(wdg):
+                    lines = wdg.getVisibleLines()
+                    self.updateLocation(wdg,lines)
     
     def updateLocation(self,wdg,lines):
         trwdg = self.wdgD[wdg].ui.tr_outline

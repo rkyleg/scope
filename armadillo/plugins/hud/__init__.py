@@ -6,6 +6,8 @@ def addPlugin(parent):
     plugin.title = 'HUD'
     plugin.location = None
     
+    parent.HUDWidget = plugin
+    
     QtGui.QShortcut(QtCore.Qt.Key_F1,parent,plugin.toggleHUD) # Show Heads up display
     
     return plugin

@@ -17,6 +17,8 @@ class Output(QtGui.QWidget):
         self.outD = {}
         
         self.ui.split_pages.setSizes([200,self.armadillo.width()-200])
+        
+        self.ui.li_pages.contextMenuEvent = self.listMenuEvent
 
     def editorTabChanged(self,wdg):
         if wdg in self.wdgD:
@@ -26,17 +28,24 @@ class Output(QtGui.QWidget):
     def editorTabClosed(self,wdg):
         if wdg in self.wdgD:
             owdg = self.wdgD[wdg]
-            ok=1
-            if owdg.process != None:
-                ok=0
-                opentxt=os.path.split(owdg.filename)[1]
-                resp=QtGui.QMessageBox.warning(self,'Kill Running Proces','The following output process is still running:'+opentxt+'<br><br>Do you want to kill it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                if resp == QtGui.QMessageBox.Yes:
-                    owdg.stopProcess()
-                    ok=1
-            if ok:
-                self.ui.li_pages.takeItem(self.ui.li_pages.row(owdg.listItem))
-                self.ui.sw_pages.removeWidget(owdg)
+            self.closeOutputWidget(owdg)
+
+    def closeOutputWidget(self,owdg):
+        ok=1
+        if owdg.process != None:
+            ok=0
+            opentxt=os.path.split(owdg.filename)[1]
+            resp=QtGui.QMessageBox.warning(self,'Kill Running Proces','The following output process is still running:'+opentxt+'<br><br>Do you want to kill it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+            if resp == QtGui.QMessageBox.Yes:
+                owdg.stopProcess()
+                ok=1
+        if ok:
+            wdg = self.outD[owdg]
+            self.wdgD.pop(wdg)
+            self.outD.pop(owdg)
+            self.ui.li_pages.takeItem(self.ui.li_pages.row(owdg.listItem))
+            self.ui.sw_pages.removeWidget(owdg)
+
                     
     
     def runProcess(self,cmd,wdg,text=''):
@@ -107,6 +116,24 @@ class Output(QtGui.QWidget):
                 self.ui.sw_pages.removeWidget(owdg)
             self.ui.li_pages.clear()
             
+    def listMenuEvent(self,event):
+        cwdg = self.ui.sw_pages.currentWidget()
+        menu = QtGui.QMenu()
+        if cwdg.process != None:
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'stop.png'),'Stop')
+        else:
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'tri_right.png'),'Run')
+            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'close.png'),'Close')
+        
+        resp = menu.exec_(event.globalPos())
+        if resp != None:
+            txt = str(resp.text())
+            if txt == 'Close':
+                self.closeOutputWidget(cwdg)
+            elif txt == 'Stop':
+                cwdg.stopProcess()
+            elif txt == 'Run':
+                cwdg.startProcess()
 
 class OutputPage(QtGui.QWidget):
     def __init__(self,parent=None,armadillo=None,filename=None):

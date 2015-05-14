@@ -419,40 +419,6 @@ QPushButton:hover,QToolButton:hover {
           </widget>
          </item>
          <item row="0" column="4">
-          <widget class="QPushButton" name="b_help">
-           <property name="toolTip">
-            <string>Armadillo start page and help links</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>img/home.png</normaloff>img/home.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-left</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="b_settings">
-           <property name="toolTip">
-            <string>Edit Settings</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>img/wrench.png</normaloff>img/wrench.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-right</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="6">
           <widget class="QPushButton" name="b_indent">
            <property name="toolTip">
             <string>Indent</string>
@@ -469,7 +435,7 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="7">
+         <item row="0" column="5">
           <widget class="QPushButton" name="b_unindent">
            <property name="toolTip">
             <string>Unindent</string>
@@ -486,7 +452,7 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="8">
+         <item row="0" column="6">
           <widget class="QPushButton" name="b_comment">
            <property name="toolTip">
             <string>Comment/Uncomment</string>
@@ -503,7 +469,7 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="10">
+         <item row="0" column="8">
           <widget class="QPushButton" name="b_run">
            <property name="toolTip">
             <string>Run</string>
@@ -520,7 +486,7 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="9">
+         <item row="0" column="7">
           <widget class="QPushButton" name="b_color_picker">
            <property name="toolTip">
             <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Insert rgb color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
