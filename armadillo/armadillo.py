@@ -228,7 +228,7 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'Home',self.parent.addStart)
+        act = self.addAction(icn,'HUD',self.parent.addStart)
         
         # Settings
         icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
@@ -521,8 +521,8 @@ class Armadillo(QtGui.QWidget):
         
         # Add Start/HUD
         QtGui.QApplication.processEvents()
-        self.addStart()
-
+        if self.settings['plugins']['hud']['openOnStart']=='1':
+            self.addStart()
         
     #---Events
     def closeEvent(self,event):
