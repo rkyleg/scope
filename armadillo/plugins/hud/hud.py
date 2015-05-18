@@ -1,6 +1,17 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
 import os
 
+class jsObject(QtCore.QObject):
+    filePath = ''
+    def __init__(self,parent):
+        QtCore.QObject.__init__(self)
+        self.parent = parent
+    
+    @QtCore.pyqtSlot()
+    def closeHUD(self):
+##        print 'close hud'
+        self.parent.toggleHUD()
+
 class HUD(object):
     def __init__(self,parent):
         self.armadillo=parent
@@ -10,11 +21,13 @@ class HUD(object):
         from editors.webview import webview
         self.webview=webview.WebView(self.armadillo)
         self.webview.setWindowOpacity(0.6)
-        self.webview.setStyleSheet("background:transparent")
+        self.webview.setStyleSheet("QWebView{background:transparent}")
         self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.webview.linkClicked.connect(self.HUDClicked)
+
+        self.jsObject = jsObject(parent=self)
     
     def toggleHUD(self):
 ##        if self.webview == None:
@@ -64,7 +77,7 @@ class HUD(object):
                 file_txt +=str(self.armadillo.ui.tab.tabText(i))
 ##                file_txt += ' <a href="closetab:'+str(i)+'"><img alt="" src="../img/close.png" /></a>'
                 file_txt += '</a>'
-                print file_txt
+##                print file_txt
             
              # Add New File Links
             nfiles = ''
@@ -114,13 +127,15 @@ class HUD(object):
             if file_txt == '':
                 self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
             
+            self.webview.page().mainFrame().addToJavaScriptWindowObject('HUD',self.jsObject)
+            
             self.webview.setGeometry(0,0,g.width(),g.height())
             self.webview.show()
             self.webview.setFocus()
     
     def HUDClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
-
+##        print(lnk)
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.armadillo.ui.tab.setCurrentIndex(i)

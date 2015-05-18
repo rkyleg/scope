@@ -520,6 +520,7 @@ class Armadillo(QtGui.QWidget):
         self.setFocus()
         
         # Add Start/HUD
+        QtGui.QApplication.processEvents()
         self.addStart()
 
         
@@ -623,7 +624,7 @@ class Armadillo(QtGui.QWidget):
         return fileopen
         
     def openFile(self,filename=None,editor=None):
-        print 'open',filename
+##        print 'open',filename
         if not filename:
             # Ask for filename if not specified
             filename = QtGui.QFileDialog.getOpenFileName(self,"Select File",self.currentPath," (*.*)")
