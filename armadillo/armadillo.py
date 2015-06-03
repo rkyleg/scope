@@ -8,7 +8,7 @@
 # VERSION
 __version__ = '1.8.2'
 
-# Make sure qvariant works for Python 2 and 3
+# Make sure qvariant works for Pyxthon 2 and 3
 import sip
 ##sip.setapi('QString',1)
 sip.setapi('QVariant',1)
