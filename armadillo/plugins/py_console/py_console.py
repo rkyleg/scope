@@ -197,6 +197,7 @@ class Console(QtGui.QTextEdit):
         self.moveCursor(QtGui.QTextCursor.End, 0)
         self.syncViewers()
         QtGui.QApplication.processEvents(QtCore.QEventLoop.ExcludeUserInputEvents)
+        
     def writelines(self, text):
         """
         Simulate stdin, stdout, and stderr.

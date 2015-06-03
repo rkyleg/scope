@@ -20,9 +20,9 @@ class HUD(object):
         # Create hud widget
         from editors.webview import webview
         self.webview=webview.WebView(self.armadillo)
-        self.webview.setWindowOpacity(0.6)
+##        self.webview.setWindowOpacity(0.6)
         self.webview.setStyleSheet("QWebView{background:transparent}")
-        self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+##        self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.webview.linkClicked.connect(self.HUDClicked)
@@ -35,6 +35,10 @@ class HUD(object):
 
         if self.webview.isVisible():
             self.webview.hide()
+##            self.webview.clearFocus()
+            #---TODO: focus back to editor (improve scite focus)
+##            if self.armadillo.currentEditor() != None:
+##                self.armadillo.currentEditor().setFocus()
         else:
             cur_itm=0
             if os.name =='nt':

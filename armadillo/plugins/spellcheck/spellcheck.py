@@ -62,6 +62,7 @@ class SpellChecker(QtGui.QWidget):
                         self.armadillo.currentEditor().selectAll()
                         txt=self.armadillo.currentEditor().getSelectedText()
                 if txt != '':
+                    self.ui.te_text.setTextCursor(QtGui.QTextCursor())
                     self.ui.te_text.setPlainText(txt)
     ##                self.currentEditor.setEnabled(0)
                     self.show()
@@ -131,7 +132,7 @@ class SpellChecker(QtGui.QWidget):
         cursor.setCharFormat(fmt)
         cursor.insertText(word)
 
-        cursor.setCharFormat(fmt)
+##        cursor.setCharFormat(fmt)
         cursor.endEditBlock()
         # Update count
         self.count+=1

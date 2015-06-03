@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.8.1'
+__version__ = '1.8.2'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -148,8 +148,7 @@ class ArmadilloMenu(QtGui.QMenu):
         # New
         self.addMenu(self.parent.newMenu)
         
-        # Workspace
-        self.addMenu(self.parent.workspaceMenu)
+
         
         # Open
         icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
@@ -166,6 +165,9 @@ class ArmadilloMenu(QtGui.QMenu):
         self.menuSaveAsAction.setEnabled(0) # Default to disabled
         
         self.addSeparator()
+        
+        # Workspace
+        self.addMenu(self.parent.workspaceMenu)
         
         #---Editor
         self.editorMenu=QtGui.QMenu('Editor')
@@ -228,7 +230,7 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'HUD',self.parent.addStart)
+        act = self.addAction(icn,'Home',self.parent.addStart)
         
         # Settings
         icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
@@ -286,6 +288,10 @@ class Armadillo(QtGui.QWidget):
         self.fileLastCheck = time.time()
 ##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
 ##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
+
+##        import thread
+##        thread = thread.start_new_thread(self.checkFileChanges, (self,))
+        
         
         # Style
         style_path = self.settings['style']
@@ -521,8 +527,8 @@ class Armadillo(QtGui.QWidget):
         
         # Add Start/HUD
         QtGui.QApplication.processEvents()
-        if self.settings['plugins']['hud']['openOnStart']=='1':
-            self.addStart()
+        self.addStart()
+
         
     #---Events
     def closeEvent(self,event):
@@ -691,8 +697,8 @@ class Armadillo(QtGui.QWidget):
                             
                             self.evnt.fileOpened.emit(wdg)
                             
-                        if self.ui.tab.count() ==1:
-                            self.changeTab(0)
+##                        if self.ui.tab.count() ==1:
+##                            self.changeTab(0)
                             
                 # Close HUD if visible
                 if self.HUDWidget != None and self.HUDWidget.webview.isVisible():
@@ -802,7 +808,10 @@ class Armadillo(QtGui.QWidget):
             wdg.evnt.editorChanged.connect(self.editorTextChanged)
         if 'visibleLinesChanged' in dir(wdg):
             wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
-##        
+##      
+        if self.ui.tab.count() ==1:
+            self.changeTab(0)
+
         return wdg
 
     def currentEditor(self):
@@ -952,9 +961,10 @@ class Armadillo(QtGui.QWidget):
         else:
             fileext = ''
             # Don't show extensions for now (not working in Linux)
-##            for e in self.settings['extensions']:
-##                if self.settings['extensions'][e]==wdg.lang:
-##                    fileext+=wdg.lang+' (*.'+e+");;"
+            if os.name =='nt':
+                for e in self.settings['extensions']:
+                    if self.settings['extensions'][e]==wdg.lang:
+                        fileext+=wdg.lang+' (*.'+e+");;"
             fileext += "All (*.*)"
             
             filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.currentPath,fileext)
@@ -963,7 +973,9 @@ class Armadillo(QtGui.QWidget):
             else:
                 wdg.filename = os.path.abspath(str(filename))
                 wdg.title = os.path.basename(wdg.filename)
-                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                ind = self.ui.tab.currentIndex()
+                self.ui.tab.setTabText(ind,wdg.title)
+                self.ui.tab.setTabToolTip(ind,wdg.filename)
         if filename != None:
             try:
                 txt = wdg.getText()
@@ -992,7 +1004,13 @@ class Armadillo(QtGui.QWidget):
             pth = wdg.filename
         else:
             pth = self.currentPath
-            
+        
+        if os.name =='nt':
+            for e in self.settings['extensions']:
+                if self.settings['extensions'][e]==wdg.lang:
+                    fileext+=wdg.lang+' (*.'+e+");;"
+        fileext += "All (*.*)"
+        
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
             
@@ -1564,6 +1582,7 @@ class Armadillo(QtGui.QWidget):
 
     #---FileModify Checker
     def checkFileChanges(self):
+##        while 1:
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
             chngs = 0
             close_tabs = []

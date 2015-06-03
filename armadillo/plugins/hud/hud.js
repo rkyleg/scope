@@ -43,3 +43,8 @@ function keydown (event) {
 
     }
 }
+
+function closetab(id) {
+    document.getElementById(id).remove()
+    HUD.closetab(id)
+}
