@@ -30,15 +30,11 @@ class HUD(object):
         self.jsObject = jsObject(parent=self)
     
     def toggleHUD(self):
-##        if self.webview == None:
-
-
         if self.webview.isVisible():
             self.webview.hide()
-##            self.webview.clearFocus()
-            #---TODO: focus back to editor (improve scite focus)
-##            if self.armadillo.currentEditor() != None:
-##                self.armadillo.currentEditor().setFocus()
+            QtGui.QApplication.processEvents()
+            if self.armadillo.currentEditor() != None:
+                self.armadillo.currentEditor().setFocus()
         else:
             cur_itm=0
             if os.name =='nt':

@@ -328,3 +328,6 @@ class Sci(QtGui.QWidget):
     
     def dropEvent(self,event):
         self.armadillo.dropEvent(event)
+    
+    def setFocus(self):
+        self.ui.te_sci.setFocus()

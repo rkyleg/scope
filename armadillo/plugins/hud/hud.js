@@ -11,7 +11,6 @@ function keydown (event) {
     ok=0
     if (event.keyCode==27) {
         //escape
-        // alert('escape')
         HUD.closeHUD()
     }
     else if (event.keyCode==37) {

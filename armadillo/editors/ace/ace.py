@@ -131,7 +131,7 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.setFontSize('+str(self.settings['fontSize'])+');'
         js += 'editor.getSession().getDocument().setNewLineMode("'+str(self.settings['newLineMode'])+'");'
         js += 'editor.setShowInvisibles('+str(self.settings['showWhitespace'])+');'
-        
+        js += 'editor.focus();'
         self.page().mainFrame().evaluateJavaScript(js)
         
         # Additional Settings
@@ -408,3 +408,6 @@ class WebView(QtWebKit.QWebView):
     
     def visibleLinesChanged(self):
         self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
+    
+##    def setFocus(self):
+##        self.page().mainFrame().evaluateJavaScript('editor.focus();')
