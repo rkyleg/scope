@@ -11,6 +11,17 @@ class jsObject(QtCore.QObject):
     def closeHUD(self):
 ##        print 'close hud'
         self.parent.toggleHUD()
+    
+    @QtCore.pyqtSlot('int')
+    def closetab(self,id):
+        print 'closetab',id
+        self.parent.armadillo.closeTab(id)
+        
+    @QtCore.pyqtSlot('int')
+    def opentab(self,id):
+        self.parent.armadillo.changeTab(id)
+        self.parent.toggleHUD()
+    
 
 class HUD(object):
     def __init__(self,parent):
@@ -36,6 +47,9 @@ class HUD(object):
             if self.armadillo.currentEditor() != None:
                 self.armadillo.currentEditor().setFocus()
         else:
+            self.viewHUD()
+            
+    def viewHUD(self):
             cur_itm=0
             if os.name =='nt':
                 pfx="file:///"
@@ -48,11 +62,11 @@ class HUD(object):
             
             # Get Open Files
             file_txt = ''
-            for i in range(self.armadillo.ui.tab.count()):
-                t = int(self.armadillo.ui.tab.tabData(i).toInt()[0])
+            for t in self.armadillo.tabD:
+##                t = int(self.armadillo.ui.tab.tabData(i).toInt()[0])
                 wdg = self.armadillo.tabD[t]
                 lang = wdg.lang
-                filename = str(self.armadillo.ui.tab.tabText(t))
+                filename = wdg.title
                 # Icon
                 ipth = self.armadillo.iconPath+'/files/_blank.png'
                 fipth = self.armadillo.iconPath+'files/'+str(lang)+'.png'
@@ -68,15 +82,16 @@ class HUD(object):
                 ipth = pfx+ipth
                 
                 cls=''
-                if i == self.armadillo.ui.tab.currentIndex():
+                if t == self.armadillo.currentEditor().id:
                     cls='current'
-                    cur_itm=i
+                    cur_itm=t
                 
-                file_txt += '<a href="opentab:'+str(i)+'" class="file '+cls+'" id="'+str(i)+'">'
-                file_txt += '<img class="file-icon" src="'+ipth+'"> '
-                file_txt +=str(self.armadillo.ui.tab.tabText(i))
-##                file_txt += ' <a href="closetab:'+str(i)+'"><img alt="" src="../img/close.png" /></a>'
-                file_txt += '</a>'
+##                file_txt += '<a href="opentab:'+str(t)+'" class="file '+cls+'" id="'+str(t)+'">'
+                file_txt += '<span class="file '+cls+'" id="'+str(t)+'">'
+                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')"><img class="file-icon" src="'+ipth+'"> '
+                file_txt +=str(wdg.title)
+                file_txt += '</span> <a href="#" onclick="closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
+                file_txt += '</span>'
 ##                print file_txt
             
              # Add New File Links
@@ -130,17 +145,20 @@ class HUD(object):
                 self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
             
             self.webview.page().mainFrame().addToJavaScriptWindowObject('HUD',self.jsObject)
-            
             self.webview.setGeometry(0,0,g.width(),g.height())
             self.webview.show()
+##            QtGui.QApplication.processEvents()
+##            h = self.webview.page().mainFrame().contentsSize().height()
+##            print h
+##            self.webview.setGeometry(0,0,g.width(),h)
             self.webview.setFocus()
     
     def HUDClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
-##        print(lnk)
+        print(lnk)
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
-            self.armadillo.ui.tab.setCurrentIndex(i)
+            self.armadillo.changeTab(i)
             self.toggleHUD()
         elif lnk.startswith('closetab:'):
             i=int(lnk.split('closetab:')[1])

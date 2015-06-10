@@ -1,5 +1,39 @@
 /*---Widget Styles*/
-    QTabBar::tab:disabled { width: 0; height: 0; margin: 0; padding: 0; border: none; }
+    /*QTabBar::tab:disabled { width: 0; height: 0; margin: 0; padding: 0; border: none; }*/
+    
+    QFrame#fr_tab {
+        border:1px outset gray;
+        border-bottom:0px;
+        /*padding:4px;*/
+        /*padding-left:6px;*/
+        /*padding-right:6px;*/
+        /*margin-left:6px;*/
+        /*margin-right:6px;*/
+        border-top-left-radius:6px;
+        border-top-right-radius:6px;
+        /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 0), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));*/
+
+    }
+    
+    QPushButton.tab_button {
+        background:transparent;
+        border:0px;
+    }
+    
+    QFrame#fr_toolbar, QFrame#fr_topleft {
+        border:0px;
+        border-bottom:1px outset gray;
+        padding-bottom:2px;
+        /*padding-left:6px;*/
+        /*border-bottom-left-radius:8px;*/
+    }
+
+    QFrame#fr_mainbutton {
+        border:0px;
+        border-bottom:1px outset gray;
+        /*border-bottom-left-radius:8px;*/
+    }
+    
     QTabBar::close-button{
     	image: url(img/close.png);
     }

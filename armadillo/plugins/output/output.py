@@ -120,7 +120,7 @@ class Output(QtGui.QWidget):
         cwdg = self.ui.sw_pages.currentWidget()
         menu = QtGui.QMenu()
         if cwdg.process != None:
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'stop.png'),'Stop')
+            menu.addAction(QtGui.QIcon(self.armadillo.pluginPath+'output/stop.png'),'Stop')
         else:
             menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'tri_right.png'),'Run')
             menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'close.png'),'Close')
