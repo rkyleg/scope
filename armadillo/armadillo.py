@@ -374,18 +374,18 @@ class Armadillo(QtGui.QWidget):
         self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
         #--- Editor Tabs
-        self.ui.tab = QtGui.QTabBar()
-        self.ui.tab.setObjectName('editorTabs')
-        self.ui.tab.setTabsClosable(True)
-        self.ui.tab.setMovable(True)
-        self.ui.tab.setProperty("class","editorTabs")
-        self.ui.tab.setObjectName('editorTabBar')
-        self.ui.tab.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
-        self.ui.fr_tabs.layout().addWidget(self.ui.tab)
+##        self.ui.tab = QtGui.QTabBar()
+##        self.ui.tab.setObjectName('editorTabs')
+##        self.ui.tab.setTabsClosable(True)
+##        self.ui.tab.setMovable(True)
+##        self.ui.tab.setProperty("class","editorTabs")
+##        self.ui.tab.setObjectName('editorTabBar')
+##        self.ui.tab.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
+##        self.ui.fr_tabs.layout().addWidget(self.ui.tab)
 ##        self.ui.tab.currentChanged.connect(self.changeTab)
 ##        self.ui.tab.tabCloseRequested.connect(self.closeTab)
-        self.ui.tab.setExpanding(0)
-        self.ui.tab.mousePressEvent=self.tabMousePressEvent
+##        self.ui.tab.setExpanding(0)
+##        self.ui.tab.mousePressEvent=self.tabMousePressEvent
         self.ui.fr_tabs.hide()
         
         #---Hide toolbar buttons for now
@@ -583,13 +583,13 @@ class Armadillo(QtGui.QWidget):
     def resizeEvent(self,event):
         self.evnt.resized.emit()
     
-    def tabMousePressEvent(self,event):
-##        print event.button(),event.button() == QtCore.Qt.MidButton
-        if event.button() == QtCore.Qt.MidButton:
-            i = self.ui.tab.tabAt(event.pos())
-            self.closeTab(i)
-        else:
-            QtGui.QTabBar.mousePressEvent(self.ui.tab, event)
+##    def tabMousePressEvent(self,event):
+####        print event.button(),event.button() == QtCore.Qt.MidButton
+##        if event.button() == QtCore.Qt.MidButton:
+##            i = self.ui.tab.tabAt(event.pos())
+##            self.closeTab(i)
+##        else:
+##            QtGui.QTabBar.mousePressEvent(self.ui.tab, event)
     
     #---Fullscreen Modes
     def toggleFullEditor(self):
@@ -785,10 +785,10 @@ class Armadillo(QtGui.QWidget):
         self.ui.sw_main.setCurrentIndex(sw_ind)
         
         # Insert Tab on top
-        self.ui.tab.insertTab(sw_ind+1,title)
-        self.ui.tab.setTabData(sw_ind,self.fileCount)
-        self.ui.tab.setCurrentIndex(sw_ind)
-        self.ui.tab.setTabToolTip(sw_ind,str(filename))
+##        self.ui.tab.insertTab(sw_ind+1,title)
+##        self.ui.tab.setTabData(sw_ind,self.fileCount)
+##        self.ui.tab.setCurrentIndex(sw_ind)
+##        self.ui.tab.setTabToolTip(sw_ind,str(filename))
         
         # Add Icon
         ipth = self.iconPath+'/files/_blank.png'
@@ -802,7 +802,7 @@ class Armadillo(QtGui.QWidget):
                 icn = QtGui.QIcon(self.iconPath+'files/'+ext+'.png')
         elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
             icn = QtGui.QIcon(self.editorPath+editor+'/'+editor+'.png')
-        self.ui.tab.setTabIcon(sw_ind,icn)
+        self.ui.b_tabicon.setIcon(icn)
         wdg.icon = icn
 
         # Set wordwrap if in settings
@@ -826,7 +826,7 @@ class Armadillo(QtGui.QWidget):
         if 'visibleLinesChanged' in dir(wdg):
             wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
 ##      
-        if self.ui.tab.count() ==1:
+        if self.ui.sw_main.count() ==1:
             self.changeTab(0)
 
         return wdg
@@ -858,7 +858,8 @@ class Armadillo(QtGui.QWidget):
             try:
                 self.ui.b_tabicon.setIcon(wdg.icon)
             except:
-                print('error loading icon: '+wdg.title)
+##                print('error loading icon: '+wdg.title)
+                pass
             # Show/Hide plugins
             lang = wdg.lang
             
@@ -1012,9 +1013,11 @@ class Armadillo(QtGui.QWidget):
             else:
                 wdg.filename = os.path.abspath(str(filename))
                 wdg.title = os.path.basename(wdg.filename)
-                ind = self.ui.tab.currentIndex()
-                self.ui.tab.setTabText(ind,wdg.title)
-                self.ui.tab.setTabToolTip(ind,wdg.filename)
+##                ind = self.ui.tab.currentIndex()
+##                self.ui.tab.setTabText(ind,wdg.title)
+##                self.ui.tab.setTabToolTip(ind,wdg.filename)
+                self.ui.l_filename.setText(wdg.title)
+                self.ui.l_filename.setToolTip(wdg.filename)
         if filename != None:
             try:
                 txt = wdg.getText()
@@ -1024,7 +1027,9 @@ class Armadillo(QtGui.QWidget):
                 wdg.lastText = txt
                 wdg.modTime = os.path.getmtime(filename)
                 self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
-                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+##                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
+                self.ui.l_filename.setText(wdg.title)
+                self.ui.l_filename.setToolTip(wdg.filename)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                 self.ui.l_statusbar.setText('Error Saving: '+filename)
@@ -1053,11 +1058,12 @@ class Armadillo(QtGui.QWidget):
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
             
-            ind = self.ui.tab.currentIndex()
+##            ind = self.ui.tab.currentIndex()
             wdg.filename = os.path.abspath(str(filename))
             wdg.title = os.path.basename(wdg.filename)
-            self.ui.tab.setTabText(ind,wdg.title)
-            self.ui.tab.setTabToolTip(ind,str(filename))
+            self.ui.l_filename.setText(wdg.title)
+##            self.ui.tab.setTabText(ind,wdg.title)
+##            self.ui.tab.setTabToolTip(ind,str(filename))
             self.editorSave()
                 
     def editorFind(self):
@@ -1259,10 +1265,11 @@ class Armadillo(QtGui.QWidget):
             wdg = self.addEditorWidget('webview','Preview','preview')
             wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
             wdg.linkClicked.connect(self.urlClicked)
-            self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'page_preview.png'))
+##            self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'page_preview.png'))
+            self.ui.b_tabicon.setIcon(QtGui.QIcon(self.iconPath+'page_preview.png'))
     
         else:
-            self.ui.tab.setCurrentIndex(openfile)
+##            self.ui.tab.setCurrentIndex(openfile)
             QtGui.QApplication.processEvents()
             wdg = self.ui.sw_main.currentWidget()
         
@@ -1277,8 +1284,8 @@ class Armadillo(QtGui.QWidget):
 
         wdg.viewOnly = 1
         wdg.modTime = None
-        QtGui.QApplication.processEvents()
-        self.changeTab(self.ui.tab.currentIndex())
+##        QtGui.QApplication.processEvents()
+##        self.changeTab(self.ui.tab.currentIndex())
     
     def showHUD(self):
         if self.HUDWidget != None:
@@ -1409,9 +1416,9 @@ class Armadillo(QtGui.QWidget):
         
 ##        i = self.ui.sw_main.indexOf(self.recentTabs[1])
         
-        i = self.ui.tab.currentIndex()+1
-        if i == self.ui.tab.count():i=0
-        self.ui.tab.setCurrentIndex(i)
+        i = self.ui.sw_main.currentIndex()+1
+        if i == self.ui.sw_main.count():i=0
+        self.ui.sw_main.setCurrentIndex(i)
     
     #---Workspace
     def saveWorkspace(self):
@@ -1488,8 +1495,8 @@ class Armadillo(QtGui.QWidget):
 ##            QtGui.QApplication.processEvents()
 ##            self.removeStart()
             
-            if self.ui.tab.count() ==1:
-                self.changeTab(0)
+##            if self.ui.sw_main.count() ==1:
+##                self.changeTab(0)
             
     def newWorkspace(self):
         # New Workspace
@@ -1507,9 +1514,9 @@ class Armadillo(QtGui.QWidget):
     def deactivateWorkspace(self,workspace):
         if self.currentWorkspace != None:
             print 'deactivate workspace'
-            for i in range(self.ui.tab.count()):
-                file_id = self.ui.tab.tabData(i).toInt()[0]
-                self.ui.tab.setTabEnabled(i,False)
+##            for i in range(self.ui.tab.count()):
+##                file_id = self.ui.tab.tabData(i).toInt()[0]
+##                self.ui.tab.setTabEnabled(i,False)
         
         
         return 1
@@ -1542,7 +1549,7 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
         
-        if ok and openStart and self.ui.tab.count()==0:
+        if ok and openStart and self.ui.sw_main.count()==0:
 ##            self.addStart()
 ##            print self.HUDWidget
             if self.HUDWidget != None:
@@ -1632,27 +1639,27 @@ class Armadillo(QtGui.QWidget):
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
             chngs = 0
             close_tabs = []
-            for i in range(self.ui.tab.count()):
-                file_id = self.ui.tab.tabData(i).toInt()[0]
-                if file_id in self.tabD:
-                    wdg = self.tabD[file_id]
-                    if wdg.filename != None and wdg.modTime != None:
-                        if not os.path.exists(wdg.filename):
-                            resp = QtGui.QMessageBox.warning(self,'File Does not exist',str(wdg.filename)+' does not exist anymore.<br><<br>Do you want to keep the file open?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                            if resp == QtGui.QMessageBox.No:
-                                close_tabs.append(file_id)
-                            chngs = 1
-                        elif os.path.getmtime(wdg.filename) > wdg.modTime:
-                            resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-                            
-                            chngs=1
-                            if resp == QtGui.QMessageBox.Yes:
-                                QtGui.QApplication.processEvents()
-                                f = codecs.open(wdg.filename,'r','utf-8')
-                                txt = f.read()
-                                f.close()
-                                wdg.setText(txt)
-                                wdg.modTime = os.path.getmtime(wdg.filename)
+            for file_id in self.tabD:
+##                file_id = self.ui.tab.tabData(i).toInt()[0]
+##                if file_id in self.tabD:
+                wdg = self.tabD[file_id]
+                if wdg.filename != None and wdg.modTime != None:
+                    if not os.path.exists(wdg.filename):
+                        resp = QtGui.QMessageBox.warning(self,'File Does not exist',str(wdg.filename)+' does not exist anymore.<br><<br>Do you want to keep the file open?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                        if resp == QtGui.QMessageBox.No:
+                            close_tabs.append(file_id)
+                        chngs = 1
+                    elif os.path.getmtime(wdg.filename) > wdg.modTime:
+                        resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+                        
+                        chngs=1
+                        if resp == QtGui.QMessageBox.Yes:
+                            QtGui.QApplication.processEvents()
+                            f = codecs.open(wdg.filename,'r','utf-8')
+                            txt = f.read()
+                            f.close()
+                            wdg.setText(txt)
+                            wdg.modTime = os.path.getmtime(wdg.filename)
             
             if close_tabs != []:
                 close_tabs.reverse()
