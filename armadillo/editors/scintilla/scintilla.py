@@ -96,7 +96,7 @@ class Sci(QtGui.QWidget):
         
         xfont = self.settings['fontSize']
         
-        font.setPointSize(xfont)
+        font.setPointSize(int(xfont))
         self.ui.te_sci.setFont(font)
         self.ui.te_sci.setMarginsFont(font)
 

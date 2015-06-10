@@ -102,6 +102,7 @@ class WebView(QtWebKit.QWebView):
             'theme':'twighlight',
             'newLineMode':'unix',
             'showWhitespace':'false',
+            'fontFamily':'courier,freemono'
         }
         
         # Load settings

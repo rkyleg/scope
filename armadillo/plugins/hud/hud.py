@@ -106,7 +106,7 @@ class HUD(object):
     ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
                     wksp += '<a href="workspace:'+w+'"><div class="newfile"><img src="'+icn_wksp+'"> '+w+'</div></a> '
 
-            cur_wksp = self.armadillo.workspace
+            cur_wksp = self.armadillo.currentWorkspace
             if cur_wksp == None: cur_wksp = ''
             
             # Generate HTML

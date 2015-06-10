@@ -148,8 +148,6 @@ class ArmadilloMenu(QtGui.QMenu):
         # New
         self.addMenu(self.parent.newMenu)
         
-
-        
         # Open
         icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
         act = self.addAction(icn,'Open',self.parent.openFile)
@@ -274,8 +272,11 @@ class Armadillo(QtGui.QWidget):
         
         self.recentTabs = [] # Keep track of most recent tabs
         
+        # Workspace
+        self.currentWorkspace = None
+        self.workspaces = {}
+        
         # Settings
-        self.workspace = None
         self.loadSettings()
 
         if self.settings['widgetstyle'] != 'None':
@@ -626,6 +627,7 @@ class Armadillo(QtGui.QWidget):
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 self.ui.tab.setCurrentIndex(i)
                 fileopen = i
+                self.ui.tab.setTabEnabled(i,1)
                 break
         return fileopen
         
@@ -645,6 +647,7 @@ class Armadillo(QtGui.QWidget):
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
                     self.ui.tab.setCurrentIndex(file_open)
+                    self.ui.tab.setTabEnabled(file_open,1)
 ##                    self.updateOutline()
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
@@ -1367,7 +1370,8 @@ class Armadillo(QtGui.QWidget):
     
     #---Workspace
     def saveWorkspace(self):
-        if self.workspace != None:
+        # Save the current Workspace
+        if self.currentWorkspace != None:
             if not os.path.exists(self.settingPath+'/workspaces'):
                 os.mkdir(self.settingPath+'/workspaces')
             
@@ -1385,20 +1389,24 @@ class Armadillo(QtGui.QWidget):
             
             # Save workspace dir
             wD['basefolder']=self.currentPath
-            f = open(self.settingPath+'/workspaces/'+self.workspace,'w')
+            f = open(self.settingPath+'/workspaces/'+self.currentWorkspace,'w')
             f.write(json.dumps(wD))
             f.close()
     
     def loadWorkspace(self,wksp):
         self.saveWorkspace()
-        ok = self.closeWorkspace(askSave=0,openStart=0)
+##        ok = self.deactivateWorkspace(self.currentWorkspace)
+        ok = self.closeWorkspace(askSave=0)
+##        ok=1
         
         # Load workspace
         if ok:
-            self.workspace=wksp
-            f = open(self.settingPath+'/workspaces/'+self.workspace,'r')
+            self.currentWorkspace=wksp
+            f = open(self.settingPath+'/workspaces/'+self.currentWorkspace,'r')
             wD = json.loads(f.read())
             f.close()
+            
+            self.workspaces[wksp]=wD
             
             # Load Files
             for f in wD['files']:
@@ -1429,6 +1437,8 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.renameWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
             
+            self.workspaces[wksp]={}
+            
 ##            QtGui.QApplication.processEvents()
 ##            self.removeStart()
             
@@ -1439,18 +1449,31 @@ class Armadillo(QtGui.QWidget):
         # New Workspace
         resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
         if ok and not resp.isEmpty():
-            self.workspace = resp
+            self.currentWorkspace = resp
             self.saveWorkspace()
             self.workspaceMenu.loadMenu()
             self.workspaceMenu.saveWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
     
+    def activateWorkspace(self,workspace):
+        print 'activate workspace'
+    
+    def deactivateWorkspace(self,workspace):
+        if self.currentWorkspace != None:
+            print 'deactivate workspace'
+            for i in range(self.ui.tab.count()):
+                file_id = self.ui.tab.tabData(i).toInt()[0]
+                self.ui.tab.setTabEnabled(i,False)
+        
+        
+        return 1
+    
     def closeWorkspace(self,askSave=0,openStart=0):
         wk_ok = 1
         # Save current workspace
-        if self.workspace != None and askSave:
+        if self.currentWorkspace != None and askSave:
             wk_ok=0
-            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.workspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
+            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.currentWorkspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
             if resp == QtGui.QMessageBox.Yes:
                 self.saveWorkspace()
                 wk_ok =1
@@ -1462,37 +1485,14 @@ class Armadillo(QtGui.QWidget):
         if wk_ok:
             # Check if anything needs saving
             for i in range(self.ui.tab.count()-1,-1,-1):
-##                if sys.version_info.major==3:
-##                    file_id = self.ui.tab.tabData(i)
-##                else:
                 file_id = self.ui.tab.tabData(i).toInt()[0]
-##                wdg = self.tabD[file_id]
-##                ok = self.checkSave(wdg)
-##                if not ok:
-##                    fl_ok = 0
-##                    break
                 self.closeTab(i)
         
-##        # Close open files
-##        cancelled = 0
-##        # Check if anything needs saving
-##        for i in range(self.ui.tab.count()-1,-1,-1):
-##            file_id = self.ui.tab.tabData(i).toInt()[0]
-##            wdg = self.tabD[file_id]
-##            ok = self.checkSave(wdg)
-##            if not ok:
-##                cancelled = 1
-##                break
-##            self.closeTab(i)
-##        ok = not cancelled
-##        QtGui.QApplication.processEvents()
         ok=fl_ok*wk_ok
         
         if ok:
-            self.workspace=None
-##            if 'output' in self.pluginD:
-##                self.pluginD['output'].killAll()
-            
+            self.currentWorkspace=None
+
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
         
@@ -1572,7 +1572,7 @@ class Armadillo(QtGui.QWidget):
             QtGui.QApplication.processEvents()
         
         # Save Workspace
-        if self.workspace != None and int(self.settings['save_workspace_on_close']):
+        if self.currentWorkspace != None and int(self.settings['save_workspace_on_close']):
             self.saveWorkspace()
 
 ##        # Save Window Geometry
