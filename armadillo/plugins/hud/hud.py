@@ -174,6 +174,7 @@ class HUD(object):
 ##                self.addStart(wdg=wdg)
             else:
                 self.armadillo.loadWorkspace(wk)
+                self.viewHUD()
 ##            self.toggleHUD()
         elif lnk.startswith('editor:'):
             e = lnk.split('editor:')[1]
