@@ -14,8 +14,6 @@ class Preview(QtGui.QWidget):
         self.prevD={}
         
     def addPreview(self,wdg):
-        
-##        if wdg.lang in ['html','markdown']:
         pwdg = QtGui.QWidget(parent=self)
         
         pwdg.webview = webview.WebView(parent=self.armadillo)

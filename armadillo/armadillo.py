@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.-2'
+__version__ = '1.9.-3'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -421,6 +421,7 @@ class Armadillo(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_main.click) # New
+        QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_F,self,self.ui.b_main.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
@@ -637,7 +638,8 @@ class Armadillo(QtGui.QWidget):
 ##            file_id = self.ui.tab.tabData(i).toInt()[0]
             wdg = self.tabD[file_id]
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
-                self.ui.changeTab(file_id)
+                self.changeTab(file_id)
+                fileopen = file_id
 ##                self.ui.tab.setCurrentIndex(i)
 ##                fileopen = i
 ##                self.ui.tab.setTabEnabled(i,1)
@@ -659,7 +661,8 @@ class Armadillo(QtGui.QWidget):
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
-                    self.ui.tab.setCurrentIndex(file_open)
+                    self.changeTab(file_open)
+##                    self.ui.sw_main.setCurrentIndex(file_open)
 ##                    self.ui.tab.setTabEnabled(file_open,1)
 ##                    self.updateOutline()
                 else:
@@ -703,6 +706,7 @@ class Armadillo(QtGui.QWidget):
                             QtGui.QApplication.processEvents()
                             wdg.setText(txt)
                             wdg.lastText = txt
+                            wdg.displayTitle = wdg.title
 ##                            self.ui.tab.setTabText(self.ui.sw_main.indexOf(wdg),wdg.title)
                             self.ui.l_filename.setText(wdg.title)
                             wdg.modTime = os.path.getmtime(filename)
@@ -759,6 +763,7 @@ class Armadillo(QtGui.QWidget):
         wdg.lastText=''
 ##        wdg.lastText=code
         wdg.title = title
+        wdg.displayTitle = title
         wdg.id = self.fileCount
         wdg.lang = lang
         wdg.viewOnly = 0
@@ -854,7 +859,7 @@ class Armadillo(QtGui.QWidget):
             wdg = self.tabD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
             self.evnt.editorTabChanged.emit(wdg)
-            self.ui.l_filename.setText(wdg.title)
+            self.ui.l_filename.setText(wdg.displayTitle)
             try:
                 self.ui.b_tabicon.setIcon(wdg.icon)
             except:
@@ -909,17 +914,23 @@ class Armadillo(QtGui.QWidget):
             self.toggleRightPlugin()
         
         # Update recent tabs list
-        if wdg in self.recentTabs:
-            self.recentTabs.remove(wdg)
-        self.recentTabs=[wdg]+self.recentTabs
+        if wdg.id in self.recentTabs:
+            self.recentTabs.remove(wdg.id)
+        self.recentTabs.append(wdg.id)
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
                 
     def close_tab(self):
         if self.currentEditor() != None:
+            if len(self.recentTabs) > 1:
+                prevtab = self.recentTabs[-2]
+            
             file_id = self.currentEditor().id
             self.closeTab(file_id)
+            
+            if len(self.recentTabs) > 1:
+                self.changeTab(prevtab)
     
     def closeTab(self,file_id):
 ##        if sys.version_info.major==3:
@@ -944,6 +955,8 @@ class Armadillo(QtGui.QWidget):
             # Remove Widget
             self.ui.sw_main.removeWidget(wdg)
             
+            self.recentTabs.remove(file_id)
+            
             del wdg
             # Add start page if no tabs exist
 ##            if self.ui.sw_main.count() == 0:
@@ -956,10 +969,12 @@ class Armadillo(QtGui.QWidget):
         try:
             if wdg.lastText != wdg.getText():
 ##                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title+'*')
-                self.ui.l_filename.setText(wdg.title+'*')
+                
+                wdg.displayTitle=wdg.title+'*'
             else:
 ##                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
-                self.ui.l_filename.setText(wdg.title)
+                wdg.displayTitle=wdg.title
+            self.ui.l_filename.setText(wdg.displayTitle)
         except:
             self.ui.l_statusbar.setText('Error: text changed signal')
         # Check for file changes
@@ -1017,6 +1032,7 @@ class Armadillo(QtGui.QWidget):
 ##                self.ui.tab.setTabText(ind,wdg.title)
 ##                self.ui.tab.setTabToolTip(ind,wdg.filename)
                 self.ui.l_filename.setText(wdg.title)
+                wdg.displayTitle = wdg.title
                 self.ui.l_filename.setToolTip(wdg.filename)
         if filename != None:
             try:
@@ -1029,6 +1045,7 @@ class Armadillo(QtGui.QWidget):
                 self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
 ##                self.ui.tab.setTabText(self.ui.tab.currentIndex(),wdg.title)
                 self.ui.l_filename.setText(wdg.title)
+                wdg.displayTitle = wdg.title
                 self.ui.l_filename.setToolTip(wdg.filename)
             except:
                 QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
@@ -1062,6 +1079,7 @@ class Armadillo(QtGui.QWidget):
             wdg.filename = os.path.abspath(str(filename))
             wdg.title = os.path.basename(wdg.filename)
             self.ui.l_filename.setText(wdg.title)
+            wdg.displayTitle = wdg.title
 ##            self.ui.tab.setTabText(ind,wdg.title)
 ##            self.ui.tab.setTabToolTip(ind,str(filename))
             self.editorSave()

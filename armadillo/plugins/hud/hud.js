@@ -45,23 +45,32 @@ function keydown (event) {
             file_active = file_items.length-1
         }
         
-        // console.log(file_active)
         // Update style and set focus
-        file_items[file_active].className='file current'
-        file_items[file_active].focus()
-        prev_active.className='file'
+        highlighttab(file_items[file_active].id)
+        // file_items[file_active].className='file current'
+        // file_items[file_active].focus()
+        // prev_active.className='file'
         
-        // document.getElementById(file_active).className = 'file current'
-        // document.getElementById(file_active).focus()
-        // document.getElementById(prev_active).className = 'file'
-
     }
 }
 
 function closetab(id) {
-    document.getElementById(id).remove()
-    HUD.closetab(id)
+    elm = document.getElementById(id)
+    elm.parentNode.removeChild(elm)
 }
+
 function opentab(id) {
     HUD.opentab(id)
+}
+function highlighttab(id) {
+    // Get previous highlight
+    active_items = document.getElementsByClassName('file current')
+    if (active_items.length>0) {
+        prev_active = active_items[0]
+        prev_active.className='file'
+    }
+    
+    // Highlight tab with id
+    document.getElementById(id).className='file current'
+    document.getElementById(id).focus()
 }

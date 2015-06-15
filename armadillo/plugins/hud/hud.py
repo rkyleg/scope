@@ -15,8 +15,17 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot('int')
     def closetab(self,id):
         print 'closetab',id
-        self.parent.armadillo.closeTab(id)
-        
+        ok = self.parent.armadillo.closeTab(id)
+        if ok:
+            cid = str(self.parent.armadillo.currentEditor().id)
+            print 'highlight',cid
+            QtGui.QApplication.processEvents()
+            self.parent.webview.page().mainFrame().evaluateJavaScript('closetab('+str(id)+');highlighttab("'+cid+'");')
+        return ok
+    
+    def highlighttab(self,id):
+        self.parent.webview.page().mainFrame().evaluateJavaScript('highlightTab("'+id+'");')
+    
     @QtCore.pyqtSlot('int')
     def opentab(self,id):
         self.parent.armadillo.changeTab(id)
@@ -37,6 +46,8 @@ class HUD(object):
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.webview.linkClicked.connect(self.HUDClicked)
+
+        self.webview.setupInspector()
 
         self.jsObject = jsObject(parent=self)
     
@@ -88,9 +99,9 @@ class HUD(object):
                 
 ##                file_txt += '<a href="opentab:'+str(t)+'" class="file '+cls+'" id="'+str(t)+'">'
                 file_txt += '<span class="file '+cls+'" id="'+str(t)+'">'
-                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')"><img class="file-icon" src="'+ipth+'"> '
-                file_txt +=str(wdg.title)
-                file_txt += '</span> <a href="#" onclick="closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
+                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')" title="'+str(wdg.filename)+'"><img class="file-icon" src="'+ipth+'"> '
+                file_txt +=str(wdg.displayTitle)
+                file_txt += '</span> <a href="#" onclick="HUD.closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
                 file_txt += '</span>'
 ##                print file_txt
             
@@ -208,3 +219,6 @@ class HUD(object):
         g=self.armadillo.geometry()
         if self.webview != None:
             self.webview.setGeometry(0,0,g.width(),g.height())
+            
+            g = self.webview.geometry()
+            self.webview.webInspector.setGeometry(0,g.bottom()-300,g.width(),300)
