@@ -1,3 +1,7 @@
+_**WARNING: This development version of Armadillo is not suitable for use**_
+
+*This version is in the middle of a redesign without tabs and is buggy.*
+
 # <img src="armadillo/img/armadillo.png" height="48px;"> Armadillo IDE
 Armadillo is a lightweight, cross-platform IDE for Python, web development and more. Armadillo is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
