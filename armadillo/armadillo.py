@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.-4'
+__version__ = '1.9.-5'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -737,7 +737,9 @@ class Armadillo(QtGui.QWidget):
         sw_ind = self.ui.sw_main.count()
         wdg = None
         
-        if filename == None and title=='New': title = 'New '+lang
+        if filename == None and title=='New': 
+            title = 'New '+lang
+            
         
         if editor == None:
             if lang in self.settings['prog_lang']:
@@ -833,7 +835,7 @@ class Armadillo(QtGui.QWidget):
             wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
 ##      
         if self.ui.sw_main.count() ==1:
-            self.changeTab(0)
+            self.change_tab(0)
 
         return wdg
 
@@ -861,7 +863,10 @@ class Armadillo(QtGui.QWidget):
             self.ui.sw_main.setCurrentWidget(wdg)
             self.evnt.editorTabChanged.emit(wdg)
             self.ui.l_filename.setText(wdg.displayTitle)
-            self.ui.l_filename.setToolTip(wdg.filename)
+            if wdg.filename != None:
+                self.ui.l_filename.setToolTip(wdg.filename)
+            else:
+                self.ui.l_filename.setToolTip('New File (unsaved)')
             try:
                 self.ui.b_tabicon.setIcon(wdg.icon)
             except:
@@ -912,13 +917,13 @@ class Armadillo(QtGui.QWidget):
         pluginRightVisible=0
         if wdg != None:
             pluginRightVisible = wdg.pluginRightVisible
-        if pluginRightVisible != self.ui.tab_right.isVisible():
-            self.toggleRightPlugin()
-        
-        # Update recent tabs list
-        if wdg.id in self.recentTabs:
-            self.recentTabs.remove(wdg.id)
-        self.recentTabs.append(wdg.id)
+            if pluginRightVisible != self.ui.tab_right.isVisible():
+                self.toggleRightPlugin()
+            
+            # Update recent tabs list
+            if wdg.id in self.recentTabs:
+                self.recentTabs.remove(wdg.id)
+            self.recentTabs.append(wdg.id)
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -957,7 +962,8 @@ class Armadillo(QtGui.QWidget):
             # Remove Widget
             self.ui.sw_main.removeWidget(wdg)
             
-            self.recentTabs.remove(file_id)
+            if file_id in self.recentTabs:
+                self.recentTabs.remove(file_id)
             
             del wdg
             # Add start page if no tabs exist
