@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Jun 15 20:58:12 2015
+# Created: Wed Jun 17 19:52:30 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(840, 360)
+        Form.resize(680, 380)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/armadillo.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -135,27 +135,27 @@ class Ui_Form(object):
         self.fr_mainbutton.setObjectName(_fromUtf8("fr_mainbutton"))
         self.gridLayout_10 = QtGui.QGridLayout(self.fr_mainbutton)
         self.gridLayout_10.setSpacing(0)
-        self.gridLayout_10.setContentsMargins(6, 0, 4, 2)
+        self.gridLayout_10.setContentsMargins(6, 0, 0, 0)
         self.gridLayout_10.setObjectName(_fromUtf8("gridLayout_10"))
-        self.b_show_tabs = QtGui.QPushButton(self.fr_mainbutton)
-        self.b_show_tabs.setMinimumSize(QtCore.QSize(50, 0))
-        self.b_show_tabs.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_down.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_show_tabs.setIcon(icon2)
-        self.b_show_tabs.setProperty("class", _fromUtf8(""))
-        self.b_show_tabs.setObjectName(_fromUtf8("b_show_tabs"))
-        self.gridLayout_10.addWidget(self.b_show_tabs, 0, 2, 1, 1)
         self.b_main = QtGui.QPushButton(self.fr_mainbutton)
         self.b_main.setMinimumSize(QtCore.QSize(42, 24))
         self.b_main.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_main.setIcon(icon3)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("img/menu.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_main.setIcon(icon2)
         self.b_main.setObjectName(_fromUtf8("b_main"))
         self.gridLayout_10.addWidget(self.b_main, 0, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(6, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.gridLayout_10.addItem(spacerItem, 0, 1, 1, 1)
+        self.b_show_tabs = QtGui.QPushButton(self.fr_mainbutton)
+        self.b_show_tabs.setMinimumSize(QtCore.QSize(50, 0))
+        self.b_show_tabs.setText(_fromUtf8(""))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_down.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_show_tabs.setIcon(icon3)
+        self.b_show_tabs.setProperty("class", _fromUtf8(""))
+        self.b_show_tabs.setObjectName(_fromUtf8("b_show_tabs"))
+        self.gridLayout_10.addWidget(self.b_show_tabs, 0, 2, 1, 1)
         self.gridLayout_2.addWidget(self.fr_mainbutton, 0, 0, 1, 1)
         self.fr_topleft = QtGui.QFrame(self.fr_topbar)
         self.fr_topleft.setFrameShape(QtGui.QFrame.NoFrame)
@@ -249,7 +249,7 @@ class Ui_Form(object):
         self.b_indent.setIcon(icon7)
         self.b_indent.setObjectName(_fromUtf8("b_indent"))
         self.gridLayout.addWidget(self.b_indent, 0, 4, 1, 1)
-        spacerItem3 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        spacerItem3 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem3, 0, 2, 1, 1)
         self.b_comment = QtGui.QPushButton(self.fr_toolbar)
         self.b_comment.setText(_fromUtf8(""))

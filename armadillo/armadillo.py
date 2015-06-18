@@ -571,6 +571,7 @@ class Armadillo(QtGui.QWidget):
         if event.mimeData().urls():
             for f in event.mimeData().urls():
                 self.openFile(str(f.toLocalFile()))
+                self.HUDWidget.toggleHUD(0)
             handled=True
 
         if not handled:
