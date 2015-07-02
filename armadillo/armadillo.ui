@@ -412,7 +412,7 @@ QPushButton:hover,QToolButton:hover {
                  </property>
                  <property name="icon">
                   <iconset>
-                   <normaloff>img/forward.png</normaloff>img/forward.png</iconset>
+                   <normaloff>img/search.png</normaloff>img/search.png</iconset>
                  </property>
                 </widget>
                </item>

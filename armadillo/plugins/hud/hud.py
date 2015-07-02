@@ -48,19 +48,22 @@ class HUD(object):
         self.webview.linkClicked.connect(self.HUDClicked)
 
         self.webview.setupInspector()
+        self.webview.filename = None
 
         self.jsObject = jsObject(parent=self)
     
     def toggleHUD(self,visible=None):
-        if visible == None:
-            visible = not self.webview.isVisible()
-        if visible:
+##        if visible == None:
+##            visible = not self.webview.isVisible()
+##        if visible:
             self.viewHUD()
-        else:
-            self.webview.hide()
-            QtGui.QApplication.processEvents()
-            if self.armadillo.currentEditor() != None:
-                self.armadillo.currentEditor().setFocus()
+##        else:
+            self.armadillo.ui.sw_main.setCurrentWidget(self.webview)
+##        else:
+##            self.webview.hide()
+##            QtGui.QApplication.processEvents()
+##            if self.armadillo.currentEditor() != None:
+##                self.armadillo.currentEditor().setFocus()
 ##        else:
 ##            self.viewHUD()
             
@@ -77,36 +80,36 @@ class HUD(object):
             
             # Get Open Files
             file_txt = ''
-            for t in self.armadillo.tabD:
-##                t = int(self.armadillo.ui.tab.tabData(i).toInt()[0])
-                wdg = self.armadillo.tabD[t]
-                lang = wdg.lang
-                filename = wdg.title
-                # Icon
-                ipth = self.armadillo.iconPath+'/files/_blank.png'
-                fipth = self.armadillo.iconPath+'files/'+str(lang)+'.png'
-                if os.path.exists(fipth):
-                    ipth = fipth
-                elif filename != None:
-                    ext = os.path.splitext(filename)[1][1:]
-                    if os.path.exists(self.armadillo.iconPath+'files/'+ext+'.png'):
-                        ipth = self.armadillo.iconPath+'files/'+ext+'.png'
-                elif os.path.exists(self.armadillo.editorPath+editor+'/'+editor+'.png'):
-                    ipth = self.armadillo.editorPath+editor+'/'+editor+'.png'
-
-                ipth = pfx+ipth
-                
-                cls=''
-                if t == self.armadillo.currentEditor().id:
-                    cls='current'
-                    cur_itm=t
-                
-##                file_txt += '<a href="opentab:'+str(t)+'" class="file '+cls+'" id="'+str(t)+'">'
-                file_txt += '<span class="file '+cls+'" id="'+str(t)+'">'
-                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')" title="'+str(wdg.filename)+'"><img class="file-icon" src="'+ipth+'"> '
-                file_txt +=str(wdg.displayTitle)
-                file_txt += '</span> <a href="#" onclick="HUD.closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
-                file_txt += '</span>'
+##            for t in self.armadillo.tabD:
+####                t = int(self.armadillo.ui.tab.tabData(i).toInt()[0])
+##                wdg = self.armadillo.tabD[t]
+##                lang = wdg.lang
+##                filename = wdg.title
+##                # Icon
+##                ipth = self.armadillo.iconPath+'/files/_blank.png'
+##                fipth = self.armadillo.iconPath+'files/'+str(lang)+'.png'
+##                if os.path.exists(fipth):
+##                    ipth = fipth
+##                elif filename != None:
+##                    ext = os.path.splitext(filename)[1][1:]
+##                    if os.path.exists(self.armadillo.iconPath+'files/'+ext+'.png'):
+##                        ipth = self.armadillo.iconPath+'files/'+ext+'.png'
+##                elif os.path.exists(self.armadillo.editorPath+editor+'/'+editor+'.png'):
+##                    ipth = self.armadillo.editorPath+editor+'/'+editor+'.png'
+##
+##                ipth = pfx+ipth
+##                
+##                cls=''
+##                if t == self.armadillo.currentEditor().id:
+##                    cls='current'
+##                    cur_itm=t
+##                
+####                file_txt += '<a href="opentab:'+str(t)+'" class="file '+cls+'" id="'+str(t)+'">'
+##                file_txt += '<span class="file '+cls+'" id="'+str(t)+'">'
+##                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')" title="'+str(wdg.filename)+'"><img class="file-icon" src="'+ipth+'"> '
+##                file_txt +=str(wdg.displayTitle)
+##                file_txt += '</span> <a href="#" onclick="HUD.closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
+##                file_txt += '</span>'
 ##                print file_txt
             
              # Add New File Links

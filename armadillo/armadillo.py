@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.-6'
+__version__ = '1.9.-7'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -275,6 +275,7 @@ class Armadillo(QtGui.QWidget):
         
         # Workspace
         self.currentWorkspace = None
+        self.workspaceCount = 0
         self.workspaces = {}
         
         # Settings
@@ -388,14 +389,16 @@ class Armadillo(QtGui.QWidget):
 ##        self.ui.tab.mousePressEvent=self.tabMousePressEvent
         self.ui.fr_tabs.hide()
         
-        #---Hide toolbar buttons for now
+        self.createTabspace()
+        
+        #--- Hide toolbar buttons for now
 ##        self.ui.b_save.hide()
         self.ui.b_new.hide()
         
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
-        self.ui.b_show_tabs.clicked.connect(self.showHUD)
+        self.ui.b_show_tabs.clicked.connect(self.showTabspace)
 ##        self.ui.b_open.clicked.connect(self.openFile)
         self.ui.b_save.clicked.connect(self.editorSave)
 
@@ -437,6 +440,7 @@ class Armadillo(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleBottomPlugin) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F3,self,self.nextBottomPlugin) # Show next bottom tab
+        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.showTabspace) # Show Tabbar
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
         
@@ -543,6 +547,7 @@ class Armadillo(QtGui.QWidget):
         # Add Start/HUD
         QtGui.QApplication.processEvents()
         self.showHUD()
+        self.HUDWidget.toggleHUD(0)
 
         
     #---Events
@@ -647,7 +652,32 @@ class Armadillo(QtGui.QWidget):
 ##                self.ui.tab.setTabEnabled(i,1)
                 break
         return fileopen
+    
+    def getTitle(self,filename):
+        title = os.path.basename(filename)
+        if int(self.settings['view_folder']):
+            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+        elif filename.endswith('.py') and title=='__init__.py':
+            title = os.path.split(os.path.dirname(filename))[1]+'/init'
+        return title
+    
+    def getIconPath(self,filename):
+        ext = os.path.splitext(str(filename))[1][1:]
+        lang = ext
+
+        if ext in self.settings['extensions']:
+            lang = self.settings['extensions'][ext]
+        ipth = self.iconPath+'/files/_blank.png'
+        fipth = self.iconPath+'files/'+str(lang)+'.png'
+        if os.path.exists(fipth):
+            ipth = fipth
+        elif filename != None:
+            ext = os.path.splitext(filename)[1][1:]
+            if os.path.exists(self.iconPath+'files/'+ext+'.png'):
+                ipth = self.iconPath+'files/'+ext+'.png'
         
+        return ipth
+    
     def openFile(self,filename=None,editor=None):
 ##        print 'open',filename
         if not filename:
@@ -685,11 +715,12 @@ class Armadillo(QtGui.QWidget):
                         html='<img src="'+pth+'" style="max-width:'+str(w)+';">'
                         self.webview_preview(html,filename)
                     else:
-                        title = os.path.basename(filename)
-                        if int(self.settings['view_folder']):
-                            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
-                        elif lang == 'python' and title=='__init__.py':
-                            title = os.path.split(os.path.dirname(filename))[1]+'/init'
+                        title = self.getTitle(filename)
+##                        title = os.path.basename(filename)
+##                        if int(self.settings['view_folder']):
+##                            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+##                        elif lang == 'python' and title=='__init__.py':
+##                            title = os.path.split(os.path.dirname(filename))[1]+'/init'
                         
                         try:
                             f = codecs.open(filename,'r','utf-8')
@@ -719,6 +750,11 @@ class Armadillo(QtGui.QWidget):
 ##                            self.removeStart()
                             
                             self.evnt.fileOpened.emit(wdg)
+                            
+                            # Add to workspace tab
+##                if not filename in self.workspaces[self.currentWorkspace]['filelist']:
+##                    print 'add to workspace'
+##                    self.tabspace.tabs.currentWidget().addEditortab(wdg.id,wdg.title,wdg.filename)
                             
 ##                        if self.ui.tab.count() ==1:
 ##                            self.changeTab(0)
@@ -846,7 +882,11 @@ class Armadillo(QtGui.QWidget):
     def change_tab(self,sw_ind):
         if self.currentEditor() != None:
             file_id = self.currentEditor().id
-            self.changeTab(file_id)
+            if file_id != None:
+                self.changeTab(file_id)
+            else:
+                self.ui.sw_main.setCurrentIndex(sw_ind)
+                self.ui.fr_tab.hide()
         else:
             self.ui.fr_tab.hide()
 
@@ -946,30 +986,38 @@ class Armadillo(QtGui.QWidget):
 ##        else:
 ##        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
 ##        print 'close',file_id
-        wdg = self.tabD[file_id]
         ok = 1
-        
-        # Check Save
-        if 'getText' in dir(wdg):
-            ok = self.checkSave(wdg)
+        if file_id >-1:
+            wdg = self.tabD[file_id]
+            filename = wdg.filename
+            
+            # Check Save
+            if 'getText' in dir(wdg):
+                ok = self.checkSave(wdg)
+                    
+            if ok:
+                # Emit close signal
+                self.evnt.editorTabClosed.emit(wdg)
                 
-        if ok:
-            # Emit close signal
-            self.evnt.editorTabClosed.emit(wdg)
-            
-            self.tabD.pop(file_id)
-            # Remove Tab
-##            self.ui.tab.removeTab(tab_ind)
-            # Remove Widget
-            self.ui.sw_main.removeWidget(wdg)
-            
-            if file_id in self.recentTabs:
-                self.recentTabs.remove(file_id)
-            
-            del wdg
-            # Add start page if no tabs exist
-##            if self.ui.sw_main.count() == 0:
-##                self.addStart()
+                self.tabD.pop(file_id)
+                # Remove Tab
+    ##            self.ui.tab.removeTab(tab_ind)
+                # Remove Widget
+                self.ui.sw_main.removeWidget(wdg)
+                
+                if file_id in self.recentTabs:
+                    self.recentTabs.remove(file_id)
+                    
+                # Remove from current workspace
+                if self.currentWorkspace != None:
+                    for wkf in self.workspaces[self.currentWorkspace]['files']:
+                        if wkf['filename'] == filename:
+                            self.workspaces[self.currentWorkspace]['files'].remove(wkf)
+                            break
+                del wdg
+                # Add start page if no tabs exist
+    ##            if self.ui.sw_main.count() == 0:
+    ##                self.addStart()
         return ok
 
     def editorTextChanged(self):
@@ -1319,6 +1367,19 @@ class Armadillo(QtGui.QWidget):
         if self.HUDWidget != None:
             self.HUDWidget.toggleHUD()
     
+    def showTabspace(self):
+##        # Add tabs
+##        self.tabworkspace.addEditortab(1,'a file.py','')
+##        self.tabworkspace.addEditortab(1,'help.md','')
+        
+        self.tabspace.toggle()
+    
+    def createTabspace(self):
+        import tabspace
+        self.tabspace = tabspace.TabSpace(parent=self)
+##        self.tabworkspace = self.tabspace.addWorkspace('workspace 1')
+##        self.tabspace.addWorkspace('workspace 2')
+    
     #---Shortcuts
     def findFocus(self):
         if self.ui.fr_topbar.isHidden():
@@ -1373,35 +1434,50 @@ class Armadillo(QtGui.QWidget):
     def loadWorkspace(self,wksp):
         self.saveWorkspace()
 ##        ok = self.deactivateWorkspace(self.currentWorkspace)
-        ok = self.closeWorkspace(askSave=0)
+##        ok = self.closeWorkspace(askSave=0)
 ##        ok=1
         
         # Load workspace
-        if ok:
+        if not wksp in self.workspaces:
             self.currentWorkspace=wksp
             f = open(self.settingPath+'/workspaces/'+self.currentWorkspace,'r')
             wD = json.loads(f.read())
             f.close()
             
-            self.workspaces[wksp]=wD
+            self.workspaces[wksp]=wD.copy()
+##            self.workspaces[wksp]['filelist']=[]
+            
+            # Add workspace to tabspace
+            self.tabspace.addWorkspace(wksp)
             
             # Load Files
+            last_file = None
             for f in wD['files']:
                 if f not in [None,'None','']:
                     if type(f) == type({}):
-                        self.openFile(f['filename'],editor=f['editor'])
-                    else:
-                        self.openFile(f)
-            
+##                        self.openFile(f['filename'],editor=f['editor'])
+##                        self.workspaces[wksp]['filelist'].append(f['filename'])
+                        fid = self.isFileOpen(f['filename'])
+                        if fid == -1:
+                            fid = None
+                        self.tabspace.tabs.currentWidget().addEditortab(fid,self.getTitle(f['filename']),f['filename'])
+                        last_file =f['filename']
+##                    else:
+##                        self.openFile(f)
+
             # Goto lastopen file
             if 'lastOpenFile' in wD:
-                for file_id in self.tabD:
-##                    file_id = self.ui.tab.tabData(i).toInt()[0]
-##                    if file_id in self.tabD:
-                        wdg = self.tabD[file_id]
-                        if wdg.filename == wD['lastOpenFile']:
-                            self.changeTab(file_id)
-                            break
+                last_file =f['filename']
+##                for file_id in self.tabD:
+####                    file_id = self.ui.tab.tabData(i).toInt()[0]
+####                    if file_id in self.tabD:
+##                        wdg = self.tabD[file_id]
+##                        if wdg.filename == wD['lastOpenFile']:
+##                            self.changeTab(file_id)
+##                            last_file =f['filename']
+##                            break
+            if last_file != None:
+                self.openFile(last_file)
             
             if 'basefolder' in wD and wD['basefolder'] != None:
                 if 'filebrowser' in self.pluginD:
@@ -1414,7 +1490,9 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.renameWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
             
-            self.workspaces[wksp]={}
+            self.showTabspace()
+            
+##            self.workspaces[wksp]={}
             
 ##            QtGui.QApplication.processEvents()
 ##            self.removeStart()

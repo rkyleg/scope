@@ -7,7 +7,10 @@ def addPlugin(parent):
     plugin.location = None
     
     parent.HUDWidget = plugin
+    plugin.webview.id = None
+    parent.ui.sw_main.addWidget(plugin.webview)
+    parent.ui.sw_main.setCurrentIndex(0)
     
-    QtGui.QShortcut(QtCore.Qt.Key_F1,parent,plugin.toggleHUD) # Show Heads up display
+    QtGui.QShortcut(QtCore.Qt.Key_F9,parent,plugin.toggleHUD) # Show Heads up display
     
     return plugin
