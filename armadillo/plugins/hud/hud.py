@@ -9,8 +9,9 @@ class jsObject(QtCore.QObject):
     
     @QtCore.pyqtSlot()
     def closeHUD(self):
+        pass
 ##        print 'close hud'
-        self.parent.toggleHUD()
+##        self.parent.toggleHUD()
     
     @QtCore.pyqtSlot('int')
     def closetab(self,id):
@@ -29,13 +30,13 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot('int')
     def opentab(self,id):
         self.parent.armadillo.changeTab(id)
-        self.parent.toggleHUD()
+##        self.parent.toggleHUD()
     
 
 class HUD(object):
     def __init__(self,parent):
         self.armadillo=parent
-        self.armadillo.evnt.resized.connect(self.resize)
+##        self.armadillo.evnt.resized.connect(self.resize)
     
         # Create hud widget
         from editors.webview import webview
@@ -177,14 +178,14 @@ class HUD(object):
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.armadillo.changeTab(i)
-            self.toggleHUD()
+##            self.toggleHUD()
         elif lnk.startswith('closetab:'):
             i=int(lnk.split('closetab:')[1])
             self.armadillo.closeTab(i)
         elif lnk.startswith('new:'):
             lang = lnk.split('new:')[1]
             self.armadillo.addEditorWidget(lang)
-            self.toggleHUD()
+##            self.toggleHUD()
         elif lnk.startswith('workspace:'):
             wk = lnk.split('workspace:')[1]
             if wk=='new':
@@ -192,7 +193,7 @@ class HUD(object):
 ##                self.addStart(wdg=wdg)
             else:
                 self.armadillo.loadWorkspace(wk)
-                self.viewHUD()
+##                self.viewHUD()
 ##            self.toggleHUD()
         elif lnk.startswith('editor:'):
             e = lnk.split('editor:')[1]
@@ -211,7 +212,7 @@ class HUD(object):
             
             if resp != None:
                 self.armadillo.addEditorWidget(str(resp.text()),editor=e)
-                self.toggleHUD()
+##                self.toggleHUD()
         
         elif lnk=='filebrowser':
             self.armadillo.openFile()
@@ -219,8 +220,8 @@ class HUD(object):
         elif lnk=='settings':
             self.armadillo.openSettings()
             
-        elif lnk=='close':
-            self.toggleHUD()
+##        elif lnk=='close':
+##            self.toggleHUD()
     
     def resize(self):
         g=self.armadillo.geometry()

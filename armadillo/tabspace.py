@@ -14,26 +14,37 @@ class WorkspaceWidget(QtGui.QListWidget):
         self.setProperty("class",'editor_tab')
         self.setSpacing(2)
         self.clicked.connect(self.select)
+        self.tabD = {}
 ##        self.setViewMode(1)
     
-    def addEditortab(self,file_id,title,filename):
-        etab = editortab(self.ide,file_id,title,filename)
-        
-        itm = QtGui.QListWidgetItem()
-        itm.setSizeHint(etab.sizeHint())
-        itm.setToolTip(filename)
-##        print etab.sizeHint()
-        
-        self.addItem(itm)
-        etab.item = itm
-        self.setItemWidget(itm,etab)
-        itm.setSizeHint(etab.sizeHint())
+    def addEditortab(self,file_id,title,filename,editor=''):
+        if not file_id in self.tabD:
+            
+            etab = editortab(self.ide,file_id,title,filename,editor)
+            
+            itm = QtGui.QListWidgetItem()
+            itm.setSizeHint(etab.sizeHint())
+            if filename != None:
+                itm.setToolTip(filename)
+    ##        print etab.sizeHint()
+            
+            self.addItem(itm)
+            etab.item = itm
+            self.setItemWidget(itm,etab)
+            itm.setSizeHint(etab.sizeHint())
+            self.tabD[file_id]=etab
+            tab = etab
+        else:
+            tab = self.tabD[file_id]
+            
+        return tab
     
-    def select(self,m_ind):
+    def select(self,m_ind,hide_tabs=1):
         itm = self.itemFromIndex(m_ind)
         wdg = self.itemWidget(itm)
-        self.ide.openFile(wdg.filename)
-        self.ide.tabspace.toggle(0)
+        self.ide.openFile(file_id=wdg.id)
+        if hide_tabs:
+            self.ide.tabspace.toggle(0)
     
     def keyPressEvent(self,event):
         ky = event.key()
@@ -77,11 +88,12 @@ class WorkspaceWidget(QtGui.QListWidget):
             QtGui.QListWidget.keyPressEvent(self,event)
 
 class editortab(QtGui.QWidget):
-    def __init__(self,ide,file_id,title,filename):
+    def __init__(self,ide,file_id,title,filename,editor=''):
         QtGui.QWidget.__init__(self)
         self.id = file_id
         self.filename = filename
         self.ide = ide
+        self.editor = ''
         
         # Layout
         layout = QtGui.QHBoxLayout()
@@ -94,6 +106,7 @@ class editortab(QtGui.QWidget):
         icn_btn.setProperty("class",'editor_tab_btn')
         icn_btn.setMaximumWidth(32)
         layout.addWidget(icn_btn)
+        self.iconButton = icn_btn
         
         # File Text
         lbl = QtGui.QLabel(title)
@@ -101,6 +114,7 @@ class editortab(QtGui.QWidget):
         lbl.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.MinimumExpanding, QtGui.QSizePolicy.Preferred))
         lbl.updateGeometry()
         layout.addWidget(lbl)
+        self.titleLabel = lbl
         
         # Close Button
         cls_btn = QtGui.QPushButton()
@@ -108,24 +122,35 @@ class editortab(QtGui.QWidget):
         cls_btn.setMaximumWidth(32)
         cls_btn.setProperty("class",'editor_tab_cls_btn')
         layout.addWidget(cls_btn)
+        self.closeButton = cls_btn
         
-##        layout.setSizeConstraint(QtGui.QLayout.SetFixedSize)        self.setLayout(layout)
+##        layout.setSizeConstraint(QtGui.QLayout.SetFixedSize)
+        self.setLayout(layout)
     
-    def close(self):
+    def setTitle(self,title):
+        self.titleLabel.setText(title)
+        self.item.setSizeHint(self.sizeHint())
+    
+    def close(self,ignoreCheck=0):
         li = self.parent().parent()
 ##        print li, li.indexFromItem(self.item)
-        fid = li.ide.isFileOpen(self.filename)
-        ok = li.ide.closeTab(fid)
+        if ignoreCheck:
+            ok =1
+        else:
+            ok = li.ide.closeTab(self.id)
         if ok:
             li.takeItem(li.row(self.item))
+            li.tabD.pop(self.id)
             self.ide.tabspace.highlightCurrent()
         else:
-            li.ide.tabspace.toggle(1)
+            li.ide.tabspace.toggle(1)
+
 
 class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
-##        QtGui.QTabWidget.__init__(self)##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgb(61,107,129);}")
+##        QtGui.QTabWidget.__init__(self)
+##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgb(61,107,129);}")
         self.tabs.setWindowOpacity(0.9)
         self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
 
@@ -144,7 +169,7 @@ class TabSpace(object):
         self.tabs.setWindowModality(QtCore.Qt.NonModal)
     
         # Signals
-##        self.currentChanged.connect(self.change_workspace)
+        self.tabs.currentChanged.connect(self.changeWorkspace)
         self.tabs.tabCloseRequested.connect(self.closeWorkspace)
     
     def addWorkspace(self,name):
@@ -156,12 +181,25 @@ class TabSpace(object):
 ##        self.tabCloseRequested.connect(self.closeTab)
 ##        self.setExpanding(0)
 
+    def changeWorkspace(self,ind):
+        self.ide.currentWorkspace = str(self.tabs.tabText(ind))
+        # set current file to current file in workspace
+        wwdg = self.tabs.widget(ind)
+        print 'cur ind',wwdg.currentIndex()
+        if wwdg.currentRow() >-1:
+            wwdg.select(wwdg.currentIndex(),hide_tabs=0)
+        
+        # show homepage
+##        else:
+##            self.ide.
+
+
     def closeWorkspace(self,ind):
-        wksp = self.tabs.widget(ind).title()
-##        ok = self.ide.closeWorkspace(wksp)
-##        if ok:
-##            self.tabs.removeTab(ind)
-        self.tabs.removeTab(ind)
+        wksp = str(self.tabs.tabText(ind))
+        ok = self.ide.closeWorkspace(wksp)
+        if ok:
+            self.tabs.removeTab(ind)
+##        self.tabs.removeTab(ind)
     
     def show(self):
         h=300 # default height
@@ -193,14 +231,15 @@ class TabSpace(object):
     
     def highlightCurrent(self):
         # Highlight current file
-        fid = self.ide.currentEditor().filename
-        li = self.tabs.currentWidget()
-        for i in range(li.count()):
-            litm = li.itemWidget(li.item(i))
-            print litm.id,fid
-            if litm.filename == fid:
-                li.setCurrentRow(i)
-                break
+        if self.ide.currentEditor() != None:
+            fid = self.ide.currentEditor().id
+            li = self.tabs.currentWidget()
+            for i in range(li.count()):
+                litm = li.itemWidget(li.item(i))
+    ##            print litm.id,fid
+                if litm.id == fid:
+                    li.setCurrentRow(i)
+                    break
 
 
 if __name__ == '__main__':
@@ -211,7 +250,8 @@ if __name__ == '__main__':
     mw = TabSpace()
 ##    ww = WorkspaceWidget()
 ##    mw.addTab(ww,'workspace 1')
-    ww = mw.addWorkspace('workspace 1')    
+    ww = mw.addWorkspace('workspace 1')
+    
     # Add tabs
     ww.addEditortab(1,'a file.py','')
     ww.addEditortab(1,'help.md','')
@@ -219,7 +259,9 @@ if __name__ == '__main__':
 ##    itm = QtGui.QListWidgetItem()
 ##    itm.setSizeHint(t.sizeHint())
 ##    ww.addItem(itm)
-##    ww.setItemWidget(itm,t)    
+##    ww.setItemWidget(itm,t)
+    
     
     # show and start
-    mw.show()    qtApp.exec_()
+    mw.show()
+    qtApp.exec_()
