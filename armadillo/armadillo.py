@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.-8'
+__version__ = '1.9.-9'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -115,8 +115,8 @@ class WorkspaceMenu(QtGui.QMenu):
 
                 if ok:
                     os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
-                    if str(resp) == self.parent.workspace:
-                        self.parent.workspace=None
+                    if str(resp) == self.parent.currentWorkspace:
+                        self.parent.currentWorkspace=None
                     self.loadMenu()
             else:
                 QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
@@ -554,20 +554,27 @@ class Armadillo(QtGui.QWidget):
 ##        self.HUDWidget.toggleHUD(0)
         
         # Add blank workspace
-        self.loadWorkspace(None)
+##        self.loadWorkspace(None)
 
         
     #---Events
     def closeEvent(self,event):
         cancelled = 0
-        # Check if anything needs saving
-        for file_id in self.fileOpenD:
-##            file_id = self.ui.tab.tabData(i).toInt()[0]
-            wdg = self.fileOpenD[file_id]
-            ok = self.checkSave(wdg)
+        # Close all workspaces
+        for wksp in self.workspaces.keys():
+            ok = self.closeWorkspace(wksp)
             if not ok:
-                cancelled = 1
+                cancelled=1
                 break
+        
+        # Check if anything needs saving
+##        for file_id in self.fileOpenD:
+####            file_id = self.ui.tab.tabData(i).toInt()[0]
+##            wdg = self.fileOpenD[file_id]
+##            ok = self.checkSave(wdg)
+##            if not ok:
+##                cancelled = 1
+##                break
 
         if cancelled:
             event.ignore()
@@ -1019,7 +1026,7 @@ class Armadillo(QtGui.QWidget):
             if len(self.recentTabs) > 1:
                 self.changeTab(prevtab)
     
-    def closeTab(self,file_id):
+    def closeTab(self,file_id,remove_from_workspace=1):
 ##        if sys.version_info.major==3:
 ##            file_id = self.ui.tab.tabData(tab_ind)
 ##        else:
@@ -1048,9 +1055,10 @@ class Armadillo(QtGui.QWidget):
                     self.recentTabs.remove(file_id)
                     
                 # Remove from workspace tabs
-                for t in self.fileD[file_id]['tabs']:
-                    t.close(ignoreCheck=1)
-                    self.fileD[file_id]['tabs'].remove(t)
+                if remove_from_workspace:
+                    for t in self.fileD[file_id]['tabs']:
+                        t.close(ignoreCheck=1)
+                        self.fileD[file_id]['tabs'].remove(t)
                 
                 del wdg
                 # Add start page if no tabs exist
@@ -1493,8 +1501,8 @@ class Armadillo(QtGui.QWidget):
                 f.write(json.dumps(wD))
                 f.close()
     
-    def loadWorkspace(self,wksp):
-        self.saveWorkspace()
+    def loadWorkspace(self,wksp,show_tabs=1):
+##        self.saveWorkspace()
 ##        ok = self.deactivateWorkspace(self.currentWorkspace)
 ##        ok = self.closeWorkspace(askSave=0)
 ##        ok=1
@@ -1566,7 +1574,8 @@ class Armadillo(QtGui.QWidget):
             self.workspaceMenu.renameWact.setDisabled(0)
             self.workspaceMenu.closeWact.setDisabled(0)
             
-            self.showTabspace()
+            if show_tabs:
+                self.showTabspace()
             
 ##            self.workspaces[wksp]={}
             
@@ -1577,8 +1586,11 @@ class Armadillo(QtGui.QWidget):
 ##                self.changeTab(0)
     
     def addWorkspaceEditor(self,file_id,title,filename,editor=''):
+        if self.currentWorkspace == None:
+            self.loadWorkspace(None,show_tabs=0)
         tab = self.tabspace.tabs.currentWidget().addEditortab(file_id,title,filename,editor)
-        self.fileD[file_id]['tabs'].append(tab)
+        if not tab in self.fileD[file_id]['tabs']:
+            self.fileD[file_id]['tabs'].append(tab)
     
     def newWorkspace(self):
         # New Workspace
@@ -1611,9 +1623,21 @@ class Armadillo(QtGui.QWidget):
             wksp = self.currentWorkspace
         
         # Save current workspace
+        fl_ok = 1
         if wksp != None:
             self.saveWorkspace()
-        
+            
+            # Close 
+            wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
+            for fid in wksp_tabs[:]:
+                if fid in self.fileOpenD.keys():
+                    print 'close',fid,self.fileD[fid]['tabs']
+                    if len(self.fileD[fid]['tabs']) < 2:
+                        fl_ok = self.closeTab(fid,remove_from_workspace=0)
+                        print 'ok',fl_ok
+                        if not fl_ok:
+                            break
+            
 ##        if wksp != None and askSave:
 ##            wk_ok=0
 ##            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.currentWorkspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
@@ -1624,7 +1648,7 @@ class Armadillo(QtGui.QWidget):
 ##                wk_ok =1
                 
         # Close open files
-        fl_ok = 1
+        
         if wk_ok:
             pass
             # Check if anything needs saving and if not in other workspace

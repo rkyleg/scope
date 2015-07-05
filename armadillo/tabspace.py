@@ -65,6 +65,9 @@ class WorkspaceWidget(QtGui.QListWidget):
                 cind = self.count()-1
             self.setCurrentRow(cind)
             handled = 1
+        elif ky == QtCore.Qt.Key_F1:
+            self.ide.tabspace.toggle(0)
+            handled = 1
 
 ##        if event.modifiers() & QtCore.Qt.ControlModifier:
 ##            if event.key() == QtCore.Qt.Key_C:
@@ -133,14 +136,16 @@ class editortab(QtGui.QWidget):
     
     def close(self,ignoreCheck=0):
         li = self.parent().parent()
+        print 'close',self.id
 ##        print li, li.indexFromItem(self.item)
         if ignoreCheck:
             ok =1
         else:
-            ok = li.ide.closeTab(self.id)
+            ok = li.ide.closeTab(self.id,remove_from_workspace=1)
         if ok:
             li.takeItem(li.row(self.item))
-            li.tabD.pop(self.id)
+            if self.id in li.tabD:
+                li.tabD.pop(self.id)
             self.ide.tabspace.highlightCurrent()
         else:
             li.ide.tabspace.toggle(1)
@@ -150,9 +155,10 @@ class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
-##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgb(61,107,129);}")
-        self.tabs.setWindowOpacity(0.9)
+##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,250);border:0px;}")
+##        self.tabs.setWindowOpacity(0.9)
         self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        
 
         self.ide = parent
 ##        self.wtype = wtyp
@@ -166,6 +172,9 @@ class TabSpace(object):
         self.tabs.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
     
         self.tabs.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Popup)
+##        self.tabs.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
+##        self.tabs.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.Popup)
+##        self.tabs.setWindowFlags(QtCore.Qt.SplashScreen)
         self.tabs.setWindowModality(QtCore.Qt.NonModal)
     
         # Signals
@@ -174,7 +183,7 @@ class TabSpace(object):
     
     def addWorkspace(self,name):
         ww = WorkspaceWidget(parent=self.ide)
-        self.tabs.addTab(ww,name)
+        self.tabs.addTab(ww,QtGui.QIcon(self.ide.iconPath+'workspace.png'),name)
         self.tabs.setCurrentWidget(ww)
         return ww
 ##        self.currentChanged.connect(self.changeTab)
@@ -182,16 +191,19 @@ class TabSpace(object):
 ##        self.setExpanding(0)
 
     def changeWorkspace(self,ind):
-        self.ide.currentWorkspace = str(self.tabs.tabText(ind))
-        # set current file to current file in workspace
-        wwdg = self.tabs.widget(ind)
-        print 'cur ind',wwdg.currentIndex()
-        if wwdg.currentRow() >-1:
-            wwdg.select(wwdg.currentIndex(),hide_tabs=0)
-        
-        # show homepage
-##        else:
-##            self.ide.
+        if ind == -1:
+            self.ide.currentWorkspace = None
+        else:
+            self.ide.currentWorkspace = str(self.tabs.tabText(ind))
+            # set current file to current file in workspace
+            wwdg = self.tabs.widget(ind)
+    ##        print 'cur ind',wwdg.currentIndex()
+            if wwdg.currentRow() >-1:
+                wwdg.select(wwdg.currentIndex(),hide_tabs=0)
+            
+            # show homepage
+    ##        else:
+    ##            self.ide.
 
 
     def closeWorkspace(self,ind):
@@ -199,10 +211,14 @@ class TabSpace(object):
         ok = self.ide.closeWorkspace(wksp)
         if ok:
             self.tabs.removeTab(ind)
+        
+        if self.tabs.count()==0:
+            self.tabs.hide()
+        
 ##        self.tabs.removeTab(ind)
     
     def show(self):
-        h=300 # default height
+        h=200 # default height
         if self.ide != None:
             g=self.ide.geometry()
             
@@ -234,12 +250,13 @@ class TabSpace(object):
         if self.ide.currentEditor() != None:
             fid = self.ide.currentEditor().id
             li = self.tabs.currentWidget()
-            for i in range(li.count()):
-                litm = li.itemWidget(li.item(i))
-    ##            print litm.id,fid
-                if litm.id == fid:
-                    li.setCurrentRow(i)
-                    break
+            if li != None:
+                for i in range(li.count()):
+                    litm = li.itemWidget(li.item(i))
+        ##            print litm.id,fid
+                    if litm.id == fid:
+                        li.setCurrentRow(i)
+                        break
 
 
 if __name__ == '__main__':
