@@ -32,6 +32,7 @@ class FileBrowser(QtGui.QStackedWidget):
         wksp = str(wksp)
         wD=self.ide.workspaces[wksp]
         self.workspaceD[wksp]=self.addFilePage(wD['basefolder'])
+        self.workspaceD[wksp].wksp_id = wksp
         self.setCurrentWidget(self.workspaceD[wksp])
 
 class DirTree(QtGui.QWidget):
@@ -40,7 +41,7 @@ class DirTree(QtGui.QWidget):
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.ide = parent
-
+        self.wksp_id = None
         self.extD = self.ide.settings['extensions']
         
         # Show All
@@ -85,6 +86,9 @@ class DirTree(QtGui.QWidget):
         
         for citm in filecontents:
             self.ui.tr_dir.addTopLevelItem(citm)
+        
+        if self.wksp_id != None:
+            self.ide.workspaces[self.wksp_id]['basefolder'] = self.rootpath
         
     def itmClicked(self,itm,col):
         # Tree Click Signals

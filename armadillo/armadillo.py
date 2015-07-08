@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.-9'
+__version__ = '1.9.10-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -1501,7 +1501,7 @@ class Armadillo(QtGui.QWidget):
                     wD['lastOpenFile']=self.currentEditor().filename
                 
                 # Save workspace dir
-                wD['basefolder']=self.currentPath
+                wD['basefolder']=self.workspaces[wksp]['basefolder']
                 f = open(self.settingPath+'/workspaces/'+self.currentWorkspace,'w')
                 f.write(json.dumps(wD))
                 f.close()
