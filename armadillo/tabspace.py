@@ -128,8 +128,11 @@ class editortab(QtGui.QWidget):
 ##            img = QtGui.QPixmap(self.ide.getIconPath(filename))
 ##            img2 = img.scaledToHeight(20,QtCore.Qt.SmoothTransformation)
 ##        else:
-        wdg = self.ide.fileOpenD[file_id]
-        img = wdg.icon
+        if file_id in self.ide.fileOpenD:
+            wdg = self.ide.fileOpenD[file_id]
+            img = wdg.pic
+        else:
+            img = QtGui.QPixmap(self.ide.getIconPath(filename))
         img2 = img.scaledToHeight(20,QtCore.Qt.SmoothTransformation)
         icn_lbl = QtGui.QLabel()
         icn_lbl.setPixmap(img2)

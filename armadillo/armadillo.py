@@ -675,8 +675,8 @@ class Armadillo(QtGui.QWidget):
         elif os.path.exists(self.editorPath+editor+'/'+editor+'.png'):
             icn = QtGui.QPixmap(self.editorPath+editor+'/'+editor+'.png')
         self.ui.b_tabicon.setIcon(QtGui.QIcon(icn))
-        wdg.icon = icn
-
+        wdg.icon = QtGui.QIcon(icn)
+        wdg.pic = icn
         # Insert tab in workspace
         self.addWorkspaceEditor(wdg.id,wdg.title,wdg.filename)
 
@@ -739,7 +739,7 @@ class Armadillo(QtGui.QWidget):
             else:
                 self.ui.l_filename.setToolTip('New File (unsaved)')
             try:
-                self.ui.b_tabicon.setIcon(QtGui.QIcon(wdg.icon))
+                self.ui.b_tabicon.setIcon(wdg.icon)
             except:
 ##                print('error loading icon: '+wdg.title)
                 pass
@@ -1184,8 +1184,9 @@ class Armadillo(QtGui.QWidget):
             wdg.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
 ##            wdg.linkClicked.connect(self.urlClicked)
 ##            self.ui.tab.setTabIcon(self.ui.tab.currentIndex(),QtGui.QIcon(self.iconPath+'page_preview.png'))
-            wdg.icon = QtGui.QPixmap(self.iconPath+'page_preview.png')
-            self.ui.b_tabicon.setIcon(QtGui.QIcon(wdg.icon))
+            wdg.pic = QtGui.QPixmap(self.iconPath+'page_preview.png')
+            wdg.icon = QtGui.QIcon(wdg.pic)
+            self.ui.b_tabicon.setIcon(wdg.icon)
     
         else:
 ##            self.ui.tab.setCurrentIndex(openfile)
@@ -1420,10 +1421,10 @@ class Armadillo(QtGui.QWidget):
             wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
             for fid in wksp_tabs[:]:
                 if fid in self.fileOpenD.keys():
-                    print 'close',fid,self.fileD[fid]['tabs']
+##                    print 'close',fid,self.fileD[fid]['tabs']
                     if len(self.fileD[fid]['tabs']) < 2:
                         fl_ok = self.closeTab(fid,remove_from_workspace=0)
-                        print 'ok',fl_ok
+##                        print 'ok',fl_ok
                         if not fl_ok:
                             break
             
