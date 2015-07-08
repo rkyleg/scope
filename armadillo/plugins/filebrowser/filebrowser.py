@@ -14,7 +14,7 @@ class FileBrowser(QtGui.QStackedWidget):
     def addFilePage(self,pth=None):
         ntree = DirTree(self.ide)
         self.addWidget(ntree)
-        if not os.path.exists(pth):
+        if pth == None or not os.path.exists(pth):
             pth = os.path.expanduser('~')
         ntree.ui.le_root.setText(pth) 
         ntree.loadRoot()

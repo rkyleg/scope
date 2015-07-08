@@ -50,7 +50,22 @@ class WorkspaceWidget(QtGui.QListWidget):
         ky = event.key()
         handled = 0
         cind = self.currentRow()
-        if ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return]:
+        tind = self.ide.tabspace.tabs.currentIndex() # Current workspace tab
+        if event.modifiers() & QtCore.Qt.ControlModifier:
+            if ky == QtCore.Qt.Key_Left:
+                # Change workspaces
+                tind -=1
+                if tind <0:
+                    tind = self.ide.tabspace.tabs.count()-1
+                self.ide.tabspace.tabs.setCurrentIndex(tind)
+                handled = 1
+            elif ky == QtCore.Qt.Key_Right:
+                tind +=1
+                if tind >= self.ide.tabspace.tabs.count():
+                    tind = 0
+                self.ide.tabspace.tabs.setCurrentIndex(tind)
+                handled = 1
+        elif ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return]:
             handled = 1
             self.select(self.currentIndex())
         elif ky == QtCore.Qt.Key_Right:
@@ -65,12 +80,10 @@ class WorkspaceWidget(QtGui.QListWidget):
                 cind = self.count()-1
             self.setCurrentRow(cind)
             handled = 1
-        elif ky == QtCore.Qt.Key_F1:
-            self.ide.tabspace.toggle(0)
-            handled = 1
-
-##        if event.modifiers() & QtCore.Qt.ControlModifier:
-##            if event.key() == QtCore.Qt.Key_C:
+##        elif ky == QtCore.Qt.Key_F1:
+##            self.ide.tabspace.toggle(0)
+##            handled = 1
+##        if event.modifiers() & QtCore.Qt.ControlModifier:##            if event.key() == QtCore.Qt.Key_C:
 ##                self.copy()
 ##                handled = 1
 ##            elif event.key() == QtCore.Qt.Key_V:
@@ -104,13 +117,23 @@ class editortab(QtGui.QWidget):
         layout.setSpacing(2)
         
         # Icon Button
-        icn_btn = QtGui.QPushButton()
-        icn_btn.setIcon(QtGui.QIcon(self.ide.getIconPath(filename)))
-        icn_btn.setProperty("class",'editor_tab_btn')
-        icn_btn.setMaximumWidth(32)
-        layout.addWidget(icn_btn)
-        self.iconButton = icn_btn
+##        icn_btn = QtGui.QPushButton()
+##        icn_btn.setIcon(QtGui.QIcon(self.ide.getIconPath(filename)))
+##        icn_btn.setProperty("class",'editor_tab_btn')
+##        icn_btn.setMaximumWidth(32)
+##        layout.addWidget(icn_btn)
+##        self.iconButton = icn_btn
         
+##        if filename != None:
+##            img = QtGui.QPixmap(self.ide.getIconPath(filename))
+##            img2 = img.scaledToHeight(20,QtCore.Qt.SmoothTransformation)
+##        else:
+        wdg = self.ide.fileOpenD[file_id]
+        img = wdg.icon
+        img2 = img.scaledToHeight(20,QtCore.Qt.SmoothTransformation)
+        icn_lbl = QtGui.QLabel()
+        icn_lbl.setPixmap(img2)
+        layout.addWidget(icn_lbl)        
         # File Text
         lbl = QtGui.QLabel(title)
         lbl.setProperty("class",'editor_tab')
@@ -136,8 +159,7 @@ class editortab(QtGui.QWidget):
     
     def close(self,ignoreCheck=0):
         li = self.parent().parent()
-        print 'close',self.id
-##        print li, li.indexFromItem(self.item)
+##        print 'close',self.id##        print li, li.indexFromItem(self.item)
         if ignoreCheck:
             ok =1
         else:
@@ -180,7 +202,20 @@ class TabSpace(object):
         # Signals
         self.tabs.currentChanged.connect(self.changeWorkspace)
         self.tabs.tabCloseRequested.connect(self.closeWorkspace)
+        
+        self.tabs.keyPressEvent = self.tabKeyPress
     
+    def tabKeyPress(self,event):
+        print 'tab key press'
+        handled = 0
+        ky = event.key()
+        if ky == QtCore.Qt.Key_F1:
+            self.toggle(0)
+            handled = 1
+            
+        if not handled:
+            QtGui.QTabWidget.keyPressEvent(self.tabs,event)
+            
     def addWorkspace(self,name):
         ww = WorkspaceWidget(parent=self.ide)
         self.tabs.addTab(ww,QtGui.QIcon(self.ide.iconPath+'workspace.png'),name)
@@ -228,7 +263,7 @@ class TabSpace(object):
             
             if h > g.height():
                 h = g.height()
-            dy = self.ide.ui.fr_topbar.height()
+            dy = self.ide.ui.fr_topbar.height()-2
             self.tabs.setGeometry(g.x(),g.y()+dy,g.width(),h)
         else:
             self.tabs.setGeometry(20,20,500,h)

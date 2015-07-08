@@ -134,7 +134,7 @@ class Console(QtGui.QTextEdit):
         if __name__ =='__main__':
             self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')<br>')
         else:
-            self.write('# Built in Python interpreter (not all functions available)<br># Ctrl+l to launch external with installed Python<br>')
+            self.write('# Limited Python interpreter (only modules included with Armadillo are available)<br># Ctrl+l to launch external with default installed Python<br>')
         
         self.write(sys.ps1)
         self.prompt = sys.ps1

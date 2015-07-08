@@ -164,7 +164,7 @@ class HUD(object):
                 self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
             
             self.webview.page().mainFrame().addToJavaScriptWindowObject('HUD',self.jsObject)
-            self.webview.setGeometry(0,0,g.width(),g.height())
+##            self.webview.setGeometry(0,0,g.width(),g.height())
             self.webview.show()
 ##            QtGui.QApplication.processEvents()
 ##            h = self.webview.page().mainFrame().contentsSize().height()

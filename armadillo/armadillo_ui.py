@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Wed Jul  1 21:56:43 2015
+# Created: Wed Jul  8 02:01:20 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -103,7 +103,7 @@ class Ui_Form(object):
         self.fr_topbar.setObjectName(_fromUtf8("fr_topbar"))
         self.gridLayout_2 = QtGui.QGridLayout(self.fr_topbar)
         self.gridLayout_2.setSpacing(0)
-        self.gridLayout_2.setContentsMargins(0, 2, 0, 4)
+        self.gridLayout_2.setContentsMargins(0, 2, 0, 2)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.fr_tab = QtGui.QFrame(self.fr_topbar)
         self.fr_tab.setFrameShape(QtGui.QFrame.NoFrame)
