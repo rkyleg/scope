@@ -2,19 +2,51 @@ from PyQt4 import QtGui, QtCore
 from .filebrowser_ui import Ui_Form
 import os,sys, subprocess
 
+class FileBrowser(QtGui.QStackedWidget):
+    def __init__(self,parent=None):
+        self.ide = parent
+        QtGui.QStackedWidget.__init__(self,parent)
+        self.workspaceD = {}
+        pth = self.ide.settings['plugins']['filebrowser']['defaultPath']
+        ntree = self.addFilePage(pth)
+        self.setCurrentWidget(ntree)
+
+    def addFilePage(self,pth=None):
+        ntree = DirTree(self.ide)
+        self.addWidget(ntree)
+        if not os.path.exists(pth):
+            pth = os.path.expanduser('~')
+        ntree.ui.le_root.setText(pth) 
+        ntree.loadRoot()
+        return ntree
+        
+    def changeWorkspace(self,wksp):
+        wksp = str(wksp)
+        if wksp == None:
+            self.setCurrentIndex(0)
+        else:
+            if wksp in self.workspaceD:
+                self.setCurrentWidget(self.workspaceD[wksp])
+        
+    def openWorkspace(self,wksp):
+        wksp = str(wksp)
+        wD=self.ide.workspaces[wksp]
+        self.workspaceD[wksp]=self.addFilePage(wD['basefolder'])
+        self.setCurrentWidget(self.workspaceD[wksp])
+
 class DirTree(QtGui.QWidget):
     def __init__(self,parent=None):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
 
-        self.extD = self.armadillo.settings['extensions']
+        self.extD = self.ide.settings['extensions']
         
         # Show All
         self.showAll=0
-        if 'showAll' in self.armadillo.settings['plugins']['filebrowser']:
-            self.showAll = int(self.armadillo.settings['plugins']['filebrowser']['showAll'])
+        if 'showAll' in self.ide.settings['plugins']['filebrowser']:
+            self.showAll = int(self.ide.settings['plugins']['filebrowser']['showAll'])
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
@@ -23,19 +55,16 @@ class DirTree(QtGui.QWidget):
         
         # Set default path
         self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
-        if self.armadillo.settings['plugins']['filebrowser']['defaultPath']!='':
-            if os.path.exists(self.armadillo.settings['plugins']['filebrowser']['defaultPath']):
-                self.ui.le_root.setText(self.armadillo.settings['plugins']['filebrowser']['defaultPath']) 
         self.loadRoot()
         
         self.ui.tr_dir.contextMenuEvent = self.fileMenu
         self.ui.tr_dir.keyPressEvent = self.ikeyPressEvent
     
     def viewFileBrowser(self):
-        if self.armadillo.ui.fr_left.isHidden():
-            self.armadillo.ui.fr_left.setVisible(1)
-        i=self.armadillo.ui.tab_left.indexOf(self)
-        self.armadillo.ui.tab_left.setCurrentIndex(i)
+        if self.ide.ui.fr_left.isHidden():
+            self.ide.ui.fr_left.setVisible(1)
+        i=self.ide.ui.tab_left.indexOf(self)
+        self.ide.ui.tab_left.setCurrentIndex(i)
     
     def loadRoot(self):
         newpath = str(self.ui.le_root.text()).replace('\\','/')
@@ -47,7 +76,7 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.clear()
         
         # Set Armadilo path
-        self.armadillo.currentPath = self.rootpath
+        self.ide.currentPath = self.rootpath
         
         # Add to Tree
         dircontents,filecontents = self.getDirContents(self.rootpath)
@@ -78,22 +107,22 @@ class DirTree(QtGui.QWidget):
                 itm.setExpanded(not itm.isExpanded())
             
             # Toggle Image
-            icn = QtGui.QIcon(self.armadillo.iconPath+'folder.png')
+            icn = QtGui.QIcon(self.ide.iconPath+'folder.png')
             
             if itm.isExpanded():
-                icn = QtGui.QIcon(self.armadillo.iconPath+'folder_open.png')
+                icn = QtGui.QIcon(self.ide.iconPath+'folder_open.png')
             
             itm.setIcon(0,icn)
             
         else:
-            if self.armadillo != None:
+            if self.ide != None:
                 if toggleExpanded == 2:
                     if itm.parent() != None:
                         self.itmClick(itm.parent(),0,toggleExpanded=toggleExpanded)
                     else:
                         self.loadRoot()
                 else:
-                    self.armadillo.openFile(pth)
+                    self.ide.openFile(pth)
     
     def mousePressEvent(self, event):
         self.ui.tr_dir.clearSelection()
@@ -119,7 +148,7 @@ class DirTree(QtGui.QWidget):
             for f in dirlist:
                 citm = QtGui.QTreeWidgetItem([f,pth+f])
                 if not f.startswith('.') and  os.path.isdir(pth+f):
-                    citm.setIcon(0,QtGui.QIcon(self.armadillo.iconPath+'folder.png'))
+                    citm.setIcon(0,QtGui.QIcon(self.ide.iconPath+'folder.png'))
                     dircontents.append(citm)
             # Add Files
             for f in sorted(dirlist, key=lambda s: s.lower()):
@@ -132,13 +161,13 @@ class DirTree(QtGui.QWidget):
                     if ext in ['png','jpg','jpeg','gif','bmp','ico']:
                         ipth = pth+f
                     elif ext in self.extD:
-                        ipth = self.armadillo.iconPath+'files/'+self.extD[ext]+'.png'
+                        ipth = self.ide.iconPath+'files/'+self.extD[ext]+'.png'
                     if os.path.exists(ipth):
                         citm.setIcon(0,QtGui.QIcon(ipth))
-                    elif os.path.exists(self.armadillo.iconPath+'files/'+ext+'.png'):
-                        citm.setIcon(0,QtGui.QIcon(self.armadillo.iconPath+'files/'+ext+'.png'))
+                    elif os.path.exists(self.ide.iconPath+'files/'+ext+'.png'):
+                        citm.setIcon(0,QtGui.QIcon(self.ide.iconPath+'files/'+ext+'.png'))
                     else:
-                        citm.setIcon(0,QtGui.QIcon(self.armadillo.iconPath+'files/_blank.png'))
+                        citm.setIcon(0,QtGui.QIcon(self.ide.iconPath+'files/_blank.png'))
                     filecontents.append(citm)
 
         return dircontents,filecontents
@@ -155,7 +184,7 @@ class DirTree(QtGui.QWidget):
         
     def fileMenu(self,event):
         menu = QtGui.QMenu('file menu')
-        open_icon = QtGui.QIcon(self.armadillo.iconPath+'folder_go.png')
+        open_icon = QtGui.QIcon(self.ide.iconPath+'folder_go.png')
         citm = self.ui.tr_dir.currentItem()
         fitm = None
         if citm != None:
@@ -167,26 +196,26 @@ class DirTree(QtGui.QWidget):
                 fpth = os.path.dirname(pth)
                 fitm = citm.parent()
             
-                open_icon = QtGui.QIcon(self.armadillo.iconPath+'file_go.png')
+                open_icon = QtGui.QIcon(self.ide.iconPath+'file_go.png')
             
         menu.addAction(open_icon,'Open (external)')
         menu.addSeparator()
         
         if citm != None:
             # New File
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'new.png'),'New File')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
             
             if ext != '':
                 # Open menu
                 lang = None
                 cnt = 0
-                if ext in self.armadillo.settings['extensions']:
-                    lang = self.armadillo.settings['extensions'][ext]
-                for edtr in self.armadillo.editorD:
-                    if lang in self.armadillo.editorD[edtr] or ext in self.armadillo.editorD[edtr]:
-                        menu.addAction(QtGui.QIcon(self.armadillo.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
+                if ext in self.ide.settings['extensions']:
+                    lang = self.ide.settings['extensions'][ext]
+                for edtr in self.ide.editorD:
+                    if lang in self.ide.editorD[edtr] or ext in self.ide.editorD[edtr]:
+                        menu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
                         cnt += 1
                 if cnt == 0:
                     menu.addAction(QtGui.QIcon(),'Edit')
@@ -194,14 +223,14 @@ class DirTree(QtGui.QWidget):
                 menu.addSeparator()
             
 ##            # Other File Options
-##            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'forward.png'),'Open (external)')
+##            menu.addAction(QtGui.QIcon(self.ide.iconPath+'forward.png'),'Open (external)')
             
 
             if os.path.isfile(pth):
-                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'edit.png'),'Rename')
-##                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'copy.png'),'Copy File')
+                menu.addAction(QtGui.QIcon(self.ide.iconPath+'edit.png'),'Rename')
+##                menu.addAction(QtGui.QIcon(self.ide.iconPath+'copy.png'),'Copy File')
 ##                menu.addSeparator()
-                menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'delete.png'),'Delete File')
+                menu.addAction(QtGui.QIcon(self.ide.iconPath+'delete.png'),'Delete File')
             
             for act in menu.actions():  # Set Icon to visible
                 act.setIconVisibleInMenu(1)
@@ -209,8 +238,8 @@ class DirTree(QtGui.QWidget):
             fpth = unicode(self.ui.le_root.text())
             pth = fpth
             # New File
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'new.png'),'New File')
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'folder_add.png'),'New Folder')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'new.png'),'New File')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
 ##            menu.addAction(QtGui.QIcon(),'Open (external)')
 ##            menu.addSeparator()
@@ -222,7 +251,7 @@ class DirTree(QtGui.QWidget):
         showAct.setCheckable(1)
         showAct.setChecked(self.showAll)
         
-        menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Refresh')
+        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Refresh')
         
         
         # Launch Menu
@@ -233,7 +262,7 @@ class DirTree(QtGui.QWidget):
                 # Open File
                 self.openFile()
             elif acttxt == 'Open (external)':
-                fbsD = self.armadillo.settings['plugins']['filebrowser']
+                fbsD = self.ide.settings['plugins']['filebrowser']
                 if os.name=='nt':pth = pth.replace('/','\\')
                 dpth = os.path.dirname(pth)
                 if os.path.isdir(pth) and 'externalFileBrowser' in fbsD and fbsD['externalFileBrowser']!='':
@@ -264,7 +293,7 @@ class DirTree(QtGui.QWidget):
                     self.loadRoot()
             elif acttxt == 'New File':
                 # New File
-                resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New File','Enter the file name and extension.')
+                resp,ok = QtGui.QInputDialog.getText(self.ide,'New File','Enter the file name and extension.')
                 if ok and not resp.isEmpty():
                     if os.path.exists(fpth+'/'+unicode(resp)):
                         QtGui.QMessageBox.warning(self,'File Exists','That file already exists')
@@ -278,7 +307,7 @@ class DirTree(QtGui.QWidget):
                             self.loadRoot()
             elif acttxt == 'New Folder':
                 # New Folder
-                resp,ok = QtGui.QInputDialog.getText(self.armadillo,'New Folder','Enter the folder name.')
+                resp,ok = QtGui.QInputDialog.getText(self.ide,'New Folder','Enter the folder name.')
                 if ok and not resp.isEmpty():
                     if os.path.exists(fpth+'/'+unicode(resp)):
                         QtGui.QMessageBox.warning(self,'Folder Exists','That folder already exists')
@@ -291,17 +320,17 @@ class DirTree(QtGui.QWidget):
                             self.loadRoot()
             elif acttxt == 'Rename':
                 # Rename the file
-                fileopen = self.armadillo.isFileOpen(pth)
+                fileopen = self.ide.isFileOpen(pth)
                 rename = 1
                 if fileopen != -1:
                     rename = 0
                     resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to rename.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                     if resp == QtGui.QMessageBox.Yes:
                         rename = 1
-                        self.armadillo.closeTab(fileopen)
+                        self.ide.closeTab(fileopen)
                 
                 if rename:
-                    resp,ok = QtGui.QInputDialog.getText(self.armadillo,'Rename File','Enter the file name and extension.',QtGui.QLineEdit.Normal,os.path.split(pth)[1])
+                    resp,ok = QtGui.QInputDialog.getText(self.ide,'Rename File','Enter the file name and extension.',QtGui.QLineEdit.Normal,os.path.split(pth)[1])
                     if ok and not resp.isEmpty():
                         newpth = fpth+'/'+unicode(resp)
                         if os.path.exists(newpth):
@@ -315,14 +344,14 @@ class DirTree(QtGui.QWidget):
                                 self.loadRoot()
             elif acttxt == 'Delete File':
                 # Delete File
-                fileopen = self.armadillo.isFileOpen(pth)
+                fileopen = self.ide.isFileOpen(pth)
                 delfile = 1
                 if fileopen != -1:
                     delfile = 0
                     resp = QtGui.QMessageBox.warning(self,'File is open','The file is currently open and needs to close in order to delete.<br><br>Do you want to close the file now?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                     if resp == QtGui.QMessageBox.Yes:
                         delfile = 1
-                        self.armadillo.closeTab(fileopen)
+                        self.ide.closeTab(fileopen)
                 
                 if delfile:
                     resp = QtGui.QMessageBox.warning(self,'Delete File','Are you sure you want to delete the file:<br><br>'+pth,QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
@@ -336,7 +365,7 @@ class DirTree(QtGui.QWidget):
             else:
                 # Open file in specific editor
                 lang = acttxt[10:]
-                self.armadillo.openFile(pth,editor=lang)
+                self.ide.openFile(pth,editor=lang)
     
     def openFile(self):
         itm = self.ui.tr_dir.currentItem()

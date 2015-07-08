@@ -201,6 +201,8 @@ class TabSpace(object):
             if wwdg.currentRow() >-1:
                 wwdg.select(wwdg.currentIndex(),hide_tabs=0)
             
+            self.ide.evnt.workspaceChanged.emit(self.ide.currentWorkspace)
+            
             # show homepage
     ##        else:
     ##            self.ide.
@@ -211,6 +213,8 @@ class TabSpace(object):
         ok = self.ide.closeWorkspace(wksp)
         if ok:
             self.tabs.removeTab(ind)
+            
+            self.ide.evnt.workspaceClosed.emit(wksp)
         
         if self.tabs.count()==0:
             self.tabs.hide()

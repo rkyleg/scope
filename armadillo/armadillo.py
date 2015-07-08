@@ -28,6 +28,11 @@ class Events(QtCore.QObject):
     fileOpened = QtCore.pyqtSignal(QtGui.QWidget)
     resized = QtCore.pyqtSignal()
     
+    # Workspace Events
+    workspaceChanged = QtCore.pyqtSignal(str)
+    workspaceOpened = QtCore.pyqtSignal(str)
+    workspaceClosed = QtCore.pyqtSignal(str)
+    
 class NewMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
@@ -1508,7 +1513,9 @@ class Armadillo(QtGui.QWidget):
 ##        ok=1
         
         # Load workspace
-        if not wksp in self.workspaces:
+        if wksp in self.workspaces:
+            self.evnt.workspaceChanged.emit(wksp)
+        else:
             self.workspaceCount +=1
             
             wtype = 'workspace'
@@ -1563,10 +1570,10 @@ class Armadillo(QtGui.QWidget):
             if last_file != None:
                 self.openFile(last_file)
             
-            if 'basefolder' in wD and wD['basefolder'] != None:
-                if 'filebrowser' in self.pluginD:
-                    self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
-                    self.pluginD['filebrowser'].loadRoot()
+##            if 'basefolder' in wD and wD['basefolder'] != None:
+##                if 'filebrowser' in self.pluginD:
+##                    self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
+##                    self.pluginD['filebrowser'].loadRoot()
             
             self.setWindowTitle('Armadillo | '+wksp)
             
@@ -1577,6 +1584,8 @@ class Armadillo(QtGui.QWidget):
             if show_tabs:
                 self.showTabspace()
             
+            
+            self.evnt.workspaceOpened.emit(wksp)
 ##            self.workspaces[wksp]={}
             
 ##            QtGui.QApplication.processEvents()
