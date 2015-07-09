@@ -86,38 +86,27 @@ class WorkspaceMenu(QtGui.QMenu):
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
-            self.parent.newWorkspace()
+            self.parent.workspaceNew()
         elif str(event.text()) == 'Save Workspace':
-            self.parent.saveWorkspace()
+            self.parent.workspaceSave()
         elif str(event.text()) == 'Close Current Workspace':
-            self.parent.closeWorkspace(askSave=1,openStart=1)
+            self.parent.workspaceClose(askSave=1,openStart=1)
         elif str(event.text()) == 'Delete Workspace':
             if os.path.exists(self.parent.settingPath+'/workspaces'):
                 resp,ok = QtGui.QInputDialog.getItem(self.parent,'Delete Workspace','Select the workspace to delete',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
 
                 if ok:
+                    wksp = str(resp)
+                    if wksp in self.parent.workspaces:
+                        self.parent.workspaceClose(wksp)
                     os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
-                    if str(resp) == self.parent.currentWorkspace:
-                        self.parent.currentWorkspace=None
+##                    if str(resp) == self.parent.currentWorkspace:
+##                        self.parent.currentWorkspace=None
                     self.loadMenu()
             else:
                 QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
         elif str(event.text()) == 'Rename Workspace':
-            if os.path.exists(self.parent.settingPath+'/workspaces'):
-                resp,ok = QtGui.QInputDialog.getItem(self.parent,'Rename Workspace','Select the workspace to rename',QtCore.QStringList(sorted(os.listdir(self.parent.settingPath+'/workspaces'))),editable=0)
-
-                if ok:
-                    owskp=str(resp)
-                    pth = self.parent.settingPath+'/workspaces/'+owskp
-                    resp,ok = QtGui.QInputDialog.getText(self,'Rename Workspace','Enter Workspace Name',QtGui.QLineEdit.Normal,str(owskp))
-                    if ok and not resp.isEmpty():
-                        npth = self.parent.settingPath+'/workspaces/'+str(resp)
-                        os.rename(pth,npth)
-                        self.loadMenu()
-                        if owskp == self.parent.workspace:
-                            self.parent.workspace=str(resp)
-            else:
-                QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
+            self.parent.workspaceRename()
         else:
             self.parent.loadWorkspace(str(event.text()))
             self.saveWact.setDisabled(0)

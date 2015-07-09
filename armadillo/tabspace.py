@@ -183,9 +183,7 @@ class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
-##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,250);border:0px;}")
-##        self.tabs.setWindowOpacity(0.9)
-        self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,240);border:0px;}")##        self.tabs.setWindowOpacity(0.9)        self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
 
         self.ide = parent
@@ -207,9 +205,12 @@ class TabSpace(object):
     
         # Signals
         self.tabs.currentChanged.connect(self.changeWorkspace)
-        self.tabs.tabCloseRequested.connect(self.closeWorkspace)
+        self.tabs.tabCloseRequested.connect(self.closeWorkspaceTab)
         
         self.tabs.keyPressEvent = self.tabKeyPress
+        
+        # sign up for events
+        self.ide.evnt.workspaceClosed.connect(self.closeWorkspace)
     
     def tabKeyPress(self,event):
         print 'tab key press'
@@ -243,20 +244,25 @@ class TabSpace(object):
                 wwdg.select(wwdg.currentIndex(),hide_tabs=0)
             
             self.ide.evnt.workspaceChanged.emit(self.ide.currentWorkspace)
-            
+            self.ide.setWindowTitle('Armadillo | '+self.ide.currentWorkspace)
             # show homepage
     ##        else:
     ##            self.ide.
 
 
-    def closeWorkspace(self,ind):
+    def closeWorkspaceTab(self,ind):
         wksp = str(self.tabs.tabText(ind))
-        ok = self.ide.closeWorkspace(wksp)
-        if ok:
-            self.tabs.removeTab(ind)
-            
-            self.ide.evnt.workspaceClosed.emit(wksp)
+        ok = self.ide.workspaceClose(wksp)
         
+    
+    def closeWorkspace(self,wksp):
+##        if ok:
+        for i in range(self.tabs.count()):
+            if str(self.tabs.tabText(i)) == wksp:
+                self.tabs.removeTab(i)
+                break
+            
+##            self.ide.evnt.workspaceClosed.emit(wksp)        
         if self.tabs.count()==0:
             self.tabs.hide()
         

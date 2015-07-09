@@ -160,8 +160,7 @@ class Armadillo(QtGui.QWidget):
 ##        self.ui.tab.setExpanding(0)
 ##        self.ui.tab.mousePressEvent=self.tabMousePressEvent
         self.ui.fr_tabs.hide()
-        
-        self.createTabspace()
+
         
         #--- Hide toolbar buttons for now
 ##        self.ui.b_save.hide()
@@ -204,6 +203,9 @@ class Armadillo(QtGui.QWidget):
             workspaceClosed = QtCore.pyqtSignal(str)
         self.evnt = Events()
 ##        self.fileOpenD={}
+        
+        # Create Tabspace
+        self.createTabspace()
         
         #--- Key Shortcuts
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
@@ -336,7 +338,7 @@ class Armadillo(QtGui.QWidget):
 ##        self.HUDWidget.toggleHUD(0)
         
         # Add blank workspace
-##        self.loadWorkspace(None)
+##        self.workspaceOpen(None)
 
         
     #---Events
@@ -344,7 +346,7 @@ class Armadillo(QtGui.QWidget):
         cancelled = 0
         # Close all workspaces
         for wksp in self.workspaces.keys():
-            ok = self.closeWorkspace(wksp)
+            ok = self.workspaceClose(wksp)
             if not ok:
                 cancelled=1
                 break
@@ -1250,7 +1252,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.sw_main.setCurrentIndex(i)
     
     #---Workspace
-    def saveWorkspace(self,wksp=None):
+    def workspaceSave(self,wksp=None):
         
         if wksp == None:
             wksp = self.currentWorkspace
@@ -1288,10 +1290,10 @@ class Armadillo(QtGui.QWidget):
                 f.write(json.dumps(wD))
                 f.close()
     
-    def loadWorkspace(self,wksp,show_tabs=1):
-##        self.saveWorkspace()
+    def workspaceOpen(self,wksp,show_tabs=1):
+##        self.workspaceSave()
 ##        ok = self.deactivateWorkspace(self.currentWorkspace)
-##        ok = self.closeWorkspace(askSave=0)
+##        ok = self.workspaceClose(askSave=0)
 ##        ok=1
         
         # Load workspace
@@ -1357,7 +1359,7 @@ class Armadillo(QtGui.QWidget):
 ##                    self.pluginD['filebrowser'].ui.le_root.setText(wD['basefolder'])
 ##                    self.pluginD['filebrowser'].loadRoot()
             
-            self.setWindowTitle('Armadillo | '+wksp)
+            
             
             self.workspaceMenu.saveWact.setDisabled(0)
             self.workspaceMenu.renameWact.setDisabled(0)
@@ -1368,6 +1370,7 @@ class Armadillo(QtGui.QWidget):
             
             
             self.evnt.workspaceOpened.emit(wksp)
+        
 ##            self.workspaces[wksp]={}
             
 ##            QtGui.QApplication.processEvents()
@@ -1378,20 +1381,20 @@ class Armadillo(QtGui.QWidget):
     
     def addWorkspaceEditor(self,file_id,title,filename,editor=''):
         if self.currentWorkspace == None:
-            self.loadWorkspace(None,show_tabs=0)
+            self.workspaceOpen(None,show_tabs=0)
         tab = self.tabspace.tabs.currentWidget().addEditortab(file_id,title,filename,editor)
         if not tab in self.fileD[file_id]['tabs']:
             self.fileD[file_id]['tabs'].append(tab)
     
-    def newWorkspace(self):
+    def workspaceNew(self):
         # New Workspace
         resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
         if ok and not resp.isEmpty():
 ##            self.currentWorkspace = resp
-##            self.saveWorkspace(str(resp))
-            self.saveWorkspace(str(resp))
-            self.loadWorkspace(str(resp))
-##            self.saveWorkspace(str(resp))
+##            self.workspaceSave(str(resp))
+            self.workspaceSave(str(resp))
+            self.workspaceOpen(str(resp))
+##            self.workspaceSave(str(resp))
 ##            self.workspaceMenu.loadMenu()
 ##            self.workspaceMenu.saveWact.setDisabled(0)
 ##            self.workspaceMenu.closeWact.setDisabled(0)
@@ -1409,7 +1412,30 @@ class Armadillo(QtGui.QWidget):
         
         return 1
     
-    def closeWorkspace(self,wksp=None,askSave=0,openStart=0):
+    def workspaceRename(self,wksp=None):
+        if os.path.exists(self.settingPath+'/workspaces'):
+            if wksp == None:
+                resp,ok = QtGui.QInputDialog.getItem(self,'Rename Workspace','Select the workspace to rename',QtCore.QStringList(sorted(os.listdir(self.settingPath+'/workspaces'))),editable=0)
+                if ok: wksp = str(resp)
+            if wksp != None:
+                owskp=wksp
+                pth = self.settingPath+'/workspaces/'+owskp
+                resp,ok = QtGui.QInputDialog.getText(self,'Rename Workspace','Enter Workspace Name',QtGui.QLineEdit.Normal,str(owskp))
+                if ok and not resp.isEmpty():
+                    # save and close workspace if open
+                    if owskp in self.workspaces:
+##                        self.parent.workspaceSave(owskp)
+                        self.workspaceClose(owskp)
+                    npth = self.settingPath+'/workspaces/'+str(resp)
+                    os.rename(pth,npth)
+                    self.loadMenu()
+                    self.workspaceOpen(str(resp))
+##                        if owskp == self.parent.workspace:
+##                            self.parent.workspace=str(resp)
+        else:
+            QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to rename')
+    
+    def workspaceClose(self,wksp=None,askSave=0,openStart=0):
         wk_ok = 1
         
         if wksp == None:
@@ -1418,7 +1444,7 @@ class Armadillo(QtGui.QWidget):
         # Save current workspace
         fl_ok = 1
         if wksp != None:
-            self.saveWorkspace()
+            self.workspaceSave()
             
             # Close 
             wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
@@ -1435,7 +1461,7 @@ class Armadillo(QtGui.QWidget):
 ##            wk_ok=0
 ##            resp = QtGui.QMessageBox.warning(self,'Save Workspace',"Do you want to save the current workspace <b>"+self.currentWorkspace+"</b> first?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
 ##            if resp == QtGui.QMessageBox.Yes:
-##                self.saveWorkspace()
+##                self.workspaceSave()
 ##                wk_ok =1
 ##            elif resp == QtGui.QMessageBox.No:
 ##                wk_ok =1
@@ -1452,6 +1478,7 @@ class Armadillo(QtGui.QWidget):
         ok=fl_ok*wk_ok
         
         if ok:
+            self.evnt.workspaceClosed.emit(wksp)
             self.currentWorkspace=None
             self.workspaces.pop(str(wksp))
 
@@ -1535,7 +1562,7 @@ class Armadillo(QtGui.QWidget):
         
         # Save Workspace
         if self.currentWorkspace != None and int(self.settings['save_workspace_on_close']):
-            self.saveWorkspace()
+            self.workspaceSave()
 
 ##        # Save Window Geometry
 ##        f = open(self.settingPath+'/window','wb')
