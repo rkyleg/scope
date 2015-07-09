@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.11-dev'
+__version__ = '1.9.12-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -1256,34 +1256,35 @@ class Armadillo(QtGui.QWidget):
             wksp = self.currentWorkspace
         # Save the current Workspace
         if wksp != None:
-            if self.workspaces[wksp]['type'] != 'blank':
+            if wksp not in self.workspaces or self.workspaces[wksp]['type'] != 'blank':
                 if not os.path.exists(self.settingPath+'/workspaces'):
                     os.mkdir(self.settingPath+'/workspaces')
                 
                 wD={'files':[],'basefolder':None,'lastOpenFile':None}
     ##            ci = self.ui.tab.currentIndex()
                 # Save workspace files
-                li_wdg = self.workspaces[wksp]['widget']
-                for i in range(li_wdg.count()):
-                    itm = li_wdg.itemWidget(li_wdg.item(i))
-                    file_id = itm.id
-    ##                file_id = self.ui.tab.tabData(i).toInt()[0]
-    ##                if file_id in self.fileOpenD:
-                    
-                    if file_id in self.fileOpenD:
-                        wdg = self.fileOpenD[file_id]
-                        editor = wdg.editor
-                    else:
-                        editor = itm.editor
-                    if itm.filename != None:
-                        wD['files'].append({'filename':itm.filename,'editor':editor})
-    ##                    if i==ci:
-                if self.currentEditor() != None:
-                    wD['lastOpenFile']=self.currentEditor().filename
+                if wksp in self.workspaces:
+                    li_wdg = self.workspaces[wksp]['widget']
+                    for i in range(li_wdg.count()):
+                        itm = li_wdg.itemWidget(li_wdg.item(i))
+                        file_id = itm.id
+        ##                file_id = self.ui.tab.tabData(i).toInt()[0]
+        ##                if file_id in self.fileOpenD:
+                        
+                        if file_id in self.fileOpenD:
+                            wdg = self.fileOpenD[file_id]
+                            editor = wdg.editor
+                        else:
+                            editor = itm.editor
+                        if itm.filename != None:
+                            wD['files'].append({'filename':itm.filename,'editor':editor})
+        ##                    if i==ci:
+                    if self.currentEditor() != None:
+                        wD['lastOpenFile']=self.currentEditor().filename
                 
-                # Save workspace dir
-                wD['basefolder']=self.workspaces[wksp]['basefolder']
-                f = open(self.settingPath+'/workspaces/'+self.currentWorkspace,'w')
+                    # Save workspace dir
+                    wD['basefolder']=self.workspaces[wksp]['basefolder']
+                f = open(self.settingPath+'/workspaces/'+wksp,'w')
                 f.write(json.dumps(wD))
                 f.close()
     
@@ -1386,9 +1387,11 @@ class Armadillo(QtGui.QWidget):
         # New Workspace
         resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
         if ok and not resp.isEmpty():
-            self.currentWorkspace = resp
-            self.saveWorkspace()
+##            self.currentWorkspace = resp
+##            self.saveWorkspace(str(resp))
+            self.saveWorkspace(str(resp))
             self.loadWorkspace(str(resp))
+##            self.saveWorkspace(str(resp))
 ##            self.workspaceMenu.loadMenu()
 ##            self.workspaceMenu.saveWact.setDisabled(0)
 ##            self.workspaceMenu.closeWact.setDisabled(0)

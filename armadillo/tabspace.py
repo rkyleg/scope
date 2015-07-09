@@ -58,12 +58,15 @@ class WorkspaceWidget(QtGui.QListWidget):
                 if tind <0:
                     tind = self.ide.tabspace.tabs.count()-1
                 self.ide.tabspace.tabs.setCurrentIndex(tind)
+                self.ide.tabspace.tabs.currentWidget().setFocus()
                 handled = 1
             elif ky == QtCore.Qt.Key_Right:
                 tind +=1
                 if tind >= self.ide.tabspace.tabs.count():
                     tind = 0
                 self.ide.tabspace.tabs.setCurrentIndex(tind)
+                self.ide.tabspace.tabs.currentWidget().setFocus()
+
                 handled = 1
         elif ky in [QtCore.Qt.Key_Enter,QtCore.Qt.Key_Return]:
             handled = 1
