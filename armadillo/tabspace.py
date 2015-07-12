@@ -85,8 +85,10 @@ class WorkspaceWidget(QtGui.QListWidget):
             handled = 1
 ##        elif ky == QtCore.Qt.Key_F1:
 ##            self.ide.tabspace.toggle(0)
-##            handled = 1
-##        if event.modifiers() & QtCore.Qt.ControlModifier:##            if event.key() == QtCore.Qt.Key_C:
+##            handled = 1
+
+##        if event.modifiers() & QtCore.Qt.ControlModifier:
+##            if event.key() == QtCore.Qt.Key_C:
 ##                self.copy()
 ##                handled = 1
 ##            elif event.key() == QtCore.Qt.Key_V:
@@ -139,7 +141,8 @@ class editortab(QtGui.QWidget):
         img2 = img.scaledToHeight(20,QtCore.Qt.SmoothTransformation)
         icn_lbl = QtGui.QLabel()
         icn_lbl.setPixmap(img2)
-        layout.addWidget(icn_lbl)        
+        layout.addWidget(icn_lbl)
+        
         # File Text
         lbl = QtGui.QLabel(title)
         lbl.setProperty("class",'editor_tab')
@@ -165,7 +168,8 @@ class editortab(QtGui.QWidget):
     
     def close(self,ignoreCheck=0):
         li = self.parent().parent()
-##        print 'close',self.id##        print li, li.indexFromItem(self.item)
+##        print 'close',self.id
+##        print li, li.indexFromItem(self.item)
         if ignoreCheck:
             ok =1
         else:
@@ -183,7 +187,9 @@ class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
-##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,240);border:0px;}")##        self.tabs.setWindowOpacity(0.9)        self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,240);border:0px;}")
+##        self.tabs.setWindowOpacity(0.9)
+        self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
         
 
         self.ide = parent
@@ -262,7 +268,8 @@ class TabSpace(object):
                 self.tabs.removeTab(i)
                 break
             
-##            self.ide.evnt.workspaceClosed.emit(wksp)        
+##            self.ide.evnt.workspaceClosed.emit(wksp)
+        
         if self.tabs.count()==0:
             self.tabs.hide()
         

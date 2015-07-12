@@ -108,7 +108,7 @@ class WorkspaceMenu(QtGui.QMenu):
         elif str(event.text()) == 'Rename Workspace':
             self.parent.workspaceRename()
         else:
-            self.parent.loadWorkspace(str(event.text()))
+            self.parent.workspaceOpen(str(event.text()))
             self.saveWact.setDisabled(0)
             self.closeWact.setDisabled(0)
 

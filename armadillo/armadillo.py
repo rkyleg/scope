@@ -1479,7 +1479,7 @@ class Armadillo(QtGui.QWidget):
         
         if ok:
             self.evnt.workspaceClosed.emit(wksp)
-            self.currentWorkspace=None
+##            self.currentWorkspace=None
             self.workspaces.pop(str(wksp))
 
             self.workspaceMenu.saveWact.setDisabled(1)
