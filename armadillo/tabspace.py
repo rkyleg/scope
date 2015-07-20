@@ -187,9 +187,16 @@ class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
-##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(61,107,129,240);border:0px;}")
+##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(50,50,50,240);},QTabBar{color:white;background:transparent;}")
 ##        self.tabs.setWindowOpacity(0.9)
-        self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground)
+##        self.tabs.setStyleSheet("background:transparent;")
+        
+        # Make translucent if not windows
+        if os.name !='nt':
+            self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground,1)
+        
+##        self.tabs.setAttribute(QtCore.Qt.WA_NoSystemBackground,1)
+##        self.tabs.setAttribute(QtCore.Qt.WA_DeleteOnClose, 1);
         
 
         self.ide = parent

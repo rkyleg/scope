@@ -139,7 +139,7 @@ class ArmadilloMenu(QtGui.QMenu):
         self.addMenu(self.parent.workspaceMenu)
         
         #---Editor
-        self.editorMenu=QtGui.QMenu('&Editor')
+        self.editorMenu=QtGui.QMenu('&Editor',self)
         self.addMenu(self.editorMenu)
         
         # Tab Indent
@@ -175,7 +175,7 @@ class ArmadilloMenu(QtGui.QMenu):
         self.statsAction = self.editorMenu.addAction(icn,'Statistics',self.parent.editorStats)
         
         #---Window
-        self.viewMenu=QtGui.QMenu('W&indow')
+        self.viewMenu=QtGui.QMenu('W&indow',self)
         self.addMenu(self.viewMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
