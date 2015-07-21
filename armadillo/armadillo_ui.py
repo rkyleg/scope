@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Jul 20 19:12:59 2015
+# Created: Mon Jul 20 20:52:02 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -130,12 +130,15 @@ class Ui_Form(object):
         self.b_closetab.setObjectName(_fromUtf8("b_closetab"))
         self.gridLayout_6.addWidget(self.b_closetab, 0, 4, 1, 1)
         self.b_tabicon = QtGui.QPushButton(self.fr_tab)
-        self.b_tabicon.setMaximumSize(QtCore.QSize(28, 16777215))
+        self.b_tabicon.setMaximumSize(QtCore.QSize(26, 16777215))
         self.b_tabicon.setText(_fromUtf8(""))
-        self.b_tabicon.setIconSize(QtCore.QSize(24, 24))
+        self.b_tabicon.setIconSize(QtCore.QSize(26, 26))
         self.b_tabicon.setObjectName(_fromUtf8("b_tabicon"))
         self.gridLayout_6.addWidget(self.b_tabicon, 0, 1, 1, 1)
         self.l_filename = QtGui.QLabel(self.fr_tab)
+        font = QtGui.QFont()
+        font.setPointSize(10)
+        self.l_filename.setFont(font)
         self.l_filename.setText(_fromUtf8(""))
         self.l_filename.setObjectName(_fromUtf8("l_filename"))
         self.gridLayout_6.addWidget(self.l_filename, 0, 2, 1, 1)
@@ -300,7 +303,7 @@ class Ui_Form(object):
         self.b_save.setIcon(icon10)
         self.b_save.setObjectName(_fromUtf8("b_save"))
         self.gridLayout.addWidget(self.b_save, 0, 3, 1, 1)
-        spacerItem4 = QtGui.QSpacerItem(2, 2, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        spacerItem4 = QtGui.QSpacerItem(4, 2, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem4, 0, 2, 1, 1)
         self.gridLayout_2.addWidget(self.fr_toolbar, 0, 2, 1, 1)
         self.gridLayout_8.addWidget(self.fr_topbar, 0, 0, 1, 1)
@@ -313,10 +316,12 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Armadillo", None))
+        self.b_closetab.setToolTip(_translate("Form", "close file", None))
         self.b_closetab.setProperty("class", _translate("Form", "editor_tab_cls_btn", None))
         self.b_tabicon.setProperty("class", _translate("Form", "tab_button", None))
         self.b_main.setToolTip(_translate("Form", "Main Menu", None))
         self.b_main.setProperty("class", _translate("Form", "main_menu", None))
+        self.b_show_tabs.setToolTip(_translate("Form", "view open files", None))
         self.fr_find_2.setProperty("class", _translate("Form", "toolbarLineEdit", None))
         self.le_find.setPlaceholderText(_translate("Form", "find", None))
         self.le_find.setProperty("class", _translate("Form", "toolbar", None))

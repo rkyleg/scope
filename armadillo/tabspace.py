@@ -10,7 +10,7 @@ class WorkspaceWidget(QtGui.QListWidget):
         self.setResizeMode(1)
         self.setDragDropMode(4) # internalmove
         self.setDragEnabled(1) # enable drag drop
-        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
+##        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
         self.setSpacing(2)
         self.clicked.connect(self.select)
@@ -188,7 +188,7 @@ class TabSpace(object):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
         self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(100,100,100,240);},QTabBar{color:white;background:transparent;}")
-        self.tabs.setWindowOpacity(0.9)
+##        self.tabs.setWindowOpacity(0.9)
 ##        self.tabs.setStyleSheet("background:transparent;")
         
         # Make translucent if not windows
@@ -229,7 +229,7 @@ class TabSpace(object):
         
     
     def tabKeyPress(self,event):
-        print 'tab key press'
+##        print 'tab key press'
         handled = 0
         ky = event.key()
         if ky == QtCore.Qt.Key_F1:
@@ -256,6 +256,7 @@ class TabSpace(object):
             self.ide.currentWorkspace = None
         else:
             self.ide.currentWorkspace = str(self.tabs.tabText(ind))
+##            self.ide.workspaceChange(str(self.tabs.tabText(ind))
             # set current file to current file in workspace
             wwdg = self.tabs.widget(ind)
     ##        print 'cur ind',wwdg.currentIndex()

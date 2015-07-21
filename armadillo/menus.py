@@ -199,7 +199,7 @@ class ArmadilloMenu(QtGui.QMenu):
         
         # Home
         icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'&Home',self.parent.showHUD)
+        act = self.addAction(icn,'&Home',self.parent.showHome)
         
         # Settings
         icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')

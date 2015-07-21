@@ -8,7 +8,7 @@ class jsObject(QtCore.QObject):
         self.parent = parent
     
     @QtCore.pyqtSlot()
-    def closeHUD(self):
+    def closeHome(self):
         pass
 ##        print 'close hud'
 ##        self.parent.toggleHUD()
@@ -33,12 +33,12 @@ class jsObject(QtCore.QObject):
 ##        self.parent.toggleHUD()
     
 
-class HUD(object):
+class Home(object):
     def __init__(self,parent):
         self.armadillo=parent
 ##        self.armadillo.evnt.resized.connect(self.resize)
     
-        # Create hud widget
+        # Create home widget
         from editors.webview import webview
         self.webview=webview.WebView(self.armadillo)
 ##        self.webview.setWindowOpacity(0.6)
@@ -46,18 +46,18 @@ class HUD(object):
 ##        self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
-        self.webview.linkClicked.connect(self.HUDClicked)
+        self.webview.linkClicked.connect(self.homeClicked)
 
         self.webview.setupInspector()
         self.webview.filename = None
 
         self.jsObject = jsObject(parent=self)
     
-    def toggleHUD(self,visible=None):
+    def toggleHome(self,visible=None):
 ##        if visible == None:
 ##            visible = not self.webview.isVisible()
 ##        if visible:
-            self.viewHUD()
+            self.viewHome()
 ##        else:
             self.armadillo.ui.sw_main.setCurrentWidget(self.webview)
 ##        else:
@@ -68,14 +68,14 @@ class HUD(object):
 ##        else:
 ##            self.viewHUD()
             
-    def viewHUD(self):
+    def viewHome(self):
             cur_itm=0
             if os.name =='nt':
                 pfx="file:///"
             else:
                 pfx="file://"
             
-            f = open(self.armadillo.armadilloPath+'/plugins/hud/HUD.html','r')
+            f = open(self.armadillo.armadilloPath+'/plugins/home/home.html','r')
             txt=f.read()
             f.close()
             
@@ -163,7 +163,7 @@ class HUD(object):
             if file_txt == '':
                 self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
             
-            self.webview.page().mainFrame().addToJavaScriptWindowObject('HUD',self.jsObject)
+            self.webview.page().mainFrame().addToJavaScriptWindowObject('HOME',self.jsObject)
 ##            self.webview.setGeometry(0,0,g.width(),g.height())
             self.webview.show()
 ##            QtGui.QApplication.processEvents()
@@ -172,7 +172,7 @@ class HUD(object):
 ##            self.webview.setGeometry(0,0,g.width(),h)
             self.webview.setFocus()
     
-    def HUDClicked(self,url):
+    def homeClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
 ##        print(lnk)
         if lnk.startswith('opentab:'):

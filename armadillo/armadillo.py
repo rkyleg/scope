@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.10.0-dev'
+__version__ = '1.10.1-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -276,7 +276,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.b_toggle_find.hide()
         
         # Add Plugins
-        self.HUDWidget = None
+        self.HomeWidget = None
         self.pluginD = {}
         self.prevPlugin=1
         curdir = os.path.abspath('.')
@@ -332,10 +332,10 @@ class Armadillo(QtGui.QWidget):
         
         self.setFocus()
         
-        # Add Start/HUD
+        # Add Start/Home
         QtGui.QApplication.processEvents()
-        self.showHUD()
-##        self.HUDWidget.toggleHUD(0)
+        self.showHome()
+##        self.HomeWidget.toggleHome(0)
         
         # Add blank workspace
 ##        self.workspaceOpen(None)
@@ -374,7 +374,7 @@ class Armadillo(QtGui.QWidget):
         if event.mimeData().urls():
             for f in event.mimeData().urls():
                 self.openFile(str(f.toLocalFile()))
-##                self.HUDWidget.toggleHUD(0)
+##                self.HomeWidget.toggleHome(0)
             handled=True
 
         if not handled:
@@ -587,7 +587,7 @@ class Armadillo(QtGui.QWidget):
 ##                        if self.ui.tab.count() ==1:
 ##                            self.changeTab(0)
                             
-                # Close HUD if visible
+                # Close Home if visible
 ##                if self.HUDWidget != None and self.HUDWidget.webview.isVisible():
 ##                    self.HUDWidget.webview.hide()
     ##                    self.filesystemwatcher.addPath(filename)
@@ -745,9 +745,11 @@ class Armadillo(QtGui.QWidget):
             self.evnt.editorTabChanged.emit(wdg)
             self.ui.l_filename.setText(wdg.displayTitle)
             if wdg.filename != None:
-                self.ui.l_filename.setToolTip(wdg.filename)
+                self.ui.fr_tab.setToolTip(wdg.filename)
+##                self.ui.l_filename.setToolTip(wdg.filename)
             else:
-                self.ui.l_filename.setToolTip('New File (unsaved)')
+##                self.ui.l_filename.setToolTip('New File (unsaved)')
+                self.ui.fr_tab.setToolTip('New File (unsaved)')
             try:
                 self.ui.b_tabicon.setIcon(wdg.icon)
             except:
@@ -1218,9 +1220,9 @@ class Armadillo(QtGui.QWidget):
 ##        QtGui.QApplication.processEvents()
 ##        self.changeTab(self.ui.tab.currentIndex())
     
-    def showHUD(self):
-        if self.HUDWidget != None:
-            self.HUDWidget.toggleHUD()
+    def showHome(self):
+        if self.HomeWidget != None:
+            self.HomeWidget.toggleHome()
     
     def showTabspace(self):
 ##        # Add tabs
@@ -1408,18 +1410,18 @@ class Armadillo(QtGui.QWidget):
 ##            self.workspaceMenu.saveWact.setDisabled(0)
 ##            self.workspaceMenu.closeWact.setDisabled(0)
     
-    def activateWorkspace(self,workspace):
-        print 'activate workspace'
-    
-    def deactivateWorkspace(self,workspace):
-        if self.currentWorkspace != None:
-            print 'deactivate workspace'
-##            for i in range(self.ui.tab.count()):
-##                file_id = self.ui.tab.tabData(i).toInt()[0]
-##                self.ui.tab.setTabEnabled(i,False)
-        
-        
-        return 1
+##    def activateWorkspace(self,workspace):
+##        print 'activate workspace'
+##    
+##    def deactivateWorkspace(self,workspace):
+##        if self.currentWorkspace != None:
+##            print 'deactivate workspace'
+####            for i in range(self.ui.tab.count()):
+####                file_id = self.ui.tab.tabData(i).toInt()[0]
+####                self.ui.tab.setTabEnabled(i,False)
+##        
+##        
+##        return 1
     
     def workspaceRename(self,wksp=None):
         if os.path.exists(self.settingPath+'/workspaces'):

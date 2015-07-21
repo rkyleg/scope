@@ -40,9 +40,8 @@ class Console(QtGui.QTextEdit):
         """
 
         QtGui.QTextEdit.__init__(self, parent)
-
-        self.setProperty("class","pluginHorizontal")
         
+        self.setProperty("class","pluginHorizontal")
         # Syntax Highlighter
         self.highlighter = highlighter.MyHighlighter(self)
 
@@ -134,7 +133,7 @@ class Console(QtGui.QTextEdit):
         if __name__ =='__main__':
             self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')<br>')
         else:
-            self.write('# Limited Python interpreter (only modules included with Armadillo are available)<br># Ctrl+l to launch external with default installed Python<br>')
+            self.write('# Armadillo Python ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+') Shell <br>#&nbsp;&nbsp;&nbsp;&nbsp;- only modules included with Armadillo are available<br>#&nbsp;&nbsp;&nbsp;&nbsp;- Ctrl+l to launch popup (outside of Armadillo) with the default installed Python<br>')
         
         self.write(sys.ps1)
         self.prompt = sys.ps1
@@ -144,7 +143,6 @@ class Console(QtGui.QTextEdit):
         
     def clear(self):
         QtGui.QTextEdit.clear(self)
-        self.write(sys.ps1)
         self.point = 0
         self.line = ''
         self.lines = []
@@ -415,6 +413,7 @@ if __name__=='__main__':
     import sys
     app=QtGui.QApplication(sys.argv)
     console=Console()
+    console.setStyleSheet('QTextEdit {background:rgb(30,30,30);color:white;}')
     console.resize(600,400)
     console.show()
     app.exec_()

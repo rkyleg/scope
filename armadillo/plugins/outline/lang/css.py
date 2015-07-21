@@ -25,7 +25,7 @@ def analyzeLine(txtlines):
                 if itmText != None and itmText.startswith('.'):
                     typ = 'function'
                 else:
-                    typ = 'object'
+                    typ = 'function'
     
         if itmText != None:
             outline.append([spc+itmText,typ,lcnt])

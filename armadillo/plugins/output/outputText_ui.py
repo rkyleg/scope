@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outputText.ui'
 #
-# Created: Sat Jan  3 22:55:43 2015
+# Created: Mon Jul 20 20:02:50 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -31,10 +31,6 @@ class Ui_OutWidget(object):
         self.gridLayout.setMargin(0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.tb_out = QtGui.QTextBrowser(OutWidget)
-        self.tb_out.setFrameShape(QtGui.QFrame.NoFrame)
-        self.tb_out.setObjectName(_fromUtf8("tb_out"))
-        self.gridLayout.addWidget(self.tb_out, 3, 1, 1, 1)
         self.fr_cmd = QtGui.QFrame(OutWidget)
         self.fr_cmd.setStyleSheet(_fromUtf8("QFrame#fr_cmd{\n"
 "\n"
@@ -50,10 +46,6 @@ class Ui_OutWidget(object):
         self.gridLayout_2.setHorizontalSpacing(4)
         self.gridLayout_2.setVerticalSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.label = QtGui.QLabel(self.fr_cmd)
-        self.label.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
-        self.label.setObjectName(_fromUtf8("label"))
-        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
         self.le_cmd = QtGui.QLineEdit(self.fr_cmd)
         self.le_cmd.setStyleSheet(_fromUtf8("background:transparent;\n"
 "border:0px;\n"
@@ -61,19 +53,23 @@ class Ui_OutWidget(object):
         self.le_cmd.setText(_fromUtf8(""))
         self.le_cmd.setObjectName(_fromUtf8("le_cmd"))
         self.gridLayout_2.addWidget(self.le_cmd, 0, 1, 1, 1)
+        self.label_2 = QtGui.QLabel(self.fr_cmd)
+        self.label_2.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
+        self.label_2.setObjectName(_fromUtf8("label_2"))
+        self.gridLayout_2.addWidget(self.label_2, 0, 2, 1, 1)
+        self.label = QtGui.QLabel(self.fr_cmd)
+        self.label.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
+        self.label.setObjectName(_fromUtf8("label"))
+        self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
         self.le_args = QtGui.QLineEdit(self.fr_cmd)
         self.le_args.setStyleSheet(_fromUtf8("background:transparent;\n"
 "border:0px;\n"
 "color:white;"))
         self.le_args.setObjectName(_fromUtf8("le_args"))
         self.gridLayout_2.addWidget(self.le_args, 0, 3, 1, 1)
-        self.label_2 = QtGui.QLabel(self.fr_cmd)
-        self.label_2.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
-        self.label_2.setObjectName(_fromUtf8("label_2"))
-        self.gridLayout_2.addWidget(self.label_2, 0, 2, 1, 1)
         self.gridLayout.addWidget(self.fr_cmd, 1, 1, 1, 1)
         self.l_title = QtGui.QLabel(OutWidget)
-        self.l_title.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));\n"
+        self.l_title.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
 "color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;"))
         self.l_title.setText(_fromUtf8(""))
         self.l_title.setWordWrap(True)
@@ -86,6 +82,7 @@ class Ui_OutWidget(object):
 "    padding:3px;\n"
 "    padding-left:6px;\n"
 "    padding-right:6px;\n"
+"    width:30px;\n"
 "}\n"
 "QPushButton:hover,QToolButton:hover {\n"
 "    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0.00995025 rgba(114, 114, 114, 255), stop:0.174129 rgba(145, 145, 145, 255), stop:0.890547 rgba(184, 184, 184, 255), stop:1 rgba(208, 208, 208, 255));\n"
@@ -99,7 +96,7 @@ class Ui_OutWidget(object):
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.b_stop = QtGui.QPushButton(self.frame_2)
         self.b_stop.setMinimumSize(QtCore.QSize(0, 30))
-        self.b_stop.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.b_stop.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_stop.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-bottom:1px solid rgb(100,100,100);\n"
 "}"))
@@ -111,7 +108,7 @@ class Ui_OutWidget(object):
         self.gridLayout_3.addWidget(self.b_stop, 1, 0, 1, 1)
         self.b_cmd = QtGui.QPushButton(self.frame_2)
         self.b_cmd.setMinimumSize(QtCore.QSize(0, 30))
-        self.b_cmd.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.b_cmd.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_cmd.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
         icon1.addPixmap(QtGui.QPixmap(_fromUtf8("textfield.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -123,7 +120,7 @@ class Ui_OutWidget(object):
         self.gridLayout_3.addItem(spacerItem, 4, 0, 1, 1)
         self.b_run = QtGui.QPushButton(self.frame_2)
         self.b_run.setMinimumSize(QtCore.QSize(0, 30))
-        self.b_run.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.b_run.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_run.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-bottom:1px solid rgb(100,100,100);\n"
 "}"))
@@ -136,7 +133,7 @@ class Ui_OutWidget(object):
         self.b_save = QtGui.QPushButton(self.frame_2)
         self.b_save.setEnabled(True)
         self.b_save.setMinimumSize(QtCore.QSize(0, 30))
-        self.b_save.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.b_save.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_save.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-top:1px solid rgb(100,100,100);\n"
 "    border-bottom-right-radius:5px;\n"
@@ -150,6 +147,18 @@ class Ui_OutWidget(object):
         self.b_save.setObjectName(_fromUtf8("b_save"))
         self.gridLayout_3.addWidget(self.b_save, 3, 0, 1, 1)
         self.gridLayout.addWidget(self.frame_2, 1, 0, 3, 1)
+        self.tb_out = QtGui.QTextBrowser(OutWidget)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("FreeMono"))
+        self.tb_out.setFont(font)
+        self.tb_out.setStyleSheet(_fromUtf8("QTextBrowser {\n"
+"background:rgb(50,50,50);\n"
+"color:white;\n"
+"}\n"
+"a {color:rgb(121,213,255);}"))
+        self.tb_out.setFrameShape(QtGui.QFrame.NoFrame)
+        self.tb_out.setObjectName(_fromUtf8("tb_out"))
+        self.gridLayout.addWidget(self.tb_out, 3, 1, 1, 1)
 
         self.retranslateUi(OutWidget)
         QtCore.QObject.connect(self.b_cmd, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.fr_cmd.setVisible)
@@ -157,10 +166,15 @@ class Ui_OutWidget(object):
 
     def retranslateUi(self, OutWidget):
         OutWidget.setWindowTitle(_translate("OutWidget", "Form", None))
-        self.label.setText(_translate("OutWidget", "Command:", None))
         self.label_2.setText(_translate("OutWidget", "    Args:", None))
+        self.label.setText(_translate("OutWidget", "Command:", None))
         self.b_stop.setToolTip(_translate("OutWidget", "Stop", None))
         self.b_cmd.setToolTip(_translate("OutWidget", "Show/Hide Command", None))
         self.b_run.setToolTip(_translate("OutWidget", "Run", None))
         self.b_save.setToolTip(_translate("OutWidget", "Save output to file", None))
+        self.tb_out.setHtml(_translate("OutWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
+"p, li { white-space: pre-wrap; }\n"
+"</style></head><body style=\" font-family:\'FreeMono\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"asdfasdf\"><span style=\" text-decoration: underline; color:#0000ff;\">adsfsdfasf</span></a></p></body></html>", None))
 

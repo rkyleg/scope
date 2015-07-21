@@ -8,7 +8,7 @@ QWidget {
 	background: rgb(50,50,50);
 	color:white;
 }
-QLabel,QFrame {
+QLabel,QTabWidget::pane {
     background:transparent;
 }
 QTextEdit,QTextBrowser,QLineEdit {
@@ -46,13 +46,21 @@ QSplitter::handle:vertical {
 }
     
     /*---TabSpace*/
-    QTabWidget.editorTabs {
+    QTabWidget.editorTabs,QTabWidget.editorTabs::pane {
         /*border:0px;*/
-        background:rgba(100,100,100,100);
+        background:rgb(100,100,100);
         outline:0;
+    }
+    QTabBar.editorTabs{
+        color:white;
+        background:rgb(100,100,100);
+        
     }
     QListWidget.editor_tab {
         outline:0;
+        border:0px;
+        padding:4px;
+        background-color:rgb(100,100,100);
     }
     QListWidget.editor_tab::item {
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));*/
@@ -128,12 +136,12 @@ QSplitter::handle:vertical {
         border-radius:6px;
         border-top-left-radius:0px;
         border-bottom-left-radius:0px;
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 0), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 100), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
         
     }
     QPushButton#b_show_tabs {
         /*background:transparent;*/
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 0), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 100), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
         border-radius:6px;
         border-top-right-radius:0px;
         border-bottom-right-radius:0px;
@@ -141,7 +149,7 @@ QSplitter::handle:vertical {
         /*border-right:1px solid rgb(100,100,100);*/
     }
     QPushButton#b_show_tabs:hover {
-    	background:rgba(200,200,200,100);
+    	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(81, 81, 81, 70), stop:0.154545 rgba(119, 119, 119, 88), stop:0.831818 rgba(144, 144, 144, 225), stop:1 rgba(165, 165, 165, 225));
     }
     QPushButton#b_show_tabs:checked {
     	background:rgb(100,100,100);

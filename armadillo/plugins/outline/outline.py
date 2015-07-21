@@ -153,7 +153,8 @@ class Outline(QtGui.QWidget):
     def updateLocation(self,wdg,lines):
         trwdg = self.wdgD[wdg].ui.tr_outline
         hi=0
-        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
+##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
+        brsh=QtGui.QBrush(QtGui.QColor(36,64,77))
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))
@@ -207,14 +208,16 @@ class Outline(QtGui.QWidget):
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
-        elif typ == 'function':
             itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
+##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
+        elif typ == 'function':
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(101,191,246)))
+##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
         elif typ == 'heading':
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(120,120,120)))
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(180,180,180)))
         elif typ=='filename':
             fnt=QtGui.QFont()
             fnt.setBold(1)

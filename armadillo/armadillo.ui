@@ -231,6 +231,9 @@ padding-top:2px;
              <height>16777215</height>
             </size>
            </property>
+           <property name="toolTip">
+            <string>close file</string>
+           </property>
            <property name="class" stdset="0">
             <string>editor_tab_cls_btn</string>
            </property>
@@ -240,7 +243,7 @@ padding-top:2px;
           <widget class="QPushButton" name="b_tabicon">
            <property name="maximumSize">
             <size>
-             <width>28</width>
+             <width>26</width>
              <height>16777215</height>
             </size>
            </property>
@@ -249,8 +252,8 @@ padding-top:2px;
            </property>
            <property name="iconSize">
             <size>
-             <width>24</width>
-             <height>24</height>
+             <width>26</width>
+             <height>26</height>
             </size>
            </property>
            <property name="class" stdset="0">
@@ -260,6 +263,11 @@ padding-top:2px;
          </item>
          <item row="0" column="2">
           <widget class="QLabel" name="l_filename">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
            <property name="text">
             <string/>
            </property>
@@ -341,6 +349,9 @@ padding-top:2px;
              <width>16777215</width>
              <height>30</height>
             </size>
+           </property>
+           <property name="toolTip">
+            <string>view open files</string>
            </property>
            <property name="styleSheet">
             <string notr="true"/>
@@ -731,7 +742,7 @@ QPushButton:hover,QToolButton:hover {
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>2</width>
+             <width>4</width>
              <height>2</height>
             </size>
            </property>

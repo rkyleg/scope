@@ -56,7 +56,7 @@ class MyHighlighter( QSyntaxHighlighter ):
         
         # keyword
         keyword = QTextCharFormat()
-        brush = QBrush( Qt.darkBlue, Qt.SolidPattern )
+        brush = QBrush( QColor(97,171,205), Qt.SolidPattern )
         keyword.setForeground( brush )
         keyword.setFontWeight( QFont.Bold )
         keywords = QStringList("""and|as|assert|break|class|continue|def|del|elif|else|except|exec|
@@ -77,7 +77,7 @@ class MyHighlighter( QSyntaxHighlighter ):
             self.highlightingRules.append( rule )
 
         # assignmentOperator
-        brush = QBrush( Qt.black, Qt.SolidPattern )
+        brush = QBrush( QColor(254,255,194), Qt.SolidPattern )
         pattern = QRegExp( "(<){1,2}-" )
         assignmentOperator.setForeground( brush )
         assignmentOperator.setFontWeight( QFont.Bold )

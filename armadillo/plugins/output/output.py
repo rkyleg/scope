@@ -178,15 +178,17 @@ class OutputPage(QtGui.QWidget):
 ##        QtGui.QApplication.processEvents()
         
     def readErrors(self):
-        txt = "<font color=red>" + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font>"
-        txt = re_file.sub(r"<a href='\g<2>'>\g<2></a>",txt)
+        txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font>"
+        txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
+##        txt = '<a style="color:rgb(121,213,255);"'+re_file.sub(r" href='\g<2>'>\g<2></a>",txt)
+        print txt
         self.appendText(txt)
 
     def processError(self,err):
         if self.dispError:
             errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
             errtxt = errD[err]
-            txt = "<font color=red>Error: Process "+errtxt+'</font>'
+            txt = '<font style="color:rgb(255,112,99);">Error: Process '+errtxt+'</font>'
             if err==0:
                 txt += "<br>Check to make sure command is correct:<br>"+self.ui.le_cmd.text()+' "'+self.filename+'" ' + self.ui.le_args.text()
             self.appendText(txt)
@@ -214,8 +216,8 @@ class OutputPage(QtGui.QWidget):
         self.process = None
         self.ui.b_run.setEnabled(1)
         self.ui.b_stop.setEnabled(0)
-        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 255), stop:0.154545 rgba(129, 129, 129, 255), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
-        self.ui.tb_out.setStyleSheet('background-color:rgba(240,240,240);border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
+        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
+        self.ui.tb_out.setStyleSheet('QTextBrowser{background-color:rgb(50,50,50);color:white;border-bottom-left-radius:5px;border-bottom-right-radius:5px;} a {color:rgb(121,213,255);}')
     
         # Update list pages
         self.listItem.setForeground(QtGui.QBrush(QtGui.QColor(0,0,0)))
@@ -239,7 +241,7 @@ class OutputPage(QtGui.QWidget):
         
         self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;</b><font color=#ccc><b>Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
         self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
-        self.ui.tb_out.setStyleSheet('background-color:white;border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
+        self.ui.tb_out.setStyleSheet('background-color:rgb(30,30,30);border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
         self.ui.tb_out.setText('')
         self.listItem.setForeground(QtGui.QBrush(QtGui.QColor(48, 85, 100)))
         fnt = self.listItem.font()

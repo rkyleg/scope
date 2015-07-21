@@ -1,17 +1,18 @@
-from . import hud
+from . import home
 from PyQt4 import QtGui, QtCore
 
 def addPlugin(parent):
-    plugin = hud.HUD(parent)
-    plugin.title = 'HUD'
+    plugin = home.Home(parent)
+    plugin.title = 'Home'
     plugin.location = None
     
-    parent.HUDWidget = plugin
+    parent.HomeWidget = plugin
     plugin.webview.id = None
     plugin.webview.title = 'Home'
+    plugin.webview.icon = QtGui.QIcon(parent.iconPath+'home.png')
     parent.ui.sw_main.addWidget(plugin.webview)
     parent.ui.sw_main.setCurrentIndex(0)
     
-    QtGui.QShortcut(QtCore.Qt.Key_F9,parent,plugin.toggleHUD) # Show Heads up display
+    QtGui.QShortcut(QtCore.Qt.Key_F9,parent,plugin.toggleHome) # Show Heads up display
     
     return plugin
