@@ -19,13 +19,13 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_8">
    <property name="leftMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="topMargin">
     <number>0</number>
    </property>
    <property name="rightMargin">
-    <number>2</number>
+    <number>0</number>
    </property>
    <property name="bottomMargin">
     <number>2</number>
@@ -176,7 +176,7 @@ padding-top:2px;
        <number>2</number>
       </property>
       <property name="rightMargin">
-       <number>0</number>
+       <number>4</number>
       </property>
       <property name="bottomMargin">
        <number>0</number>

@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Jul 20 20:52:02 2015
+# Created: Mon Jul 20 21:32:49 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,7 +32,7 @@ class Ui_Form(object):
         Form.setWindowIcon(icon)
         self.gridLayout_8 = QtGui.QGridLayout(Form)
         self.gridLayout_8.setSpacing(0)
-        self.gridLayout_8.setContentsMargins(2, 0, 2, 2)
+        self.gridLayout_8.setContentsMargins(0, 0, 0, 2)
         self.gridLayout_8.setObjectName(_fromUtf8("gridLayout_8"))
         self.split_left = QtGui.QSplitter(Form)
         sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
@@ -112,7 +112,7 @@ class Ui_Form(object):
         self.fr_topbar.setObjectName(_fromUtf8("fr_topbar"))
         self.gridLayout_2 = QtGui.QGridLayout(self.fr_topbar)
         self.gridLayout_2.setSpacing(0)
-        self.gridLayout_2.setContentsMargins(0, 2, 0, 0)
+        self.gridLayout_2.setContentsMargins(0, 2, 4, 0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.fr_tab = QtGui.QFrame(self.fr_topbar)
         self.fr_tab.setMinimumSize(QtCore.QSize(0, 30))

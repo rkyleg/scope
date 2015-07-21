@@ -15,6 +15,9 @@ QTextEdit,QTextBrowser,QLineEdit {
 	background-color: rgb(30,30,30);
 	color:white;
 }
+/*QFrame {*/
+/*    background:transparent;*/
+/*}*/
 QWebView {
     background:white;
 }
@@ -124,6 +127,9 @@ QSplitter::handle:vertical {
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));*/
     }
     
+    QFrame#fr_mainbutton, QFrame#fr_toolbar, QFrame#fr_topleft, QFrame#fr_find {
+        background:transparent;
+    }
     
     QFrame#fr_tab {
         /*border:1px outset gray;*/
