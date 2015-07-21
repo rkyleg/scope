@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scratch.ui'
 #
-# Created: Tue Feb  3 22:16:42 2015
+# Created: Mon Jul 20 19:14:50 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -32,6 +32,7 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.pte_scratch = QtGui.QPlainTextEdit(Form)
+        self.pte_scratch.setFrameShape(QtGui.QFrame.NoFrame)
         self.pte_scratch.setObjectName(_fromUtf8("pte_scratch"))
         self.gridLayout.addWidget(self.pte_scratch, 0, 0, 1, 1)
 

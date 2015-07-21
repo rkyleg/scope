@@ -8,6 +8,7 @@ def addPlugin(parent):
     
     parent.HUDWidget = plugin
     plugin.webview.id = None
+    plugin.webview.title = 'Home'
     parent.ui.sw_main.addWidget(plugin.webview)
     parent.ui.sw_main.setCurrentIndex(0)
     

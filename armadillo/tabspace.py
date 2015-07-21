@@ -10,7 +10,7 @@ class WorkspaceWidget(QtGui.QListWidget):
         self.setResizeMode(1)
         self.setDragDropMode(4) # internalmove
         self.setDragEnabled(1) # enable drag drop
-        self.setStyleSheet("QListWidget{background:transparent;border:0px;}")
+        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
         self.setSpacing(2)
         self.clicked.connect(self.select)
@@ -187,13 +187,13 @@ class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
 ##        QtGui.QTabWidget.__init__(self)
-##        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(50,50,50,240);},QTabBar{color:white;background:transparent;}")
-##        self.tabs.setWindowOpacity(0.9)
+        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(100,100,100,240);},QTabBar{color:white;background:transparent;}")
+        self.tabs.setWindowOpacity(0.9)
 ##        self.tabs.setStyleSheet("background:transparent;")
         
         # Make translucent if not windows
-        if os.name !='nt':
-            self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground,1)
+##        if os.name !='nt':
+##            self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground,1)
         
 ##        self.tabs.setAttribute(QtCore.Qt.WA_NoSystemBackground,1)
 ##        self.tabs.setAttribute(QtCore.Qt.WA_DeleteOnClose, 1);
@@ -221,9 +221,12 @@ class TabSpace(object):
         self.tabs.tabCloseRequested.connect(self.closeWorkspaceTab)
         
         self.tabs.keyPressEvent = self.tabKeyPress
+        self.tabs.closeEvent = self.closeDialog
         
         # sign up for events
         self.ide.evnt.workspaceClosed.connect(self.closeWorkspace)
+    
+        
     
     def tabKeyPress(self,event):
         print 'tab key press'
@@ -235,7 +238,10 @@ class TabSpace(object):
             
         if not handled:
             QtGui.QTabWidget.keyPressEvent(self.tabs,event)
-            
+    
+    def closeDialog(self,event):
+        self.ide.ui.b_show_tabs.setChecked(0)
+    
     def addWorkspace(self,name):
         ww = WorkspaceWidget(parent=self.ide)
         self.tabs.addTab(ww,QtGui.QIcon(self.ide.iconPath+'workspace.png'),name)
@@ -289,11 +295,12 @@ class TabSpace(object):
             
             if h > g.height():
                 h = g.height()
-            dy = self.ide.ui.fr_topbar.height()-2
+            dy = self.ide.ui.fr_topbar.height()-5
             self.tabs.setGeometry(g.x(),g.y()+dy,g.width(),h)
         else:
             self.tabs.setGeometry(20,20,500,h)
         
+        self.ide.ui.b_show_tabs.setChecked(1)
         self.tabs.show()
     
     def toggle(self,mode=None):
@@ -309,6 +316,8 @@ class TabSpace(object):
             
         else:
             self.tabs.hide()
+        
+        self.ide.ui.b_show_tabs.setChecked(mode)
     
     def highlightCurrent(self):
         # Highlight current file

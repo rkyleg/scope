@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.9.12-dev'
+__version__ = '1.10.0-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -43,7 +43,7 @@ class Armadillo(QtGui.QWidget):
         self.fileD = {}     # keep track of all filenames and new files
         self.recentTabs = [] # Keep track of most recent tabs
         self.fileCount = -1
-        self.ui.fr_tab.hide()
+        self.ui.b_closetab.hide()
         
         # Workspace
         self.currentWorkspace = None
@@ -159,7 +159,7 @@ class Armadillo(QtGui.QWidget):
 ##        self.ui.tab.tabCloseRequested.connect(self.closeTab)
 ##        self.ui.tab.setExpanding(0)
 ##        self.ui.tab.mousePressEvent=self.tabMousePressEvent
-        self.ui.fr_tabs.hide()
+##        self.ui.fr_tabs.hide()
 
         
         #--- Hide toolbar buttons for now
@@ -224,10 +224,10 @@ class Armadillo(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
-        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleRightPlugin) # Toggle RIght Plugins
+        QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleRightPlugin) # Toggle RIght Plugins
         
-        QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleBottomPlugin) # Hide Bottom Tab
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F3,self,self.nextBottomPlugin) # Show next bottom tab
+        QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleBottomPlugin) # Hide Bottom Tab
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F4,self,self.nextBottomPlugin) # Show next bottom tab
         QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.showTabspace) # Show Tabbar
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
@@ -406,7 +406,7 @@ class Armadillo(QtGui.QWidget):
         self.ui.fr_left.setVisible(not zen)
         self.ui.sw_bottom.setVisible(not zen)
         self.ui.fr_bottom.setVisible(not zen)
-        self.ui.fr_tabs.setVisible(not self.fullscreen_mode)
+##        self.ui.fr_tabs.setVisible(not self.fullscreen_mode)
 ##        if zen:
 ##            self.ui.tab_right.setVisible(not zen)
             
@@ -414,7 +414,7 @@ class Armadillo(QtGui.QWidget):
             self.pluginBottomChange(0)
         else:
             self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
-            self.ui.fr_tabs.setVisible(1)
+##            self.ui.fr_tabs.setVisible(1)
         
         if self.editor_fullmode:
             self.armadilloMenu.fullEditorAction.setText('Exit Full Editor Mode')
@@ -718,9 +718,17 @@ class Armadillo(QtGui.QWidget):
                 self.changeTab(file_id)
             else:
                 self.ui.sw_main.setCurrentIndex(sw_ind)
-                self.ui.fr_tab.hide()
+                self.ui.b_closetab.hide()
+                try:
+                    self.ui.l_filename.setText(self.ui.sw_main.widget(sw_ind).title)
+                except:
+                    self.ui.l_filename.setText('')
+                try:
+                    self.ui.b_tabicon.setIcon(self.ui.sw_main.widget(sw_ind).icon)
+                except:
+                    self.ui.b_tabicon.setIcon(QtGui.QIcon())
         else:
-            self.ui.fr_tab.hide()
+            self.ui.b_closetab.hide()
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
@@ -748,12 +756,13 @@ class Armadillo(QtGui.QWidget):
             # Show/Hide plugins
             lang = wdg.lang
             
-            self.ui.fr_tab.show()
+            self.ui.b_closetab.show()
         else:
             wdg = None
             lang = None
             
-            self.ui.fr_tab.hide()
+            self.ui.b_closetab.hide()
+            self.ui.l_filename.setText(wdg.title)
 
         # Enable Run
         run_enabled=0

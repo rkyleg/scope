@@ -15,11 +15,11 @@ class jsObject(QtCore.QObject):
     
     @QtCore.pyqtSlot('int')
     def closetab(self,id):
-        print 'closetab',id
+##        print 'closetab',id
         ok = self.parent.armadillo.closeTab(id)
         if ok:
             cid = str(self.parent.armadillo.currentEditor().id)
-            print 'highlight',cid
+##            print 'highlight',cid
             QtGui.QApplication.processEvents()
             self.parent.webview.page().mainFrame().evaluateJavaScript('closetab('+str(id)+');highlighttab("'+cid+'");')
         return ok
@@ -174,7 +174,7 @@ class HUD(object):
     
     def HUDClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
-        print(lnk)
+##        print(lnk)
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.armadillo.changeTab(i)

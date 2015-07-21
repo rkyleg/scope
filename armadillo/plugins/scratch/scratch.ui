@@ -21,7 +21,11 @@
     <number>0</number>
    </property>
    <item row="0" column="0">
-    <widget class="QPlainTextEdit" name="pte_scratch"/>
+    <widget class="QPlainTextEdit" name="pte_scratch">
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+    </widget>
    </item>
   </layout>
  </widget>
