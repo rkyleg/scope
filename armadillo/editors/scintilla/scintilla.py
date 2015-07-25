@@ -146,7 +146,7 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
         
         # Customize Python lexer
-        if 0:
+        if 1:
             shade=30
             self.lex.setDefaultPaper(QColor(shade,shade,shade))
             self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
@@ -164,10 +164,14 @@ class Sci(QtGui.QWidget):
             
             # Set defaults for all:
             style_obj = set(styleD.keys()).intersection(dir(self.lex))
+            style_obj.remove('Default')
+            style_obj = set(['Default']).union(sorted(style_obj))
+            
             for c in sorted(style_obj,reverse=1):
                 clr = styleD[c]
-                if clr == None:
-                    clr = '255,255,255'
+                if clr == '':
+##                    clr = '255,255,255'
+                    clr = styleD['Default']
 ##                print c,clr
                 try:
                     exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
