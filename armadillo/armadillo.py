@@ -1308,7 +1308,7 @@ class Armadillo(QtGui.QWidget):
 ##        ok=1
         
         # Load workspace
-        if wksp in self.workspaces:
+        if wksp in self.workspaces: # and wksp != None:
             self.evnt.workspaceChanged.emit(wksp)
         else:
             self.workspaceCount +=1

@@ -4,6 +4,7 @@ from PyQt4 import Qsci
 from PyQt4 import QtGui, QtCore, Qsci
 from .scintilla_ui import Ui_Form
 import os,sys, time
+from scintilla_style import styleD # scintilla style
 
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
@@ -143,6 +144,36 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytes('Courier','utf-8'))
         else:
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+        
+        # Customize Python lexer
+        if 0:
+            shade=30
+            self.lex.setDefaultPaper(QColor(shade,shade,shade))
+            self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
+            self.ui.te_sci.setColor(QColor(255,255,255))
+            
+            self.ui.te_sci.setMarginsBackgroundColor(QColor(80,80,80))
+            self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
+            self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
+##            self.ui.te_sci.setPaper(QColor(80,80,80))
+            self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
+##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
+            
+            self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+            self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
+            
+            # Set defaults for all:
+            style_obj = set(styleD.keys()).intersection(dir(self.lex))
+            for c in sorted(style_obj,reverse=1):
+                clr = styleD[c]
+                if clr == None:
+                    clr = '255,255,255'
+##                print c,clr
+                try:
+                    exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
+                    exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
+                except:
+                    print 'no keyword',c
     
     def keyPressEvent(self,event):
         ky = event.key()

@@ -68,8 +68,7 @@ class WorkspaceMenu(QtGui.QMenu):
     def loadMenu(self):
         self.clear()
         self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
-        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
-        self.saveWact.setDisabled(1)
+        self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Temporary Workspace')
         
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
@@ -81,12 +80,16 @@ class WorkspaceMenu(QtGui.QMenu):
         self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
         
         self.addSeparator()
+        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
+        self.saveWact.setDisabled(1)
         self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
         self.closeWact.setDisabled(1)
     
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
             self.parent.workspaceNew()
+        elif str(event.text()) == 'New Temporary Workspace':
+            self.parent.workspaceOpen(None,show_tabs=1)
         elif str(event.text()) == 'Save Workspace':
             self.parent.workspaceSave()
         elif str(event.text()) == 'Close Current Workspace':
