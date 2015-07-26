@@ -8,7 +8,7 @@ styleD = {
 ##    'Default':'67,183,255',  # blue
 ##    'Default':'150,220,255',  # blue
 
-    'Comment':'170,170,170',
+    'Comment':'150,150,150',
     'CommentBlock':'100,100,100',
     
 ##    'ClassName':'0,170,255', # blue
@@ -18,7 +18,7 @@ styleD = {
     
     'Decorator':'255,170,127',
 ##    'Keyword':'255,177,99', # orange
-    'Keyword':'0,170,255', # blue
+    'Keyword':'97,171,205', # blue
 ##    'Keyword':'40,97,167', # blue
 ##    'Keyword':'125,188,151',    # green
 ##    'FunctionMethodName':'92,164,219',   # blue

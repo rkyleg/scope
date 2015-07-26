@@ -76,7 +76,8 @@ QScrollBar::handle:vertical {
 }
 QScrollBar::add-line:vertical {
     /*border: 2px solid grey;*/
-    background: rgb(70,70,70);
+    background: rgb(65,65,65);
+    border:1px outset rgb(65,65,65);
     height: 20px;
     subcontrol-position: bottom;
     subcontrol-origin: margin;
@@ -84,20 +85,21 @@ QScrollBar::add-line:vertical {
 
 QScrollBar::sub-line:vertical {
     /*border: 2px solid grey;*/
-    background: rgb(70,70,70);
+    background: rgb(65,65,65);
+    border:1px outset rgb(65,65,65);
     height: 20px;
     subcontrol-position: top;
     subcontrol-origin: margin;
 }
 QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
-    border:1px outset rgb(65,65,65);
+    /*border:1px outset rgb(65,65,65);*/
     /*width: 3px;*/
     /*height: 3px;*/
-    image: url(img/tri_down.png);
+    image: url(img/tri_down_gray.png);
     background: transparent;
 }
 QScrollBar::up-arrow:vertical {
-    image: url(img/tri_up.png);
+    image: url(img/tri_up_gray.png);
 
 }
 
@@ -113,7 +115,8 @@ QScrollBar::handle:horizontal {
 }
 QScrollBar::add-line:horizontal {
     /*border: 2px solid grey;*/
-    background: rgb(70,70,70);
+    border:1px outset rgb(65,65,65);
+    background: rgb(65,65,65);
     width: 20px;
     subcontrol-position: left;
     subcontrol-origin: margin;
@@ -121,20 +124,21 @@ QScrollBar::add-line:horizontal {
 
 QScrollBar::sub-line:horizontal {
     /*border: 2px solid grey;*/
-    background: rgb(70,70,70);
+    border:1px outset rgb(65,65,65);
+    background: rgb(65,65,65);
     width: 20px;
     subcontrol-position: right;
     subcontrol-origin: margin;
 }
 QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-    border:1px outset rgb(65,65,65);
+    /*border:1px outset rgb(65,65,65);*/
     /*width: 3px;*/
     /*height: 3px;*/
-    image: url(img/tri_left.png);
+    image: url(img/tri_left_gray.png);
     background: transparent;
 }
 QScrollBar::left-arrow:horizontal {
-    image: url(img/tri_right.png);
+    image: url(img/tri_right_gray.png);
 
 }
 

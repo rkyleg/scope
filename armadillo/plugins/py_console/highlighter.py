@@ -124,7 +124,7 @@ class MyHighlighter( QSyntaxHighlighter ):
         self.highlightingRules.append( rule )
 
         # string
-        brush = QBrush( Qt.darkMagenta, Qt.SolidPattern )
+        brush = QBrush( QColor(125,188,151), Qt.SolidPattern )
         pattern = QRegExp( "\".*\"" )
 ##        pattern.setMinimal( True )
         string.setForeground( brush )
