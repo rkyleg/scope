@@ -154,7 +154,7 @@ class Outline(QtGui.QWidget):
         trwdg = self.wdgD[wdg].ui.tr_outline
         hi=0
 ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
-        brsh=QtGui.QBrush(QtGui.QColor(36,64,77))
+        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200))
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))

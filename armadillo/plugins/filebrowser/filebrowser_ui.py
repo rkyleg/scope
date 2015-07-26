@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Tue Jan  6 17:56:18 2015
+# Created: Sat Jul 25 22:24:53 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -35,7 +35,7 @@ class Ui_Form(object):
         font = QtGui.QFont()
         font.setPointSize(8)
         self.le_root.setFont(font)
-        self.le_root.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));\n"
+        self.le_root.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(32, 32, 32, 255), stop:0.0590909 rgba(41, 41, 41, 255), stop:0.922727 rgba(59, 59,59, 255), stop:1 rgba(71, 71, 71, 255));\n"
 "color:white;\n"
 "border:0px;\n"
 "border-bottom:1px solid gray;\n"

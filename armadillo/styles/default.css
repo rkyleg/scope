@@ -15,6 +15,13 @@ QTextEdit,QTextBrowser,QLineEdit {
 	background-color: rgb(30,30,30);
 	color:white;
 }
+QListWidget::item:selected,QTreeWidget::item:selected {
+    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));
+    outline:0;
+}
+QListWidget::item,QTreeWidget::item {
+    outline:0;
+}
 /*QFrame {*/
 /*    background:transparent;*/
 /*}*/
@@ -30,8 +37,9 @@ QMenu::item:selected {
     
     
 QTabWidget#tab_left::pane {
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.05 rgba(45, 45, 45, 255), stop:0.95 rgba(45, 45, 45 255), stop:1 rgba(55, 55, 55, 255));
     border:0px;
-    /*background-color: qlineargradient(spread:pad, x1:0, y1:1, x2:1, y2:1, stop:0 rgba(50, 50, 50, 255), stop:0.9 rgba(70, 70, 70, 255), stop:1 rgba(80, 80, 80, 255));*/
+    
     border-radius:5px;
 }
 
@@ -52,42 +60,86 @@ QSplitter::handle:vertical {
 /*QScrollBar {*/
 /*    background:rgb(70,70,70);*/
 /*}*/
-/*QScrollBar::handle {*/
-/*    border:2px outset rgb(65,65,65);*/
-/*}*/
+QScrollBar::handle {
+    border:1px outset rgb(65,65,65);
+}
 
- /*QScrollBar:vertical {*/
- /*    border: 2px solid grey;*/
-     /*background: #32CC99;*/
- /*    width: 15px;*/
- /*    margin: 22px 0 22px 0;*/
- /*}*/
- /*QScrollBar::handle:vertical {*/
- /*    background: white;*/
- /*    min-height: 20px;*/
- /*}*/
- /*QScrollBar::add-line:vertical {*/
- /*    border: 2px solid grey;*/
-     /*background: #32CC99;*/
- /*    height: 20px;*/
- /*    subcontrol-position: bottom;*/
- /*    subcontrol-origin: margin;*/
- /*}*/
+QScrollBar:vertical {
+    /*border:1px outset rgb(65,65,65);*/
+    /*background: rgb(40,40,40);*/
+    width: 15px;
+    margin: 22px 0 22px 0;
+}
+QScrollBar::handle:vertical {
+    background: rgb(60,60,60);
+    min-height: 20px;
+}
+QScrollBar::add-line:vertical {
+    /*border: 2px solid grey;*/
+    background: rgb(70,70,70);
+    height: 20px;
+    subcontrol-position: bottom;
+    subcontrol-origin: margin;
+}
 
- /*QScrollBar::sub-line:vertical {*/
- /*    border: 2px solid grey;*/
-     /*background: #32CC99;*/
- /*    height: 20px;*/
- /*    subcontrol-position: top;*/
- /*    subcontrol-origin: margin;*/
- /*}*/
- /*QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {*/
- /*    border: 2px solid grey;*/
- /*    width: 3px;*/
- /*    height: 3px;*/
- /*    background: transparent;*/
- /*}*/
- 
+QScrollBar::sub-line:vertical {
+    /*border: 2px solid grey;*/
+    background: rgb(70,70,70);
+    height: 20px;
+    subcontrol-position: top;
+    subcontrol-origin: margin;
+}
+QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {
+    border:1px outset rgb(65,65,65);
+    /*width: 3px;*/
+    /*height: 3px;*/
+    image: url(img/tri_down.png);
+    background: transparent;
+}
+QScrollBar::up-arrow:vertical {
+    image: url(img/tri_up.png);
+
+}
+
+QScrollBar:horizontal {
+    /*border:1px outset rgb(65,65,65);*/
+    /*background: rgb(40,40,40);*/
+    height: 15px;
+    margin: 0px 22 0px 22;
+}
+QScrollBar::handle:horizontal {
+    background: rgb(60,60,60);
+    min-width: 20px;
+}
+QScrollBar::add-line:horizontal {
+    /*border: 2px solid grey;*/
+    background: rgb(70,70,70);
+    width: 20px;
+    subcontrol-position: left;
+    subcontrol-origin: margin;
+}
+
+QScrollBar::sub-line:horizontal {
+    /*border: 2px solid grey;*/
+    background: rgb(70,70,70);
+    width: 20px;
+    subcontrol-position: right;
+    subcontrol-origin: margin;
+}
+QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
+    border:1px outset rgb(65,65,65);
+    /*width: 3px;*/
+    /*height: 3px;*/
+    image: url(img/tri_left.png);
+    background: transparent;
+}
+QScrollBar::left-arrow:horizontal {
+    image: url(img/tri_right.png);
+
+}
+
+
+
     QTabWidget::pane QFrame {
         background:transparent;
     }
@@ -115,7 +167,9 @@ QSplitter::handle:vertical {
     }
     QListWidget.editor_tab::item {
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));*/
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(218, 218, 218, 255), stop:0.0795455 rgba(255, 255, 255, 255), stop:0.920455 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));
+        /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(218, 218, 218, 255), stop:0.0795455 rgba(255, 255, 255, 255), stop:0.920455 rgba(239, 239, 239, 255), stop:1 rgba(227, 227, 227, 255));*/
+        /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));*/
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(46, 46,46, 255), stop:0.218182 rgba(65, 65, 65, 255), stop:0.831818 rgba(81, 81, 81, 255), stop:1 rgba(95, 95, 95, 255));
         /*padding:2px;*/
         /*color:black;*/
         border-radius:5px;
@@ -124,20 +178,24 @@ QSplitter::handle:vertical {
     }
     QListWidget.editor_tab::item:selected {
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));*/
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(146, 183, 213, 255), stop:1 rgba(202, 218, 232, 255));
+        /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(146, 183, 213, 255), stop:1 rgba(202, 218, 232, 255));*/
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));
+        
         outline:0;
         border:0px;
         
     }
     QListWidget.editor_tab::item:hover {
         background:rgb(220,220,220);
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));
     }
     QLabel.editor_tab {
-        color:black;
+        color:white;
     }
     QPushButton.editor_tab_btn {
         background:transparent;
         /*background:rgb(200,200,200);*/
+        /*color:white;*/
     	border:0px;
     	padding:3px;
     	padding-left:6px;

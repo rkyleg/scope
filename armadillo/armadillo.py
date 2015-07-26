@@ -1099,6 +1099,7 @@ class Armadillo(QtGui.QWidget):
             txt = 'rgb%s(%d,%d,%d%s)' %(apfx,r,g,b,atxt)
             if 'insertText' in dir(self.currentEditor()):
                 self.currentEditor().insertText(txt)
+            self.currentEditor().setFocus()
 
     #---Plugins
     def addPlugin(self,plug):

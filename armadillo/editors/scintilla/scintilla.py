@@ -131,7 +131,8 @@ class Sci(QtGui.QWidget):
 
         # Current line visible with special background color
         self.ui.te_sci.setCaretLineVisible(True)
-        self.ui.te_sci.setCaretLineBackgroundColor(QColor(195,216,224,50))
+        self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
+        self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
         self.ui.te_sci.setEolMode(Qsci.QsciScintilla.EolUnix)
         self.ui.te_sci.setEolVisibility(int(self.settings['showWhitespace']))
         
@@ -146,13 +147,13 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
         
         # Customize Python lexer
-        if 1:
+        if 1 and self.lex != None:
             shade=30
             self.lex.setDefaultPaper(QColor(shade,shade,shade))
             self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
             self.ui.te_sci.setColor(QColor(255,255,255))
             
-            self.ui.te_sci.setMarginsBackgroundColor(QColor(80,80,80))
+            self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
             self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
             self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
 ##            self.ui.te_sci.setPaper(QColor(80,80,80))
@@ -160,6 +161,7 @@ class Sci(QtGui.QWidget):
 ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
             
             self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+            self.ui.te_sci.setMatchedBraceForegroundColor(QColor(255,137,246))
             self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
             
             # Set defaults for all:

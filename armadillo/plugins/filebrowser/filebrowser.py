@@ -68,7 +68,7 @@ class DirTree(QtGui.QWidget):
         self.ide.ui.tab_left.setCurrentIndex(i)
     
     def loadRoot(self):
-        newpath = str(self.ui.le_root.text()).replace('\\','/')
+        newpath = os.path.abspath(str(self.ui.le_root.text())).replace('\\','/')
         if not newpath.endswith('/'): newpath +='/'
         if os.path.exists(newpath):
             self.rootpath = newpath
@@ -78,6 +78,11 @@ class DirTree(QtGui.QWidget):
         
         # Set Armadilo path
         self.ide.currentPath = self.rootpath
+        
+        # Add up directory
+        citm = QtGui.QTreeWidgetItem(['..','..'])
+        citm.setIcon(0,QtGui.QIcon(self.ide.iconPath+'up.png'))
+        self.ui.tr_dir.addTopLevelItem(citm)
         
         # Add to Tree
         dircontents,filecontents = self.getDirContents(self.rootpath)
@@ -96,37 +101,43 @@ class DirTree(QtGui.QWidget):
     
     def itmClick(self,itm,col,toggleExpanded=1):
         pth = str(itm.text(1))
-        itm.takeChildren()
-        if os.path.isdir(pth):
-            dircontents,filecontents = self.getDirContents(pth)
-            for citm in dircontents:
-                itm.addChild(citm)
-            
-            for citm in filecontents:
-                itm.addChild(citm)
-            
-            if toggleExpanded==2:
-                itm.setExpanded(1)
-            elif toggleExpanded:
-                itm.setExpanded(not itm.isExpanded())
-            
-            # Toggle Image
-            icn = QtGui.QIcon(self.ide.iconPath+'folder.png')
-            
-            if itm.isExpanded():
-                icn = QtGui.QIcon(self.ide.iconPath+'folder_open.png')
-            
-            itm.setIcon(0,icn)
-            
+        
+        if pth == '..':
+            # Go up a directory
+            self.ui.le_root.setText(self.rootpath+'../')
+            self.loadRoot()
         else:
-            if self.ide != None:
-                if toggleExpanded == 2:
-                    if itm.parent() != None:
-                        self.itmClick(itm.parent(),0,toggleExpanded=toggleExpanded)
+            itm.takeChildren()
+            if os.path.isdir(pth):
+                dircontents,filecontents = self.getDirContents(pth)
+                for citm in dircontents:
+                    itm.addChild(citm)
+                
+                for citm in filecontents:
+                    itm.addChild(citm)
+                
+                if toggleExpanded==2:
+                    itm.setExpanded(1)
+                elif toggleExpanded:
+                    itm.setExpanded(not itm.isExpanded())
+                
+                # Toggle Image
+                icn = QtGui.QIcon(self.ide.iconPath+'folder.png')
+                
+                if itm.isExpanded():
+                    icn = QtGui.QIcon(self.ide.iconPath+'folder_open.png')
+                
+                itm.setIcon(0,icn)
+                
+            else:
+                if self.ide != None:
+                    if toggleExpanded == 2:
+                        if itm.parent() != None:
+                            self.itmClick(itm.parent(),0,toggleExpanded=toggleExpanded)
+                        else:
+                            self.loadRoot()
                     else:
-                        self.loadRoot()
-                else:
-                    self.ide.openFile(pth)
+                        self.ide.openFile(pth)
     
     def mousePressEvent(self, event):
         self.ui.tr_dir.clearSelection()
@@ -191,6 +202,7 @@ class DirTree(QtGui.QWidget):
         open_icon = QtGui.QIcon(self.ide.iconPath+'folder_go.png')
         citm = self.ui.tr_dir.currentItem()
         fitm = None
+        isfile = 0
         if citm != None:
             pth = str(citm.text(1))
             fpth = pth # Folder path
@@ -199,6 +211,7 @@ class DirTree(QtGui.QWidget):
             if os.path.isfile(pth):
                 fpth = os.path.dirname(pth)
                 fitm = citm.parent()
+                isfile = 1
             
                 open_icon = QtGui.QIcon(self.ide.iconPath+'file_go.png')
             
@@ -257,6 +270,9 @@ class DirTree(QtGui.QWidget):
         
         menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Refresh')
         
+        if not isfile:
+            menu.addAction('Set As Root Path')
+        
         
         # Launch Menu
         act = menu.exec_(self.ui.tr_dir.cursor().pos())
@@ -294,6 +310,11 @@ class DirTree(QtGui.QWidget):
                 if citm != None:
                     self.itmClick(citm,0,toggleExpanded=2)
                 else:
+                    self.loadRoot()
+            elif acttxt == 'Set As Root Path':
+                if citm != None:
+                    pth = citm.text(1)
+                    self.ui.le_root.setText(pth)
                     self.loadRoot()
             elif acttxt == 'New File':
                 # New File
