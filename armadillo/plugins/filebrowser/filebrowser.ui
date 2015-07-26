@@ -31,7 +31,7 @@
       <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(32, 32, 32, 255), stop:0.0590909 rgba(41, 41, 41, 255), stop:0.922727 rgba(59, 59,59, 255), stop:1 rgba(71, 71, 71, 255));
 color:white;
 border:0px;
-border-bottom:1px solid gray;
+border-bottom:1px solid rgb(70,70,70);
 padding:2px;
 border-top-left-radius:3px;
 border-top-right-radius:3px;</string>
