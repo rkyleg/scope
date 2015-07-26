@@ -54,6 +54,7 @@ border-top-right-radius:3px;</string>
 border-bottom-left-radius:5px;
 border-bottom-right-radius:5px;
 show-decoration-selected: 0;
+padding-left:4px;
 }
 QTreeWidget::branch {  border-image: url(none.png); }
 

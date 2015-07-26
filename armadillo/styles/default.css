@@ -37,7 +37,7 @@ QMenu::item:selected {
     
     
 QTabWidget#tab_left::pane {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.05 rgba(45, 45, 45, 255), stop:0.95 rgba(45, 45, 45 255), stop:1 rgba(55, 55, 55, 255));
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.05 rgba(50,50,50, 255), stop:0.95 rgba(50,50,50, 255), stop:1 rgba(60,60,60, 255));
     border:0px;
     
     border-radius:5px;

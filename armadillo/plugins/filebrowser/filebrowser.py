@@ -261,18 +261,15 @@ class DirTree(QtGui.QWidget):
 ##            menu.addAction(QtGui.QIcon(),'Open (external)')
 ##            menu.addSeparator()
             
-        # Show All files
-        menu.addSeparator()
-        showAct=menu.addAction(QtGui.QIcon(),'Show All Files')
         
+        menu.addSeparator()
+        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Refresh')
+        # Show All files
+        showAct=menu.addAction(QtGui.QIcon(),'Show All Files')
         showAct.setCheckable(1)
         showAct.setChecked(self.showAll)
-        
-        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Refresh')
-        
         if not isfile:
             menu.addAction('Set As Root Path')
-        
         
         # Launch Menu
         act = menu.exec_(self.ui.tr_dir.cursor().pos())

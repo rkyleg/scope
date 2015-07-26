@@ -161,7 +161,7 @@ class Sci(QtGui.QWidget):
 ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
             
             self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
-            self.ui.te_sci.setMatchedBraceForegroundColor(QColor(255,137,246))
+            self.ui.te_sci.setMatchedBraceForegroundColor(QColor(255,201,139))
             self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
             
             # Set defaults for all:

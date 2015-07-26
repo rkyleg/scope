@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Sat Jul 25 22:24:53 2015
+# Created: Sat Jul 25 23:08:02 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -50,6 +50,7 @@ class Ui_Form(object):
 "border-bottom-left-radius:5px;\n"
 "border-bottom-right-radius:5px;\n"
 "show-decoration-selected: 0;\n"
+"padding-left:4px;\n"
 "}\n"
 "QTreeWidget::branch {  border-image: url(none.png); }\n"
 "\n"
