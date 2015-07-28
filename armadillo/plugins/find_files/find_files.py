@@ -100,7 +100,9 @@ class Find_Files(QtGui.QWidget):
         # Set icon
         if self.IDE != None:
             ext = f.split('.')[-1]
-            if ext in self.IDE.settings['extensions']:
+            if ext in ['png','jpg','jpeg','gif','bmp','ico']:
+                ipth = filename
+            elif ext in self.IDE.settings['extensions']:
                 ext = self.IDE.settings['extensions'][ext]
                 ipth = self.IDE.iconPath+'files/'+ext+'.png'
             else:
@@ -127,6 +129,9 @@ class Find_Files(QtGui.QWidget):
                 pth = os.path.join(str(itm.parent().text(2)),str(itm.parent().text(0)))
                 ok = self.IDE.openFile(pth)
                 if ok: self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
+            elif col > 0:
+                pth = os.path.join(str(itm.text(2)),str(itm.text(0)))
+                self.IDE.openFile(pth)
     
     def toggle(self):
         self.IDE.ui.sw_main.setCurrentWidget(self)
