@@ -37,6 +37,18 @@
       </property>
       <item row="1" column="0" colspan="3">
        <widget class="QTreeWidget" name="tr_results">
+        <property name="styleSheet">
+         <string notr="true"> QTreeWidget::branch:has-siblings:!adjoins-item {
+     border-image: url(img/none.png) 0;
+ }
+ QTreeWidget::branch:has-siblings:adjoins-item {
+     border-image: url(img/none.png) 0;
+ }
+
+ QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(img/none.png) 0;
+ }</string>
+        </property>
         <property name="sortingEnabled">
          <bool>true</bool>
         </property>

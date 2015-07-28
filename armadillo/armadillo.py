@@ -298,7 +298,7 @@ class Armadillo(QtGui.QWidget):
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
-            print 'add plug',plug
+##            print 'add plug',plug
 ##            try:
             self.addPlugin(plug)
 ##            except:

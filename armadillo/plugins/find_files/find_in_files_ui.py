@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'find_in_files.ui'
 #
-# Created: Mon Jul 27 23:21:52 2015
+# Created: Mon Jul 27 23:36:34 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,6 +40,16 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(2)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.tr_results = QtGui.QTreeWidget(self.frame_2)
+        self.tr_results.setStyleSheet(_fromUtf8(" QTreeWidget::branch:has-siblings:!adjoins-item {\n"
+"     border-image: url(img/none.png) 0;\n"
+" }\n"
+" QTreeWidget::branch:has-siblings:adjoins-item {\n"
+"     border-image: url(img/none.png) 0;\n"
+" }\n"
+"\n"
+" QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {\n"
+"     border-image: url(img/none.png) 0;\n"
+" }"))
         self.tr_results.setObjectName(_fromUtf8("tr_results"))
         self.gridLayout.addWidget(self.tr_results, 1, 0, 1, 3)
         self.frame_3 = QtGui.QFrame(self.frame_2)

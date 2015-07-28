@@ -73,9 +73,9 @@ class Find_Files(QtGui.QWidget):
 ##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
                                         l = line.replace('\n','').replace('\r','')
                                         litm = QtGui.QTreeWidgetItem(['',str(cnt),l])
-                                        litm.setBackground(2,QtGui.QBrush(QtGui.QColor(30,30,30)))
+                                        for i in range(3):
+                                            litm.setBackground(i,QtGui.QBrush(QtGui.QColor(30,30,30)))
                                         litm.setForeground(2,QtGui.QBrush(QtGui.QColor(255,255,255)))
-                                        litm.setBackground(1,QtGui.QBrush(QtGui.QColor(30,30,30)))
                                         litm.setForeground(1,QtGui.QBrush(QtGui.QColor(150,150,150)))
                                         litm.setTextAlignment(1,2)
                                         itm.addChild(litm)
@@ -96,9 +96,9 @@ class Find_Files(QtGui.QWidget):
     def addFileItem(self,filename,lines = 0):
         pth,f = os.path.split(filename)
         itm = QtGui.QTreeWidgetItem([f,str(lines),pth])
-        for i in range(3):
-            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(37,65,78)))
-            itm.setForeground(i,QtGui.QBrush(QtGui.QColor(255,255,255)))
+##        for i in range(3):
+##            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(37,65,78)))
+##            itm.setForeground(i,QtGui.QBrush(QtGui.QColor(255,255,255)))
         self.ui.tr_results.addTopLevelItem(itm)
         
         return itm
