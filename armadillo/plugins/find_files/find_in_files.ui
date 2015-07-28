@@ -35,7 +35,29 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="2" column="1" colspan="4">
+      <item row="1" column="0" colspan="3">
+       <widget class="QTreeWidget" name="tr_results">
+        <property name="sortingEnabled">
+         <bool>true</bool>
+        </property>
+        <column>
+         <property name="text">
+          <string>File</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Line(s)</string>
+         </property>
+        </column>
+        <column>
+         <property name="text">
+          <string>Path / Code</string>
+         </property>
+        </column>
+       </widget>
+      </item>
+      <item row="2" column="1" colspan="2">
        <widget class="QFrame" name="frame">
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
@@ -66,7 +88,7 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../img/tri_down.png</normaloff>../../img/tri_down.png</iconset>
+             <normaloff>../../img/arrow_in.png</normaloff>../../img/arrow_in.png</iconset>
            </property>
           </widget>
          </item>
@@ -77,6 +99,9 @@
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
+           </property>
+           <property name="styleSheet">
+            <string notr="true"/>
            </property>
            <property name="text">
             <string/>
@@ -99,121 +124,117 @@
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../../img/tri_right.png</normaloff>../../img/tri_right.png</iconset>
+             <normaloff>../../img/arrow_out.png</normaloff>../../img/arrow_out.png</iconset>
            </property>
           </widget>
          </item>
         </layout>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLineEdit" name="le_ext">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>1</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
+      <item row="0" column="0" colspan="3">
+       <widget class="QFrame" name="frame_3">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
         </property>
-        <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extensions&lt;/p&gt;&lt;p&gt;   - example: .py&lt;/p&gt;&lt;p&gt;   - leave blank to search all&lt;/p&gt;&lt;p&gt;   - multiple are comma separated (.py,.js)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
         </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>extensions</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="4">
-       <widget class="QPushButton" name="b_search">
-        <property name="toolTip">
-         <string>search</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../../img/search.png</normaloff>../../img/search.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="QLineEdit" name="le_path">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>4</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Path to search (recursively)</string>
-        </property>
-        <property name="placeholderText">
-         <string>path</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="le_search">
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-          <horstretch>2</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="toolTip">
-         <string>Search Term</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="placeholderText">
-         <string>search term</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="0">
-       <widget class="QPushButton" name="b_browse">
-        <property name="toolTip">
-         <string>select a path</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../../img/file_open.png</normaloff>../../img/file_open.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="0" colspan="5">
-       <widget class="QTreeWidget" name="tr_results">
-        <property name="sortingEnabled">
-         <bool>true</bool>
-        </property>
-        <column>
-         <property name="text">
-          <string>File</string>
+        <layout class="QGridLayout" name="gridLayout_4">
+         <property name="margin">
+          <number>0</number>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Line(s)</string>
+         <property name="spacing">
+          <number>2</number>
          </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Path / Code</string>
-         </property>
-        </column>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="b_browse">
+           <property name="toolTip">
+            <string>select a path</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../img/file_open.png</normaloff>../../img/file_open.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLineEdit" name="le_path">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>4</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Path to search (recursively)</string>
+           </property>
+           <property name="placeholderText">
+            <string>path</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QLineEdit" name="le_ext">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>1</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Extensions&lt;/p&gt;&lt;p&gt;   - example: .py&lt;/p&gt;&lt;p&gt;   - leave blank to search all&lt;/p&gt;&lt;p&gt;   - multiple are comma separated (.py,.js)&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>extensions</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QLineEdit" name="le_search">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+             <horstretch>2</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Search Term</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="placeholderText">
+            <string>search term</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="4">
+          <widget class="QPushButton" name="b_search">
+           <property name="toolTip">
+            <string>search</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../img/search.png</normaloff>../../img/search.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+        </layout>
        </widget>
       </item>
      </layout>
@@ -221,6 +242,16 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>le_path</tabstop>
+  <tabstop>le_ext</tabstop>
+  <tabstop>le_search</tabstop>
+  <tabstop>b_search</tabstop>
+  <tabstop>tr_results</tabstop>
+  <tabstop>b_search_2</tabstop>
+  <tabstop>b_browse</tabstop>
+  <tabstop>b_search_3</tabstop>
+ </tabstops>
  <resources/>
  <connections>
   <connection>
@@ -230,12 +261,12 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>456</x>
-     <y>35</y>
+     <x>476</x>
+     <y>20</y>
     </hint>
     <hint type="destinationlabel">
-     <x>521</x>
-     <y>41</y>
+     <x>536</x>
+     <y>26</y>
     </hint>
    </hints>
   </connection>
@@ -246,8 +277,8 @@
    <slot>expandAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>490</x>
-     <y>295</y>
+     <x>519</x>
+     <y>320</y>
     </hint>
     <hint type="destinationlabel">
      <x>410</x>
@@ -262,12 +293,44 @@
    <slot>collapseAll()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>528</x>
-     <y>294</y>
+     <x>553</x>
+     <y>319</y>
     </hint>
     <hint type="destinationlabel">
      <x>504</x>
      <y>179</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>le_ext</sender>
+   <signal>returnPressed()</signal>
+   <receiver>b_search</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>339</x>
+     <y>27</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>537</x>
+     <y>12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>le_path</sender>
+   <signal>returnPressed()</signal>
+   <receiver>b_search</receiver>
+   <slot>click()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>212</x>
+     <y>17</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>528</x>
+     <y>24</y>
     </hint>
    </hints>
   </connection>

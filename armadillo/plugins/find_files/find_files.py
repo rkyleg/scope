@@ -54,9 +54,7 @@ class Find_Files(QtGui.QWidget):
                     
                     # Search in file
                     if filename.endswith(ext):
-                        
-                        
-                    
+
                         itm = None
                         
                         if stxt in filename:
@@ -93,12 +91,13 @@ class Find_Files(QtGui.QWidget):
         self.ui.b_search.setChecked(0)
         
         self.ui.tr_results.resizeColumnToContents(0)
+        self.ui.tr_results.resizeColumnToContents(2)
     
     def addFileItem(self,filename,lines = 0):
         pth,f = os.path.split(filename)
         itm = QtGui.QTreeWidgetItem([f,str(lines),pth])
         for i in range(3):
-            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(61,107,129)))
+            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(37,65,78)))
             itm.setForeground(i,QtGui.QBrush(QtGui.QColor(255,255,255)))
         self.ui.tr_results.addTopLevelItem(itm)
         
