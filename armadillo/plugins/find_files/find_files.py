@@ -34,10 +34,10 @@ class Find_Files(QtGui.QWidget):
         
         self.ui.tr_results.clear()
         
-        if stxt == '':
-            QtGui.QMessageBox.warning(self,'No Search Term','Please enter a search term')
+##        if stxt == '':
+##            QtGui.QMessageBox.warning(self,'No Search Term','Please enter a search term')
             
-        elif not os.path.exists(pth):
+        if not os.path.exists(pth):
             QtGui.QMessageBox.warning(self,'Invalid Path','The path is invalid<br><br>'+pth)
         else:
             for root, dirnames, filenames in os.walk(pth):
@@ -96,6 +96,18 @@ class Find_Files(QtGui.QWidget):
     def addFileItem(self,filename,lines = 0):
         pth,f = os.path.split(filename)
         itm = QtGui.QTreeWidgetItem([f,str(lines),pth])
+        
+        # Set icon
+        if self.IDE != None:
+            ext = f.split('.')[-1]
+            if ext in self.IDE.settings['extensions']:
+                ext = self.IDE.settings['extensions'][ext]
+                ipth = self.IDE.iconPath+'files/'+ext+'.png'
+            else:
+                ipth = self.IDE.iconPath+'files/_blank.png'
+            
+            itm.setIcon(0,QtGui.QIcon(ipth))
+
 ##        for i in range(3):
 ##            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(37,65,78)))
 ##            itm.setForeground(i,QtGui.QBrush(QtGui.QColor(255,255,255)))
@@ -113,8 +125,8 @@ class Find_Files(QtGui.QWidget):
         if self.IDE != None:
             if itm.parent() != None:
                 pth = os.path.join(str(itm.parent().text(2)),str(itm.parent().text(0)))
-                self.IDE.openFile(pth)
-                self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
+                ok = self.IDE.openFile(pth)
+                if ok: self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
     
     def toggle(self):
         self.IDE.ui.sw_main.setCurrentWidget(self)

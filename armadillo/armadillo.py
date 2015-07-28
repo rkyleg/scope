@@ -504,10 +504,12 @@ class Armadillo(QtGui.QWidget):
         return ipth
     
     def openFile(self,filename=None,editor=None,file_id=None):
+        txt = None
         if file_id != None:
             if file_id in self.fileOpenD:
                 self.changeTab(file_id)
-                return
+                
+                return 1
             else:
                 filename = self.fileD[file_id]['filename']
 ##        print 'open',filename
@@ -600,7 +602,7 @@ class Armadillo(QtGui.QWidget):
     ##                    self.filesystemwatcher.addPath(filename)
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
 ##                        self.updateOutline()
-     
+        return txt != None
 
     #---Editor
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
