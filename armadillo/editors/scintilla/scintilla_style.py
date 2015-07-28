@@ -8,8 +8,9 @@ styleD = {
 ##    'Default':'67,183,255',  # blue
 ##    'Default':'150,220,255',  # blue
 
-    'Comment':'150,150,150', # gray
-    'Comment':'250,255,151', # yellow
+##    'Comment':'150,150,150', # gray
+##    'Comment':'250,255,151', # yellow
+    'Comment':'244,255,166', # yellow
     'CommentBlock':'100,100,100',
     
 ##    'ClassName':'0,170,255', # blue

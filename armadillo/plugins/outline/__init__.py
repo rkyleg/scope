@@ -1,6 +1,9 @@
 from . import outline
 from PyQt4 import QtGui, QtCore
 
+title = 'Outline'
+location = 'left'
+
 def addPlugin(parent):
     plugin = outline.Outline(parent)
     
@@ -11,7 +14,6 @@ def addPlugin(parent):
     
     # QtGui.QShortcut(QtCore.Qt.Key_F3,parent,plugin.updateOutlineToggle) 
     
-    plugin.title = 'Outline'
-    plugin.location = 'left'
-    
+##    plugin.title = 'Outline'
+##    plugin.location = 'left'    
     return plugin

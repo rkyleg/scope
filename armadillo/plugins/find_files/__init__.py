@@ -1,12 +1,14 @@
-from . import spellcheck
+from . import find_files
 from PyQt4 import QtGui, QtCore
 
-title = 'Spellcheck'
+title = 'Search Files'
 location = 'tools'
 
 def addPlugin(parent):
-    plugin = spellcheck.SpellChecker(parent)
-    
+    plugin = find_files.Find_Files(parent)
+    plugin.id = None
+    plugin.title = 'Find Files'
+    parent.ui.sw_main.addWidget(plugin)
 ##    parent.evnt.editorAdded.connect(plugin.addOutline)
 ##    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
 ##    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
@@ -28,6 +30,3 @@ def addPlugin(parent):
 ##    btn.clicked.connect(plugin.toggle)
     
     return plugin
-
-##def runPlugin():
-##    print 'run spellcheck'

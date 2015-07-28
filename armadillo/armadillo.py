@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '1.10.3-dev'
+__version__ = '1.10.4-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -142,7 +142,7 @@ class Armadillo(QtGui.QWidget):
             self.ui.tab_right.setVisible(0)
 
         # Tab Direction
-        tabLocD = {'top':QtGui.QTabWidget.North,'bottom':QtGui.QTabWidget.South}
+        tabLocD = {'top':QtGui.QTabWidget.North,'bottom':QtGui.QTabWidget.South,'left':QtGui.QTabWidget.West,'right':QtGui.QTabWidget.East}
         self.ui.tab_left.setTabPosition(tabLocD[self.settings['window']['pluginLeft']['tabPosition']])
         self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
@@ -253,7 +253,24 @@ class Armadillo(QtGui.QWidget):
                 for l in ld:
                     if l not in self.settings['extensions']:
                         self.settings['extensions'][l]=l
+
+        #--- Add Menus
+        # New Button Menu
+        self.newMenu = NewMenu(self)
+        self.ui.b_new.setMenu(self.newMenu)
         
+        # Workspace Button Menu
+        self.workspaceMenu = WorkspaceMenu(self)
+##        self.ui.b_workspace.setMenu(self.workspaceMenu)
+        
+        # add Main Button to tabbar
+        self.armadilloMenu = ArmadilloMenu(self)
+        self.ui.b_main.setMenu(self.armadilloMenu)
+        
+        # Tools Menu
+        self.toolsMenu = ToolsMenu(self)
+        self.ui.b_tools.setMenu(self.toolsMenu)
+
         #--- Plugins
         # Plugin tab bar
         self.ui.tabbar_bottom = QtGui.QTabBar()
@@ -281,8 +298,9 @@ class Armadillo(QtGui.QWidget):
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
+            print 'add plug',plug
 ##            try:
-                self.addPlugin(plug)
+            self.addPlugin(plug)
 ##            except:
 ##                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
@@ -306,18 +324,7 @@ class Armadillo(QtGui.QWidget):
 ##        fmt = threading.Thread(target=self.checkFileChanges,args=(self))
 ##        fmt.start()
 
-        # New Button Menu
-        self.newMenu = NewMenu(self)
-        self.ui.b_new.setMenu(self.newMenu)
-        
-        # Workspace Button Menu
-        self.workspaceMenu = WorkspaceMenu(self)
-##        self.ui.b_workspace.setMenu(self.workspaceMenu)
-        
-        # add Main Button to tabbar
-        self.armadilloMenu = ArmadilloMenu(self)
-        self.ui.b_main.setMenu(self.armadilloMenu)
-        
+
 ##        # Load custom setup
 ##        self.loadSetup()
         
@@ -594,7 +601,6 @@ class Armadillo(QtGui.QWidget):
     ##                    self.fileModD[filename]=os.path.getmtime(filename)
 ##                        self.updateOutline()
      
-
 
     #---Editor
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
@@ -1110,12 +1116,17 @@ class Armadillo(QtGui.QWidget):
         else:
             pmod = importlib.import_module('plugins.'+plug)
             os.chdir(self.pluginPath+plug)
-            pluginWidget = pmod.addPlugin(self)
-            title = pluginWidget.title
-            loc = pluginWidget.location
+
+
+            title = pmod.title
+            loc = pmod.location
             icn = QtGui.QIcon()
             if os.path.exists(self.pluginPath+plug+'/icon.png'):
                 icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
+            
+            pluginWidget = None
+            if loc != 'tools':
+                pluginWidget = pmod.addPlugin(self)
             
             # Check settings for location
             if plug in self.settings['plugins'] and 'location' in self.settings['plugins'][plug]:
@@ -1136,6 +1147,10 @@ class Armadillo(QtGui.QWidget):
                 self.ui.sw_bottom.addWidget(pluginWidget)
                 ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
                 self.ui.tabbar_bottom.setTabToolTip(ti,title)
+            elif loc == 'tools':
+                # Add to tools menu
+                act = self.toolsMenu.addAction(icn,title)
+                act.plugin_name = plug
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
 

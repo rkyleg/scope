@@ -1,4 +1,4 @@
-import sip
+import sip, importlib
 ##sip.setapi('QString',1)
 sip.setapi('QVariant',1)
 
@@ -205,7 +205,8 @@ class ArmadilloMenu(QtGui.QMenu):
         act = self.addAction(icn,'&Home',self.parent.showHome)
         
         # Settings
-        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
+##        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
+        icn = QtGui.QIcon()
         act = self.addAction(icn,'Se&ttings',self.parent.openSettings)
         
         self.addSeparator()
@@ -224,3 +225,27 @@ class ArmadilloMenu(QtGui.QMenu):
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
         self.addAction(icn,'Exit',self.parent.close)
+
+class ToolsMenu(QtGui.QMenu):
+    def __init__(self,parent):
+        QtGui.QMenu.__init__(self,parent)
+        self.parent = parent
+    
+        self.triggered.connect(self.togglePlugin)
+    
+    def togglePlugin(self,event):
+        plug = str(event.plugin_name)
+##        print 'toggle',plug,event.plugin_name
+        pluginWidget = None
+        if self.parent.pluginD[plug] == None:
+            curdir = os.path.abspath('.')
+            pmod = importlib.import_module('plugins.'+plug)
+            os.chdir(self.parent.pluginPath+plug)
+            pluginWidget = pmod.addPlugin(self.parent)
+            self.parent.pluginD[plug] = pluginWidget
+            os.chdir(curdir)
+        else:
+            pluginWidget = self.parent.pluginD[plug]
+        
+        if pluginWidget != None:
+            pluginWidget.toggle()

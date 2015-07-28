@@ -153,8 +153,10 @@ class Outline(QtGui.QWidget):
     def updateLocation(self,wdg,lines):
         trwdg = self.wdgD[wdg].ui.tr_outline
         hi=0
-##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150))
-        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200))
+##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
+##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
+        brsh=QtGui.QBrush(QtGui.QColor(80,80,80,150)) # gray
+        
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)
             line = int(str(itm.text(1)))

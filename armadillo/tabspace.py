@@ -118,8 +118,8 @@ class editortab(QtGui.QWidget):
         
         # Layout
         layout = QtGui.QHBoxLayout()
-        layout.setContentsMargins(2,2,2,2)
-        layout.setSpacing(2)
+        layout.setContentsMargins(4,2,2,2)
+        layout.setSpacing(4)
         
         # Icon Button
 ##        icn_btn = QtGui.QPushButton()
@@ -154,7 +154,7 @@ class editortab(QtGui.QWidget):
         # Close Button
         cls_btn = QtGui.QPushButton()
         cls_btn.clicked.connect(self.close)
-        cls_btn.setMaximumWidth(32)
+        cls_btn.setMaximumWidth(22)
         cls_btn.setProperty("class",'editor_tab_cls_btn')
         layout.addWidget(cls_btn)
         self.closeButton = cls_btn
