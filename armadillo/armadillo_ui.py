@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'armadillo.ui'
 #
-# Created: Mon Jul 27 21:56:36 2015
+# Created: Mon Jul 27 23:22:24 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -97,6 +97,11 @@ class Ui_Form(object):
         self.sw_bottom.addWidget(self.page)
         self.gridLayout_7.addWidget(self.split_bottom, 0, 0, 1, 1)
         self.l_statusbar = QtGui.QLabel(self.fr_right)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Ignored, QtGui.QSizePolicy.Preferred)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.l_statusbar.sizePolicy().hasHeightForWidth())
+        self.l_statusbar.setSizePolicy(sizePolicy)
         self.l_statusbar.setStyleSheet(_fromUtf8("QLabel {\n"
 "padding-left:2px;\n"
 "padding-top:2px;\n"

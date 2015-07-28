@@ -73,9 +73,9 @@ class Find_Files(QtGui.QWidget):
 ##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
                                         l = line.replace('\n','').replace('\r','')
                                         litm = QtGui.QTreeWidgetItem(['',str(cnt),l])
-                                        litm.setBackground(2,QtGui.QBrush(QtGui.QColor(50,50,50)))
+                                        litm.setBackground(2,QtGui.QBrush(QtGui.QColor(30,30,30)))
                                         litm.setForeground(2,QtGui.QBrush(QtGui.QColor(255,255,255)))
-                                        litm.setBackground(1,QtGui.QBrush(QtGui.QColor(50,50,50)))
+                                        litm.setBackground(1,QtGui.QBrush(QtGui.QColor(30,30,30)))
                                         litm.setForeground(1,QtGui.QBrush(QtGui.QColor(150,150,150)))
                                         litm.setTextAlignment(1,2)
                                         itm.addChild(litm)
@@ -121,8 +121,8 @@ class Find_Files(QtGui.QWidget):
 
 def runui():
     app = QtGui.QApplication(sys.argv)
-    appui = Find_Files(pth = os.path.expanduser('~')+'/armadillo')
-    appui.ui.le_ext.setText('.py,.js')
+    appui = Find_Files(pth = os.path.expanduser('~'))
+    appui.ui.le_ext.setText('.py')
     appui.ui.le_search.setText('outline')
     appui.show()
     sys.exit(app.exec_())

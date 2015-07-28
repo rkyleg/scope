@@ -139,6 +139,12 @@
        </item>
        <item row="2" column="0">
         <widget class="QLabel" name="l_statusbar">
+         <property name="sizePolicy">
+          <sizepolicy hsizetype="Ignored" vsizetype="Preferred">
+           <horstretch>0</horstretch>
+           <verstretch>0</verstretch>
+          </sizepolicy>
+         </property>
          <property name="styleSheet">
           <string notr="true">QLabel {
 padding-left:2px;
@@ -801,12 +807,12 @@ QPushButton:hover,QToolButton:hover {
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>769</x>
-     <y>34</y>
+     <x>654</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
-     <x>794</x>
-     <y>34</y>
+     <x>682</x>
+     <y>32</y>
     </hint>
    </hints>
   </connection>
@@ -817,8 +823,8 @@ QPushButton:hover,QToolButton:hover {
    <slot>setVisible(bool)</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>818</x>
-     <y>28</y>
+     <x>728</x>
+     <y>33</y>
     </hint>
     <hint type="destinationlabel">
      <x>678</x>
