@@ -134,7 +134,7 @@ class Home(object):
             
             # Add Workspaces
             wksp = ''
-            icn_wksp = pfx+os.path.abspath('img/workspace.png').replace('\\','/')
+            icn_wksp = self.IDE.iconPath+'workspace.png'
             if os.path.exists(self.IDE.settingPath+'/workspaces'):
                 for w in sorted(os.listdir(self.IDE.settingPath+'/workspaces'),key=lambda x: x.lower()):
     ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
