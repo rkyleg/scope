@@ -1,0 +1,92 @@
+<html>
+<head>
+<link href="home/home.css" rel="stylesheet" media="screen">
+
+</head>
+
+<!--BODY-->
+<body>
+
+<div class="main">
+    <div class="centered" style="vertical-align:top;">
+    
+        <!--<br>-->
+        <div id="logo" style="text-align:center;vertical-align:bottom">
+            <img alt="" src="../style/img/scope.png" height="50px" />
+            <span id="armadillo-text">Scope</span> <span id="version"> IDE {{version}}</span>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <a href="filebrowser"><div class="toolbutton" style="font-size:18px;vertical-align:bottom;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>
+            <a href="settings"><div class="toolbutton" style="font-size:18px;vertical-align:bottom;"><img alt="" src="../style/img/wrench.png" /> Settings</div></a>
+            
+            <br>
+        </div>
+        <br><br>
+        <!---Open Files-->
+        <!--<div class="panel" style="display:block;" id="open_files2">-->
+        <!--    <span class="section-title" style="display:table-cell;padding-right:10px;">{{workspace}}</span>-->
+            
+        <!--    <span style="display:table-cell;" id="open_files">-->
+        <!--    {{files}}-->
+        <!--    </span>-->
+            <!--For Testing-->
+                <!--<a href="#" class="file" id=0>file 1</a>-->
+                <!--<a href="#" class="file" id=1>file 1</a>-->
+                <!--<a href="#" class="file" id=2>file 1</a>-->
+                <!--<a href="#" class="file current" id=3>file 4</a>-->
+                <!--<a href="#" class="file" id=4>file 1</a>-->
+        <!--</div>-->
+        
+        <!---Toolbar-->
+        <!--<div style="text-align:center;margin-top:10px;">-->
+        <!--    <a href="filebrowser"><div class="file" style="font-size:18px;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>-->
+        <!--    <a href="settings"><div class="file" style="font-size:18px;"><img alt="" src="../style/img/wrench.png" /> Settings</div></a>-->
+        <!--</div>-->
+        
+        <!---New Files-->
+        <div class="panel">
+            <!--<a href="filebrowser"><div class="newfile" style="font-size:18px;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>-->
+            <!--<br>-->
+            <span class="section-title">Create New</span><br>
+            {{new_files}}
+            <br>
+            {{new_editors}}
+        </div>
+        
+        <!---Workspaces-->
+        <div class="panel" style="vertical-align:top;">
+            <span class="section-title">Workspaces</span><br>
+            {{workspaces}}
+        </div>
+        
+        <!---Help-->
+        <!--<div class="panel" style="vertical-align:top;">-->
+        <!--    <span class="section-title">Documentation</span><br>-->
+        <!--    <a href="about.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> About</div></a>-->
+        <!--    <a href="overview.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> Overview</div></a>-->
+        <!--    <a href="editors.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> Editors</div></a>-->
+        <!--    <a href="plugins.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> Plugins</div></a>-->
+        <!--    <a href="settings.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> Settings</div></a>-->
+        <!--    <a href="keyboard_shortcuts.md"><div class="newfile"><img src="../style/img/bullet_blue.png"> Keyboard Shortcuts</div></a>-->
+        <!--</div>-->
+
+        
+    </div>
+</div>
+<!--<a href="close"><span class="close" style="vertical-align:middle;"> <img alt="" src="../style/img/close_hover.png" style="height:12px;"/> close</span></a>-->
+
+  <!--<script src="hud/jquery.min.js"></script>-->
+	<!--<script src="hud/sortable.min.js"></script>-->
+	<!--<script src="../src/html.sortable.src.js"></script>-->
+	<script>
+// 		$(function() {
+// 			$('#open_files').sortable({
+// 				// forcePlaceholderSize: true,
+// 				// placeholderClass: 'col col-4 border border-maroon',
+// 				// dragImage: null
+// 			});
+// 		});
+// 	</script>
+
+<script src="home/home.js"></script>
+    
+</body></html>

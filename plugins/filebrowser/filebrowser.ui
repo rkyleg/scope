@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>Form</class>
+ <widget class="QWidget" name="Form">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>231</width>
+    <height>434</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>File Browser</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <property name="margin">
+    <number>0</number>
+   </property>
+   <property name="spacing">
+    <number>0</number>
+   </property>
+   <item row="0" column="0">
+    <widget class="QLineEdit" name="le_root">
+     <property name="font">
+      <font>
+       <pointsize>8</pointsize>
+      </font>
+     </property>
+     <property name="styleSheet">
+      <string notr="true">background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(32, 32, 32, 255), stop:0.0590909 rgba(41, 41, 41, 255), stop:0.922727 rgba(59, 59,59, 255), stop:1 rgba(71, 71, 71, 255));
+color:white;
+border:0px;
+border-bottom:1px solid rgb(70,70,70);
+padding:2px;
+border-top-left-radius:3px;
+border-top-right-radius:3px;</string>
+     </property>
+     <property name="text">
+      <string>/</string>
+     </property>
+     <property name="placeholderText">
+      <string>Enter Root Path</string>
+     </property>
+     <property name="class" stdset="0">
+      <string/>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="0">
+    <widget class="QTreeWidget" name="tr_dir">
+     <property name="styleSheet">
+      <string notr="true">QTreeWidget {
+border-bottom-left-radius:5px;
+border-bottom-right-radius:5px;
+show-decoration-selected: 0;
+padding-left:4px;
+}
+QTreeWidget::branch {  border-image: url(../../style/img/none.png); }
+
+ QTreeWidget::branch:has-siblings:!adjoins-item {
+     border-image: url(../../style/img/vline.png) 0;
+ }
+ QTreeWidget::branch:has-siblings:adjoins-item {
+     border-image: url(../../style/img/branch-more.png) 0;
+ }
+
+ QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {
+     border-image: url(../../style/img/branch-end.png) 0;
+ }</string>
+     </property>
+     <property name="frameShape">
+      <enum>QFrame::NoFrame</enum>
+     </property>
+     <property name="indentation">
+      <number>12</number>
+     </property>
+     <property name="rootIsDecorated">
+      <bool>false</bool>
+     </property>
+     <property name="expandsOnDoubleClick">
+      <bool>false</bool>
+     </property>
+     <property name="class" stdset="0">
+      <string>pluginVertical</string>
+     </property>
+     <attribute name="headerVisible">
+      <bool>false</bool>
+     </attribute>
+     <column>
+      <property name="text">
+       <string notr="true">1</string>
+      </property>
+     </column>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
