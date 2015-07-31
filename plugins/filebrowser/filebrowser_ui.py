@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Thu Jul 30 01:40:51 2015
+# Created: Thu Jul 30 01:50:08 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -52,18 +52,9 @@ class Ui_Form(object):
 "show-decoration-selected: 0;\n"
 "padding-left:4px;\n"
 "}\n"
-"QTreeWidget::branch {  border-image: url(../../style/img/none.png); }\n"
+"QTreeWidget::branch {  border-image: url(none.png); }\n"
 "\n"
-" QTreeWidget::branch:has-siblings:!adjoins-item {\n"
-"     border-image: url(../../style/img/vline.png) 0;\n"
-" }\n"
-" QTreeWidget::branch:has-siblings:adjoins-item {\n"
-"     border-image: url(../../style/img/branch-more.png) 0;\n"
-" }\n"
-"\n"
-" QTreeWidget::branch:!has-children:!has-siblings:adjoins-item {\n"
-"     border-image: url(../../style/img/branch-end.png) 0;\n"
-" }"))
+""))
         self.tr_dir.setFrameShape(QtGui.QFrame.NoFrame)
         self.tr_dir.setIndentation(12)
         self.tr_dir.setRootIsDecorated(False)
