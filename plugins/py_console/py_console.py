@@ -1,6 +1,6 @@
 #!/usr/bin/python
 #
-# PyConsole is a Python Shell console for Armadillo IDE
+# PyConsole is a Python Shell console for Scope IDE
 # by Cole Hagen
 #
 # PyConsole is a modified version of pycute4 by Rob Reilink.
@@ -9,7 +9,7 @@
 # (http://gerard.vermeulen.free.fr/) and was ported for Qt4.
 #
 # PyConsole has some bug fixes and personalized features for
-# the Armadillo IDE
+# the Scope IDE
 
 import os, sys
 from code import InteractiveInterpreter as Interpreter
@@ -133,7 +133,7 @@ class Console(QtGui.QTextEdit):
         if __name__ =='__main__':
             self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')<br>')
         else:
-            self.write('# Armadillo Python ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+') Shell <br>#&nbsp;&nbsp;&nbsp;&nbsp;- only modules included with Armadillo are available<br>#&nbsp;&nbsp;&nbsp;&nbsp;- Ctrl+l to launch popup (outside of Armadillo) with the default installed Python<br>')
+            self.write('# Scope Python ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+') Shell <br>#&nbsp;&nbsp;&nbsp;&nbsp;- only modules included with Scope are available<br>#&nbsp;&nbsp;&nbsp;&nbsp;- Ctrl+l to launch popup (outside of Scope) with the default installed Python<br>')
         
         self.write(sys.ps1)
         self.prompt = sys.ps1

@@ -1,17 +1,14 @@
-_**WARNING: This development version of Scope is not suitable for use**_
+_**WARNING: Scope is currently in alpha stage and is likely not suitable for daily use.**_
 
-*This version is in the middle of a redesign without tabs and is buggy.*
+*Scope is a redesign of Armadillo IDE*
 
 # <img src="style/img/scope.png" height="48px;"> Scope IDE
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 # Screenshots
-<a href="extra/screenshot_home.png" target="_blank" title="Home/Startup Screen"><img src="extra/screenshot_home.png" height=200></a>
-<a href="extra/screenshot.png" target="_blank" title="Editor with Outline"><img src="extra/screenshot.png" height=200></a>
-<a href="extra/screenshotpreview.png" target="_blank" title="Markdown with preview"><img src="extra/screenshot_preview.png" height=200></a>
-<a href="extra/screenshot_output.png" target="_blank" title="Running a file"><img src="extra/screenshot_output.png" height=200></a>
-<a href="extra/screenshot_full_editor_mode.png" target="_blank" title="Full Editor Mode"><img src="extra/screenshot_full_editor_mode.png" height=200></a>
-<a href="extra/screenshot_hud.png" target="_blank" title="Heads-up-display (HUD) F1"><img src="extra/screenshot_hud.png" height=200></a>
+<a href="extra/scope_home.png" target="_blank" title="Scope Home Screen"><img src="extra/scope_home.png" height=200></a>
+<a href="extra/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="extra/scope_editor.png" height=200></a>
+<a href="extra/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="extra/scope_tabs.png" height=200></a>
 
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)
@@ -22,16 +19,10 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 - Run code from IDE with output screen
 - Splitview preview for html and markdown
 - Extend with your own plugins created with Python and PyQt
-- Head-up-display for selecting open files (F1)
+- Multiple workspaces can be open at once
+- New interface for selecting tabs/open files
 
 ## Installing
-### Windows Executable
-1. [Download Windows zip](https://github.com/lucidlylogicole/scope/archive/windows.zip)
-2. Extract zip folder somewhere
-3. Run windows/Scope.exe
-
-### Linux and Mac 
-See next section (Running with Python)
 
 ### Running with Python (source)
 1. Install [Python](https://www.python.org/downloads/release/python-279/) (version 2.7 or 2.6 required)
