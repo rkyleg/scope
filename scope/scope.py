@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.0-dev'
+__version__ = '0.2.1-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -41,6 +41,10 @@ class Scope(QtGui.QWidget):
 ##        self.scopePath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')
         self.scopePath = rpath
         self.currentPath = os.path.expanduser('~')
+        if os.name =='nt':
+            self.pathPrefix="file:///"
+        else:
+            self.pathPrefix="file://"
         
         # File Variables
         self.fileOpenD = {} # keep track of open files and associated widgets
@@ -174,7 +178,7 @@ class Scope(QtGui.QWidget):
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
-        self.ui.b_show_tabs.clicked.connect(self.showTabspace)
+        self.ui.b_show_tabs.clicked.connect(self.showTabsClicked)
 ##        self.ui.b_open.clicked.connect(self.openFile)
         self.ui.b_save.clicked.connect(self.editorSave)
 
@@ -302,7 +306,7 @@ class Scope(QtGui.QWidget):
         self.pluginD = {}
         self.prevPlugin=1
         curdir = os.path.abspath('.')
-        print 'cu2',curdir
+##        print 'cu2',curdir
         for plug in self.settings['activePlugins']:
 ##            print 'add plug',plug
 ##            try:
@@ -533,6 +537,7 @@ class Scope(QtGui.QWidget):
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
                     self.changeTab(file_open)
+                    return 1
 ##                    self.ui.sw_main.setCurrentIndex(file_open)
 ##                    self.ui.tab.setTabEnabled(file_open,1)
 ##                    self.updateOutline()
@@ -1247,6 +1252,11 @@ class Scope(QtGui.QWidget):
         if self.HomeWidget != None:
             self.HomeWidget.toggleHome()
     
+    def showTabsClicked(self,checked):
+##        print self.ui.b_show_tabs.isChecked(),self.tabspace.tabs.isVisible()
+        if self.ui.b_show_tabs.isChecked() and not self.tabspace.tabs.isVisible():
+            self.tabspace.toggle(mode=checked,ignore_button=1)
+    
     def showTabspace(self):
 ##        # Add tabs
 ##        self.tabworkspace.addEditortab(1,'a file.py','')
@@ -1537,6 +1547,7 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
 
+        
         from plugins.configobj import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
@@ -1548,6 +1559,11 @@ class Scope(QtGui.QWidget):
         except:
             QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings<Br><br><i>Compare your settings with the default_settings</i>')
         self.settings = config
+
+        # Setup Webview stylesheet
+        settings = QtWebKit.QWebSettings.globalSettings()
+##        settings.setUserStyleSheetUrl(QtCore.QUrl(self.pathPrefix+self.scopePath+'/style/webview.css'))
+        settings.setUserStyleSheetUrl(QtCore.QUrl('file://'+self.scopePath+'/style/webview.css'))
 
         # Configure Settings
         self.settings['run']={}
@@ -1647,7 +1663,7 @@ def runui():
 ##    fdb = QtGui.QFontDatabase()
 ##    fdb.addApplicationFont('style/DejaVuSansMono.ttf')
 ##    app.setFont(QtGui.QFont('DejaVu Sans Mono',10))
-    print 'c3',os.path.abspath('.')
+##    print 'c3',os.path.abspath('.')
     scopeApp = Scope()
     os.chdir('../')
     scopeApp.load()
@@ -1658,5 +1674,5 @@ if __name__ == "__main__":
     sys.path.append(os.path.abspath('../'))
 ##    os.chdir('../')
     
-    print os.path.abspath('.')
+##    print os.path.abspath('.')
     runui()

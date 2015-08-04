@@ -17,6 +17,9 @@ def analyzeLine(txtlines):
         elif tls.startswith('class '):
             itmText =tls[6:-1]
             typ = 'object'
+        elif tls.startswith('@'):
+            itmText =tls.lstrip('-')
+            typ = 'decorator'
         elif tls.startswith('#---'):
             itmText =tls[4:].lstrip('-')
             ##if itmText == '': itmText = None

@@ -192,15 +192,21 @@ padding-top:2px;
       </property>
       <item row="0" column="9">
        <widget class="QPushButton" name="b_tools">
+        <property name="maximumSize">
+         <size>
+          <width>40</width>
+          <height>16777215</height>
+         </size>
+        </property>
         <property name="toolTip">
-         <string>Tools</string>
+         <string>More apps/tools</string>
         </property>
         <property name="text">
          <string/>
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/wrench.png</normaloff>../style/img/wrench.png</iconset>
+          <normaloff>../style/img/launch.png</normaloff>../style/img/launch.png</iconset>
         </property>
         <property name="checkable">
          <bool>true</bool>

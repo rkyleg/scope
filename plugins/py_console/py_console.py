@@ -58,7 +58,7 @@ class Console(QtGui.QTextEdit):
 ##                    sys.path.append('/usr/lib/python2.7/dist-packages')
                     
         if locals==None:
-            locals={'self':self,'armadillo':parent}
+            locals={'self':self,'scope':parent}
         self.interpreter = Interpreter(locals)
 
         # session log

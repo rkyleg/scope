@@ -46,7 +46,7 @@ styleD = {
     'Tabs':'',
     'TabsAfterSpaces':'',
     
-    'Number':'125,255,125', # green
+##    'Number':'125,255,125', # green
     'Number':'255,170,255', # pink
     
     

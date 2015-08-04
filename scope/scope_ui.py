@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Thu Jul 30 01:17:21 2015
+# Created: Mon Aug  3 23:57:28 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -120,9 +120,10 @@ class Ui_Form(object):
         self.gridLayout_2.setContentsMargins(0, 2, 0, 0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.b_tools = QtGui.QPushButton(self.fr_topbar)
+        self.b_tools.setMaximumSize(QtCore.QSize(40, 16777215))
         self.b_tools.setText(_fromUtf8(""))
         icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/wrench.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/launch.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_tools.setIcon(icon1)
         self.b_tools.setCheckable(True)
         self.b_tools.setObjectName(_fromUtf8("b_tools"))
@@ -331,7 +332,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "Scope", None))
-        self.b_tools.setToolTip(_translate("Form", "Tools", None))
+        self.b_tools.setToolTip(_translate("Form", "More apps/tools", None))
         self.b_tools.setProperty("class", _translate("Form", "toolbar toolbar-individual", None))
         self.b_toggle_find.setToolTip(_translate("Form", "Run", None))
         self.b_toggle_find.setProperty("class", _translate("Form", "toolbar toolbar-individual", None))

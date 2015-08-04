@@ -226,3 +226,9 @@ class Outline(QtGui.QWidget):
             itm.setFont(0,fnt)
             itm.setForeground(0,QtGui.QBrush(QtGui.QColor(250,250,250)))
             itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))
+        elif typ=='decorator':
+            fnt=QtGui.QFont()
+            fnt.setItalic(1)
+            itm.setFont(0,fnt)
+            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(126,179,166)))
+##            itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))

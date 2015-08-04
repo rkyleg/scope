@@ -118,7 +118,7 @@ class Find_Files(QtGui.QWidget):
         return itm
     
     def browse(self):
-        print self.ui.le_path.text()
+##        print self.ui.le_path.text()
         npth = QtGui.QFileDialog.getExistingDirectory(self,'Select directory to search',self.ui.le_path.text())
         if not npth.isEmpty(): self.ui.le_path.setText(npth)
     
@@ -128,7 +128,9 @@ class Find_Files(QtGui.QWidget):
             if itm.parent() != None:
                 pth = os.path.join(str(itm.parent().text(2)),str(itm.parent().text(0)))
                 ok = self.IDE.openFile(pth)
-                if ok: self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
+##                print 'ok',ok,'goto',int(str(itm.text(1)))-1
+                if ok: 
+                    self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
             elif col > 0:
                 pth = os.path.join(str(itm.text(2)),str(itm.text(0)))
                 self.IDE.openFile(pth)

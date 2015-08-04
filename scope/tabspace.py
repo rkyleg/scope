@@ -240,7 +240,11 @@ class TabSpace(object):
             QtGui.QTabWidget.keyPressEvent(self.tabs,event)
     
     def closeDialog(self,event):
-        self.ide.ui.b_show_tabs.setChecked(0)
+##        self.toggle(mode=0)
+##        print 'close',self.ide.ui.b_show_tabs.isChecked()
+##        QtGui.QApplication.processEvents()
+##        if self.ide.ui.b_show_tabs.isChecked():
+            self.ide.ui.b_show_tabs.setChecked(0)
     
     def addWorkspace(self,name):
         ww = WorkspaceWidget(parent=self.ide)
@@ -301,10 +305,10 @@ class TabSpace(object):
         else:
             self.tabs.setGeometry(20,20,500,h)
         
-        self.ide.ui.b_show_tabs.setChecked(1)
+##        self.ide.ui.b_show_tabs.setChecked(1)
         self.tabs.show()
     
-    def toggle(self,mode=None):
+    def toggle(self,mode=None,ignore_button=0):
         if mode == None:
             mode = not self.tabs.isVisible()
             
@@ -318,7 +322,8 @@ class TabSpace(object):
         else:
             self.tabs.hide()
         
-        self.ide.ui.b_show_tabs.setChecked(mode)
+        if not ignore_button:
+            self.ide.ui.b_show_tabs.setChecked(mode)
     
     def highlightCurrent(self):
         # Highlight current file

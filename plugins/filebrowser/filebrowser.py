@@ -53,6 +53,7 @@ class DirTree(QtGui.QWidget):
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)
         self.ui.tr_dir.mousePressEvent = self.mousePressEvent
         self.ui.le_root.returnPressed.connect(self.loadRoot)
+        self.ui.b_browse.clicked.connect(self.browse)
         
         # Set default path
         self.ui.le_root.setText(os.path.expanduser('~')) # Start with home directory
@@ -66,6 +67,13 @@ class DirTree(QtGui.QWidget):
             self.ide.ui.fr_left.setVisible(1)
         i=self.ide.ui.tab_left.indexOf(self)
         self.ide.ui.tab_left.setCurrentIndex(i)
+    
+    def browse(self):
+##        print self.ui.le_path.text()
+        npth = QtGui.QFileDialog.getExistingDirectory(self,'Select directory to search',self.ui.le_root.text())
+        if not npth.isEmpty(): 
+            self.ui.le_root.setText(npth)
+            self.loadRoot()
     
     def loadRoot(self):
         newpath = os.path.abspath(str(self.ui.le_root.text())).replace('\\','/')
