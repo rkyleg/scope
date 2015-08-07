@@ -193,7 +193,18 @@ class Sci(QtGui.QWidget):
             if event.key() == QtCore.Qt.Key_Space:
                 self.ui.te_sci.autoCompleteFromAll()
                 handled = 1
-                
+            elif event.key() == QtCore.Qt.Key_Delete:
+                # Delete line
+                self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_LINEDELETE)
+                handled = 1
+        elif event.modifiers() & QtCore.Qt.AltModifier:
+            if event.key() == QtCore.Qt.Key_Down:
+                # Move Line Down
+                self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESDOWN)
+            if event.key() == QtCore.Qt.Key_Up:
+                # Move Line Down
+                self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESUP)
+        
         if not handled:
             Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
             QtGui.QApplication.processEvents()

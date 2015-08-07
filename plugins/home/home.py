@@ -81,37 +81,6 @@ class Home(object):
             
             # Get Open Files
             file_txt = ''
-##            for t in self.IDE.tabD:
-####                t = int(self.IDE.ui.tab.tabData(i).toInt()[0])
-##                wdg = self.IDE.tabD[t]
-##                lang = wdg.lang
-##                filename = wdg.title
-##                # Icon
-##                ipth = self.IDE.iconPath+'/files/_blank.png'
-##                fipth = self.IDE.iconPath+'files/'+str(lang)+'.png'
-##                if os.path.exists(fipth):
-##                    ipth = fipth
-##                elif filename != None:
-##                    ext = os.path.splitext(filename)[1][1:]
-##                    if os.path.exists(self.IDE.iconPath+'files/'+ext+'.png'):
-##                        ipth = self.IDE.iconPath+'files/'+ext+'.png'
-##                elif os.path.exists(self.IDE.editorPath+editor+'/'+editor+'.png'):
-##                    ipth = self.IDE.editorPath+editor+'/'+editor+'.png'
-##
-##                ipth = pfx+ipth
-##                
-##                cls=''
-##                if t == self.IDE.currentEditor().id:
-##                    cls='current'
-##                    cur_itm=t
-##                
-####                file_txt += '<a href="opentab:'+str(t)+'" class="file '+cls+'" id="'+str(t)+'">'
-##                file_txt += '<span class="file '+cls+'" id="'+str(t)+'">'
-##                file_txt += '<span style="cursor:pointer;" onclick="opentab('+str(t)+')" title="'+str(wdg.filename)+'"><img class="file-icon" src="'+ipth+'"> '
-##                file_txt +=str(wdg.displayTitle)
-##                file_txt += '</span> <a href="#" onclick="HUD.closetab('+str(t)+')" title="close"><img alt="" src="../img/close.png" /></a>'
-##                file_txt += '</span>'
-##                print file_txt
             
              # Add New File Links
             nfiles = ''
