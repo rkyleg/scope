@@ -1,13 +1,16 @@
 import os,sys,fnmatch
 from PyQt4 import QtGui, QtCore
 from find_files_ui import Ui_Form
-    
+import re
+
 class Find_Files(QtGui.QWidget):
     def __init__(self,parent=None,pth=None):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         self.IDE = parent
+        
+        self.ui.fr_settings.hide()
         
         # Set Default Path
         if pth == None:
@@ -24,8 +27,10 @@ class Find_Files(QtGui.QWidget):
     
     def search_click(self):
         if self.ui.b_search.isChecked():
-##            self.ui.b_search.setIcon(QtGui.QIcon('../img/stop.png'))
+            self.ui.b_search.setIcon(QtGui.QIcon('style/img/stop.png'))
             self.search()
+        else:
+            self.ui.b_search.setIcon(QtGui.QIcon('style/img/search.png'))
     
     def search(self):
         pth = str(self.ui.le_path.text())
@@ -33,6 +38,15 @@ class Find_Files(QtGui.QWidget):
         stxt = str(self.ui.le_search.text())
         
         self.ui.tr_results.clear()
+        
+        # Check Type
+        search_type = 0
+        if self.ui.ckbx_reg.isChecked():
+            search_type = 2
+        elif self.ui.ckbx_case.isChecked():
+            search_type = 1
+        else:
+            stxt = stxt.lower() # no case match
         
 ##        if stxt == '':
 ##            QtGui.QMessageBox.warning(self,'No Search Term','Please enter a search term')
@@ -54,7 +68,6 @@ class Find_Files(QtGui.QWidget):
                     
                     # Search in file
                     if filename.endswith(ext):
-
                         itm = None
                         
                         if stxt in filename:
@@ -67,7 +80,18 @@ class Find_Files(QtGui.QWidget):
                             with open(filepath, 'r') as searchfile:
                                 for line in searchfile:
                                     cnt +=1
-                                    if stxt in line:
+                                    found = 0
+                                    if search_type == 0: # no options
+                                        if stxt in line.lower():
+                                            found = 1
+                                    elif search_type == 1: # match case
+                                        if stxt in line:
+                                            found = 1
+                                    elif search_type == 2: # regular expression
+                                        m = re.search(stxt, line)
+                                        if m != None:
+                                            found = 1
+                                    if found:
                                         line_cnt +=1
                                         if itm == None: itm = self.addFileItem(filepath)
 ##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
@@ -92,6 +116,7 @@ class Find_Files(QtGui.QWidget):
         
         self.ui.tr_results.resizeColumnToContents(0)
         self.ui.tr_results.resizeColumnToContents(2)
+        self.ui.b_search.setIcon(QtGui.QIcon('style/img/search.png'))
     
     def addFileItem(self,filename,lines = 0):
         pth,f = os.path.split(filename)

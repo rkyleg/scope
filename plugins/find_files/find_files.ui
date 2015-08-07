@@ -35,7 +35,7 @@
       <property name="spacing">
        <number>2</number>
       </property>
-      <item row="1" column="0" colspan="3">
+      <item row="2" column="0" colspan="3">
        <widget class="QTreeWidget" name="tr_results">
         <property name="styleSheet">
          <string notr="true"> QTreeWidget::branch:has-siblings:!adjoins-item {
@@ -85,6 +85,23 @@
           <number>2</number>
          </property>
          <item row="0" column="0">
+          <widget class="QPushButton" name="b_browse_2">
+           <property name="toolTip">
+            <string>search settings</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../style/img/wrench.png</normaloff>../../style/img/wrench.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
           <widget class="QPushButton" name="b_browse">
            <property name="toolTip">
             <string>select a path</string>
@@ -96,12 +113,9 @@
             <iconset>
              <normaloff>../../style/img/file_open.png</normaloff>../../style/img/file_open.png</iconset>
            </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
           </widget>
          </item>
-         <item row="0" column="1">
+         <item row="0" column="3">
           <widget class="QLineEdit" name="le_path">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -117,7 +131,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="2">
+         <item row="0" column="4">
           <widget class="QLineEdit" name="le_ext">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -136,7 +150,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="3">
+         <item row="0" column="5">
           <widget class="QLineEdit" name="le_search">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
@@ -155,7 +169,7 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="6">
           <widget class="QPushButton" name="b_search">
            <property name="toolTip">
             <string>search</string>
@@ -172,10 +186,26 @@
            </property>
           </widget>
          </item>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
         </layout>
        </widget>
       </item>
-      <item row="2" column="0" colspan="3">
+      <item row="3" column="0" colspan="3">
        <widget class="QFrame" name="frame">
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
@@ -245,6 +275,73 @@
              <normaloff>../../style/img/arrow_out.png</normaloff>../../style/img/arrow_out.png</iconset>
            </property>
           </widget>
+         </item>
+        </layout>
+       </widget>
+      </item>
+      <item row="1" column="0" colspan="3">
+       <widget class="QFrame" name="fr_settings">
+        <property name="frameShape">
+         <enum>QFrame::NoFrame</enum>
+        </property>
+        <property name="frameShadow">
+         <enum>QFrame::Raised</enum>
+        </property>
+        <layout class="QGridLayout" name="gridLayout_5">
+         <property name="topMargin">
+          <number>2</number>
+         </property>
+         <property name="rightMargin">
+          <number>2</number>
+         </property>
+         <property name="bottomMargin">
+          <number>2</number>
+         </property>
+         <item row="0" column="1">
+          <widget class="QCheckBox" name="ckbx_case">
+           <property name="text">
+            <string>Match case</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="2">
+          <widget class="QCheckBox" name="ckbx_reg">
+           <property name="toolTip">
+            <string>Search term is a regular expression (Python format)</string>
+           </property>
+           <property name="text">
+            <string>Regular Expression</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="0">
+          <spacer name="horizontalSpacer_3">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>50</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
          </item>
         </layout>
        </widget>
@@ -321,8 +418,8 @@
    <slot>click()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>339</x>
-     <y>27</y>
+     <x>398</x>
+     <y>32</y>
     </hint>
     <hint type="destinationlabel">
      <x>537</x>
@@ -343,6 +440,22 @@
     <hint type="destinationlabel">
      <x>528</x>
      <y>24</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>b_browse_2</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>fr_settings</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>19</x>
+     <y>24</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>38</x>
+     <y>44</y>
     </hint>
    </hints>
   </connection>
