@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.1-dev'
+__version__ = '0.2.2-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -1107,15 +1107,32 @@ class Scope(QtGui.QWidget):
             self.ui.l_statusbar.setText('Lines: %d    Words: %d' %(lines,words))
     
     def colorPicker(self):
+        dclr = [255,255,255,255]
+        # Check for selected text
+        if 'getSelectedText' in dir(self.currentEditor()):
+            txt=self.currentEditor().getSelectedText()
+            # Check for rgb color
+            sel_clrs = txt.split(',')
+            if len(sel_clrs) >2:
+                try:
+                    sclr=[]
+                    for c in sel_clrs:
+                        sclr.append(int(str(c)))
+                    if len(sel_clrs) == 3: sclr.append(255)
+                    dclr = sclr
+                except:
+                    print 'invalid color',sel_clrs
+        
         clrdlg = QtGui.QColorDialog(self)
-        clr=clrdlg.getColor(QtGui.QColor(255,255,255),self,'Select color',QtGui.QColorDialog.ShowAlphaChannel)
+        clr=clrdlg.getColor(QtGui.QColor(dclr[0],dclr[1],dclr[2],dclr[3]),self,'Select color',QtGui.QColorDialog.ShowAlphaChannel)
         if clr.isValid():
             r,g,b,a = clr.getRgb()
             atxt=apfx=''
             if a < 255:
                 atxt=',%0.2g' %(a/255.0)
-                apfx='a'
-            txt = 'rgb%s(%d,%d,%d%s)' %(apfx,r,g,b,atxt)
+##                apfx='a'
+##            txt = 'rgb%s(%d,%d,%d%s)' %(apfx,r,g,b,atxt)
+            txt = '%d,%d,%d%s' %(r,g,b,atxt)
             if 'insertText' in dir(self.currentEditor()):
                 self.currentEditor().insertText(txt)
             self.currentEditor().setFocus()

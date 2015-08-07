@@ -12,7 +12,10 @@ class FileBrowser(QtGui.QStackedWidget):
         self.setCurrentWidget(ntree)
 
     def addFilePage(self,pth=None):
+        curdir = os.path.abspath('.')
+        os.chdir(os.path.dirname(__file__))
         ntree = DirTree(self.ide)
+        os.chdir(curdir)
         self.addWidget(ntree)
         if pth == None or not os.path.exists(pth):
             pth = os.path.expanduser('~')
