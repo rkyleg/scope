@@ -22,9 +22,9 @@ build_exe_options = {
         'threading',
         ], 
     "excludes": ["tkinter",'numpy','scipy'],
-    'icon':'../armadillo/img/armadillo.ico',
+    'icon':'../style/img/scope.ico',
     'copy_dependent_files':1,
-    'bin_includes':['../armadillo/armadillo.py'],
+    'bin_includes':['../scope/scope.py'],
     }
 
 # GUI applications require a different base on Windows (the default is for a
@@ -33,8 +33,8 @@ base = None
 if sys.platform == "win32":
     base = "Win32GUI"
 
-setup(  name = "Armadillo",
-        version = "1.5.3",
+setup(  name = "Scope",
+        version = "0.2",
         description = "IDE",
         options = {"build_exe": build_exe_options},
-        executables = [Executable("Armadillo.py", base=base)])
+        executables = [Executable("Scope.py", base=base)])

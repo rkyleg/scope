@@ -8,7 +8,7 @@ class Preview(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
         
         self.wdgD={}
         self.prevD={}
@@ -16,7 +16,7 @@ class Preview(QtGui.QWidget):
     def addPreview(self,wdg):
         pwdg = QtGui.QWidget(parent=self)
         
-        pwdg.webview = webview.WebView(parent=self.armadillo)
+        pwdg.webview = webview.WebView(parent=self.ide)
         layout=QtGui.QGridLayout(pwdg)
         layout.setSpacing(0)
         layout.setContentsMargins(0,0,0,0)
@@ -50,7 +50,7 @@ class Preview(QtGui.QWidget):
         if wdg in self.wdgD:
             pwdg = self.wdgD[wdg]
             self.ui.sw_prev.setCurrentWidget(pwdg)
-            if self.armadillo.ui.tab_right.isVisible():
+            if self.ide.ui.tab_right.isVisible():
                 self.previewRun(wdg)
         else:
             self.ui.sw_prev.setCurrentIndex(0)
@@ -81,22 +81,22 @@ class Preview(QtGui.QWidget):
         html = wdg.getText()
 
         cmd=None
-        if 'preview_cmd' in self.armadillo.settings['prog_lang'][wdg.lang]:
-            cmd=self.armadillo.settings['prog_lang'][wdg.lang]['preview_cmd']
+        if 'preview_cmd' in self.ide.settings['prog_lang'][wdg.lang]:
+            cmd=self.ide.settings['prog_lang'][wdg.lang]['preview_cmd']
 
         if cmd == 'markdown':
             # If markdown generate preview tab
             import plugins.mkdown as mkdown
             html = mkdown.generate(text=html,style='',custom=0)
-##                self.armadillo.webview_preview(html,filename)
+##                self.ide.webview_preview(html,filename)
 
         elif cmd != None:
             html = subprocess.check_output(cmd+' '+wdg.filename,shell=True)
             
         pwdg.webview.setText(html,burl)
         if html != '':
-            self.armadillo.pluginD['output'].runProcess('preview',wdg,text=html)
-            self.armadillo.prevPlugin=self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
+            self.ide.pluginD['output'].runProcess('preview',wdg,text=html)
+            self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'])
             
 ##        QtGui.QApplication.processEvents()
 ##        time.sleep(0.01)

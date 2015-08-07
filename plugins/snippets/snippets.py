@@ -9,12 +9,12 @@ class Snippets(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
         
         self.snip_fldr = r'E:\snippets\\'
-        self.snip_fldr = self.armadillo.settings['plugins']['snippets']['path']
+        self.snip_fldr = self.ide.settings['plugins']['snippets']['path']
         if self.snip_fldr == '':
-            self.snip_fldr = self.armadillo.settingPath+'/snippets'
+            self.snip_fldr = self.ide.settingPath+'/snippets'
         
         self.snip_fldr = self.snip_fldr.replace('\\','/')
         if not self.snip_fldr.endswith('/'):
@@ -78,14 +78,14 @@ class Snippets(QtGui.QWidget):
                     if (filter == 'all' or filter==ext) and ext not in ignore_ext:
                         itm = QtGui.QListWidgetItem(f)
                         ipth = '/a'
-                        if ext in self.armadillo.settings['extensions']:
-                            ipth = self.armadillo.iconPath+'files/'+self.armadillo.settings['extensions'][ext]+'.png'
+                        if ext in self.ide.settings['extensions']:
+                            ipth = self.ide.iconPath+'files/'+self.ide.settings['extensions'][ext]+'.png'
                         if os.path.exists(ipth):
                             icn = QtGui.QIcon(ipth)
-                        elif os.path.exists(self.armadillo.iconPath+'files/'+ext+'.png'):
-                            icn = QtGui.QIcon(self.armadillo.iconPath+'files/'+ext+'.png')
+                        elif os.path.exists(self.ide.iconPath+'files/'+ext+'.png'):
+                            icn = QtGui.QIcon(self.ide.iconPath+'files/'+ext+'.png')
                         else:
-                            icn = QtGui.QIcon(self.armadillo.iconPath+'files/_blank.png')
+                            icn = QtGui.QIcon(self.ide.iconPath+'files/_blank.png')
                         itm.setIcon(icn)
                         self.ui.li_snips.addItem(itm)
                     
@@ -125,14 +125,14 @@ class Snippets(QtGui.QWidget):
                 f=open(filename,'w')
                 f.write('')
                 f.close()
-                self.armadillo.openFile(filename)
+                self.ide.openFile(filename)
                 self.load_list()
     
     def edit_snip(self):
         itm = self.ui.li_snips.currentItem()
         if itm != None:
             pth=self.snip_fldr+str(itm.text())
-            self.armadillo.openFile(pth)
+            self.ide.openFile(pth)
     
 ##    def copy_snip(self):
 ##        clip = QtGui.QApplication.clipboard()
@@ -140,7 +140,7 @@ class Snippets(QtGui.QWidget):
     
     def insert_snip(self):
         txt=self.ui.te_code.toPlainText()
-        wdg=self.armadillo.currentEditor()
+        wdg=self.ide.currentEditor()
         if 'insertText' in dir(wdg):
             wdg.insertText(txt)
     

@@ -8,7 +8,7 @@ class Qt2Py(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
     
         self.ui.b_open.clicked.connect(self.open)
         self.ui.b_convert.clicked.connect(self.convert)
@@ -19,7 +19,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentEditor().filename))
+            cdir = os.path.abspath(os.path.dirname(self.ide.currentEditor().filename))
         except:
             cdir = ''
         
@@ -43,7 +43,7 @@ class Qt2Py(QtGui.QWidget):
         
         # Get current file directory
         try:
-            cdir = os.path.abspath(os.path.dirname(self.armadillo.currentEditor().filename))
+            cdir = os.path.abspath(os.path.dirname(self.ide.currentEditor().filename))
         except:
             cdir = None
         
@@ -56,11 +56,11 @@ class Qt2Py(QtGui.QWidget):
                 
                 subprocess.Popen(pypth+'/Lib/site-packages/PyQt4/designer.exe', stdout=subprocess.PIPE, shell=0,cwd=cdir)
         except:
-            QtGui.QMessageBox.warning(self,'Qt Designer?','Armadillo could not find Qt Designer. Check to make sure it is installed')
+            QtGui.QMessageBox.warning(self,'Qt Designer?','Scope could not find Qt Designer. Check to make sure it is installed')
     
     def qtHelp(self):
-        i=self.armadillo.ui.sw_bottom.indexOf(self)
-        self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
+        i=self.ide.ui.sw_bottom.indexOf(self)
+        self.ide.ui.tabbar_bottom.setCurrentIndex(i)
         self.ui.le_help.setFocus()
         self.ui.le_help.selectAll()
     

@@ -11,12 +11,12 @@ class Output(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
         
         self.wdgD = {}
         self.outD = {}
         
-        self.ui.split_pages.setSizes([200,self.armadillo.width()-200])
+        self.ui.split_pages.setSizes([200,self.ide.width()-200])
         
         self.ui.li_pages.contextMenuEvent = self.listMenuEvent
 
@@ -54,8 +54,8 @@ class Output(QtGui.QWidget):
             webbrowser.open(wdg.filename)
         else:
             if cmd != 'preview':
-                i = self.armadillo.ui.sw_bottom.indexOf(self.armadillo.pluginD['output'])
-                self.armadillo.ui.tabbar_bottom.setCurrentIndex(i)
+                i = self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'])
+                self.ide.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
                 # Process was run
                 owdg = self.wdgD[wdg]
@@ -63,7 +63,7 @@ class Output(QtGui.QWidget):
 
             else:
                 # Create new process
-                owdg = OutputPage(parent=self,armadillo=self.armadillo,filename=wdg.filename)
+                owdg = OutputPage(parent=self,ide=self.ide,filename=wdg.filename)
                 owdg.ui.le_cmd.setText(cmd)
                 sw_ind = self.ui.sw_pages.count()
                 self.ui.sw_pages.insertWidget(sw_ind,owdg)
@@ -120,10 +120,10 @@ class Output(QtGui.QWidget):
         cwdg = self.ui.sw_pages.currentWidget()
         menu = QtGui.QMenu()
         if cwdg.process != None:
-            menu.addAction(QtGui.QIcon(self.armadillo.pluginPath+'output/stop.png'),'Stop')
+            menu.addAction(QtGui.QIcon(self.ide.pluginPath+'output/stop.png'),'Stop')
         else:
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'tri_right.png'),'Run')
-            menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'close.png'),'Close')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'tri_right.png'),'Run')
+            menu.addAction(QtGui.QIcon(self.ide.iconPath+'close.png'),'Close')
         
         resp = menu.exec_(event.globalPos())
         if resp != None:
@@ -136,14 +136,14 @@ class Output(QtGui.QWidget):
                 cwdg.startProcess()
 
 class OutputPage(QtGui.QWidget):
-    def __init__(self,parent=None,armadillo=None,filename=None):
+    def __init__(self,parent=None,ide=None,filename=None):
         QtGui.QWidget.__init__(self,parent)
         curdir = os.path.abspath('.')
         os.chdir(os.path.abspath(os.path.dirname(__file__)))
         self.ui = Ui_OutWidget()
         self.ui.setupUi(self)
         os.chdir(curdir)
-        self.armadillo = armadillo
+        self.ide = ide
         self.parent = parent
         self.filename = filename
         
@@ -167,8 +167,8 @@ class OutputPage(QtGui.QWidget):
             match   = re_loc.match(pth)
             fileName    = match.group(1)
             lineno      = int(match.group(2))
-            self.armadillo.openFile(fileName)
-            self.armadillo.currentEditor().gotoLine(lineno-1)
+            self.ide.openFile(fileName)
+            self.ide.currentEditor().gotoLine(lineno-1)
         except:
             print('error: could not goto file')
     
@@ -273,7 +273,7 @@ class OutputPage(QtGui.QWidget):
         self.finished()
         
     def urlClicked(self,url):
-        wdg = self.armadillo.ui.sw_main.currentWidget()
+        wdg = self.ide.ui.sw_main.currentWidget()
         wdg.load2(url)
     
     def saveFile(self):

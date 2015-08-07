@@ -9,4 +9,4 @@ class Scratch(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent

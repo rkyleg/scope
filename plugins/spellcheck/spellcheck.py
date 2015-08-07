@@ -14,7 +14,7 @@ class SpellChecker(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
         
 ##        self.setWindowModality(1)
         
@@ -46,21 +46,21 @@ class SpellChecker(QtGui.QWidget):
         else:
             self.count = 0
             self.ui.b_ok.setEnabled(0)
-            x=self.armadillo.width()*.05
-            y=self.armadillo.ui.split_left.pos().y()
-            w=self.armadillo.width()*.9
-            h=self.armadillo.ui.split_left.height()*.9
+            x=self.ide.width()*.05
+            y=self.ide.ui.split_left.pos().y()
+            w=self.ide.width()*.9
+            h=self.ide.ui.split_left.height()*.9
             self.setGeometry(x,y,w,h)
             
             # Get Text
-            self.currentEditor=self.armadillo.currentEditor()
+            self.currentEditor=self.ide.currentEditor()
             
-            if 'getSelectedText' in dir(self.armadillo.currentEditor()):
-                txt=self.armadillo.currentEditor().getSelectedText()
+            if 'getSelectedText' in dir(self.ide.currentEditor()):
+                txt=self.ide.currentEditor().getSelectedText()
                 if txt == '':
-                    if 'selectAll' in dir(self.armadillo.currentEditor()):
-                        self.armadillo.currentEditor().selectAll()
-                        txt=self.armadillo.currentEditor().getSelectedText()
+                    if 'selectAll' in dir(self.ide.currentEditor()):
+                        self.ide.currentEditor().selectAll()
+                        txt=self.ide.currentEditor().getSelectedText()
                 if txt != '':
                     self.ui.te_text.setTextCursor(QtGui.QTextCursor())
                     self.ui.te_text.setPlainText(txt)

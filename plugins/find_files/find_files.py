@@ -1,6 +1,6 @@
 import os,sys,fnmatch
 from PyQt4 import QtGui, QtCore
-from find_in_files_ui import Ui_Form
+from find_files_ui import Ui_Form
     
 class Find_Files(QtGui.QWidget):
     def __init__(self,parent=None,pth=None):

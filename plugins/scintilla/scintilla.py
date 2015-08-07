@@ -52,7 +52,7 @@ class Sci(QtGui.QWidget):
         self.ui.setupUi(self)
         self.ui.te_sci.ARROW_MARKER_NUM = 8
         self.ui.te_sci.setUtf8(True)
-        self.armadillo = parent
+        self.ide = parent
         self.okedit = 1
         
         self.lex = lex
@@ -80,10 +80,10 @@ class Sci(QtGui.QWidget):
         
         # Load settings
         for ky in self.settings:
-            if lang in self.armadillo.settings['prog_lang'] and ky in self.armadillo.settings['prog_lang'][lang]:
-                self.settings[ky]=self.armadillo.settings['prog_lang'][lang][ky]
-            elif ky in self.armadillo.settings['editors']['scintilla']:
-                self.settings[ky]=self.armadillo.settings['editors']['scintilla'][ky]
+            if lang in self.ide.settings['prog_lang'] and ky in self.ide.settings['prog_lang'][lang]:
+                self.settings[ky]=self.ide.settings['prog_lang'][lang][ky]
+            elif ky in self.ide.settings['editors']['scintilla']:
+                self.settings[ky]=self.ide.settings['editors']['scintilla'][ky]
                 
         self.setup()
         
@@ -270,7 +270,7 @@ class Sci(QtGui.QWidget):
 ##        self.evnt.editingFinished.emit(self)
     
     def toggleComment(self):
-        lang = self.armadillo.currentEditor().lang
+        lang = self.ide.currentEditor().lang
         if lang in commentD:
             if self.ui.te_sci.getSelection()[0] != -1:
                 start = self.ui.te_sci.getSelection()[0]
@@ -366,7 +366,7 @@ class Sci(QtGui.QWidget):
             self.ui.te_sci.setAutoCompletionSource(Qsci.QsciScintilla.AcsNone)
     
     def dropEvent(self,event):
-        self.armadillo.dropEvent(event)
+        self.ide.dropEvent(event)
     
     def setFocus(self):
         self.ui.te_sci.setFocus()

@@ -54,7 +54,7 @@ class Outline(QtGui.QWidget):
         QtGui.QWidget.__init__(self,parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
-        self.armadillo = parent
+        self.ide = parent
         self.wdgD = {}
         self.treeD = {}
         
@@ -70,13 +70,13 @@ class Outline(QtGui.QWidget):
                 if 'analyzeLine' in funcs:
                     self.outlineLangD[l]=mod.analyzeLine
 
-        self.alwaysUpdate = int(self.armadillo.settings['plugins']['outline']['alwaysUpdate'])
+        self.alwaysUpdate = int(self.ide.settings['plugins']['outline']['alwaysUpdate'])
         if self.alwaysUpdate==0:
-            self.armadillo.evnt.editorSaved.connect(self.updateOutline)
+            self.ide.evnt.editorSaved.connect(self.updateOutline)
             
         # Update location
         if 1:
-            self.armadillo.evnt.editorVisibleLinesChanged.connect(self.updateLocation)
+            self.ide.evnt.editorVisibleLinesChanged.connect(self.updateLocation)
         
     def analyzeLine(self,wdg,typ):
         return None,None
@@ -108,21 +108,21 @@ class Outline(QtGui.QWidget):
         self.updateOutline(toggle_view=1)
 
     def updateOutline(self,wdg=None,toggle_view=0):
-        # Get current widget from Armadillo
-        wdg = self.armadillo.currentEditor()
+        # Get current widget from ide
+        wdg = self.ide.currentEditor()
         
         if toggle_view:
-            if self.armadillo.ui.fr_left.isHidden():
-                self.armadillo.ui.fr_left.setVisible(1)
-            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
-            self.armadillo.ui.tab_left.setCurrentIndex(i)
+            if self.ide.ui.fr_left.isHidden():
+                self.ide.ui.fr_left.setVisible(1)
+            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'])
+            self.ide.ui.tab_left.setCurrentIndex(i)
         
         if wdg != None:
             trwdg = self.wdgD[wdg].ui.tr_outline
             if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
                 # Select tab if language
-    ##            i=self.armadillo.ui.tab_left.indexOf(self.armadillo.pluginD['outline'])
-    ##            self.armadillo.ui.tab_left.setCurrentIndex(i)
+    ##            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'])
+    ##            self.ide.ui.tab_left.setCurrentIndex(i)
 
                 trwdg.clear()
                 
@@ -174,8 +174,8 @@ class Outline(QtGui.QWidget):
     def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')
         trwdg = self.ui.sw_outline.currentWidget()
-        menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'refresh.png'),'Update (F3)')
-        menu.addAction(QtGui.QIcon(self.armadillo.iconPath+'search.png'),'Find')
+        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Update (F3)')
+        menu.addAction(QtGui.QIcon(self.ide.iconPath+'search.png'),'Find')
         act = menu.exec_(trwdg.ui.tr_outline.cursor().pos())
         if act != None:
             acttxt = str(act.text())
@@ -201,7 +201,7 @@ class Outline(QtGui.QWidget):
         
     def goto(self,itm,col):
         line = int(str(itm.text(1)))
-        wdg = self.armadillo.currentEditor()
+        wdg = self.ide.currentEditor()
         wdg.gotoLine(line)
     
     def format(self,itm,typ):
