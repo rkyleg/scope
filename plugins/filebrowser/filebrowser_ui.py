@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Tue Aug  4 00:13:59 2015
+# Created: Thu Aug  6 21:41:34 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,7 +65,7 @@ class Ui_Form(object):
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.b_browse = QtGui.QPushButton(self.frame)
         self.b_browse.setMaximumSize(QtCore.QSize(24, 24))
-        self.b_browse.setStyleSheet(_fromUtf8("background:transparent;"))
+        self.b_browse.setStyleSheet(_fromUtf8("QPushButton {background:transparent;}"))
         self.b_browse.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/file_open2.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -93,7 +93,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
         Form.setWindowTitle(_translate("Form", "File Browser", None))
         self.tr_dir.setProperty("class", _translate("Form", "pluginVertical", None))
-        self.b_browse.setToolTip(_translate("Form", "select a path", None))
+        self.b_browse.setToolTip(_translate("Form", "Browse folders", None))
         self.le_root.setText(_translate("Form", "/", None))
         self.le_root.setPlaceholderText(_translate("Form", "Enter Root Path", None))
 

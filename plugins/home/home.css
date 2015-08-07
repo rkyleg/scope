@@ -33,7 +33,7 @@ a {
     color:white;
 }
 
-#armadillo-text {
+#scope-text {
     font-size:30px;
     color:white;
     text-shadow: rgba(185,185,185,0.5) 1px 1px;
@@ -112,6 +112,6 @@ hr {
     /*margin-top:20px;*/
     margin-bottom:20px;
     padding:10px;
-    /*margin-left:20px;*/
-    /*margin-right:20px;*/
+    margin-left:20px;
+    margin-right:20px;
 }

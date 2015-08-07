@@ -13,7 +13,7 @@
         <!--<br>-->
         <div id="logo" style="text-align:center;vertical-align:bottom">
             <img alt="" src="../style/img/scope.png" height="50px" />
-            <span id="armadillo-text">Scope</span> <span id="version"> IDE {{version}}</span>
+            <span id="scope-text">Scope</span> <span id="version"> IDE {{version}}</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="filebrowser"><div class="toolbutton" style="font-size:18px;vertical-align:bottom;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>
             <a href="settings"><div class="toolbutton" style="font-size:18px;vertical-align:bottom;"><img alt="" src="../style/img/wrench.png" /> Settings</div></a>
@@ -54,7 +54,9 @@
         
         <!---Workspaces-->
         <div class="panel" style="vertical-align:top;">
-            <span class="section-title">Workspaces</span><br>
+            <span class="section-title">Workspaces</span>
+            <a href="workspace:new"><img src="../style/img/add.png" title="New Workspace"></a>
+            <br>
             {{workspaces}}
         </div>
         

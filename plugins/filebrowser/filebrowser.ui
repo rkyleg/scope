@@ -90,10 +90,10 @@ border-top-right-radius:3px;
          </size>
         </property>
         <property name="toolTip">
-         <string>select a path</string>
+         <string>Browse folders</string>
         </property>
         <property name="styleSheet">
-         <string notr="true">background:transparent;</string>
+         <string notr="true">QPushButton {background:transparent;}</string>
         </property>
         <property name="text">
          <string/>

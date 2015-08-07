@@ -159,6 +159,7 @@ class Home(object):
             wk = lnk.split('workspace:')[1]
             if wk=='new':
                 self.IDE.workspaceNew()
+                self.IDE.showHome()
 ##                self.addStart(wdg=wdg)
             else:
                 self.IDE.workspaceOpen(wk)
