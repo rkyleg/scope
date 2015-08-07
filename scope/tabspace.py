@@ -114,6 +114,15 @@ class WorkspaceWidget(QtGui.QListWidget):
         if not handled:
             QtGui.QListWidget.keyPressEvent(self,event)
 
+##    def tabMousePressEvent(self,event):
+####        print event.button(),event.button() == QtCore.Qt.MidButton
+##        if event.button() == QtCore.Qt.MidButton:
+##            i = self.ui.tab.tabAt(event.pos())
+##            self.closeTab(i)
+##        else:
+##            QtGui.QTabBar.mousePressEvent(self.ui.tab, event)
+
+
 class editortab(QtGui.QWidget):
     def __init__(self,ide,file_id,title,filename,editor=''):
         QtGui.QWidget.__init__(self)
