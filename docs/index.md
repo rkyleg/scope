@@ -28,4 +28,4 @@ Armadillo is licensed under the GPL3
         You should have received a copy of the GNU General Public License
         along with this program.  If not, see <http://www.gnu.org/licenses/>.
         
-[LICENSE](../../LICENSE.txt)
+[LICENSE](../LICENSE.txt)
