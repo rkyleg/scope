@@ -155,7 +155,7 @@ class Outline(QtGui.QWidget):
         hi=0
 ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
 ##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
-        brsh=QtGui.QBrush(QtGui.QColor(80,80,80,150)) # gray
+        brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
         
         for t in range(trwdg.topLevelItemCount()-1,-1,-1):
             itm = trwdg.topLevelItem(t)

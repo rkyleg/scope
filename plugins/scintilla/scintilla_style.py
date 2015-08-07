@@ -14,7 +14,7 @@ styleD = {
     'CommentBlock':'100,100,100',
     
 ##    'ClassName':'0,170,255', # blue
-    'ClassName':'255,177,99', # orange
+    'ClassName':'255,116,88', # orange
 
 ##    'ClassName':'62,115,156', # light blue
     'FunctionMethodName':'255,201,139',   # orange
