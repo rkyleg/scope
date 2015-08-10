@@ -144,11 +144,12 @@ class Sci(QtGui.QWidget):
         else:
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
         
+        self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
+        
         # Customize Python lexer
-        if 1 and self.lex != None:
-            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
+        if 1 and type(self.lex) == type(Qsci.QsciLexerPython()):
+##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
             self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
-            
             
             shade=30
             self.lex.setDefaultPaper(QColor(shade,shade,shade))

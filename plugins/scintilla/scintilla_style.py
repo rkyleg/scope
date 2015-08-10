@@ -1,7 +1,7 @@
 # Color is a rgb string
 
 styleD = {
-    
+    # Python
     'Default':'255,255,255',  #white
 ##    'Default':'166,220,255',  # blue
 ##    'Default':'121,193,255',  # blue (good)
@@ -23,7 +23,6 @@ styleD = {
     'GlobalClass':'255,177,99', # orange, javascript
     'Tag':'255,177,99', # orange, html
     
-    
     'Decorator':'255,170,127',
 ##    'Keyword':'255,177,99', # orange
     'Keyword':'97,171,205', # light blue
@@ -31,7 +30,6 @@ styleD = {
 ##    'Keyword':'40,97,167', # blue
 ##    'Keyword':'125,188,151',    # green
 ##    'FunctionMethodName':'92,164,219',   # blue
-
     
     'HighlightedIdentifier':'250,0,0',
     'Identifier':'',
@@ -49,11 +47,23 @@ styleD = {
 ##    'Number':'125,255,125', # green
     'Number':'255,170,255', # pink
     
-    
     'SingleQuotedString':'125,188,151',
     'DoubleQuotedString':'125,188,151',
     'TripleDoubleQuotedString':'125,188,151',
     'TripleSingleQuotedString':'125,188,151',
 ##    'UnclosedString':'255,255,127', # yellow
     'UnclosedString':'255,94,94', # reddish
+    
+    
+    # Other Javascript
+##    'CommentLine':'244,255,166', # yellow
+##    'CommentDoc':'244,255,166', # yellow
+####    'CommentLine':'100,100,100', # yellow
+####    'CommentDoc':'100,100,100', # yellow
+##    'InactiveComment':'100,100,100',
+##    'InactiveCommentDoc':'100,100,100',
+##    'InactiveComment':'100,100,100',
+##    'CommentDocKeyword':'244,255,166', # yellow
+##    'InactiveCommentDocKeyword':'244,255,166', # yellow
+##    'Regex':'170,0,255',
 }

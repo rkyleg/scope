@@ -15,6 +15,7 @@ When adding features, Scope will attempt to adhere to the following ideals
 - Create binaries for Windows and maybe Linux
 - Check for file changes outside of Scope
 - Lock down API - stop making changes and have a good API for creating plugins
+- Good documentation on using and creating plugins
 
 ## Longer term features planned
 - Create binaries for Mac

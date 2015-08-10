@@ -15,36 +15,32 @@
 			<td>Show main menu</td>
 		</tr>
 		<tr>
-			<td>Ctrl + N</td>
-			<td>New file (menu)</td>
-		</tr>
-		<tr>
-			<td>Ctrl + Q</td>
-			<td>Qt help search</td>
-		</tr>
-		<tr>
 			<td>Ctrl + Tab</td>
 			<td>Toggle through open file tabs</td>
 		</tr>
 		<tr>
 			<td>F1</td>
-			<td>Toggle Heads-up-dislpay (HUD)</td>
+			<td>Toggle the visibility of tab bar</td>
 		</tr>
 		<tr>
 			<td>F2</td>
-			<td>Raise File Browser plugin</td>
+			<td>Toggle the visibility of the left plugins</td>
+		</tr>
+		<tr>
+			<td>Ctrl + F2</td>
+			<td>Go to next left tab</td>
 		</tr>
 		<tr>
 			<td>F3</td>
-			<td>Refresh/Raise Outline plugin</td>
+			<td>Toggle the visibility of the right plugins</td>
 		</tr>
 		<tr>
 			<td>F4</td>
-			<td>Hide/Show left plugin bar</td>
+			<td>Toggle the visibility of the bottom plugins</td>
 		</tr>
 		<tr>
 			<td>Ctrl + F4</td>
-			<td>Go to next left tab</td>
+			<td>Go to next bottom tab</td>
 		</tr>
 		<tr>
 			<td>F5</td>
@@ -55,16 +51,8 @@
 			<td>Toggle to expand right plugin and hide editor</td>
 		</tr>
 		<tr>
-			<td>F8</td>
-			<td>Hide/Show right side plugins</td>
-		</tr>
-		<tr>
 			<td>F9</td>
-			<td>Hide/Show bottom plugin bar</td>
-		</tr>
-		<tr>
-			<td>Ctrl + F9</td>
-			<td>Go to next bottom tab</td>
+			<td>Show the home page</td>
 		</tr>
 		<tr>
 			<td>F10</td>
@@ -217,6 +205,20 @@
 		<tr>
 			<td>Ctrl + (space)</td>
 			<td>Show autocomplete menu</td>
+			<td>x</td>
+			<td>x</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Alt + Down</td>
+			<td>Move current selection down a line</td>
+			<td>x</td>
+			<td>x</td>
+			<td>&nbsp;</td>
+		</tr>
+		<tr>
+			<td>Alt + Up</td>
+			<td>Move current selection up a line</td>
 			<td>x</td>
 			<td>x</td>
 			<td>&nbsp;</td>
