@@ -243,7 +243,12 @@ class ToolsMenu(QtGui.QMenu):
             os.chdir(self.parent.pluginPath+plug)
             pluginWidget = pmod.addPlugin(self.parent)
             self.parent.pluginD[plug] = pluginWidget
+            pluginWidget.id = None
+            pluginWidget.title = pmod.title
+            pluginWidget.icon = QtGui.QIcon('icon.png')
+            pluginWidget.viewOnly=1
             os.chdir(curdir)
+            
         else:
             pluginWidget = self.parent.pluginD[plug]
         

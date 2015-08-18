@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.2-dev'
+__version__ = '0.2.3-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -1211,7 +1211,7 @@ class Scope(QtGui.QWidget):
                         if itm.filename != None:
                             wD['files'].append({'filename':itm.filename,'editor':editor})
 
-                    if self.currentEditor() != None:
+                    if self.currentEditor() != None and not self.currentEditor().viewOnly:
                         wD['lastOpenFile']=self.currentEditor().filename
                 
                     # Save workspace dir

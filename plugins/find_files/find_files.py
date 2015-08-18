@@ -17,6 +17,9 @@ class Find_Files(QtGui.QWidget):
             pth = os.path.expanduser('~')
         self.ui.le_path.setText(pth)
         
+        if self.IDE.currentWorkspace != None:
+            self.ui.le_path.setText(self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'])
+        
         # Signals
         self.ui.b_search.clicked.connect(self.search_click)
         self.ui.b_browse.clicked.connect(self.browse)
@@ -162,6 +165,11 @@ class Find_Files(QtGui.QWidget):
     
     def toggle(self):
         self.IDE.ui.sw_main.setCurrentWidget(self)
+    
+    def changeWorkspace(self,wksp):
+        if wksp != None:
+            wksp = str(wksp)
+            self.ui.le_path.setText(self.IDE.workspaces[wksp]['basefolder'])
 
 def runui():
     app = QtGui.QApplication(sys.argv)

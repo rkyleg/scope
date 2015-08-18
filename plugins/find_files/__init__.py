@@ -6,10 +6,11 @@ location = 'tools'
 
 def addPlugin(parent):
     plugin = find_files.Find_Files(parent)
-    plugin.id = None
-    plugin.title = 'Find Files'
-    plugin.icon = QtGui.QIcon('icon.png')
+##    plugin.id = None
+##    plugin.title = 'Find Files'
+##    plugin.icon = QtGui.QIcon('icon.png')
     parent.ui.sw_main.addWidget(plugin)
+    parent.evnt.workspaceChanged.connect(plugin.changeWorkspace)
 ##    parent.evnt.editorAdded.connect(plugin.addOutline)
 ##    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
 ##    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
