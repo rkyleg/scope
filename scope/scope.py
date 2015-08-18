@@ -154,7 +154,8 @@ class Scope(QtGui.QWidget):
         self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
         #--- Hide toolbar buttons for now
-        self.ui.b_new.hide()
+##        self.ui.b_new.hide()
+        self.ui.fr_leftbar.hide()
         
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
@@ -241,6 +242,7 @@ class Scope(QtGui.QWidget):
         # New Button Menu
         self.newMenu = NewMenu(self)
         self.ui.b_new.setMenu(self.newMenu)
+        
         
         # Workspace Button Menu
         self.workspaceMenu = WorkspaceMenu(self)
