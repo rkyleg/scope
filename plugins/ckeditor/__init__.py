@@ -2,7 +2,9 @@ from . import ckeditor
 from PyQt4 import QtGui, QtCore
 import os
 
-def addEditor(parent,lang,filename):
+def addPlugin(parent,**kargs):
+    lang = kargs['lang']
+    filename = kargs['filename']
     if filename != None:
         if os.name =='nt':
             pfx="file:///"

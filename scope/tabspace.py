@@ -178,6 +178,7 @@ class editortab(QtGui.QWidget):
         self.setLayout(layout)
     
     def setTitle(self,title):
+##        print 'set tabspace title',title
         self.titleLabel.setText(title)
         self.item.setSizeHint(self.sizeHint())
     

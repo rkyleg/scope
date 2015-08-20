@@ -46,8 +46,8 @@ QTabWidget#tab_left::pane {
 }
 
 QTreeWidget#tr_outline,QTreeWidget#tr_dir {
-    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.05 rgba(50,50,50, 255), stop:0.95 rgba(50,50,50, 255), stop:1 rgba(60,60,60, 255));
-    padding-left:6px;
+    background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.05 rgba(50,50,50, 255), stop:0.95 rgba(50,50,50, 255), stop:1 rgba(60,60,60, 255));
+    /*padding-left:6px;*/
     /*border:0px;*/
     /*border-top:1px solid rgb(96,96,96);*/
     /*border-radius:5px;*/
@@ -192,16 +192,26 @@ QLabel#l_statusbar {
 }
 
     /*---TabSpace*/
-    QTabWidget.editorTabs,QTabWidget.editorTabs::pane {
-        /*border:0px;*/
+    /*QTabWidget.editorTabs,QTabWidget.editorTabs::pane {*/
+    QTabWidget.editorTabs::pane {
+        border-top:1px solid rgb(100,100,100);
         /*background:rgb(100,100,100);*/
         outline:0;
     }
-    QTabBar.editorTabs{
-        color:white;
-        background:rgb(100,100,100);
+    /*QTabBar.editorTabs{*/
+        /*color:white;*/
+        /*background:rgb(100,100,100);*/
         
-    }
+    /*}*/
+    /*QTabWidget.editorTabs::tab-bar {*/
+    /*    background:rgb(0,250,250);*/
+    /*}*/
+    /*QTabWidget.editorTabs::tab:!selected {*/
+    /*    background:rgb(250,0,0);*/
+    /*}*/
+    
+
+    
     QListWidget.editor_tab {
         outline:0;
         border:0px;
@@ -269,7 +279,8 @@ QLabel#l_statusbar {
     QPushButton.editor_tab_cls_btn:hover {
     	image: url(style/img/close_hover.png);
     }
-    /*---Top*/
+    
+    /*---Topbar*/
     QFrame#fr_topbar {
         background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));*/
@@ -343,15 +354,17 @@ QLabel#l_statusbar {
 
     /*---Left Bar*/
     QFrame#fr_leftbar {
-        background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:1, y2:1, stop:0 rgba(50, 50, 50, 255), stop:0.91818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));
+        background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.1 rgba(50,50,50, 255), stop:0.9 rgba(50,50,50, 255), stop:1 rgba(60,60,60, 255));
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));*/
         /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));*/
+        
     }
     QFrame#fr_leftbar > QPushButton {
         background:transparent;
+        width:40px;
     }
     QFrame#fr_leftbar > QPushButton:hover {
-        background:rgba(50,50,50,100);
+        background:rgba(150,150,150,100);
         border-radius:10px;
     }
     

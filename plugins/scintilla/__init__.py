@@ -14,7 +14,8 @@ for l in sorted(dir(Qsci)):
         if l != '':
             langD[lang] = l
 
-def addEditor(parent,lang,filename):
+def addPlugin(parent,**kargs):
+    lang = kargs['lang']
     lex = None
 ##    if lang in langD:
 ##        lex = langD[lang]

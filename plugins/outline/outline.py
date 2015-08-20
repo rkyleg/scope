@@ -58,6 +58,8 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
         self.treeD = {}
         
+##        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
+        
 ##        self.ui.fr_find.hide()
         
         self.outlineLangD = {}
@@ -133,7 +135,8 @@ class Outline(QtGui.QWidget):
                 
                 self.wdgD[wdg].ui.b_find_close.click()
                 txt = wdg.getText()
-                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
+##                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
+                txtlines = txt.splitlines()
                 
                 txt_outline = self.outlineLangD[wdg.lang](txtlines)
                 
@@ -182,9 +185,15 @@ class Outline(QtGui.QWidget):
             if acttxt=='Update (F3)':
                 self.updateOutline()
             elif acttxt == 'Find':
-                trwdg.ui.fr_find.show()
-                trwdg.ui.le_find.setFocus()
-        
+##                trwdg.ui.fr_find.show()
+##                trwdg.ui.le_find.setFocus()
+                self.findFocus()
+    
+    def findFocus(self):
+        trwdg = self.ui.sw_outline.currentWidget()
+        trwdg.ui.fr_find.show()
+        trwdg.ui.le_find.setFocus()
+    
     def editorTabChanged(self,wdg):
         if wdg in self.wdgD:
             owdg = self.wdgD[wdg]

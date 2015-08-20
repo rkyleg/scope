@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.3-dev'
+__version__ = '0.2.4-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -196,7 +196,7 @@ class Scope(QtGui.QWidget):
         
         #--- Key Shortcuts
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self.ui.sw_main,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_main.click) # New
         QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_F,self,self.ui.b_main.click) # New
@@ -570,9 +570,14 @@ class Scope(QtGui.QWidget):
                                 editor = e
                                 break
         
+        kargs = {
+            'lang':lang,
+            'filename':filename,
+        }
+        
         # Load Editors
         mod = importlib.import_module("plugins."+editor)
-        wdg = mod.addEditor(self,lang,filename)
+        wdg = mod.addPlugin(self,**kargs)
 
         wdg.filename = filename
         wdg.lastText=''
@@ -589,7 +594,8 @@ class Scope(QtGui.QWidget):
         
         # Insert widget to page
         self.ui.sw_main.insertWidget(sw_ind,wdg)
-        self.ui.sw_main.setCurrentIndex(sw_ind)
+        self.changeTab(file_id)
+##        self.ui.sw_main.setCurrentIndex(sw_ind)
         
         # Add Icon
         ipth = self.iconPath+'/files/_blank.png'
@@ -639,11 +645,13 @@ class Scope(QtGui.QWidget):
         return self.ui.sw_main.currentWidget()
 
     def change_tab(self,sw_ind):
+##        print 'change_tab',sw_ind
         if self.currentEditor() != None:
             file_id = self.currentEditor().id
             if file_id != None:
                 self.changeTab(file_id)
             else:
+                ## MOVE TO changeTab
                 self.ui.sw_main.setCurrentIndex(sw_ind)
                 self.ui.b_closetab.hide()
                 try:
@@ -688,7 +696,7 @@ class Scope(QtGui.QWidget):
             lang = None
             
             self.ui.b_closetab.hide()
-            self.ui.l_filename.setText(wdg.title)
+            self.ui.l_filename.setText('')
 
         # Enable Run
         run_enabled=0
@@ -746,6 +754,8 @@ class Scope(QtGui.QWidget):
             
             if len(self.recentTabs) > 1:
                 self.changeTab(prevtab)
+##            else:
+##                self.changeTab(None)
     
     def closeTab(self,file_id,remove_from_workspace=1):
 ##        if sys.version_info.major==3:
@@ -798,7 +808,10 @@ class Scope(QtGui.QWidget):
         # Update tab display title
         if wdg.id != None:
             for t in self.fileD[wdg.id]['tabs']:
-                t.setTitle(wdg.displayTitle)
+                try:
+                    t.setTitle(wdg.displayTitle)
+                except:
+                    print('error setting title',wdg.displayTitle)
     
         # Check for file changes
 ##        self.checkFileChanges()
@@ -868,12 +881,15 @@ class Scope(QtGui.QWidget):
                     self.ui.l_filename.setText(wdg.title)
                     wdg.displayTitle = wdg.title
                     self.ui.l_filename.setToolTip(wdg.filename)
+                    
+                    # Save Signal
+                    self.evnt.editorSaved.emit(wdg)
+                    
                 except:
                     QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                     self.ui.l_statusbar.setText('Error Saving: '+filename)
                 
-                # Save Signal
-                self.evnt.editorSaved.emit(wdg)
+                
                 
                 # If Settings File, reload
                 if filename == self.settings_filename:

@@ -60,6 +60,7 @@ class Home(object):
             self.viewHome()
 ##        else:
             self.IDE.ui.sw_main.setCurrentWidget(self.webview)
+##            self.IDE.change_tab(self.IDE.ui.sw_main.indexOf(self.webview))
 ##        else:
 ##            self.webview.hide()
 ##            QtGui.QApplication.processEvents()

@@ -32,7 +32,7 @@ class Output(QtGui.QWidget):
 
     def closeOutputWidget(self,owdg):
         ok=1
-        if owdg.process != None:
+        if owdg.status != 'done':
             ok=0
             opentxt=os.path.split(owdg.filename)[1]
             resp=QtGui.QMessageBox.warning(self,'Kill Running Proces','The following output process is still running:'+opentxt+'<br><br>Do you want to kill it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
@@ -96,7 +96,7 @@ class Output(QtGui.QWidget):
         resp = QtGui.QMessageBox.Yes
         for wdg in self.wdgD:
             owdg = self.wdgD[wdg]
-            if owdg.process != None:
+            if owdg.status != 'done':
                 opentxt+='<br>'+'&nbsp;'*5+os.path.split(owdg.filename)[1]
                 break
                 
@@ -105,7 +105,7 @@ class Output(QtGui.QWidget):
             if resp == QtGui.QMessageBox.Yes:
                 for wdg in self.wdgD:
                     owdg = self.wdgD[wdg]
-                    if owdg.process != None:
+                    if owdg.status != 'done':
                         owdg.stopProcess()
         
         # Close all Tabs
@@ -119,7 +119,7 @@ class Output(QtGui.QWidget):
     def listMenuEvent(self,event):
         cwdg = self.ui.sw_pages.currentWidget()
         menu = QtGui.QMenu()
-        if cwdg.process != None:
+        if cwdg.status != 'done':
             menu.addAction(QtGui.QIcon(self.ide.pluginPath+'output/stop.png'),'Stop')
         else:
             menu.addAction(QtGui.QIcon(self.ide.iconPath+'tri_right.png'),'Run')
@@ -148,6 +148,7 @@ class OutputPage(QtGui.QWidget):
         self.filename = filename
         
         self.process = None
+        self.status = 'done'
         self.ui.fr_cmd.hide()
         
         self.ui.tb_out.setOpenLinks(0)
@@ -178,6 +179,7 @@ class OutputPage(QtGui.QWidget):
 ##        QtGui.QApplication.processEvents()
         
     def readErrors(self):
+##        print 'reading error'
         txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font>"
         txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
 ##        txt = '<a style="color:rgb(121,213,255);"'+re_file.sub(r" href='\g<2>'>\g<2></a>",txt)
@@ -185,6 +187,7 @@ class OutputPage(QtGui.QWidget):
         self.appendText(txt)
 
     def processError(self,err):
+##        print 'process error'
         if self.dispError:
             errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
             errtxt = errD[err]
@@ -192,8 +195,10 @@ class OutputPage(QtGui.QWidget):
             if err==0:
                 txt += "<br>Check to make sure command is correct:<br>"+self.ui.le_cmd.text()+' "'+self.filename+'" ' + self.ui.le_args.text()
             self.appendText(txt)
-            if self.process != None and self.process.state()==0:
+##            print 'process state',self.process.state()
+            if self.status != 'done' and self.process.state()==0:
                 self.finished()
+            self.status = 'done'
         
     def appendText(self,txt,plaintext=0):
 ##        curs = self.ui.tb_out.textCursor()
@@ -209,11 +214,14 @@ class OutputPage(QtGui.QWidget):
 ##        self.ui.tb_out.append(txt+QtCore.QString(QtCore.QChar(0x2028)))
        
     def finished(self):
-        if self.process != None:
+##        print 'process finished'
+##        try:
+##        if self.process != None:
+        if self.status != 'done':
             txt = self.ui.l_title.text()
             self.ui.l_title.setText(txt+'&nbsp;&nbsp;<b>Finished:</b>&nbsp;'+datetime.datetime.now().strftime('%I:%M:%S.%f'))
 ##            self.appendText('<hr><b>Done</b>&nbsp;&nbsp;'+time.ctime())
-        self.process = None
+        self.status = 'done'
         self.ui.b_run.setEnabled(1)
         self.ui.b_stop.setEnabled(0)
         self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;')
@@ -226,7 +234,7 @@ class OutputPage(QtGui.QWidget):
         self.listItem.setFont(fnt)
         
     def toggleProcess(self):
-        if self.process != None:
+        if self.status != 'done':
             self.stopProcess()
         else:
             self.startProcess()
@@ -265,6 +273,7 @@ class OutputPage(QtGui.QWidget):
 ##        self.process.start(cmd,QtCore.QStringList(args.split()+[self.filename]))
 ##        print cmd+' "'+self.filename+'"'+args
         self.process.start(cmd+' "'+self.filename+'"'+args)
+        self.status = 'running'
 ##        self.process.start(cmd+' '+self.filename+args)
     
     def stopProcess(self):
@@ -272,9 +281,9 @@ class OutputPage(QtGui.QWidget):
         self.process.kill()
         self.finished()
         
-    def urlClicked(self,url):
-        wdg = self.ide.ui.sw_main.currentWidget()
-        wdg.load2(url)
+##    def urlClicked(self,url):
+##        wdg = self.ide.ui.sw_main.currentWidget()
+##        wdg.load2(url)
     
     def saveFile(self):
         fname = os.path.split(self.filename)[-1].split('.')[0]

@@ -2,7 +2,7 @@ from . import ace
 from PyQt4 import QtGui, QtCore
 import os
 
-def addEditor(parent,lang,filename):
+def addPlugin(parent,**kargs):
 ##    if filename != None:
 ##        if os.name =='nt':
 ##            pfx="file:///"
@@ -11,6 +11,7 @@ def addEditor(parent,lang,filename):
 ##        burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(filename)).replace('\\','/')+'/')
 ##    else:
 ##        burl = QtCore.QUrl()
+    lang = kargs['lang']
     editor = ace.WebView(parent,lang)
     return editor
     

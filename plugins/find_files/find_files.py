@@ -17,8 +17,12 @@ class Find_Files(QtGui.QWidget):
             pth = os.path.expanduser('~')
         self.ui.le_path.setText(pth)
         
-        if self.IDE.currentWorkspace != None:
-            self.ui.le_path.setText(self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'])
+        if parent != None:
+            # IDE specific code
+            if self.IDE.currentWorkspace != None:
+                self.ui.le_path.setText(self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'])
+        else:
+            self.ui.tr_results.setStyleSheet('')
         
         # Signals
         self.ui.b_search.clicked.connect(self.search_click)
@@ -38,10 +42,8 @@ class Find_Files(QtGui.QWidget):
     def search(self):
         pth = str(self.ui.le_path.text())
         ext = tuple(str(self.ui.le_ext.text()).split(','))
+        
         stxt = str(self.ui.le_search.text())
-        
-        self.ui.tr_results.clear()
-        
         # Check Type
         search_type = 0
         if self.ui.ckbx_reg.isChecked():
@@ -50,6 +52,8 @@ class Find_Files(QtGui.QWidget):
             search_type = 1
         else:
             stxt = stxt.lower() # no case match
+        
+        self.ui.tr_results.clear()
         
 ##        if stxt == '':
 ##            QtGui.QMessageBox.warning(self,'No Search Term','Please enter a search term')
@@ -71,48 +75,7 @@ class Find_Files(QtGui.QWidget):
                     
                     # Search in file
                     if filename.endswith(ext):
-                        itm = None
-                        
-                        if stxt in filename:
-                            itm = self.addFileItem(filepath)
-                        
-                        # Check in file
-                        cnt = 0
-                        line_cnt = 0
-                        try:
-                            with open(filepath, 'r') as searchfile:
-                                for line in searchfile:
-                                    cnt +=1
-                                    found = 0
-                                    if search_type == 0: # no options
-                                        if stxt in line.lower():
-                                            found = 1
-                                    elif search_type == 1: # match case
-                                        if stxt in line:
-                                            found = 1
-                                    elif search_type == 2: # regular expression
-                                        m = re.search(stxt, line)
-                                        if m != None:
-                                            found = 1
-                                    if found:
-                                        line_cnt +=1
-                                        if itm == None: itm = self.addFileItem(filepath)
-##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
-                                        l = line.replace('\n','').replace('\r','')
-                                        litm = QtGui.QTreeWidgetItem(['',str(cnt),l])
-                                        for i in range(3):
-                                            litm.setBackground(i,QtGui.QBrush(QtGui.QColor(30,30,30)))
-                                        litm.setForeground(2,QtGui.QBrush(QtGui.QColor(255,255,255)))
-                                        litm.setForeground(1,QtGui.QBrush(QtGui.QColor(150,150,150)))
-                                        litm.setTextAlignment(1,2)
-                                        itm.addChild(litm)
-    ##                                    print line
-                                    if not self.ui.b_search.isChecked(): break
-                        except:
-                            print('ERROR opening: '+filepath)
-                        
-                        if itm != None:
-                            itm.setText(1,str(line_cnt))
+                        self.searchFile(filepath,stxt,search_type)
 
         self.ui.l_cur_file.setText('')
         self.ui.b_search.setChecked(0)
@@ -120,6 +83,51 @@ class Find_Files(QtGui.QWidget):
         self.ui.tr_results.resizeColumnToContents(0)
         self.ui.tr_results.resizeColumnToContents(2)
         self.ui.b_search.setIcon(QtGui.QIcon('style/img/search.png'))
+    
+    def searchFile(self,filepath,search_text,search_type):
+        stxt = search_text
+        itm = None
+        
+        if stxt in filepath:
+            itm = self.addFileItem(filepath)
+        
+        # Check in file
+        cnt = 0
+        line_cnt = 0
+        try:
+            with open(filepath, 'rU') as searchfile:
+                for line in searchfile:
+                    cnt +=1
+                    found = 0
+                    if search_type == 0: # no options
+                        if stxt in line.lower():
+                            found = 1
+                    elif search_type == 1: # match case
+                        if stxt in line:
+                            found = 1
+                    elif search_type == 2: # regular expression
+                        m = re.search(stxt, line)
+                        if m != None:
+                            found = 1
+                    if found:
+                        line_cnt +=1
+                        if itm == None: itm = self.addFileItem(filepath)
+        ##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
+                        l = line.replace('\n','').replace('\r','')
+                        litm = QtGui.QTreeWidgetItem(['',str(cnt),l])
+                        for i in range(3):
+                            litm.setBackground(i,QtGui.QBrush(QtGui.QColor(30,30,30)))
+                        litm.setForeground(2,QtGui.QBrush(QtGui.QColor(255,255,255)))
+                        litm.setForeground(1,QtGui.QBrush(QtGui.QColor(150,150,150)))
+                        litm.setTextAlignment(1,2)
+                        itm.addChild(litm)
+        ##                                    print line
+                    if not self.ui.b_search.isChecked(): break
+        except:
+            print('ERROR opening: '+filepath)
+        
+        if itm != None:
+            itm.setText(1,str(line_cnt))
     
     def addFileItem(self,filename,lines = 0):
         pth,f = os.path.split(filename)
@@ -173,7 +181,7 @@ class Find_Files(QtGui.QWidget):
 
 def runui():
     app = QtGui.QApplication(sys.argv)
-    appui = Find_Files(pth = os.path.expanduser('~'))
+    appui = Find_Files(pth = os.path.dirname(__file__))
     appui.ui.le_ext.setText('.py')
     appui.ui.le_search.setText('outline')
     appui.show()
