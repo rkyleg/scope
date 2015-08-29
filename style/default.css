@@ -365,7 +365,8 @@ QLabel#l_statusbar {
     }
     QFrame#fr_leftbar > QPushButton:hover {
         background:rgba(150,150,150,100);
-        border-radius:10px;
+        border:0px;
+        /*border-radius:5px;*/
     }
     
     /*--- Main Menu Button*/

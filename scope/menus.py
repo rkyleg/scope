@@ -13,6 +13,12 @@ class NewMenu(QtGui.QMenu):
         self.setTitle('&New')
         self.setIcon(QtGui.QIcon(self.parent.iconPath+'new.png'))
         
+        # Open File
+        icn = QtGui.QIcon(parent.iconPath+'/file_open.png')
+        a=self.addAction(icn,'open')
+        a.setData('open')
+        
+        # Blank Text
         icn = QtGui.QIcon(parent.iconPath+'/files/text.png')
         self.addAction(icn,'text')
         self.addSeparator()
@@ -52,8 +58,11 @@ class NewMenu(QtGui.QMenu):
     
     def newEditor(self,event):
         editor = str(event.data().toString())
-        if editor == '': editor = None
-        self.parent.addEditorWidget(str(event.text()),editor=editor)
+        if editor == 'open':
+            self.parent.openFile()
+        else:
+            if editor == '': editor = None
+            self.parent.addEditorWidget(str(event.text()),editor=editor)
 ##        self.parent.removeStart()
 
 class WorkspaceMenu(QtGui.QMenu):

@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.4-dev'
+__version__ = '0.2.5-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -155,12 +155,17 @@ class Scope(QtGui.QWidget):
 
         #--- Hide toolbar buttons for now
 ##        self.ui.b_new.hide()
-        self.ui.fr_leftbar.hide()
+##        self.ui.fr_leftbar.hide()
         
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
         self.ui.b_show_tabs.clicked.connect(self.showTabsClicked)
+        
+        self.ui.b_home.clicked.connect(self.showHome)
+        self.ui.b_new.clicked.connect(self.showNewMenu)
+        self.ui.b_workspaces.clicked.connect(self.showWorkspaceMenu)
+        
         self.ui.b_save.clicked.connect(self.editorSave)
 
         self.ui.b_indent.clicked.connect(self.editorIndent)
@@ -241,7 +246,7 @@ class Scope(QtGui.QWidget):
         #--- Add Menus
         # New Button Menu
         self.newMenu = NewMenu(self)
-        self.ui.b_new.setMenu(self.newMenu)
+##        self.ui.b_new.setMenu(self.newMenu)
         
         
         # Workspace Button Menu
@@ -365,14 +370,19 @@ class Scope(QtGui.QWidget):
         self.evnt.resized.emit()
     
     #---Fullscreen Modes
-    def toggleFullEditor(self):
+    def toggleFullEditor(self,fullscreen=0):
         self.editor_fullmode = not self.editor_fullmode
         zen=self.editor_fullmode
         self.ui.l_statusbar.setVisible(not zen)
-        self.ui.fr_topbar.setVisible(not zen)
+
         self.ui.fr_left.setVisible(not zen)
-        self.ui.sw_bottom.setVisible(not zen)
-        self.ui.fr_bottom.setVisible(not zen)
+
+        self.ui.fr_leftbar.setVisible(not zen)
+        
+        if fullscreen == 1 or self.fullscreen_mode:
+            self.ui.sw_bottom.setVisible(not zen)
+            self.ui.fr_bottom.setVisible(not zen)
+            self.ui.fr_topbar.setVisible(not zen)
             
         if zen:
             self.pluginBottomChange(0)
@@ -389,14 +399,15 @@ class Scope(QtGui.QWidget):
         if self.fullscreen_mode:
             self.showFullScreen()
             self.editor_fullmode=0
-            self.toggleFullEditor()
+            self.toggleFullEditor(fullscreen=1)
             
             self.scopeMenu.fullScreenAction.setText('Exit Full Screen Mode (F11)')
         else:
             self.scopeMenu.fullScreenAction.setText('Full Screen (F11)')
             self.showNormal()
             if self.editor_fullmode:
-                self.toggleFullEditor()
+                self.toggleFullEditor(fullscreen=1)
+            
 
     #---File
     def getFileId(self,filename):
@@ -1043,6 +1054,19 @@ class Scope(QtGui.QWidget):
                 self.currentEditor().insertText(txt)
             self.currentEditor().setFocus()
 
+    #---Left Toolbar
+    def showNewMenu(self):
+        # Show menu to the right of the toolbar
+        s = self.ui.b_new.size()
+        bpos = self.ui.b_new.mapToGlobal(QtCore.QPoint(s.width(),0))
+        self.newMenu.exec_(bpos)
+
+    def showWorkspaceMenu(self):
+        # Show menu to the right of the toolbar
+        s = self.ui.b_workspaces.size()
+        bpos = self.ui.b_workspaces.mapToGlobal(QtCore.QPoint(s.width(),0))
+        self.workspaceMenu.exec_(bpos)
+
     #---Plugins
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
@@ -1461,6 +1485,10 @@ class Scope(QtGui.QWidget):
             if not chngs:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
+
+
+
+
 
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))

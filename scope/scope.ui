@@ -162,6 +162,12 @@ padding-top:2px;
    </item>
    <item row="1" column="0">
     <widget class="QFrame" name="fr_leftbar">
+     <property name="maximumSize">
+      <size>
+       <width>44</width>
+       <height>16777215</height>
+      </size>
+     </property>
      <property name="frameShape">
       <enum>QFrame::NoFrame</enum>
      </property>
@@ -170,13 +176,65 @@ padding-top:2px;
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <property name="spacing">
-       <number>2</number>
+       <number>4</number>
       </property>
-      <property name="margin">
+      <property name="leftMargin">
+       <number>0</number>
+      </property>
+      <property name="topMargin">
+       <number>4</number>
+      </property>
+      <property name="rightMargin">
+       <number>0</number>
+      </property>
+      <property name="bottomMargin">
        <number>0</number>
       </property>
       <item>
+       <widget class="QPushButton" name="b_new">
+        <property name="toolTip">
+         <string>New File</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../style/img/editor_new.png</normaloff>../style/img/editor_new.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="QPushButton" name="b_workspaces">
+        <property name="toolTip">
+         <string>Workspaces</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../style/img/editor_workspace.png</normaloff>../style/img/editor_workspace.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
        <widget class="QPushButton" name="b_home">
+        <property name="toolTip">
+         <string>Home</string>
+        </property>
         <property name="text">
          <string/>
         </property>
@@ -186,42 +244,8 @@ padding-top:2px;
         </property>
         <property name="iconSize">
          <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="b_editor">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../style/img/editor.png</normaloff>../style/img/editor.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
-         </size>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="QPushButton" name="b_new">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../style/img/new.png</normaloff>../style/img/new.png</iconset>
-        </property>
-        <property name="iconSize">
-         <size>
-          <width>36</width>
-          <height>36</height>
+          <width>32</width>
+          <height>32</height>
          </size>
         </property>
        </widget>
