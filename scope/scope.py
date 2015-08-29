@@ -287,10 +287,10 @@ class Scope(QtGui.QWidget):
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
-            try:
+##            try:
                 self.addPlugin(plug)
-            except:
-                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+##            except:
+##                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
@@ -377,12 +377,13 @@ class Scope(QtGui.QWidget):
 
         self.ui.fr_left.setVisible(not zen)
 
-        self.ui.fr_leftbar.setVisible(not zen)
+##        self.ui.fr_leftbar.setVisible(not zen)
         
         if fullscreen == 1 or self.fullscreen_mode:
             self.ui.sw_bottom.setVisible(not zen)
             self.ui.fr_bottom.setVisible(not zen)
             self.ui.fr_topbar.setVisible(not zen)
+            self.ui.fr_leftbar.setVisible(not zen)
             
         if zen:
             self.pluginBottomChange(0)
@@ -556,9 +557,50 @@ class Scope(QtGui.QWidget):
         return txt != None
 
     #---Editor
-    def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
-        file_id = self.getFileId(filename)
+    def addMainWidget(self,wdg,title,**kargs):
+        '''Add a widget to the main stackedwidget (where the editors go)'''
+        
+        # Setup Default Settings
+        wdgD = {
+            'filename':None,
+            'icon':None,
+            'lastText':'',
+            'lang':None,
+            'viewOnly':1,
+            'editor':None,
+            'pluginRightVisible':0,
+        }
+        
+        for ky in wdgD:
+            if ky in kargs:
+                wdgD[ky]=kargs[ky]
+        
+        # Create new widget parameters
+        file_id = self.getFileId(wdgD['filename'])
         sw_ind = self.ui.sw_main.count()
+        
+        wdg.filename = wdgD['filename']
+        wdg.lastText=''
+        wdg.title = title
+        wdg.displayTitle = title
+        wdg.id = file_id
+        wdg.lang = wdgD['lang']
+        wdg.viewOnly = wdgD['viewOnly']
+        wdg.editor = wdgD['editor']
+        wdg.pluginRightVisible=wdgD['pluginRightVisible']
+        wdg.modTime = None
+        wdg.icon = wdgD['icon']
+        
+        self.fileOpenD[file_id]=wdg
+        
+        self.ui.sw_main.insertWidget(sw_ind,wdg)
+        self.changeTab(file_id)
+        
+        return file_id
+    
+    def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
+##        file_id = self.getFileId(filename)
+##        sw_ind = self.ui.sw_main.count()
         wdg = None
         
         if filename == None and title=='New': 
@@ -589,23 +631,24 @@ class Scope(QtGui.QWidget):
         # Load Editors
         mod = importlib.import_module("plugins."+editor)
         wdg = mod.addPlugin(self,**kargs)
-
-        wdg.filename = filename
-        wdg.lastText=''
-        wdg.title = title
-        wdg.displayTitle = title
-        wdg.id = file_id
-        wdg.lang = lang
-        wdg.viewOnly = 0
+        
+        file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang)
+##        wdg.filename = filename
+##        wdg.lastText=''
+##        wdg.title = title
+##        wdg.displayTitle = title
+##        wdg.id = file_id
+##        wdg.lang = lang
+##        wdg.viewOnly = 0
         wdg.editor = editor
         wdg.pluginRightVisible=0
-        if lang=='Start':wdg.editor='Start'
-        wdg.modTime = None
-        self.fileOpenD[file_id]=wdg
+##        if lang=='Start':wdg.editor='Start'
+##        wdg.modTime = None
+##        self.fileOpenD[file_id]=wdg
         
         # Insert widget to page
-        self.ui.sw_main.insertWidget(sw_ind,wdg)
-        self.changeTab(file_id)
+##        self.ui.sw_main.insertWidget(sw_ind,wdg)
+##        self.changeTab(file_id)
 ##        self.ui.sw_main.setCurrentIndex(sw_ind)
         
         # Add Icon
@@ -623,6 +666,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_tabicon.setIcon(QtGui.QIcon(icn))
         wdg.icon = QtGui.QIcon(icn)
         wdg.pic = icn
+        
         # Insert tab in workspace
         self.addWorkspaceEditor(wdg.id,wdg.title,wdg.filename)
 
@@ -656,9 +700,9 @@ class Scope(QtGui.QWidget):
         return self.ui.sw_main.currentWidget()
 
     def change_tab(self,sw_ind):
-##        print 'change_tab',sw_ind
-        if self.currentEditor() != None:
-            file_id = self.currentEditor().id
+        wdg = self.currentEditor()
+        if wdg != None:
+            file_id = wdg.id
             if file_id != None:
                 self.changeTab(file_id)
             else:
@@ -666,15 +710,21 @@ class Scope(QtGui.QWidget):
                 self.ui.sw_main.setCurrentIndex(sw_ind)
                 self.ui.b_closetab.hide()
                 try:
-                    self.ui.l_filename.setText(self.ui.sw_main.widget(sw_ind).title)
+                    self.ui.l_filename.setText(wdg.title)
                 except:
                     self.ui.l_filename.setText('')
                 try:
-                    self.ui.b_tabicon.setIcon(self.ui.sw_main.widget(sw_ind).icon)
+                    self.ui.b_tabicon.setIcon(wdg.icon)
                 except:
                     self.ui.b_tabicon.setIcon(QtGui.QIcon())
+            
+##            if wdg.viewOnly:
+##                self.ui.b_closetab.hide()
+                
         else:
             self.ui.b_closetab.hide()
+        
+        
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
@@ -751,6 +801,9 @@ class Scope(QtGui.QWidget):
             if wdg.id in self.recentTabs:
                 self.recentTabs.remove(wdg.id)
             self.recentTabs.append(wdg.id)
+        
+            if wdg.viewOnly:
+                self.ui.b_closetab.hide()
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -1067,6 +1120,21 @@ class Scope(QtGui.QWidget):
         bpos = self.ui.b_workspaces.mapToGlobal(QtCore.QPoint(s.width(),0))
         self.workspaceMenu.exec_(bpos)
 
+    def addLeftBarButton(self,icon,tooltip='',click_function=None):
+        '''Add a button on the left toolbar'''
+        btn = QtGui.QPushButton()
+        btn.setIcon(icon)
+        btn.setIconSize(QtCore.QSize(32,32))
+    ##    btn.setProperty("class",  "toolbar toolbar-individual")
+        btn.setToolTip(tooltip)
+        layout = self.ui.fr_leftbar.layout()
+        layout.insertWidget(layout.count()-1,btn)
+        
+        if click_function != None:
+            btn.clicked.connect(click_function)
+        
+        return btn
+
     #---Plugins
     def addPlugin(self,plug):
         curdir = os.path.abspath('.')
@@ -1084,7 +1152,9 @@ class Scope(QtGui.QWidget):
                 icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
             
             pluginWidget = None
-            if loc != 'tools':
+            if loc == 'app':
+                pmod.loadPlugin(self)
+            elif loc != 'tools':
                 pluginWidget = pmod.addPlugin(self)
             
             # Check settings for location

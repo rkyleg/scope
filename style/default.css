@@ -300,15 +300,16 @@ QLabel#l_statusbar {
         /*margin-left:6px;*/
         /*margin-right:6px;*/
         border-radius:6px;
-        border-top-left-radius:0px;
-        border-bottom-left-radius:0px;
+        /*border-top-left-radius:0px;*/
+        /*border-bottom-left-radius:0px;*/
+        /*background:transparent;*/
         background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 100), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
         
     }
     QPushButton#b_show_tabs {
         /*background:transparent;*/
         background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(91, 91, 91, 100), stop:0.154545 rgba(129, 129, 129, 118), stop:0.831818 rgba(154, 154, 154, 255), stop:1 rgba(175, 175, 175, 255));
-        border-radius:6px;
+        /*border-radius:6px;*/
         border-top-right-radius:0px;
         border-bottom-right-radius:0px;
         border:0px;
@@ -362,6 +363,7 @@ QLabel#l_statusbar {
     QFrame#fr_leftbar > QPushButton {
         background:transparent;
         width:40px;
+        height:32px;
     }
     QFrame#fr_leftbar > QPushButton:hover {
         background:rgba(150,150,150,100);

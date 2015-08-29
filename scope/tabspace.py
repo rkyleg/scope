@@ -316,8 +316,10 @@ class TabSpace(object):
             
             if h > g.height():
                 h = g.height()
-            dy = self.ide.ui.fr_topbar.height()-5
-            self.tabs.setGeometry(g.x(),g.y()+dy,g.width(),h)
+            dy = self.ide.ui.fr_topbar.height()
+            tlw = self.ide.ui.fr_leftbar.width()  # Left toolbar width
+##            ttw = self.ide.ui.fr_topbar
+            self.tabs.setGeometry(g.x()+tlw,g.y()+dy,g.width()-tlw,h)
         else:
             self.tabs.setGeometry(20,20,500,h)
         

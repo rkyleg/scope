@@ -2,7 +2,7 @@ from . import spellcheck
 from PyQt4 import QtGui, QtCore
 
 title = 'Spellcheck'
-location = 'tools'
+location = ''
 
 def addPlugin(parent):
     plugin = spellcheck.SpellChecker(parent)
@@ -19,13 +19,13 @@ def addPlugin(parent):
 ##    plugin.location = ''
     
     # Add button 
-##    btn = QtGui.QPushButton()
-##    btn.setIcon(QtGui.QIcon('spellcheck.png'))
-##    btn.setProperty("class",  "toolbar toolbar-individual")
-##    btn.setToolTip('Spellcheck the selected text')
-##    layout = parent.ui.fr_toolbar.layout()
-##    layout.addWidget(btn,0,layout.columnCount(),QtCore.Qt.AlignLeft,1)
-##    btn.clicked.connect(plugin.toggle)
+    btn = QtGui.QPushButton()
+    btn.setIcon(QtGui.QIcon('icon.png'))
+    btn.setProperty("class",  "toolbar toolbar-individual")
+    btn.setToolTip('Spellcheck the selected text')
+    layout = parent.ui.fr_toolbar.layout()
+    layout.addWidget(btn,0,layout.columnCount(),QtCore.Qt.AlignLeft,1)
+    btn.clicked.connect(plugin.toggle)
     
     return plugin
 

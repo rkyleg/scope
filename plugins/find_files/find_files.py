@@ -19,7 +19,7 @@ class Find_Files(QtGui.QWidget):
         
         if parent != None:
             # IDE specific code
-            if self.IDE.currentWorkspace != None:
+            if self.IDE.currentWorkspace != None and self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'] != None:
                 self.ui.le_path.setText(self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'])
         else:
             self.ui.tr_results.setStyleSheet('')
@@ -172,12 +172,17 @@ class Find_Files(QtGui.QWidget):
                 self.IDE.openFile(pth)
     
     def toggle(self):
+##        if self.IDE.ui.sw_main.addWidget(self) ==-1:
+##            self.IDE.ui.sw_main.addWidget(plugin)
+##            self.IDE.evnt.workspaceChanged.connect(self.changeWorkspace)
+
         self.IDE.ui.sw_main.setCurrentWidget(self)
     
     def changeWorkspace(self,wksp):
         if wksp != None:
             wksp = str(wksp)
-            self.ui.le_path.setText(self.IDE.workspaces[wksp]['basefolder'])
+            if self.IDE.workspaces[wksp]['basefolder'] != None:
+                self.ui.le_path.setText(self.IDE.workspaces[wksp]['basefolder'])
 
 def runui():
     app = QtGui.QApplication(sys.argv)
