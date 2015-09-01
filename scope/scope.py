@@ -257,8 +257,8 @@ class Scope(QtGui.QWidget):
         self.ui.b_main.setMenu(self.scopeMenu)
         
         # Tools Menu
-        self.toolsMenu = ToolsMenu(self)
-        self.ui.b_tools.setMenu(self.toolsMenu)
+##        self.toolsMenu = ToolsMenu(self)
+##        self.ui.b_tools.setMenu(self.toolsMenu)
 
         #--- Plugins
         # Plugin tab bar
@@ -446,6 +446,7 @@ class Scope(QtGui.QWidget):
         title = os.path.basename(filename)
         if int(self.settings['view_folder']):
             title = os.path.split(os.path.dirname(filename))[1]+'/'+title
+##            title = '<font style="color:rgb(180,180,180);">'+os.path.split(os.path.dirname(filename))[1]+'/</font>'+title
         elif filename.endswith('.py') and title=='__init__.py':
             title = os.path.split(os.path.dirname(filename))[1]+'/init'
         return title
@@ -1394,10 +1395,13 @@ class Scope(QtGui.QWidget):
     
     def workspaceNew(self):
         # New Workspace
-        resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','Enter Workspace Name')
-        if ok and not resp.isEmpty():
-            self.workspaceSave(str(resp))
-            self.workspaceOpen(str(resp))
+        resp,ok = QtGui.QInputDialog.getText(self,'New Workspace','<b>Enter Workspace Name</b><br><font style="color:#bbb">(leave blank for a temporary workspace)</font>')
+        if ok:
+            if resp.isEmpty():
+                self.workspaceOpen(None,show_tabs=1)
+            else:
+                self.workspaceSave(str(resp))
+                self.workspaceOpen(str(resp))
     
     def workspaceRename(self,wksp=None):
         if os.path.exists(self.settingPath+'/workspaces'):

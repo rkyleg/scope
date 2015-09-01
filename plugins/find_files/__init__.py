@@ -1,5 +1,6 @@
 from . import find_files
 from PyQt4 import QtGui, QtCore
+import os
 
 title = 'Search Files'
 location = 'app'
@@ -10,14 +11,17 @@ def loadPlugin(parent):
         
         if plugin == None:
             global plugin
+            curdir = os.path.abspath('.')
+            os.chdir(os.path.dirname(__file__))
             plugin = find_files.Find_Files(parent)
+            os.chdir(curdir)
             parent.addMainWidget(plugin,'find files',icon=btn.icon())
             parent.evnt.workspaceChanged.connect(plugin.changeWorkspace)
             
         plugin.toggle()
         
     # Add button 
-    btn = parent.addLeftBarButton(QtGui.QIcon('icon.png'))
+    btn = parent.addLeftBarButton(QtGui.QIcon('icon.png'),tooltip=title)
 ##    btn.setIcon(QtGui.QIcon('icon.png'))
 ##    btn.setProperty("class",  "toolbar toolbar-individual")
 ##    btn.setToolTip('Spellcheck the selected text')

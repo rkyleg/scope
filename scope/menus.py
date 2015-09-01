@@ -77,7 +77,7 @@ class WorkspaceMenu(QtGui.QMenu):
     def loadMenu(self):
         self.clear()
         self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
-        self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Temporary Workspace')
+##        self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Temporary Workspace')
         
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
@@ -97,8 +97,8 @@ class WorkspaceMenu(QtGui.QMenu):
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
             self.parent.workspaceNew()
-        elif str(event.text()) == 'New Temporary Workspace':
-            self.parent.workspaceOpen(None,show_tabs=1)
+##        elif str(event.text()) == 'New Temporary Workspace':
+##            self.parent.workspaceOpen(None,show_tabs=1)
         elif str(event.text()) == 'Save Workspace':
             self.parent.workspaceSave()
         elif str(event.text()) == 'Close Current Workspace':
@@ -235,31 +235,31 @@ class ScopeMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
         self.addAction(icn,'Exit',self.parent.close)
 
-class ToolsMenu(QtGui.QMenu):
-    def __init__(self,parent):
-        QtGui.QMenu.__init__(self,parent)
-        self.parent = parent
-    
-        self.triggered.connect(self.togglePlugin)
-    
-    def togglePlugin(self,event):
-        plug = str(event.plugin_name)
-##        print 'toggle',plug,event.plugin_name
-        pluginWidget = None
-        if self.parent.pluginD[plug] == None:
-            curdir = os.path.abspath('.')
-            pmod = importlib.import_module('plugins.'+plug)
-            os.chdir(self.parent.pluginPath+plug)
-            pluginWidget = pmod.addPlugin(self.parent)
-            self.parent.pluginD[plug] = pluginWidget
-            pluginWidget.id = None
-            pluginWidget.title = pmod.title
-            pluginWidget.icon = QtGui.QIcon('icon.png')
-            pluginWidget.viewOnly=1
-            os.chdir(curdir)
-            
-        else:
-            pluginWidget = self.parent.pluginD[plug]
-        
-        if pluginWidget != None:
-            pluginWidget.toggle()
+##class ToolsMenu(QtGui.QMenu):
+##    def __init__(self,parent):
+##        QtGui.QMenu.__init__(self,parent)
+##        self.parent = parent
+##    
+##        self.triggered.connect(self.togglePlugin)
+##    
+##    def togglePlugin(self,event):
+##        plug = str(event.plugin_name)
+####        print 'toggle',plug,event.plugin_name
+##        pluginWidget = None
+##        if self.parent.pluginD[plug] == None:
+##            curdir = os.path.abspath('.')
+##            pmod = importlib.import_module('plugins.'+plug)
+##            os.chdir(self.parent.pluginPath+plug)
+##            pluginWidget = pmod.addPlugin(self.parent)
+##            self.parent.pluginD[plug] = pluginWidget
+##            pluginWidget.id = None
+##            pluginWidget.title = pmod.title
+##            pluginWidget.icon = QtGui.QIcon('icon.png')
+##            pluginWidget.viewOnly=1
+##            os.chdir(curdir)
+##            
+##        else:
+##            pluginWidget = self.parent.pluginD[plug]
+##        
+##        if pluginWidget != None:
+##            pluginWidget.toggle()

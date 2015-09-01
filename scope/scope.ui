@@ -184,7 +184,7 @@ padding-top:2px;
       <item>
        <widget class="QPushButton" name="b_show_tabs">
         <property name="toolTip">
-         <string>view open files</string>
+         <string>Window Switcher - View Open Files and Workspaces</string>
         </property>
         <property name="text">
          <string/>
@@ -313,32 +313,6 @@ padding-top:2px;
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="9">
-       <widget class="QPushButton" name="b_tools">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>More apps/tools</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../style/img/launch.png</normaloff>../style/img/launch.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="class" stdset="0">
-         <string>toolbar toolbar-individual</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="7">
        <widget class="QFrame" name="fr_topleft">
         <property name="frameShape">
