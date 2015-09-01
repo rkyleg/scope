@@ -34,6 +34,10 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
         - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 3. Run Scope.py
 
+### Installing on Mac OSX
+1. Requirements: Python, qt, sip, pyqt, qscintilla2
+	-These can all be installed with homebrew
+
 ### Development
 The latest development version is available [here](https://github.com/lucidlylogicole/scope/tree/dev)
 
@@ -43,7 +47,7 @@ The latest development version is available [here](https://github.com/lucidlylog
 ## Reference
 Thanks to the following tools that Scope is built on:
 
-- [Python](http://python.org) 
+- [Python](http://python.org)
 - [PyQt](http://www.riverbankcomputing.com/software/pyqt) - UI
 - [Scintilla](http://www.scintilla.org/)/QsciScintilla (via [PyQt](http://www.riverbankcomputing.com/software/pyqt))
 - [Ace Editor](http://ace.c9.io/) - HTML5 based code editor
