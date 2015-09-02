@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.7-dev'
+__version__ = '0.2.8-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -1410,6 +1410,8 @@ class Scope(QtGui.QWidget):
         # Load workspace
         if wksp in self.workspaces: # and wksp != None:
             self.evnt.workspaceChanged.emit(wksp)
+            self.tabspace.show()
+            self.tabspace.tabs.setCurrentWidget(self.workspaces[wksp]['widget'])
         else:
             self.workspaceCount +=1
             
