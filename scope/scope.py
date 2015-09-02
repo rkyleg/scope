@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.6-dev'
+__version__ = '0.2.7-dev'
 
 # Make sure qvariant works for Pyxthon 2 and 3
 import sip
@@ -52,11 +52,34 @@ class Scope(QtGui.QWidget):
         self.recentTabs = [] # Keep track of most recent tabs
         self.fileCount = -1
         self.ui.b_closetab.hide()
+        self.saveEnabled = 1   # Enable saving to local file
         
         # Workspace
         self.currentWorkspace = None
         self.workspaceCount = 0
         self.workspaces = {}
+        
+        #--- Editor Events
+        class Events(QtCore.QObject):
+            editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
+            editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
+            editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
+            editorBeforeSave = QtCore.pyqtSignal(QtGui.QWidget)
+            
+            editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
+            close=QtCore.pyqtSignal()
+            editorTabClosed = QtCore.pyqtSignal(QtGui.QWidget)
+            fileOpened = QtCore.pyqtSignal(QtGui.QWidget)
+            resized = QtCore.pyqtSignal()
+            
+            settingsLoaded = QtCore.pyqtSignal()
+            
+            # Workspace Events
+            workspaceChanged = QtCore.pyqtSignal(str)
+            workspaceOpened = QtCore.pyqtSignal(str)
+            workspaceClosed = QtCore.pyqtSignal(str)
+            
+        self.evnt = Events()
         
         # Settings
         self.loadSettings()
@@ -178,22 +201,6 @@ class Scope(QtGui.QWidget):
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
 
-        #--- Editor Events
-        class Events(QtCore.QObject):
-            editorAdded = QtCore.pyqtSignal(QtGui.QWidget)
-            editorTabChanged = QtCore.pyqtSignal(QtGui.QWidget)
-            editorSaved = QtCore.pyqtSignal(QtGui.QWidget)
-            editorVisibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
-            close=QtCore.pyqtSignal()
-            editorTabClosed = QtCore.pyqtSignal(QtGui.QWidget)
-            fileOpened = QtCore.pyqtSignal(QtGui.QWidget)
-            resized = QtCore.pyqtSignal()
-            
-            # Workspace Events
-            workspaceChanged = QtCore.pyqtSignal(str)
-            workspaceOpened = QtCore.pyqtSignal(str)
-            workspaceClosed = QtCore.pyqtSignal(str)
-        self.evnt = Events()
 ##        self.fileOpenD={}
         
         # Create Tabspace
@@ -288,7 +295,7 @@ class Scope(QtGui.QWidget):
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
 ##            try:
-                self.addPlugin(plug)
+                self.loadPlugin(plug)
 ##            except:
 ##                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
@@ -451,6 +458,18 @@ class Scope(QtGui.QWidget):
             title = os.path.split(os.path.dirname(filename))[1]+'/init'
         return title
     
+    
+    def setTitle(self,widget):
+        if widget.type == 'file':
+##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
+            title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,self.ui.fr_tab.width()-60)
+##            print os.path.split(title)[0]
+##            self.ui.l_filename.setText(title)
+            self.ui.l_title_prefix.setText(title)
+        else:
+            self.ui.l_title_prefix.setText('')
+        self.ui.l_filename.setText(widget.title+widget.titleSuffix)
+    
     def getIconPath(self,filename):
         ext = os.path.splitext(str(filename))[1][1:]
         lang = ext
@@ -511,8 +530,7 @@ class Scope(QtGui.QWidget):
                         html='<img src="'+pth+'" style="max-width:'+str(w)+';">'
                         self.webview_preview(html,filename)
                     else:
-                        title = self.getTitle(filename)
-##                        title = os.path.basename(filename)
+                        title = os.path.basename(filename)
 ##                        if int(self.settings['view_folder']):
 ##                            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
 ##                        elif lang == 'python' and title=='__init__.py':
@@ -535,15 +553,18 @@ class Scope(QtGui.QWidget):
                             QtGui.QApplication.processEvents()
                             wdg.setText(txt)
                             wdg.lastText = txt
-                            wdg.displayTitle = wdg.title
-                            self.ui.l_filename.setText(wdg.title)
+                            wdg.tabTitle = self.getTitle(filename)
+
                             wdg.modTime = os.path.getmtime(filename)
                             wdg.setEnabled(1)
                             self.ui.l_statusbar.setText('')
                             
-                            # Update tab text
+                            # Update tab text (needed for now after first creation)
+                            wdg.titleSuffix=''
+                            self.setTitle(wdg)
+##                            self.ui.l_filename.setText(wdg.title)
                             for t in self.fileD[wdg.id]['tabs']:
-                                t.setTitle(wdg.displayTitle)
+                                t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                             
                             self.evnt.fileOpened.emit(wdg)
                             
@@ -558,7 +579,7 @@ class Scope(QtGui.QWidget):
         return txt != None
 
     #---Editor
-    def addMainWidget(self,wdg,title,**kargs):
+    def addMainWidget(self,wdg,title,typ='file',**kargs):
         '''Add a widget to the main stackedwidget (where the editors go)'''
         
         # Setup Default Settings
@@ -570,6 +591,7 @@ class Scope(QtGui.QWidget):
             'viewOnly':1,
             'editor':None,
             'pluginRightVisible':0,
+            'typ':typ,
         }
         
         for ky in wdgD:
@@ -583,7 +605,8 @@ class Scope(QtGui.QWidget):
         wdg.filename = wdgD['filename']
         wdg.lastText=''
         wdg.title = title
-        wdg.displayTitle = title
+        wdg.tabTitle = title
+        wdg.titleSuffix = ''
         wdg.id = file_id
         wdg.lang = wdgD['lang']
         wdg.viewOnly = wdgD['viewOnly']
@@ -591,6 +614,7 @@ class Scope(QtGui.QWidget):
         wdg.pluginRightVisible=wdgD['pluginRightVisible']
         wdg.modTime = None
         wdg.icon = wdgD['icon']
+        wdg.type = wdgD['typ']
         
         self.fileOpenD[file_id]=wdg
         
@@ -603,9 +627,11 @@ class Scope(QtGui.QWidget):
 ##        file_id = self.getFileId(filename)
 ##        sw_ind = self.ui.sw_main.count()
         wdg = None
+        typ = 'file'
         
         if filename == None and title=='New': 
             title = 'New '+lang
+            typ = 'file_new'
         
         if editor == None:
             if lang in self.settings['prog_lang']:
@@ -633,11 +659,11 @@ class Scope(QtGui.QWidget):
         mod = importlib.import_module("plugins."+editor)
         wdg = mod.addPlugin(self,**kargs)
         
-        file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang)
+        file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang,typ=typ)
 ##        wdg.filename = filename
 ##        wdg.lastText=''
 ##        wdg.title = title
-##        wdg.displayTitle = title
+##        wdg.tabTitle = title
 ##        wdg.id = file_id
 ##        wdg.lang = lang
 ##        wdg.viewOnly = 0
@@ -710,10 +736,11 @@ class Scope(QtGui.QWidget):
                 ## MOVE TO changeTab
                 self.ui.sw_main.setCurrentIndex(sw_ind)
                 self.ui.b_closetab.hide()
-                try:
-                    self.ui.l_filename.setText(wdg.title)
-                except:
-                    self.ui.l_filename.setText('')
+##                try:
+##                    self.ui.l_filename.setText(wdg.title)
+##                except:
+##                    self.ui.l_filename.setText('')
+                self.setTitle(wdg)
                 try:
                     self.ui.b_tabicon.setIcon(wdg.icon)
                 except:
@@ -740,11 +767,16 @@ class Scope(QtGui.QWidget):
             wdg = self.fileOpenD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
             self.evnt.editorTabChanged.emit(wdg)
-            self.ui.l_filename.setText(wdg.displayTitle)
+##            self.ui.l_filename.setText(wdg.tabTitle)
+            self.setTitle(wdg)
+##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
+##            scope.ui.l_filename.fontMetrics().elidedText(wdg.tabTitle,0,300)
             if wdg.filename != None:
                 self.ui.fr_tab.setToolTip(wdg.filename)
-            else:
+            elif wdg.type == 'file_new':
                 self.ui.fr_tab.setToolTip('New File (unsaved)')
+            else:
+                self.ui.fr_tab.setToolTip(wdg.title)
             try:
                 self.ui.b_tabicon.setIcon(wdg.icon)
             except:
@@ -863,10 +895,13 @@ class Scope(QtGui.QWidget):
         wdg = self.currentEditor()
         try:
             if wdg.lastText != wdg.getText():
-                wdg.displayTitle=wdg.title+'*'
+##                wdg.tabTitle=wdg.title+'*'
+                wdg.titleSuffix = '*'
             else:
-                wdg.displayTitle=wdg.title
-            self.ui.l_filename.setText(wdg.displayTitle)
+##                wdg.tabTitle=wdg.title
+                wdg.titleSuffix = ''
+##            self.ui.l_filename.setText(wdg.tabTitle)
+            self.setTitle(wdg)
         except:
             self.ui.l_statusbar.setText('Error: text changed signal')
         
@@ -874,9 +909,9 @@ class Scope(QtGui.QWidget):
         if wdg.id != None:
             for t in self.fileD[wdg.id]['tabs']:
                 try:
-                    t.setTitle(wdg.displayTitle)
+                    t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                 except:
-                    print('error setting title',wdg.displayTitle)
+                    print('error setting title',wdg.tabTitle+wdg.titleSuffix)
     
         # Check for file changes
 ##        self.checkFileChanges()
@@ -930,21 +965,25 @@ class Scope(QtGui.QWidget):
                 else:
                     wdg.filename = os.path.abspath(str(filename))
                     wdg.title = os.path.basename(wdg.filename)
-                    self.ui.l_filename.setText(wdg.title)
-                    wdg.displayTitle = wdg.title
+##                    self.ui.l_filename.setText(wdg.title)
+                    wdg.tabTitle = self.getTitle(wdg.filename)
                     self.ui.l_filename.setToolTip(wdg.filename)
+                    wdg.type = 'file'
+                    self.setTitle(wdg)
 
             if filename != None:
+                self.evnt.editorBeforeSave.emit(wdg)
                 try:
                     txt = wdg.getText()
-                    f = codecs.open(wdg.filename,'w','utf8')
-                    f.write(txt)
-                    f.close()
+                    if self.saveEnabled:
+                        f = codecs.open(wdg.filename,'w','utf8')
+                        f.write(txt)
+                        f.close()
                     wdg.lastText = txt
                     wdg.modTime = os.path.getmtime(filename)
                     self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
                     self.ui.l_filename.setText(wdg.title)
-                    wdg.displayTitle = wdg.title
+                    wdg.tabTitle = wdg.title
                     self.ui.l_filename.setToolTip(wdg.filename)
                     
                     # Save Signal
@@ -954,8 +993,7 @@ class Scope(QtGui.QWidget):
                     QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                     self.ui.l_statusbar.setText('Error Saving: '+filename)
                 
-                
-                
+
                 # If Settings File, reload
                 if filename == self.settings_filename:
                     self.loadSettings()
@@ -985,7 +1023,7 @@ class Scope(QtGui.QWidget):
             wdg.filename = os.path.abspath(str(filename))
             wdg.title = os.path.basename(wdg.filename)
             self.ui.l_filename.setText(wdg.title)
-            wdg.displayTitle = wdg.title
+            wdg.tabTitle = wdg.title
             self.editorSave()
                 
     def editorFind(self):
@@ -1137,7 +1175,7 @@ class Scope(QtGui.QWidget):
         return btn
 
     #---Plugins
-    def addPlugin(self,plug):
+    def loadPlugin(self,plug):
         curdir = os.path.abspath('.')
 
         if not os.path.exists(self.pluginPath+plug):
@@ -1183,6 +1221,26 @@ class Scope(QtGui.QWidget):
                 act.plugin_name = plug
             self.pluginD[plug]=pluginWidget
             os.chdir(curdir)
+
+    def addPlugin(self,plug):
+        if not plug in self.pluginD:
+            self.loadPlugin(plug)
+        else:
+            plugin = self.pluginD[plug]
+            pluginWidget = plugin.getWidget()
+            if loc == 'left':
+                if self.settings['window']['pluginLeft']['showTabText']!='1': tabtext=''
+                ti = self.ui.tab_left.addTab(pluginWidget,icn,tabtext)
+                self.ui.tab_left.setTabToolTip(ti,title)
+            elif loc=='right':
+                if self.settings['window']['pluginRight']['showTabText']!='1': tabtext=''
+                ti = self.ui.tab_right.addTab(pluginWidget,icn,tabtext)
+                self.ui.tab_right.setTabToolTip(ti,title)
+            elif loc == 'bottom':
+                if self.settings['window']['pluginBottom']['showTabText']!='1': tabtext=''
+                self.ui.sw_bottom.addWidget(pluginWidget)
+                ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
+                self.ui.tabbar_bottom.setTabToolTip(ti,title)
 
     #---   Left Plugins
     def toggleLeftPlugin(self):
@@ -1513,6 +1571,8 @@ class Scope(QtGui.QWidget):
                     self.settings['prog_lang'][l]['fave']=1
                 else:
                     self.settings['prog_lang'][l]['fave']=int(self.settings['prog_lang'][l]['fave'])
+        
+        self.evnt.settingsLoaded.emit()
         
     def openSettings(self):
         self.openFile(self.settings_filename)

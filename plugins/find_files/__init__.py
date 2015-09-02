@@ -15,7 +15,7 @@ def loadPlugin(parent):
             os.chdir(os.path.dirname(__file__))
             plugin = find_files.Find_Files(parent)
             os.chdir(curdir)
-            parent.addMainWidget(plugin,'find files',icon=btn.icon())
+            parent.addMainWidget(plugin,'find files',icon=btn.icon(),typ='app')
             parent.evnt.workspaceChanged.connect(plugin.changeWorkspace)
             
         plugin.toggle()

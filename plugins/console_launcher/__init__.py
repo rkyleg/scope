@@ -8,11 +8,18 @@ def loadPlugin(parent):
     def launch_console():
         wksp_pth = ''
         if parent.currentWorkspace != None:
-            wksp_pth = '--working-directory='+parent.workspaces[parent.currentWorkspace]['basefolder']
+            wksp_pth = parent.workspaces[parent.currentWorkspace]['basefolder']
+        else:
+            try:
+                wksp_pth = parent.settings['plugins']['filebrowser']['defaultPath']
+            except:
+                pass
         
         if os.name =='nt':
-            os.system('cmd')
+            if wksp_pth != '': wksp_pth = '/K "cd /d '+wksp_pth.replace('/','\\')+'"'
+            os.system('start cmd '+wksp_pth)
         else:
+            if wksp_pth != '': wksp_pth = '--working-directory='+wksp_pth
             os.system("gnome-terminal "+wksp_pth)
         
     # Add button 

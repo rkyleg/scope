@@ -14,7 +14,7 @@ def addPlugin(parent):
 ##    plugin.webview.title = 'Home'
 ##    plugin.webview.icon = QtGui.QIcon(parent.iconPath+'home.png')
     icon = QtGui.QIcon(parent.iconPath+'home.png')
-    parent.addMainWidget(plugin.webview,'Home',icon=icon)
+    parent.addMainWidget(plugin.webview,'Home',icon=icon,typ='app')
 ##    parent.ui.sw_main.addWidget(plugin.webview)
 ##    parent.ui.sw_main.setCurrentIndex(0)
     

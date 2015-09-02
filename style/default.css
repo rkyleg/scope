@@ -349,9 +349,15 @@ QLabel#l_statusbar {
     	image: url(style/img/close_hover.png);
     }
     
+    QLabel#l_title_prefix {
+        color:rgb(200,200,200);
+    }
+    
     QPushButton {
         outline:none;
     }
+
+
 
     /*---Left Bar*/
     QFrame#fr_leftbar {
