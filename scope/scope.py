@@ -461,15 +461,19 @@ class Scope(QtGui.QWidget):
     
     
     def setTitle(self,widget):
+        w = self.ui.fr_tab.width()
+        self.ui.l_filename.setText(widget.title+widget.titleSuffix)
         if widget.type == 'file':
 ##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
-            title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,self.ui.fr_tab.width()-60)
+            w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
+##            print w,self.ui.fr_tab.width(),self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
+            title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,w)
 ##            print os.path.split(title)[0]
 ##            self.ui.l_filename.setText(title)
             self.ui.l_title_prefix.setText(title)
         else:
             self.ui.l_title_prefix.setText('')
-        self.ui.l_filename.setText(widget.title+widget.titleSuffix)
+        
     
         # Set Tooltip
         if widget.filename != None:
@@ -1637,12 +1641,14 @@ def runui():
     
     # Setup font
 ##    fdb = QtGui.QFontDatabase()
-##    fdb.addApplicationFont('style/Hack-Regular.ttf')
-##    app.setFont(QtGui.QFont('Hack',10))
+##    fdb.addApplicationFont('../style/Hack-Regular.ttf')
+##    fdb.addApplicationFont('../style/Ubuntu-R.ttf')
+##    app.setFont(QtGui.QFont('Ubuntu',10))
+####    app.setFont(QtGui.QFont('Hack',10))
     
-##    fdb.addApplicationFont('style/DejaVuSansMono.ttf')
-##    app.setFont(QtGui.QFont('DejaVu Sans Mono',10))
-##    print 'c3',os.path.abspath('.')
+##    for s in fdb.families():
+##        print s
+
     scopeApp = Scope()
     os.chdir('../')
     scopeApp.load()

@@ -73,6 +73,7 @@ class Sci(QtGui.QWidget):
 ##            'showPrintMargin':0,
             'fontFamily':'Courier',
 ##            'fontFamily':'Hack',
+##            'fontFamily':'Ubuntu',
             'fontSize':10,
 ##            'theme':'twighlight',
 ##            'newLineMode':'unix',
@@ -93,6 +94,7 @@ class Sci(QtGui.QWidget):
         font = QFont()
 ##        font.setFamily('Ubuntu Mono')
 ##        font.setFamily('DejaVu Sans Mono')
+
         font.setFamily(self.settings['fontFamily'])
         font.setFixedPitch(True)
         
@@ -104,7 +106,7 @@ class Sci(QtGui.QWidget):
 
         # Margin 0 for line numbers
         fontmetrics = QFontMetrics(font)
-        self.ui.te_sci.setMarginsFont(font)
+##        self.ui.te_sci.setMarginsFont(font)
         self.ui.te_sci.setMarginWidth(0, fontmetrics.width("00000"))
         self.ui.te_sci.setMarginWidth(1, 0)
         self.ui.te_sci.setMarginLineNumbers(0, True)
@@ -143,7 +145,8 @@ class Sci(QtGui.QWidget):
         if sys.version_info.major==3:
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytes('Courier','utf-8'))
         else:
-            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, self.settings['fontFamily'])
         
         self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
         

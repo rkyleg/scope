@@ -5,12 +5,13 @@ html,body {
     padding:0px;
     /*border-radius:10px;*/
     font-family:ubuntu,helvetica;
-    border-top-left-radius:10px;
+    /*border-top-left-radius:10px;*/
 }
 body {
     /*background:rgba(50,50,50,0.9);*/
-    background:rgba(40,71,85,0.9)
-    
+    background:rgba(23,71,101,0.9);
+    background: -webkit-linear-gradient(top, #296e93 0%,#09425e 100%);
+ 
 }
 .main {
     /*background:rgba(40,71,85,0.9)*/
