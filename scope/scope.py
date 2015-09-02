@@ -184,6 +184,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
         self.ui.b_show_tabs.clicked.connect(self.showTabsClicked)
+        self.ui.b_settings.clicked.connect(self.openSettings)
         
         self.ui.b_home.clicked.connect(self.showHome)
         self.ui.b_new.clicked.connect(self.showNewMenu)
@@ -469,6 +470,14 @@ class Scope(QtGui.QWidget):
         else:
             self.ui.l_title_prefix.setText('')
         self.ui.l_filename.setText(widget.title+widget.titleSuffix)
+    
+        # Set Tooltip
+        if widget.filename != None:
+            self.ui.fr_tab.setToolTip(widget.filename)
+        elif widget.type == 'file_new':
+            self.ui.fr_tab.setToolTip('New File (unsaved)')
+        else:
+            self.ui.fr_tab.setToolTip(widget.title)
     
     def getIconPath(self,filename):
         ext = os.path.splitext(str(filename))[1][1:]
@@ -969,7 +978,7 @@ class Scope(QtGui.QWidget):
                     wdg.tabTitle = self.getTitle(wdg.filename)
                     self.ui.l_filename.setToolTip(wdg.filename)
                     wdg.type = 'file'
-                    self.setTitle(wdg)
+##                    self.setTitle(wdg)
 
             if filename != None:
                 self.evnt.editorBeforeSave.emit(wdg)
@@ -982,9 +991,11 @@ class Scope(QtGui.QWidget):
                     wdg.lastText = txt
                     wdg.modTime = os.path.getmtime(filename)
                     self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
-                    self.ui.l_filename.setText(wdg.title)
-                    wdg.tabTitle = wdg.title
-                    self.ui.l_filename.setToolTip(wdg.filename)
+                    wdg.titleSuffix = ''
+                    self.setTitle(wdg)
+##                    self.ui.l_filename.setText(wdg.title)
+##                    wdg.tabTitle = wdg.title
+##                    self.ui.l_filename.setToolTip(wdg.filename)
                     
                     # Save Signal
                     self.evnt.editorSaved.emit(wdg)
@@ -1000,7 +1011,7 @@ class Scope(QtGui.QWidget):
             
             # Update tabs
             for t in self.fileD[wdg.id]['tabs']:
-                t.setTitle(wdg.title)
+                t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                 t.item.setToolTip(wdg.filename)
             
     def editorSaveAs(self):
@@ -1620,16 +1631,15 @@ class Scope(QtGui.QWidget):
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
 
-
-
-
-
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
     
     # Setup font
 ##    fdb = QtGui.QFontDatabase()
+##    fdb.addApplicationFont('style/Hack-Regular.ttf')
+##    app.setFont(QtGui.QFont('Hack',10))
+    
 ##    fdb.addApplicationFont('style/DejaVuSansMono.ttf')
 ##    app.setFont(QtGui.QFont('DejaVu Sans Mono',10))
 ##    print 'c3',os.path.abspath('.')

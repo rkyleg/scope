@@ -72,6 +72,7 @@ class Sci(QtGui.QWidget):
 ##            'behaviours':1,
 ##            'showPrintMargin':0,
             'fontFamily':'Courier',
+##            'fontFamily':'Hack',
             'fontSize':10,
 ##            'theme':'twighlight',
 ##            'newLineMode':'unix',
