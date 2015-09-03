@@ -1639,19 +1639,6 @@ class Scope(QtGui.QWidget):
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
-    
-    # Setup font
-    fdb = QtGui.QFontDatabase()
-    fdb.addApplicationFont('../style/Hack-Regular.ttf')
-    fdb.addApplicationFont('../style/Hack-Bold.ttf')
-    fdb.addApplicationFont('../style/Hack-RegularOblique.ttf')
-    fdb.addApplicationFont('../style/Hack-Oblique.ttf')
-##    fdb.addApplicationFont('../style/Ubuntu-R.ttf')
-##    app.setFont(QtGui.QFont('Ubuntu',10))
-####    app.setFont(QtGui.QFont('Hack',10))
-    
-##    for s in fdb.families():
-##        print s
 
     scopeApp = Scope()
     os.chdir('../')
