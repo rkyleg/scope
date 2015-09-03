@@ -49,8 +49,8 @@ styleD = {
     
     'SingleQuotedString':'125,188,151',
     'DoubleQuotedString':'125,188,151',
-    'TripleDoubleQuotedString':'125,188,151',
-    'TripleSingleQuotedString':'125,188,151',
+    'TripleDoubleQuotedString':'122,159,94',
+    'TripleSingleQuotedString':'122,159,94',
 ##    'UnclosedString':'255,255,127', # yellow
     'UnclosedString':'255,94,94', # reddish
     

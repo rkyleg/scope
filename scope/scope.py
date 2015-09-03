@@ -6,9 +6,9 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.8-dev'
+__version__ = '0.2.9-dev'
 
-# Make sure qvariant works for Pyxthon 2 and 3
+# Make sure qvariant works for Python 2 and 3
 import sip
 ##sip.setapi('QString',1)
 sip.setapi('QVariant',1)
@@ -25,7 +25,6 @@ class Scope(QtGui.QWidget):
         self.version = __version__
 
         # Setup UI
-        
         QtGui.QWidget.__init__(self, parent)
         from scope_ui import Ui_Form
         self.ui = Ui_Form()
@@ -1533,7 +1532,7 @@ class Scope(QtGui.QWidget):
             self.workspaces.pop(str(wksp))
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
-        
+            
         return ok
 
     #---Settings
@@ -1642,8 +1641,11 @@ def runui():
     app = QtGui.QApplication(sys.argv)
     
     # Setup font
-##    fdb = QtGui.QFontDatabase()
-##    fdb.addApplicationFont('../style/Hack-Regular.ttf')
+    fdb = QtGui.QFontDatabase()
+    fdb.addApplicationFont('../style/Hack-Regular.ttf')
+    fdb.addApplicationFont('../style/Hack-Bold.ttf')
+    fdb.addApplicationFont('../style/Hack-RegularOblique.ttf')
+    fdb.addApplicationFont('../style/Hack-Oblique.ttf')
 ##    fdb.addApplicationFont('../style/Ubuntu-R.ttf')
 ##    app.setFont(QtGui.QFont('Ubuntu',10))
 ####    app.setFont(QtGui.QFont('Hack',10))

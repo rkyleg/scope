@@ -306,6 +306,8 @@ class TabSpace(object):
         
         if self.tabs.count()==0:
             self.tabs.hide()
+            
+            self.ide.ui.b_show_tabs.setChecked(0)
         
 ##        self.tabs.removeTab(ind)
     
