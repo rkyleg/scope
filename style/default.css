@@ -194,25 +194,7 @@ QLabel#l_statusbar {
 
     /*---TabSpace*/
     /*QTabWidget.editorTabs,QTabWidget.editorTabs::pane {*/
-    QTabWidget.editorTabs::pane {
-        border-top:1px solid rgb(100,100,100);
-        /*background:rgb(100,100,100);*/
-        outline:0;
-    }
-    /*QTabBar.editorTabs{*/
-        /*color:white;*/
-        /*background:rgb(100,100,100);*/
-        
-    /*}*/
-    /*QTabWidget.editorTabs::tab-bar {*/
-    /*    background:rgb(0,250,250);*/
-    /*}*/
-    /*QTabWidget.editorTabs::tab:!selected {*/
-    /*    background:rgb(250,0,0);*/
-    /*}*/
-    
 
-    
     QListWidget.editor_tab {
         outline:0;
         border:0px;

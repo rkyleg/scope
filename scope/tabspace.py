@@ -202,8 +202,45 @@ class editortab(QtGui.QWidget):
 class TabSpace(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
+
 ##        QtGui.QTabWidget.__init__(self)
-        self.tabs.setStyleSheet("QTabWidget,QTabBar{background:rgba(100,100,100,240);},QTabBar{color:white;background:transparent;}")
+        self.tabs.setStyleSheet("""
+            QTabWidget,QTabBar{
+                background:rgba(100,100,100,240);
+            }
+            QTabWidget::tab-bar {
+                alignment: left;
+            }
+
+            /* Style the tab using the tab sub-control. Note that
+                it reads QTabBar _not_ QTabWidget */
+            QTabBar::tab {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                            stop: 0 #777777, stop: 0.4 #666666,
+                                            stop: 0.5 #555555, stop: 1.0 #444444);
+                border: 2px solid #C4C4C3;
+                border:0px;
+                border-top-color: #C2C7CB; /* same as the pane color */
+                border-bottom-left-radius: 5px;
+                border-bottom-right-radius: 5px;
+                
+                min-width: 8ex;
+                padding: 4px;
+                color:#CCCCCC
+            }
+
+            QTabBar::tab:selected, QTabBar::tab:hover {
+                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
+                                            stop: 0 #666666, stop: 0.4 #555555,
+                                            stop: 0.5 #444444, stop: 1.0 #333333);
+            }
+
+            QTabBar::tab:selected {
+                border-color: #9B9B9B;
+                border-bottom-color: #C2C7CB; /* same as pane color */
+                color:white;
+                border-top:0px;
+            }""")
 ##        self.tabs.setWindowOpacity(0.9)
 ##        self.tabs.setStyleSheet("background:transparent;")
         

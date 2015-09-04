@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.2.9-dev'
+__version__ = '0.2.10-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -462,16 +462,20 @@ class Scope(QtGui.QWidget):
     def setTitle(self,widget):
         w = self.ui.fr_tab.width()
         self.ui.l_filename.setText(widget.title+widget.titleSuffix)
-        if widget.type == 'file':
-##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
-            w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
-##            print w,self.ui.fr_tab.width(),self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
-            title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,w)
-##            print os.path.split(title)[0]
-##            self.ui.l_filename.setText(title)
-            self.ui.l_title_prefix.setText(title)
-        else:
-            self.ui.l_title_prefix.setText('')
+        
+        # Show Full Path
+        if self.settings['showPath'] =='1':
+            if widget.type == 'file':
+    ##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
+                w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
+    ##            print w,self.ui.fr_tab.width(),self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
+                title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,w)
+    ##            print os.path.split(title)[0]
+    ##            self.ui.l_filename.setText(title)
+
+                self.ui.l_title_prefix.setText(title)
+            else:
+                self.ui.l_title_prefix.setText('')
         
     
         # Set Tooltip
