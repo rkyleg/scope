@@ -12,7 +12,7 @@ def addPlugin(parent):
     parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
     parent.evnt.fileOpened.connect(plugin.updateOutlineToggle)
     
-    # QtGui.QShortcut(QtCore.Qt.Key_F3,parent,plugin.updateOutlineToggle) 
+    QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,parent,plugin.updateOutlineToggle) 
     
 ##    plugin.title = 'Outline'
 ##    plugin.location = 'left'    

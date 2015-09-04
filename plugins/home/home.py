@@ -42,7 +42,7 @@ class Home(object):
         from plugins.webview import webview
         self.webview=webview.WebView(self.IDE)
 ##        self.webview.setWindowOpacity(0.6)
-        self.webview.setStyleSheet("QWebView{background:transparent}")
+##        self.webview.setStyleSheet("QWebView{background:transparent}")
 ##        self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
@@ -52,6 +52,15 @@ class Home(object):
         self.webview.filename = None
 
         self.jsObject = jsObject(parent=self)
+        
+##        self.webview.setStyleSheet('''
+##            a {
+##                text-decoration:none;
+##                font-weight:bold;
+##                
+##                color: rgb(22,90,117);
+##            }
+##        ''')
     
     def toggleHome(self,visible=None):
 ##        if visible == None:
@@ -190,7 +199,8 @@ class Home(object):
 ##            self.toggleHUD()
         elif lnk=='settings':
             self.IDE.openSettings()
-            
+        else:
+            self.webview.load2(url)
 ##        elif lnk=='close':
 ##            self.toggleHUD()
     

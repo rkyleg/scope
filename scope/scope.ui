@@ -184,7 +184,7 @@ padding-top:2px;
       <item>
        <widget class="QPushButton" name="b_show_tabs">
         <property name="toolTip">
-         <string>view open files</string>
+         <string>Window Switcher - View Open Files and Workspaces</string>
         </property>
         <property name="text">
          <string/>
@@ -268,6 +268,26 @@ padding-top:2px;
        </widget>
       </item>
       <item>
+       <widget class="QPushButton" name="b_settings">
+        <property name="toolTip">
+         <string>Settings</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../style/img/settings.png</normaloff>../style/img/settings.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>32</width>
+          <height>32</height>
+         </size>
+        </property>
+       </widget>
+      </item>
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -313,32 +333,6 @@ padding-top:2px;
       <property name="spacing">
        <number>0</number>
       </property>
-      <item row="0" column="9">
-       <widget class="QPushButton" name="b_tools">
-        <property name="maximumSize">
-         <size>
-          <width>40</width>
-          <height>16777215</height>
-         </size>
-        </property>
-        <property name="toolTip">
-         <string>More apps/tools</string>
-        </property>
-        <property name="text">
-         <string/>
-        </property>
-        <property name="icon">
-         <iconset>
-          <normaloff>../style/img/launch.png</normaloff>../style/img/launch.png</iconset>
-        </property>
-        <property name="checkable">
-         <bool>true</bool>
-        </property>
-        <property name="class" stdset="0">
-         <string>toolbar toolbar-individual</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="7">
        <widget class="QFrame" name="fr_topleft">
         <property name="frameShape">
@@ -640,7 +634,19 @@ QPushButton:hover,QToolButton:hover {
          <property name="verticalSpacing">
           <number>0</number>
          </property>
-         <item row="0" column="5">
+         <item row="0" column="3">
+          <widget class="QLabel" name="l_title_prefix">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
           <widget class="QPushButton" name="b_closetab">
            <property name="maximumSize">
             <size>
@@ -656,30 +662,14 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <widget class="QPushButton" name="b_tabicon">
-           <property name="maximumSize">
-            <size>
-             <width>26</width>
-             <height>16777215</height>
-            </size>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>26</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="class" stdset="0">
-            <string>tab_button</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
+         <item row="0" column="5">
           <widget class="QLabel" name="l_filename">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="font">
             <font>
              <pointsize>10</pointsize>
@@ -707,17 +697,26 @@ QPushButton:hover,QToolButton:hover {
           </spacer>
          </item>
          <item row="0" column="4">
-          <spacer name="horizontalSpacer_4">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
+          <widget class="QPushButton" name="b_tabicon">
+           <property name="maximumSize">
             <size>
-             <width>2</width>
+             <width>26</width>
+             <height>16777215</height>
+            </size>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
-          </spacer>
+           <property name="class" stdset="0">
+            <string>tab_button</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

@@ -133,6 +133,7 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.getSession().getDocument().setNewLineMode("'+str(self.settings['newLineMode'])+'");'
         js += 'editor.setShowInvisibles('+str(self.settings['showWhitespace'])+');'
         js += 'editor.focus();'
+        js += 'editor.setOptions({fontFamily:"'+self.settings['fontFamily']+'"});'
         self.page().mainFrame().evaluateJavaScript(js)
         
         # Additional Settings

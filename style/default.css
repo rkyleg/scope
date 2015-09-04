@@ -29,6 +29,7 @@ QListWidget::item,QTreeWidget::item {
 QWebView {
     background:white;
 }
+
 QMenu {
     background:rgba(70,70,70,250);
 }
@@ -193,25 +194,13 @@ QLabel#l_statusbar {
 
     /*---TabSpace*/
     /*QTabWidget.editorTabs,QTabWidget.editorTabs::pane {*/
+
     QTabWidget.editorTabs::pane {
         border-top:1px solid rgb(100,100,100);
         /*background:rgb(100,100,100);*/
         outline:0;
     }
-    /*QTabBar.editorTabs{*/
-        /*color:white;*/
-        /*background:rgb(100,100,100);*/
-        
-    /*}*/
-    /*QTabWidget.editorTabs::tab-bar {*/
-    /*    background:rgb(0,250,250);*/
-    /*}*/
-    /*QTabWidget.editorTabs::tab:!selected {*/
-    /*    background:rgb(250,0,0);*/
-    /*}*/
-    
 
-    
     QListWidget.editor_tab {
         outline:0;
         border:0px;
@@ -349,9 +338,15 @@ QLabel#l_statusbar {
     	image: url(style/img/close_hover.png);
     }
     
+    QLabel#l_title_prefix {
+        color:rgb(220,220,220);
+    }
+    
     QPushButton {
         outline:none;
     }
+
+
 
     /*---Left Bar*/
     QFrame#fr_leftbar {
@@ -450,104 +445,104 @@ QLabel#l_statusbar {
 
 /*--- ------------------------------------------------*/
 /*---Home Page Style*/
-    body,table {
-        font-family:sans,verdana;
+    /*body,table {*/
+    /*    font-family:sans,verdana;*/
         /*background:rgb(220,220,220);*/
         
         
-        color:rgb(60,60,60);
-    }
+    /*    color:rgb(60,60,60);*/
+    /*}*/
     
-    body {
+    /*body {*/
         background: #becfdd; /* Old browsers */
         background: -webkit-gradient(linear, left top, right bottom, color-stop(0%,#becfdd), color-stop(50%,#eaf4ff), color-stop(99%,#becfdd)); /* Chrome,Safari4+ */
     
-        border-radius:6px;
-        border:2px outset #eaf4ff;
-        margin:0px;
-        padding:10px;
-    }
+    /*    border-radius:6px;*/
+    /*    border:2px outset #eaf4ff;*/
+    /*    margin:0px;*/
+    /*    padding:10px;*/
+    /*}*/
     
-    a {
-        text-decoration:none;
+    /*a {*/
+    /*    text-decoration:none;*/
         /*font-weight:bold;*/
         
-        color: rgb(22,90,117);
-    }
-    a:hover {
-        color: rgb(47,127,158);
-    }
+    /*    color: rgb(22,90,117);*/
+    /*}*/
+    /*a:hover {*/
+    /*    color: rgb(47,127,158);*/
+    /*}*/
     
-    #logo {
-        text-align:center;
-    }
+    /*#logo {*/
+    /*    text-align:center;*/
+    /*}*/
     
-    #version {
-        color:gray;
-        font-size:12px;
-        margin-bottom:4px;
-    }
+    /*#version {*/
+    /*    color:gray;*/
+    /*    font-size:12px;*/
+    /*    margin-bottom:4px;*/
+    /*}*/
     /*---Workspace and New Buttons*/
-    .button {  
-        background: rgb(140,140,140);
-        padding:3px;
-        border-radius:4px;
-        padding-left:6px;
-        padding-right:6px;
-        margin-top:2px;
-        color:white;
-    }
-    .button:hover {
-        background: rgb(120,120,120);
-    }
-    .panel{
-        background:rgba(180,180,180,0.7);
-        text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
-        color:rgb(80,80,80);
-        border-radius:5px;
-        padding-left:10px;
-        padding-right:10px;
-        padding-bottom:10px;
-        padding-top:3px;
-        height:100%;
-    }
-    .workspace-add {
-        display:inline-block;
-        vertical-align:middle;
-        background: rgba(140,140,140,0.5);
-        border-radius:4px;
-        padding:3px;
-        color:white;
-        font-size:14px;
-    }
-    .workspace-add:hover {
-        background: rgba(120,120,120,0.5);
-    }
+    /*.button {  */
+    /*    background: rgb(140,140,140);*/
+    /*    padding:3px;*/
+    /*    border-radius:4px;*/
+    /*    padding-left:6px;*/
+    /*    padding-right:6px;*/
+    /*    margin-top:2px;*/
+    /*    color:white;*/
+    /*}*/
+    /*.button:hover {*/
+    /*    background: rgb(120,120,120);*/
+    /*}*/
+    /*.panel{*/
+    /*    background:rgba(180,180,180,0.7);*/
+    /*    text-shadow: 0px 1px 0px rgba(160,160,160,0.5);*/
+    /*    color:rgb(80,80,80);*/
+    /*    border-radius:5px;*/
+    /*    padding-left:10px;*/
+    /*    padding-right:10px;*/
+    /*    padding-bottom:10px;*/
+    /*    padding-top:3px;*/
+    /*    height:100%;*/
+    /*}*/
+    /*.workspace-add {*/
+    /*    display:inline-block;*/
+    /*    vertical-align:middle;*/
+    /*    background: rgba(140,140,140,0.5);*/
+    /*    border-radius:4px;*/
+    /*    padding:3px;*/
+    /*    color:white;*/
+    /*    font-size:14px;*/
+    /*}*/
+    /*.workspace-add:hover {*/
+    /*    background: rgba(120,120,120,0.5);*/
+    /*}*/
     /*---Main Section*/
-    .main_section {
-        padding-left:10px;
-        margin-top:10px;
-        padding-top:8px;
-        background:rgb(255,255,255);
-        color:rgb(60,60,60);
-        border-radius:5px;
-    }
-    .main_toolbar {
+    /*.main_section {*/
+    /*    padding-left:10px;*/
+    /*    margin-top:10px;*/
+    /*    padding-top:8px;*/
+    /*    background:rgb(255,255,255);*/
+    /*    color:rgb(60,60,60);*/
+    /*    border-radius:5px;*/
+    /*}*/
+    /*.main_toolbar {*/
         
-    }
-    .toolbutton {  
-        background: rgb(140,140,140);
-        padding:2px;
-        border-radius:4px;
-        padding-left:6px;
-        padding-right:6px;
-        margin-top:2px;
-        color:white;
-    }
-    .toolbutton:hover {
-        background: rgb(120,120,120);
-        color:white;
-    }
+    /*}*/
+    /*.toolbutton {  */
+    /*    background: rgb(140,140,140);*/
+    /*    padding:2px;*/
+    /*    border-radius:4px;*/
+    /*    padding-left:6px;*/
+    /*    padding-right:6px;*/
+    /*    margin-top:2px;*/
+    /*    color:white;*/
+    /*}*/
+    /*.toolbutton:hover {*/
+    /*    background: rgb(120,120,120);*/
+    /*    color:white;*/
+    /*}*/
         
     
     /*---HUD Style*/
