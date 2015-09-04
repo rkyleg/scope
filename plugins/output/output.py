@@ -54,7 +54,7 @@ class Output(QtGui.QWidget):
             webbrowser.open(wdg.filename)
         else:
             if cmd != 'preview':
-                i = self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'])
+                i = self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
                 self.ide.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg in self.wdgD:
                 # Process was run

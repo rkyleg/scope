@@ -95,8 +95,8 @@ class Preview(QtGui.QWidget):
             
         pwdg.webview.setText(html,burl)
         if html != '':
-            self.ide.pluginD['output'].runProcess('preview',wdg,text=html)
-            self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'])
+            self.ide.pluginD['output'].widget.runProcess('preview',wdg,text=html)
+            self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
             
 ##        QtGui.QApplication.processEvents()
 ##        time.sleep(0.01)

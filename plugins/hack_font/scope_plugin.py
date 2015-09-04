@@ -9,8 +9,6 @@ class Plugin(object):
     location = 'app' # left, bottom, right, app
     widget = None
     settings = Settings.__dict__
-    # or
-    settings = {}
     
     def __init__(self,parent):
         self.parent = parent
@@ -18,10 +16,10 @@ class Plugin(object):
     def load(self):
         '''Called on when loading the plugin'''
         fdb = QtGui.QFontDatabase()
-        fdb.addApplicationFont('../style/Hack-Regular.ttf')
-        fdb.addApplicationFont('../style/Hack-Bold.ttf')
-        fdb.addApplicationFont('../style/Hack-RegularOblique.ttf')
-        fdb.addApplicationFont('../style/Hack-Oblique.ttf')
+        fdb.addApplicationFont('../../style/Hack-Regular.ttf')
+        fdb.addApplicationFont('../../style/Hack-Bold.ttf')
+        fdb.addApplicationFont('../../style/Hack-RegularOblique.ttf')
+        fdb.addApplicationFont('../../style/Hack-Oblique.ttf')
         
     def getWidget(self):
         '''Return a Widget'''

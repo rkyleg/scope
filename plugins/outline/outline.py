@@ -116,7 +116,7 @@ class Outline(QtGui.QWidget):
         if toggle_view:
             if self.ide.ui.fr_left.isHidden():
                 self.ide.ui.fr_left.setVisible(1)
-            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'])
+            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'].widget)
             self.ide.ui.tab_left.setCurrentIndex(i)
         
         if wdg != None:

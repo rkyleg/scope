@@ -1,4 +1,4 @@
-import os
+from . import filebrowser
 from PyQt4 import QtGui, QtCore
 
 class Settings(object):
@@ -6,8 +6,8 @@ class Settings(object):
     # attribute=value
     
 class Plugin(object):
-    title = 'Plugin Title'
-    location = 'app' # left, bottom, right, app
+    title = 'File Browser'
+    location = 'left'
     settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
@@ -18,6 +18,8 @@ class Plugin(object):
         '''Called when loading the plugin'''
         
     def loadWidget(self):
-        '''Load the widget'''
-        self.widget = None
+        self.widget = filebrowser.FileBrowser(self.parent)
+
+        self.parent.Events.workspaceOpened.connect(self.widget.openWorkspace)
+        self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
         return self.widget

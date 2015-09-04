@@ -2,36 +2,35 @@ import os
 from PyQt4 import QtGui, QtCore
 
 class Settings(object):
-    setting1 = 'hi'
-
-class Plugin(object):
-    title = 'Search Files'
-    location = 'app'
-    widget = None
-    settings = Settings.__dict__
-    # or
-    settings = {}
+    '''Modifiable settings and their defaults'''
+    # attribute=value
     
-    def __init__(self,parent):
+class Plugin(object):
+    title = 'Search in Files'
+    location = 'app' # left, bottom, right, app
+    settings = Settings.__dict__ # Settings must be a dictionary
+    widget = None  # The widget for the plugin (set at getWidget)
+    
+    def __init__(self,parent=None):
         self.parent = parent
     
     def load(self):
-        btn = self.parent.addLeftBarButton(QtGui.QIcon('icon.png'))
-        btn.clicked.connect(self.addFindFilesWidget)
+        self.btn = self.parent.addLeftBarButton(QtGui.QIcon('icon.png'))
+        self.btn.clicked.connect(self.addFindFilesWidget)
         # store widget with button (with addLeftBarButton.  if widget doesn't exist, it calls the getwidget)
         
-    def getWidget(self):
+    def loadWidget(self):
         from . import find_files
         curdir = os.path.abspath('.')
-        os.path.chdir(os.path.dirname(__file__))
+        os.chdir(os.path.dirname(__file__))
         self.widget = find_files.Find_Files(self.parent)
-        os.path.chdir(curdir)
+        os.chdir(curdir)
         return self.widget
     
     def addFindFilesWidget(self):
         if self.widget == None:
-            self.getWidget()
-        self.parent.addMainWidget(self.widget,'find files',icon=btn.icon())
-        self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
+            self.loadWidget()
+            self.parent.addMainWidget(self.widget,'find files',icon=self.btn.icon(),typ='app')
+            self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
         self.widget.toggle()
     

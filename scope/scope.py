@@ -23,6 +23,7 @@ class Scope(QtGui.QWidget):
 
         # Version
         self.version = __version__
+        self.dev_mode = 1   # Development Mode
 
         # Setup UI
         QtGui.QWidget.__init__(self, parent)
@@ -295,10 +296,13 @@ class Scope(QtGui.QWidget):
         self.prevPlugin=1
         curdir = os.path.abspath('.')
         for plug in self.settings['activePlugins']:
-##            try:
+            if self.dev_mode:
                 self.loadPlugin(plug)
-##            except:
-##                QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+            else:
+                try:
+                    self.loadPlugin(plug)
+                except:
+                    QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
@@ -1057,7 +1061,7 @@ class Scope(QtGui.QWidget):
         if wdg.lang in self.settings['run']:
             if self.settings['run'][wdg.lang]['cmd']=='preview':
                 if 'preview' in self.pluginD:
-                    self.pluginD['preview'].previewRun(wdg)
+                    self.pluginD['preview'].widget.previewRun(wdg)
                     if self.ui.tab_right.isHidden():
                         self.toggleRightPlugin()
                 else:
@@ -1069,7 +1073,7 @@ class Scope(QtGui.QWidget):
                     if wdg.lang in self.settings['run']:
                         # Otherwise run in output
                         runD = self.settings['run'][wdg.lang]
-                        self.pluginD['output'].runProcess(runD['cmd'],wdg)
+                        self.pluginD['output'].widget.runProcess(runD['cmd'],wdg)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -1201,25 +1205,32 @@ class Scope(QtGui.QWidget):
         if not os.path.exists(self.pluginPath+plug):
             QtGui.QMessageBox.warning(self,'Plugin Load Failure','The plugin <b>'+plug+'</b> was not found')
         else:
-            pmod = importlib.import_module('plugins.'+plug)
+            
+            pmod = importlib.import_module('plugins.'+plug+'.scope_plugin')
+            Plugin = pmod.Plugin(self)
+            
             os.chdir(self.pluginPath+plug)
-
-            title = pmod.title
-            loc = pmod.location
+        
+            if 'load' in dir(Plugin):
+                Plugin.load()
+        
+            title = Plugin.title
+            loc = Plugin.location
             icn = QtGui.QIcon()
             if os.path.exists(self.pluginPath+plug+'/icon.png'):
                 icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
             
-            pluginWidget = None
-            if loc == 'app':
-                pmod.loadPlugin(self)
-            elif loc != 'tools':
-                pluginWidget = pmod.addPlugin(self)
+##            pluginWidget = None
+
+
             
             # Check settings for location
             if plug in self.settings['plugins'] and 'location' in self.settings['plugins'][plug]:
                 loc = self.settings['plugins'][plug]['location']
             
+            if loc in ['left','right','bottom'] and Plugin.widget == None:
+                pluginWidget = Plugin.loadWidget()
+                
             tabtext = title
             
             if loc == 'left':
@@ -1235,11 +1246,12 @@ class Scope(QtGui.QWidget):
                 self.ui.sw_bottom.addWidget(pluginWidget)
                 ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
                 self.ui.tabbar_bottom.setTabToolTip(ti,title)
-            elif loc == 'tools':
-                # Add to tools menu
-                act = self.toolsMenu.addAction(icn,title)
-                act.plugin_name = plug
-            self.pluginD[plug]=pluginWidget
+##            elif loc == 'tools':
+##                # Add to tools menu
+##                act = self.toolsMenu.addAction(icn,title)
+##                act.plugin_name = plug
+
+            self.pluginD[plug]=Plugin
             os.chdir(curdir)
 
     def addPlugin(self,plug):
@@ -1247,7 +1259,7 @@ class Scope(QtGui.QWidget):
             self.loadPlugin(plug)
         else:
             plugin = self.pluginD[plug]
-            pluginWidget = plugin.getWidget()
+            pluginWidget = plugin.loadWidget()
             if loc == 'left':
                 if self.settings['window']['pluginLeft']['showTabText']!='1': tabtext=''
                 ti = self.ui.tab_left.addTab(pluginWidget,icn,tabtext)

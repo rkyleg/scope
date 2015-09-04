@@ -1,13 +1,13 @@
-import os
-from PyQt4 import QtGui, QtCore
+from . import py_console
+import sys
 
 class Settings(object):
     '''Modifiable settings and their defaults'''
     # attribute=value
     
 class Plugin(object):
-    title = 'Plugin Title'
-    location = 'app' # left, bottom, right, app
+    title = 'Python Shell ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+    location = 'bottom'
     settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
@@ -18,6 +18,5 @@ class Plugin(object):
         '''Called when loading the plugin'''
         
     def loadWidget(self):
-        '''Load the widget'''
-        self.widget = None
+        self.widget = py_console.Console(self.parent)
         return self.widget

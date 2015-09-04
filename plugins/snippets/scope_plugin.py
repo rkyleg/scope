@@ -1,13 +1,12 @@
-import os
-from PyQt4 import QtGui, QtCore
+from . import snippets
 
 class Settings(object):
     '''Modifiable settings and their defaults'''
     # attribute=value
     
 class Plugin(object):
-    title = 'Plugin Title'
-    location = 'app' # left, bottom, right, app
+    title = 'Snippets'
+    location = 'bottom'
     settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
@@ -19,5 +18,5 @@ class Plugin(object):
         
     def loadWidget(self):
         '''Load the widget'''
-        self.widget = None
+        self.widget = snippets.Snippets(self.parent)
         return self.widget

@@ -1,13 +1,12 @@
-import os
-from PyQt4 import QtGui, QtCore
+from . import preview
 
 class Settings(object):
     '''Modifiable settings and their defaults'''
     # attribute=value
     
 class Plugin(object):
-    title = 'Plugin Title'
-    location = 'app' # left, bottom, right, app
+    title = 'Preview'
+    location = 'right'
     settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
@@ -18,6 +17,9 @@ class Plugin(object):
         '''Called when loading the plugin'''
         
     def loadWidget(self):
-        '''Load the widget'''
-        self.widget = None
+        self.widget = preview.Preview(self.parent)
+    ##    parent.Events.editorAdded.connect(plugin.addPreview)
+        self.parent.Events.editorTabChanged.connect(self.widget.editorTabChanged)
+        self.parent.Events.editorTabClosed.connect(self.widget.editorTabClosed)
+        self.parent.Events.editorSaved.connect(self.widget.updatePreview)
         return self.widget
