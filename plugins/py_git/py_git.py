@@ -11,6 +11,10 @@ from PyQt4.QtGui import QWidget, QFileDialog
 
 class PyGit(QtGui.QWidget):
     def __init__(self, parent=None):
+        """
+        :type parent: Scope
+
+        """
         QtGui.QWidget.__init__(self, parent)
         self.ide = parent
         # self.join = os.path.join
