@@ -195,6 +195,12 @@ QLabel#l_statusbar {
     /*---TabSpace*/
     /*QTabWidget.editorTabs,QTabWidget.editorTabs::pane {*/
 
+    QTabWidget.editorTabs::pane {
+        border-top:1px solid rgb(100,100,100);
+        /*background:rgb(100,100,100);*/
+        outline:0;
+    }
+
     QListWidget.editor_tab {
         outline:0;
         border:0px;
