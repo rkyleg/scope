@@ -1465,7 +1465,7 @@ class Scope(QtGui.QWidget):
             self.evnt.workspaceOpened.emit(wksp)
     
     def addWorkspaceEditor(self,file_id,title,filename,editor=''):
-        if self.currentWorkspace == None:
+        if self.currentWorkspace is None:
             self.workspaceOpen(None,show_tabs=0)
         tab = self.tabspace.tabs.currentWidget().addEditortab(file_id,title,filename,editor)
         if not tab in self.fileD[file_id]['tabs']:
