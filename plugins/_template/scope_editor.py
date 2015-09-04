@@ -3,12 +3,11 @@ from PyQt4 import QtGui, QtCore
 
 class Settings(object):
     '''Modifiable settings and their defaults'''
-    # attribute=value
     
-class Plugin(object):
+class Editor(object):
     title = 'Plugin Title'
     location = 'app' # left, bottom, right, app
-    settings = Settings.__dict__ # Settings must be a dictionary
+    settings = Settings.__dict__
     
     def __init__(self,parent=None):
         self.parent = parent
@@ -16,5 +15,9 @@ class Plugin(object):
     def load(self):
         '''Called when loading the plugin'''
         
-    def getWidget(self):
-        '''Return a Widget'''
+    def getWidget(self, lang, **kargs):
+        '''Return the Editor Widget'''
+
+    def getLang(self):
+        '''Return a list of strings of the available languages'''
+        return []

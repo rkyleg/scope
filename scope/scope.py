@@ -231,14 +231,15 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
         
-        #--- Get Editor Languages
+        #--- Load Editors (and languages)
         self.editorD = {}
-        
+        self.Editors = {}
         for e in self.settings['activeEditors']:
             
             try:
-                mod = importlib.import_module('plugins.'+e)
-                ld = mod.getLang()
+                mod = importlib.import_module('plugins.'+e+'.scope_editor')
+                self.Editors[e] = mod.Editor(self)
+                ld = self.Editors[e].getLang()
             except:
                 QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
@@ -672,8 +673,9 @@ class Scope(QtGui.QWidget):
         }
         
         # Load Editors
-        mod = importlib.import_module("plugins."+editor)
-        wdg = mod.addPlugin(self,**kargs)
+##        mod = importlib.import_module("plugins."+editor+".scope_editor")
+##        Editor = mod.Editor(self)
+        wdg = self.Editors[editor].getWidget(**kargs)
         
         file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang,typ=typ)
 ##        wdg.filename = filename
