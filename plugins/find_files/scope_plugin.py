@@ -32,6 +32,6 @@ class Plugin(object):
         if self.widget == None:
             self.getWidget()
         self.parent.addMainWidget(self.widget,'find files',icon=btn.icon())
-        self.parent.evnt.workspaceChanged.connect(self.widget.changeWorkspace)
+        self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
         self.widget.toggle()
     

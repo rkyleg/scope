@@ -36,7 +36,7 @@ class jsObject(QtCore.QObject):
 class Home(object):
     def __init__(self,parent):
         self.IDE=parent
-##        self.IDE.evnt.resized.connect(self.resize)
+##        self.IDE.Events.resized.connect(self.resize)
     
         # Create home widget
         from plugins.webview import webview

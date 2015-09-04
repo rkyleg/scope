@@ -174,7 +174,7 @@ class Find_Files(QtGui.QWidget):
     def toggle(self):
 ##        if self.IDE.ui.sw_main.addWidget(self) ==-1:
 ##            self.IDE.ui.sw_main.addWidget(plugin)
-##            self.IDE.evnt.workspaceChanged.connect(self.changeWorkspace)
+##            self.IDE.Events.workspaceChanged.connect(self.changeWorkspace)
 
         self.IDE.ui.sw_main.setCurrentWidget(self)
     

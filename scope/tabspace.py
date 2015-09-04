@@ -277,7 +277,7 @@ class TabSpace(object):
         self.tabs.closeEvent = self.closeDialog
         
         # sign up for events
-        self.ide.evnt.workspaceClosed.connect(self.closeWorkspace)
+        self.ide.Events.workspaceClosed.connect(self.closeWorkspace)
     
         
     
@@ -320,7 +320,7 @@ class TabSpace(object):
             if wwdg.currentRow() >-1:
                 wwdg.select(wwdg.currentIndex(),hide_tabs=0)
             
-            self.ide.evnt.workspaceChanged.emit(self.ide.currentWorkspace)
+            self.ide.Events.workspaceChanged.emit(self.ide.currentWorkspace)
             self.ide.setWindowTitle('Scope | '+self.ide.currentWorkspace)
             # show homepage
     ##        else:
@@ -339,7 +339,7 @@ class TabSpace(object):
                 self.tabs.removeTab(i)
                 break
             
-##            self.ide.evnt.workspaceClosed.emit(wksp)
+##            self.ide.Events.workspaceClosed.emit(wksp)
         
         if self.tabs.count()==0:
             self.tabs.hide()

@@ -16,7 +16,7 @@ def loadPlugin(parent):
             plugin = find_files.Find_Files(parent)
             os.chdir(curdir)
             parent.addMainWidget(plugin,'find files',icon=btn.icon(),typ='app')
-            parent.evnt.workspaceChanged.connect(plugin.changeWorkspace)
+            parent.Events.workspaceChanged.connect(plugin.changeWorkspace)
             
         plugin.toggle()
         
@@ -46,16 +46,16 @@ def addPlugin(parent,**kargs):
 
     # Tool Menu Code
 ##    parent.ui.sw_main.addWidget(plugin)
-##    parent.evnt.workspaceChanged.connect(plugin.changeWorkspace)
+##    parent.Events.workspaceChanged.connect(plugin.changeWorkspace)
 ##    lay = parent.ui.fr_leftbar.layout()
 ##    lay.insertWidget(lay.count()-1,QtGui.QPushButton('ff'))
     
     
     
-##    parent.evnt.editorAdded.connect(plugin.addOutline)
-##    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
-##    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
-##    parent.evnt.fileOpened.connect(plugin.updateOutline)
+##    parent.Events.editorAdded.connect(plugin.addOutline)
+##    parent.Events.editorTabChanged.connect(plugin.editorTabChanged)
+##    parent.Events.editorTabClosed.connect(plugin.editorTabClosed)
+##    parent.Events.fileOpened.connect(plugin.updateOutline)
     
 ##    QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_B,parent,plugin.toggle) 
 ##    QtGui.QShortcut(QtCore.Qt.Key_F6,parent,plugin.toggle) 

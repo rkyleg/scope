@@ -57,7 +57,7 @@ class WebView(QtWebKit.QWebView):
     def __init__(self,parent=None,lang=None):
         QtWebKit.QWebView.__init__(self,parent)
         self.parent = parent
-        self.evnt = Events() # Events
+        self.Events = Events() # Events
         
         # Initial Variables
         self.wordwrapmode = 1
@@ -153,7 +153,7 @@ class WebView(QtWebKit.QWebView):
         self.gotoLine(1)
 
     def editorTextChanged(self):
-        self.evnt.editorChanged.emit(self)
+        self.Events.editorChanged.emit(self)
 
     def keyPressEvent(self,event):
         ky = event.key()
@@ -409,7 +409,7 @@ class WebView(QtWebKit.QWebView):
         return line_first,line_last
     
     def visibleLinesChanged(self):
-        self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
+        self.Events.visibleLinesChanged.emit(self,self.getVisibleLines())
     
 ##    def setFocus(self):
 ##        self.page().mainFrame().evaluateJavaScript('editor.focus();')

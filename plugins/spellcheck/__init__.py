@@ -7,10 +7,10 @@ location = ''
 def addPlugin(parent):
     plugin = spellcheck.SpellChecker(parent)
     
-##    parent.evnt.editorAdded.connect(plugin.addOutline)
-##    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
-##    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
-##    parent.evnt.fileOpened.connect(plugin.updateOutline)
+##    parent.Events.editorAdded.connect(plugin.addOutline)
+##    parent.Events.editorTabChanged.connect(plugin.editorTabChanged)
+##    parent.Events.editorTabClosed.connect(plugin.editorTabClosed)
+##    parent.Events.fileOpened.connect(plugin.updateOutline)
     
 ##    QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_B,parent,plugin.toggle) 
 ##    QtGui.QShortcut(QtCore.Qt.Key_F6,parent,plugin.toggle) 

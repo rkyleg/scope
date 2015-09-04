@@ -5,9 +5,9 @@ location = 'bottom'
 
 def addPlugin(parent):
     plugin = output.Output(parent)
-    parent.evnt.editorTabChanged.connect(plugin.editorTabChanged)
-    parent.evnt.editorTabClosed.connect(plugin.editorTabClosed)
-    parent.evnt.close.connect(plugin.killAll)
+    parent.Events.editorTabChanged.connect(plugin.editorTabChanged)
+    parent.Events.editorTabClosed.connect(plugin.editorTabClosed)
+    parent.Events.close.connect(plugin.killAll)
 ##    plugin.title = 'Output'
 ##    plugin.location = 'bottom'
     return plugin

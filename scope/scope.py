@@ -78,7 +78,7 @@ class Scope(QtGui.QWidget):
             workspaceOpened = QtCore.pyqtSignal(str)
             workspaceClosed = QtCore.pyqtSignal(str)
             
-        self.evnt = Events()
+        self.Events = Events()
         
         # Settings
         self.loadSettings()
@@ -355,7 +355,7 @@ class Scope(QtGui.QWidget):
             self.saveSettings()
             
             # Other Events
-            self.evnt.close.emit()
+            self.Events.close.emit()
 
     def dropEvent(self,event):
         handled=False
@@ -374,7 +374,7 @@ class Scope(QtGui.QWidget):
         event.accept()
     
     def resizeEvent(self,event):
-        self.evnt.resized.emit()
+        self.Events.resized.emit()
     
     #---Fullscreen Modes
     def toggleFullEditor(self,fullscreen=0):
@@ -582,7 +582,7 @@ class Scope(QtGui.QWidget):
                             for t in self.fileD[wdg.id]['tabs']:
                                 t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                             
-                            self.evnt.fileOpened.emit(wdg)
+                            self.Events.fileOpened.emit(wdg)
                             
                             # Add to workspace tab
 ##                if not filename in self.workspaces[self.currentWorkspace]['filelist']:
@@ -727,12 +727,12 @@ class Scope(QtGui.QWidget):
                     wdg.toggleAutoComplete()
         
         # Emit Signals
-        self.evnt.editorAdded.emit(wdg)
+        self.Events.editorAdded.emit(wdg)
 
         if 'editorTextChanged' in dir(wdg):
-            wdg.evnt.editorChanged.connect(self.editorTextChanged)
+            wdg.Events.editorChanged.connect(self.editorTextChanged)
         if 'visibleLinesChanged' in dir(wdg):
-            wdg.evnt.visibleLinesChanged.connect(self.visibleLinesChanged)
+            wdg.Events.visibleLinesChanged.connect(self.visibleLinesChanged)
 ##      
         if self.ui.sw_main.count() ==1:
             self.change_tab(0)
@@ -782,7 +782,7 @@ class Scope(QtGui.QWidget):
         if file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
-            self.evnt.editorTabChanged.emit(wdg)
+            self.Events.editorTabChanged.emit(wdg)
 ##            self.ui.l_filename.setText(wdg.tabTitle)
             self.setTitle(wdg)
 ##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
@@ -886,7 +886,7 @@ class Scope(QtGui.QWidget):
                     
             if ok:
                 # Emit close signal
-                self.evnt.editorTabClosed.emit(wdg)
+                self.Events.editorTabClosed.emit(wdg)
                 
                 self.fileOpenD.pop(file_id)
 
@@ -933,7 +933,7 @@ class Scope(QtGui.QWidget):
 ##        self.checkFileChanges()
     
     def visibleLinesChanged(self,wdg,lines):
-        self.evnt.editorVisibleLinesChanged.emit(wdg,lines)
+        self.Events.editorVisibleLinesChanged.emit(wdg,lines)
 
     def checkSave(self,wdg):
         ok = 0
@@ -988,7 +988,7 @@ class Scope(QtGui.QWidget):
 ##                    self.setTitle(wdg)
 
             if filename != None:
-                self.evnt.editorBeforeSave.emit(wdg)
+                self.Events.editorBeforeSave.emit(wdg)
                 try:
                     txt = wdg.getText()
                     if self.saveEnabled:
@@ -1005,7 +1005,7 @@ class Scope(QtGui.QWidget):
 ##                    self.ui.l_filename.setToolTip(wdg.filename)
                     
                     # Save Signal
-                    self.evnt.editorSaved.emit(wdg)
+                    self.Events.editorSaved.emit(wdg)
                     
                 except:
                     QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
@@ -1412,7 +1412,7 @@ class Scope(QtGui.QWidget):
     def workspaceOpen(self,wksp,show_tabs=1):
         # Load workspace
         if wksp in self.workspaces: # and wksp != None:
-            self.evnt.workspaceChanged.emit(wksp)
+            self.Events.workspaceChanged.emit(wksp)
             self.tabspace.show()
             self.tabspace.tabs.setCurrentWidget(self.workspaces[wksp]['widget'])
         else:
@@ -1462,7 +1462,7 @@ class Scope(QtGui.QWidget):
             if show_tabs:
                 self.showTabspace()
 
-            self.evnt.workspaceOpened.emit(wksp)
+            self.Events.workspaceOpened.emit(wksp)
     
     def addWorkspaceEditor(self,file_id,title,filename,editor=''):
         if self.currentWorkspace == None:
@@ -1532,7 +1532,7 @@ class Scope(QtGui.QWidget):
         ok=fl_ok*wk_ok
         
         if ok:
-            self.evnt.workspaceClosed.emit(wksp)
+            self.Events.workspaceClosed.emit(wksp)
             self.workspaces.pop(str(wksp))
             self.workspaceMenu.saveWact.setDisabled(1)
             self.workspaceMenu.closeWact.setDisabled(1)
@@ -1592,7 +1592,7 @@ class Scope(QtGui.QWidget):
                 else:
                     self.settings['prog_lang'][l]['fave']=int(self.settings['prog_lang'][l]['fave'])
         
-        self.evnt.settingsLoaded.emit()
+        self.Events.settingsLoaded.emit()
         
     def openSettings(self):
         self.openFile(self.settings_filename)

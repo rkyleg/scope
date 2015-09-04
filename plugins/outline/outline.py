@@ -74,11 +74,11 @@ class Outline(QtGui.QWidget):
 
         self.alwaysUpdate = int(self.ide.settings['plugins']['outline']['alwaysUpdate'])
         if self.alwaysUpdate==0:
-            self.ide.evnt.editorSaved.connect(self.updateOutline)
+            self.ide.Events.editorSaved.connect(self.updateOutline)
             
         # Update location
         if 1:
-            self.ide.evnt.editorVisibleLinesChanged.connect(self.updateLocation)
+            self.ide.Events.editorVisibleLinesChanged.connect(self.updateLocation)
         
     def analyzeLine(self,wdg,typ):
         return None,None
@@ -97,7 +97,7 @@ class Outline(QtGui.QWidget):
         if self.alwaysUpdate==1:
             # Add Text Changed Signal
             if 'editorTextChanged' in dir(wdg):
-                wdg.evnt.editorChanged.connect(self.updateOutline)
+                wdg.Events.editorChanged.connect(self.updateOutline)
         
         if 'gotoLine' in dir(wdg):
             trwdg.itemDoubleClicked.connect(self.goto)

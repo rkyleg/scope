@@ -58,7 +58,7 @@ class Sci(QtGui.QWidget):
         self.lex = lex
         
         # Events
-        self.evnt = Events()
+        self.Events = Events()
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
 ##        self.ui.te_sci.linesChanged.connect(self.visibleLinesChanged)
         self.ui.te_sci.verticalScrollBar().valueChanged.connect(self.visibleLinesChanged)
@@ -272,7 +272,7 @@ class Sci(QtGui.QWidget):
     
     def editorTextChanged(self):
         if self.okedit:
-            self.evnt.editorChanged.emit(self)
+            self.Events.editorChanged.emit(self)
     
     def getVisibleLines(self):
         line_first = self.ui.te_sci.firstVisibleLine()
@@ -280,10 +280,10 @@ class Sci(QtGui.QWidget):
         return line_first,line_last
     
     def visibleLinesChanged(self):
-        self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
+        self.Events.visibleLinesChanged.emit(self,self.getVisibleLines())
     
 ##    def editingFinished(self):
-##        self.evnt.editingFinished.emit(self)
+##        self.Events.editingFinished.emit(self)
     
     def toggleComment(self):
         lang = self.ide.currentEditor().lang
