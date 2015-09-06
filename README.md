@@ -5,7 +5,7 @@ _**WARNING: Scope is currently in alpha stage and is likely not suitable for dai
 # <img src="style/img/scope.png" height="48px;"> Scope IDE
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
-# Screenshots
+## Screenshots
 <a href="docs/img/scope_home.png" target="_blank" title="Scope Home Screen"><img src="docs/img/scope_home.png" height=200></a>
 <a href="docs/img/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="docs/img/scope_editor.png" height=200></a>
 <a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=200></a>
@@ -33,6 +33,12 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
     - Easiest way to install for Debian/Ubuntu in command Window:
         - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
 3. Run Scope.py
+
+### Windows Executable
+
+1. Download [Windows zip](https://github.com/lucidlylogicole/scope/archive/windows.zip)
+2. Extract zip folder to desired location
+3. Run windows/Scope.exe
 
 ### Development
 The latest development version is available [here](https://github.com/lucidlylogicole/scope/tree/dev)
