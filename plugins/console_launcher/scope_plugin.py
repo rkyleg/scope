@@ -1,4 +1,4 @@
-import os
+import os, subprocess
 from PyQt4 import QtGui
     
 class Settings(object):
@@ -27,10 +27,12 @@ class Plugin(object):
             
             if os.name =='nt':
                 if wksp_pth != '': wksp_pth = '/K "cd /d '+wksp_pth.replace('/','\\')+'"'
+                
                 os.system('start cmd '+wksp_pth)
             else:
                 if wksp_pth != '': wksp_pth = '--working-directory='+wksp_pth
-                os.system("gnome-terminal "+wksp_pth)
+                subprocess.Popen(["gnome-terminal",wksp_pth])
+##                os.system("gnome-terminal "+wksp_pth)
             
         # Add button 
         btn = self.parent.addLeftBarButton(QtGui.QIcon('icon.png'),tooltip=self.title)

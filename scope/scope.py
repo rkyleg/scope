@@ -23,7 +23,7 @@ class Scope(QtGui.QWidget):
 
         # Version
         self.version = __version__
-        self.dev_mode = 1   # Development Mode
+        self.dev_mode = 0   # Development Mode
 
         # Setup UI
         QtGui.QWidget.__init__(self, parent)
