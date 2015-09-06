@@ -553,45 +553,6 @@ QPushButton:hover,QToolButton:hover {
          <property name="spacing">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="b_main">
-           <property name="minimumSize">
-            <size>
-             <width>42</width>
-             <height>24</height>
-            </size>
-           </property>
-           <property name="toolTip">
-            <string>Main Menu</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>main_menu</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="3">
-          <spacer name="horizontalSpacer_3">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>6</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
       </item>
@@ -754,71 +715,7 @@ QPushButton:hover,QToolButton:hover {
          <property name="verticalSpacing">
           <number>7</number>
          </property>
-         <item row="0" column="2">
-          <spacer name="horizontalSpacer_5">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>4</width>
-             <height>2</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
-         <item row="0" column="6">
-          <widget class="QPushButton" name="b_unindent">
-           <property name="toolTip">
-            <string>Unindent</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/indent_remove.png</normaloff>../style/img/indent_remove.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-middle</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="8">
-          <widget class="QPushButton" name="b_color_picker">
-           <property name="toolTip">
-            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Insert rgb color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/color_swatch.png</normaloff>../style/img/color_swatch.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-right</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="b_indent">
-           <property name="toolTip">
-            <string>Indent</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/indent.png</normaloff>../style/img/indent.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-left</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="7">
           <widget class="QPushButton" name="b_comment">
            <property name="toolTip">
             <string>Comment/Uncomment</string>
@@ -835,7 +732,71 @@ QPushButton:hover,QToolButton:hover {
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
+         <item row="0" column="2">
+          <spacer name="horizontalSpacer_5">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>4</width>
+             <height>2</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="7">
+          <widget class="QPushButton" name="b_unindent">
+           <property name="toolTip">
+            <string>Unindent</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/indent_remove.png</normaloff>../style/img/indent_remove.png</iconset>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-middle</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9">
+          <widget class="QPushButton" name="b_color_picker">
+           <property name="toolTip">
+            <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Insert rgb color&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/color_swatch.png</normaloff>../style/img/color_swatch.png</iconset>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-right</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="6">
+          <widget class="QPushButton" name="b_indent">
+           <property name="toolTip">
+            <string>Indent</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/indent.png</normaloff>../style/img/indent.png</iconset>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-left</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="5">
           <widget class="QPushButton" name="b_save">
            <property name="toolTip">
             <string>Save</string>
@@ -848,11 +809,11 @@ QPushButton:hover,QToolButton:hover {
              <normaloff>../style/img/save.png</normaloff>../style/img/save.png</iconset>
            </property>
            <property name="class" stdset="0">
-            <string>toolbar toolbar-individual</string>
+            <string>toolbar toolbar-big toolbar-right</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="9">
+         <item row="0" column="10">
           <widget class="QPushButton" name="b_run">
            <property name="toolTip">
             <string>Run</string>
@@ -866,6 +827,29 @@ QPushButton:hover,QToolButton:hover {
            </property>
            <property name="class" stdset="0">
             <string>toolbar toolbar-individual</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="3">
+          <widget class="QPushButton" name="b_menu">
+           <property name="minimumSize">
+            <size>
+             <width>42</width>
+             <height>24</height>
+            </size>
+           </property>
+           <property name="toolTip">
+            <string>Editor Menu</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-left</string>
            </property>
           </widget>
          </item>

@@ -18,7 +18,7 @@ class Plugin(object):
         def launch_console():
             wksp_pth = ''
             if self.parent.currentWorkspace != None:
-                wksp_pth = parent.workspaces[self.parent.currentWorkspace]['basefolder']
+                wksp_pth = self.parent.workspaces[self.parent.currentWorkspace]['basefolder']
             else:
                 try:
                     wksp_pth = self.parent.settings['plugins']['filebrowser']['defaultPath']

@@ -124,16 +124,17 @@ class WorkspaceMenu(QtGui.QMenu):
             self.saveWact.setDisabled(0)
             self.closeWact.setDisabled(0)
 
-class ScopeMenu(QtGui.QMenu):
+class EditorMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
-        # New
-        self.addMenu(self.parent.newMenu)
         
-        # Open
-        icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
-        act = self.addAction(icn,'&Open',self.parent.openFile)
+##        # New
+##        self.addMenu(self.parent.newMenu)
+##        
+##        # Open
+##        icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
+##        act = self.addAction(icn,'&Open',self.parent.openFile)
         
         # Save
         icn = QtGui.QIcon(self.parent.iconPath+'save.png')
@@ -147,8 +148,8 @@ class ScopeMenu(QtGui.QMenu):
         
         self.addSeparator()
         
-        # Workspace
-        self.addMenu(self.parent.workspaceMenu)
+##        # Workspace
+##        self.addMenu(self.parent.workspaceMenu)
         
         #---Editor
         self.editorMenu=QtGui.QMenu('&Editor',self)
@@ -209,16 +210,16 @@ class ScopeMenu(QtGui.QMenu):
         icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
         self.fullScreenAction = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
         
-        # Home
-        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'&Home',self.parent.showHome)
+##        # Home
+##        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
+##        act = self.addAction(icn,'&Home',self.parent.showHome)
         
-        # Settings
-##        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
-        icn = QtGui.QIcon()
-        act = self.addAction(icn,'Se&ttings',self.parent.openSettings)
-        
-        self.addSeparator()
+##        # Settings
+####        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
+##        icn = QtGui.QIcon()
+##        act = self.addAction(icn,'Se&ttings',self.parent.openSettings)
+##        
+##        self.addSeparator()
         
         # Check for file changes
         icn = QtGui.QIcon()
@@ -233,7 +234,7 @@ class ScopeMenu(QtGui.QMenu):
         # Close
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
-        self.addAction(icn,'Exit',self.parent.close)
+        self.addAction(icn,'Exit Scope',self.parent.close)
 
 ##class ToolsMenu(QtGui.QMenu):
 ##    def __init__(self,parent):

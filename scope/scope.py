@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.0-dev'
+__version__ = '0.3.1-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -211,8 +211,8 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self.ui.sw_main,self.findFocus) # Find
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_G,self,self.gotoFocus) # Goto
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_main.click) # New
-        QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_F,self,self.ui.b_main.click) # New
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_M,self,self.ui.b_menu.click) # New
+        QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_F,self,self.ui.b_menu.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
@@ -262,8 +262,8 @@ class Scope(QtGui.QWidget):
         self.workspaceMenu = WorkspaceMenu(self)
 
         # add Main Button to tabbar
-        self.scopeMenu = ScopeMenu(self)
-        self.ui.b_main.setMenu(self.scopeMenu)
+        self.editorMenu = EditorMenu(self)
+        self.ui.b_menu.setMenu(self.editorMenu)
         
         # Tools Menu
 ##        self.toolsMenu = ToolsMenu(self)
@@ -403,9 +403,9 @@ class Scope(QtGui.QWidget):
             self.pluginBottomChange(self.ui.tabbar_bottom.currentIndex())
         
         if self.editor_fullmode:
-            self.scopeMenu.fullEditorAction.setText('Exit Full Editor Mode')
+            self.editorMenu.fullEditorAction.setText('Exit Full Editor Mode')
         else:
-            self.scopeMenu.fullEditorAction.setText('Full Editor Mode (F10)')
+            self.editorMenu.fullEditorAction.setText('Full Editor Mode (F10)')
             
     def toggleFullscreen(self):
         self.fullscreen_mode = not self.fullscreen_mode
@@ -414,9 +414,9 @@ class Scope(QtGui.QWidget):
             self.editor_fullmode=0
             self.toggleFullEditor(fullscreen=1)
             
-            self.scopeMenu.fullScreenAction.setText('Exit Full Screen Mode (F11)')
+            self.editorMenu.fullScreenAction.setText('Exit Full Screen Mode (F11)')
         else:
-            self.scopeMenu.fullScreenAction.setText('Full Screen (F11)')
+            self.editorMenu.fullScreenAction.setText('Full Screen (F11)')
             self.showNormal()
             if self.editor_fullmode:
                 self.toggleFullEditor(fullscreen=1)
@@ -820,28 +820,29 @@ class Scope(QtGui.QWidget):
             run_enabled = lang in self.settings['run']
             
         self.ui.b_run.setEnabled(run_enabled)
-        self.scopeMenu.runAction.setEnabled(run_enabled)
+        self.editorMenu.runAction.setEnabled(run_enabled)
         
         # Disable buttons based on function availability
         btnD = [
-            ['indent',self.scopeMenu.indentAction],
+            ['indent',self.editorMenu.indentAction],
             ['indent',self.ui.b_indent],
             ['unindent',self.ui.b_unindent],
-            ['unindent',self.scopeMenu.unindentAction],
+            ['unindent',self.editorMenu.unindentAction],
             ['find',self.ui.fr_find],
             ['toggleComment',self.ui.b_comment],
-            ['toggleComment',self.scopeMenu.commentAction],
+            ['toggleComment',self.editorMenu.commentAction],
             ['getText',self.ui.b_save],
-            ['toggleWordWrap',self.scopeMenu.wordwrapAction],
-            ['toggleWhitespace',self.scopeMenu.whitespaceAction],
-            ['getText',self.scopeMenu.statsAction],
+##            ['getText',self.ui.b_menu],
+            ['toggleWordWrap',self.editorMenu.wordwrapAction],
+            ['toggleWhitespace',self.editorMenu.whitespaceAction],
+            ['getText',self.editorMenu.statsAction],
         ]
         for btn in btnD:
             btn[1].setEnabled(btn[0] in dir(wdg))
         
         try:
-            self.scopeMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
-            self.scopeMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+            self.editorMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
+            self.editorMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
         except:
             pass
         
