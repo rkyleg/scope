@@ -34,7 +34,7 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 setup(  name = "Scope",
-        version = "0.2",
+        version = "0.3",
         description = "IDE",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Scope.py", base=base)])
