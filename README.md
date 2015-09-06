@@ -6,9 +6,9 @@ _**WARNING: Scope is currently in alpha stage and is likely not suitable for dai
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 # Screenshots
-<a href="extra/scope_home.png" target="_blank" title="Scope Home Screen"><img src="extra/scope_home.png" height=200></a>
-<a href="extra/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="extra/scope_editor.png" height=200></a>
-<a href="extra/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="extra/scope_tabs.png" height=200></a>
+<a href="docs/img/scope_home.png" target="_blank" title="Scope Home Screen"><img src="docs/img/scope_home.png" height=200></a>
+<a href="docs/img/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="docs/img/scope_editor.png" height=200></a>
+<a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=200></a>
 
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)
@@ -36,6 +36,13 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 
 ### Development
 The latest development version is available [here](https://github.com/lucidlylogicole/scope/tree/dev)
+
+## Documentation
+- **[Overview](docs/overview.md)**
+- **[Opening a File](docs/open_file.md)**
+- **[Keyboard Shortcuts](docs/keyboard_shortcuts.md)**
+- **[Editors](docs/editors.md)**
+- **[Roadmap](docs/roadmap.md)**
 
 ## License
 - **[License](LICENSE.txt)** - GNU General Public License (GPL 3)

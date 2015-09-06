@@ -1,15 +1,15 @@
+<link rel="stylesheet" type="text/css" href="docs.css">
+
 # Scope IDE Documentation
 
 ## About
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 ## Help Contents
-- **[Getting Started](getting_started.md)**
+- **[Overview](overview.md)**
+- **[Opening a File](open_file.md)**
 - **[Keyboard Shortcuts](keyboard_shortcuts.md)**
-- **Editors**
-- **Plugins**
-- **Settings**
-- **Workspaces**
+- **[Editors](editors.md)**
 - **[Roadmap](roadmap.md)**
 
 ## License

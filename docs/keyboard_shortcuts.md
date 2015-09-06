@@ -1,4 +1,4 @@
-<link rel="stylesheet" type="text/css" href="doc.css">
+<link rel="stylesheet" type="text/css" href="docs.css">
 
 # [Scope Documentation](index.md) | Keyboard Shortcuts
 
