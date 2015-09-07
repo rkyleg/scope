@@ -58,6 +58,9 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
         self.treeD = {}
         
+        # Create blank page for default
+        self.ui.sw_outline.insertWidget(0,QtGui.QWidget())
+        
 ##        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
         
 ##        self.ui.fr_find.hide()
@@ -198,6 +201,8 @@ class Outline(QtGui.QWidget):
         if wdg in self.wdgD:
             owdg = self.wdgD[wdg]
             self.ui.sw_outline.setCurrentWidget(owdg)
+        else:
+            self.ui.sw_outline.setCurrentIndex(0)
 ##        self.updateOutline(wdg)
 
 ##        self.ui.le_find.clear()

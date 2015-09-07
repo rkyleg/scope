@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.1-dev'
+__version__ = '0.3.2-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -19,11 +19,11 @@ from menus import *
 import os,shutil,datetime, webbrowser, threading
 
 class Scope(QtGui.QWidget):
-    def __init__(self, parent=None):
+    def __init__(self, parent=None,dev_mode=0):
 
         # Version
         self.version = __version__
-        self.dev_mode = 0   # Development Mode
+        self.dev_mode = dev_mode   # Development Mode
 
         # Setup UI
         QtGui.QWidget.__init__(self, parent)
@@ -1659,7 +1659,7 @@ def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
 
-    scopeApp = Scope()
+    scopeApp = Scope(dev_mode=1)
     os.chdir('../')
     scopeApp.load()
     scopeApp.show()
