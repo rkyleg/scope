@@ -27,18 +27,19 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 ### Running with Python (source)
 1. Install [Python](https://www.python.org/downloads/release/python-279/) (version 2.7 or 2.6 required)
 2. Install [PyQt](http://www.riverbankcomputing.com/software/pyqt/download) (between versions 4.8-4.11 required)
-2. Additional Linux requirements (installed by default with PyQt on Windows)
+3. Additional Linux requirements (installed by default with PyQt on Windows)
     - Python-Qsci (Required on Linux.  PyQt Windows default install includes this)
     - pyqt4-dev-tools (if you want to use pyqt converter on Linux)
     - Easiest way to install for Debian/Ubuntu in command Window:
         - \> sudo apt-get install pyqt4-dev-tools python-qt4 python-qscintilla2 qt4-designer
-3. Run Scope.py
+4. Download and extract [Scope.zip](https://github.com/lucidlylogicole/scope/archive/master.zip) *(or clone with git)*
+5. Run Scope.py
 
 ### Windows Executable
 
 1. Download [Windows zip](https://github.com/lucidlylogicole/scope/archive/windows.zip)
 2. Extract zip folder to desired location
-3. Run windows/Scope.exe
+3. Run *windows/Scope.exe*
 
 ### Development
 The latest development version is available [here](https://github.com/lucidlylogicole/scope/tree/dev)
