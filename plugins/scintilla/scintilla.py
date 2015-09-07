@@ -285,6 +285,9 @@ class Sci(QtGui.QWidget):
 ##    def editingFinished(self):
 ##        self.Events.editingFinished.emit(self)
     
+    def getCursorPosition(self):
+        return self.ui.te_sci.getCursorPosition()
+    
     def toggleComment(self):
         lang = self.ide.currentEditor().lang
         if lang in commentD:

@@ -360,26 +360,6 @@ padding-top:2px;
          <property name="verticalSpacing">
           <number>0</number>
          </property>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="b_toggle_find">
-           <property name="toolTip">
-            <string>Run</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/search.png</normaloff>../style/img/search.png</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-individual</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="0">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -866,8 +846,8 @@ QPushButton:hover,QToolButton:hover {
         </property>
         <property name="sizeHint" stdset="0">
          <size>
-          <width>10</width>
-          <height>20</height>
+          <width>6</width>
+          <height>10</height>
          </size>
         </property>
        </spacer>
@@ -892,22 +872,6 @@ QPushButton:hover,QToolButton:hover {
     <hint type="destinationlabel">
      <x>682</x>
      <y>32</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>b_toggle_find</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>fr_find</receiver>
-   <slot>setVisible(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>728</x>
-     <y>33</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>678</x>
-     <y>23</y>
     </hint>
    </hints>
   </connection>

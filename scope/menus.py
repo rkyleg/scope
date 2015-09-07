@@ -152,7 +152,7 @@ class EditorMenu(QtGui.QMenu):
 ##        self.addMenu(self.parent.workspaceMenu)
         
         #---Editor
-        self.editorMenu=QtGui.QMenu('&Editor',self)
+        self.editorMenu=QtGui.QMenu('&Text',self)
         self.addMenu(self.editorMenu)
         
         # Tab Indent
@@ -173,32 +173,26 @@ class EditorMenu(QtGui.QMenu):
         
         # Wordwrap
         icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
-        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap',self.parent.editorWordWrap)
+        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
         
-        self.editorMenu.addSeparator()
-        
-        # Run
-        icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
-        self.runAction = self.editorMenu.addAction(icn,'Run (F5)',self.parent.editorRun)
-        
-        self.editorMenu.addSeparator()
         
         # Stats
         icn = QtGui.QIcon()
-        self.statsAction = self.editorMenu.addAction(icn,'Statistics',self.parent.editorStats)
+        self.statsAction = self.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
+
         
         #---Window
-        self.viewMenu=QtGui.QMenu('W&indow',self)
+        self.viewMenu=QtGui.QMenu('&Window',self)
         self.addMenu(self.viewMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftPlugin)
+        self.viewMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightPlugin)
+        self.viewMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomPlugin)
+        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
         
         self.viewMenu.addSeparator()
         
@@ -220,6 +214,12 @@ class EditorMenu(QtGui.QMenu):
 ##        act = self.addAction(icn,'Se&ttings',self.parent.openSettings)
 ##        
 ##        self.addSeparator()
+        
+        self.editorMenu.addSeparator()
+        
+##        # Run
+##        icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
+##        self.runAction = self.addAction(icn,'Run (F5)',self.parent.editorRun)
         
         # Check for file changes
         icn = QtGui.QIcon()

@@ -15,7 +15,7 @@ class Plugin(object):
         self.parent = parent
     
     def load(self):
-        self.btn = self.parent.addLeftBarButton(QtGui.QIcon('icon.png'))
+        self.btn = self.parent.addLeftBarButton(QtGui.QIcon('icon.png'),tooltip=self.title)
         self.btn.clicked.connect(self.addFindFilesWidget)
         # store widget with button (with addLeftBarButton.  if widget doesn't exist, it calls the getwidget)
         
@@ -33,4 +33,3 @@ class Plugin(object):
             self.parent.addMainWidget(self.widget,'find files',icon=self.btn.icon(),typ='app')
             self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
         self.widget.toggle()
-    

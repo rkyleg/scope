@@ -31,13 +31,19 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot('QString')
     def getLines(self,ltxt):
         lines = str(ltxt).split(',')
+##        print 'ace lines',lines
         fline = float(lines[0])
         lline = float(lines[1])
         self.lines = [fline,lline]
     
+    @QtCore.pyqtSlot('QStringList')
+    def getPosition(self,pos):
+        # row, column
+        self.currentPosition = [int(str(pos[0])),int(str(pos[1]))]
+    
     html = QtCore.pyqtProperty(str,fget=insertHtml)
     ctxt = QtCore.pyqtProperty(str,fget=clipHtml)
-
+    
 class Events(QtCore.QObject):
     editorChanged = QtCore.pyqtSignal(QtGui.QWidget)
     visibleLinesChanged = QtCore.pyqtSignal(QtGui.QWidget,tuple)
@@ -410,6 +416,10 @@ class WebView(QtWebKit.QWebView):
     
     def visibleLinesChanged(self):
         self.Events.visibleLinesChanged.emit(self,self.getVisibleLines())
+    
+    def getCursorPosition(self):
+        self.page().mainFrame().evaluateJavaScript("pythonjs.getPosition(getCurrentPosition());")
+        return self.editorJS.currentPosition
     
 ##    def setFocus(self):
 ##        self.page().mainFrame().evaluateJavaScript('editor.focus();')

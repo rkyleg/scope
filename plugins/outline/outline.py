@@ -157,25 +157,26 @@ class Outline(QtGui.QWidget):
                     self.updateLocation(wdg,lines)
     
     def updateLocation(self,wdg,lines):
-        trwdg = self.wdgD[wdg].ui.tr_outline
-        hi=0
-##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
-##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
-        brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
-        
-        for t in range(trwdg.topLevelItemCount()-1,-1,-1):
-            itm = trwdg.topLevelItem(t)
-            line = int(str(itm.text(1)))
-            if line>=lines[0] and line<=lines[1]:
-                itm.setBackground(0,brsh)
-                trwdg.scrollToItem(itm,3)
-                hi=1
-            elif line<=lines[0] and not hi:
-                itm.setBackground(0,brsh)
-                trwdg.scrollToItem(itm,3)
-                hi=1
-            else:
-                itm.setBackground(0,QtGui.QBrush())
+        if self.ide.settings['visibleLineTracking']=='1':
+            trwdg = self.wdgD[wdg].ui.tr_outline
+            hi=0
+    ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
+    ##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
+            brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
+            
+            for t in range(trwdg.topLevelItemCount()-1,-1,-1):
+                itm = trwdg.topLevelItem(t)
+                line = int(str(itm.text(1)))
+                if line>=lines[0] and line<=lines[1]:
+                    itm.setBackground(0,brsh)
+                    trwdg.scrollToItem(itm,3)
+                    hi=1
+                elif line<=lines[0] and not hi:
+                    itm.setBackground(0,brsh)
+                    trwdg.scrollToItem(itm,3)
+                    hi=1
+                else:
+                    itm.setBackground(0,QtGui.QBrush())
             
     def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')

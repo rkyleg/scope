@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Sun Sep  6 12:11:26 2015
+# Created: Mon Sep  7 00:39:23 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -182,14 +182,6 @@ class Ui_Form(object):
         self.gridLayout_3.setHorizontalSpacing(2)
         self.gridLayout_3.setVerticalSpacing(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
-        self.b_toggle_find = QtGui.QPushButton(self.fr_topleft)
-        self.b_toggle_find.setText(_fromUtf8(""))
-        icon6 = QtGui.QIcon()
-        icon6.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_toggle_find.setIcon(icon6)
-        self.b_toggle_find.setCheckable(True)
-        self.b_toggle_find.setObjectName(_fromUtf8("b_toggle_find"))
-        self.gridLayout_3.addWidget(self.b_toggle_find, 0, 5, 1, 1)
         spacerItem1 = QtGui.QSpacerItem(2, 2, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_3.addItem(spacerItem1, 0, 0, 1, 1)
         self.fr_find = QtGui.QFrame(self.fr_topleft)
@@ -227,6 +219,8 @@ class Ui_Form(object):
 "    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(87, 87, 87, 150), stop:1 rgba(255, 255, 255, 150));\n"
 "}"))
         self.b_find.setText(_fromUtf8(""))
+        icon6 = QtGui.QIcon()
+        icon6.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/search.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_find.setIcon(icon6)
         self.b_find.setObjectName(_fromUtf8("b_find"))
         self.gridLayout_9.addWidget(self.b_find, 0, 1, 1, 1)
@@ -355,14 +349,13 @@ class Ui_Form(object):
         self.b_menu.setObjectName(_fromUtf8("b_menu"))
         self.gridLayout.addWidget(self.b_menu, 0, 3, 1, 1)
         self.gridLayout_2.addWidget(self.fr_toolbar, 0, 2, 1, 1)
-        spacerItem5 = QtGui.QSpacerItem(10, 20, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
+        spacerItem5 = QtGui.QSpacerItem(6, 10, QtGui.QSizePolicy.Fixed, QtGui.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem5, 0, 8, 1, 1)
         self.gridLayout_8.addWidget(self.fr_topbar, 0, 0, 1, 2)
 
         self.retranslateUi(Form)
         self.sw_bottom.setCurrentIndex(0)
         QtCore.QObject.connect(self.le_find, QtCore.SIGNAL(_fromUtf8("returnPressed()")), self.b_find.click)
-        QtCore.QObject.connect(self.b_toggle_find, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.fr_find.setVisible)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -372,8 +365,6 @@ class Ui_Form(object):
         self.b_workspaces.setToolTip(_translate("Form", "Workspaces", None))
         self.b_home.setToolTip(_translate("Form", "Home", None))
         self.b_settings.setToolTip(_translate("Form", "Settings", None))
-        self.b_toggle_find.setToolTip(_translate("Form", "Run", None))
-        self.b_toggle_find.setProperty("class", _translate("Form", "toolbar toolbar-individual", None))
         self.fr_find_2.setProperty("class", _translate("Form", "toolbarLineEdit", None))
         self.le_find.setPlaceholderText(_translate("Form", "find", None))
         self.le_find.setProperty("class", _translate("Form", "toolbar", None))

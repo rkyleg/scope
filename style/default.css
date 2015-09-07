@@ -189,7 +189,7 @@ QScrollBar::left-arrow:horizontal {
 
 QLabel#l_statusbar {
     /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(30, 30, 30, 255), stop:0.9 rgba(50, 50, 50, 255), stop:1 rgba(70, 70, 70, 255));*/
-    color:rgb(150,150,150);
+    color:rgb(138,214,255);
 }
 
     /*---TabSpace*/

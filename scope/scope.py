@@ -38,7 +38,6 @@ class Scope(QtGui.QWidget):
         self.settingPath = os.path.expanduser('~').replace('\\','/')+'/.scope'
         self.pluginPath = rpath+'/plugins/'
         self.editorPath = rpath+'/plugins/'
-##        self.scopePath = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')
         self.scopePath = rpath
         self.currentPath = os.path.expanduser('~')
         if os.name =='nt':
@@ -97,7 +96,6 @@ class Scope(QtGui.QWidget):
 
 ##        import thread
 ##        thread = thread.start_new_thread(self.checkFileChanges, (self,))
-        
         
         # Style
         style_path = self.settings['style']
@@ -176,10 +174,6 @@ class Scope(QtGui.QWidget):
         self.ui.tab_left.setTabPosition(tabLocD[self.settings['window']['pluginLeft']['tabPosition']])
         self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
 
-        #--- Hide toolbar buttons for now
-##        self.ui.b_new.hide()
-##        self.ui.fr_leftbar.hide()
-        
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
@@ -216,6 +210,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_N,self,self.ui.b_new.click) # New
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_S,self,self.editorSave) # Save
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
+        QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_S,self,self.editorStats) # Editor Stats
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
 
@@ -236,7 +231,6 @@ class Scope(QtGui.QWidget):
         self.editorD = {}
         self.Editors = {}
         for e in self.settings['activeEditors']:
-            
             try:
                 mod = importlib.import_module('plugins.'+e+'.scope_editor')
                 self.Editors[e] = mod.Editor(self)
@@ -255,9 +249,7 @@ class Scope(QtGui.QWidget):
         #--- Add Menus
         # New Button Menu
         self.newMenu = NewMenu(self)
-##        self.ui.b_new.setMenu(self.newMenu)
-        
-        
+
         # Workspace Button Menu
         self.workspaceMenu = WorkspaceMenu(self)
 
@@ -265,10 +257,6 @@ class Scope(QtGui.QWidget):
         self.editorMenu = EditorMenu(self)
         self.ui.b_menu.setMenu(self.editorMenu)
         
-        # Tools Menu
-##        self.toolsMenu = ToolsMenu(self)
-##        self.ui.b_tools.setMenu(self.toolsMenu)
-
         #--- Plugins
         # Plugin tab bar
         self.ui.tabbar_bottom = QtGui.QTabBar()
@@ -280,16 +268,6 @@ class Scope(QtGui.QWidget):
         self.ui.tabbar_bottom.addTab(QtGui.QIcon(self.iconPath+'tri_down.png'),'')
         self.ui.tabbar_bottom.setTabToolTip(0,'Hide bottom plugins')
         
-        # Add button
-##        plugin_add_btn = QtGui.QPushButton('Add')
-##        self.ui.fr_bottom.layout().addItem(QtGui.QSpacerItem(1,1,QtGui.QSizePolicy.Expanding))
-##        self.ui.fr_bottom.layout().addWidget(plugin_add_btn)
-##        plugin_add_btn.setMenu(self.addPluginMenu)
-        
-##        self.ui.b_toggle_find.toggle()
-##        self.ui.fr_find.hide()
-        self.ui.b_toggle_find.hide()
-        
         # Add Plugins
         self.HomeWidget = None
         self.pluginD = {}
@@ -298,18 +276,15 @@ class Scope(QtGui.QWidget):
         for plug in self.settings['activePlugins']:
             if self.dev_mode:
                 self.loadPlugin(plug)
+                l_time = time.time()
             else:
                 try:
                     self.loadPlugin(plug)
                 except:
                     QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+        self.ui.l_statusbar.setText('')
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
-        
-        # Add Menu Plugins
-##        self.addPluginMenu = QtGui.QMenu()
-##        for plug in self.settings['otherPlugins']:
-##            self.addPluginMenu.addAction()
         
         #--- Other Setup
         # Default zen mode
@@ -389,8 +364,6 @@ class Scope(QtGui.QWidget):
 
         self.ui.fr_left.setVisible(not zen)
 
-##        self.ui.fr_leftbar.setVisible(not zen)
-        
         if fullscreen == 1 or self.fullscreen_mode:
             self.ui.sw_bottom.setVisible(not zen)
             self.ui.fr_bottom.setVisible(not zen)
@@ -420,7 +393,6 @@ class Scope(QtGui.QWidget):
             self.showNormal()
             if self.editor_fullmode:
                 self.toggleFullEditor(fullscreen=1)
-            
 
     #---File
     def getFileId(self,filename):
@@ -458,11 +430,9 @@ class Scope(QtGui.QWidget):
         title = os.path.basename(filename)
         if int(self.settings['view_folder']):
             title = os.path.split(os.path.dirname(filename))[1]+'/'+title
-##            title = '<font style="color:rgb(180,180,180);">'+os.path.split(os.path.dirname(filename))[1]+'/</font>'+title
         elif filename.endswith('.py') and title=='__init__.py':
             title = os.path.split(os.path.dirname(filename))[1]+'/init'
         return title
-    
     
     def setTitle(self,widget):
         w = self.ui.fr_tab.width()
@@ -471,17 +441,12 @@ class Scope(QtGui.QWidget):
         # Show Full Path
         if self.settings['showPath'] =='1':
             if widget.type == 'file':
-    ##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
-                w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
-    ##            print w,self.ui.fr_tab.width(),self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
-                title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,w)
-    ##            print os.path.split(title)[0]
-    ##            self.ui.l_filename.setText(title)
 
+                w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
+                title = self.ui.l_filename.fontMetrics().elidedText(os.path.split(widget.filename)[0]+'/',0,w)
                 self.ui.l_title_prefix.setText(title)
             else:
                 self.ui.l_title_prefix.setText('')
-        
     
         # Set Tooltip
         if widget.filename != None:
@@ -552,11 +517,7 @@ class Scope(QtGui.QWidget):
                         self.webview_preview(html,filename)
                     else:
                         title = os.path.basename(filename)
-##                        if int(self.settings['view_folder']):
-##                            title = os.path.split(os.path.dirname(filename))[1]+'/'+title
-##                        elif lang == 'python' and title=='__init__.py':
-##                            title = os.path.split(os.path.dirname(filename))[1]+'/init'
-                        
+
                         try:
                             f = codecs.open(filename,'r','utf-8')
                             txt = f.read()
@@ -583,19 +544,10 @@ class Scope(QtGui.QWidget):
                             # Update tab text (needed for now after first creation)
                             wdg.titleSuffix=''
                             self.setTitle(wdg)
-##                            self.ui.l_filename.setText(wdg.title)
                             for t in self.fileD[wdg.id]['tabs']:
                                 t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                             
                             self.Events.fileOpened.emit(wdg)
-                            
-                            # Add to workspace tab
-##                if not filename in self.workspaces[self.currentWorkspace]['filelist']:
-##                    print 'add to workspace'
-##                    self.tabspace.tabs.currentWidget().addEditortab(wdg.id,wdg.title,wdg.filename)
-                            
-##                        if self.ui.tab.count() ==1:
-##                            self.changeTab(0)
 
         return txt != None
 
@@ -645,8 +597,6 @@ class Scope(QtGui.QWidget):
         return file_id
     
     def addEditorWidget(self,lang=None,title='New',filename=None,editor=None,code=''):
-##        file_id = self.getFileId(filename)
-##        sw_ind = self.ui.sw_main.count()
         wdg = None
         typ = 'file'
         
@@ -677,29 +627,12 @@ class Scope(QtGui.QWidget):
         }
         
         # Load Editors
-##        mod = importlib.import_module("plugins."+editor+".scope_editor")
-##        Editor = mod.Editor(self)
         wdg = self.Editors[editor].getWidget(**kargs)
         
         file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang,typ=typ)
-##        wdg.filename = filename
-##        wdg.lastText=''
-##        wdg.title = title
-##        wdg.tabTitle = title
-##        wdg.id = file_id
-##        wdg.lang = lang
-##        wdg.viewOnly = 0
         wdg.editor = editor
         wdg.pluginRightVisible=0
-##        if lang=='Start':wdg.editor='Start'
-##        wdg.modTime = None
-##        self.fileOpenD[file_id]=wdg
-        
-        # Insert widget to page
-##        self.ui.sw_main.insertWidget(sw_ind,wdg)
-##        self.changeTab(file_id)
-##        self.ui.sw_main.setCurrentIndex(sw_ind)
-        
+
         # Add Icon
         ipth = self.iconPath+'/files/_blank.png'
         icn = QtGui.QPixmap(ipth)
@@ -737,9 +670,9 @@ class Scope(QtGui.QWidget):
 
         if 'editorTextChanged' in dir(wdg):
             wdg.Events.editorChanged.connect(self.editorTextChanged)
-        if 'visibleLinesChanged' in dir(wdg):
+        if 'visibleLinesChanged' in dir(wdg) and self.settings['visibleLineTracking']=='1':
             wdg.Events.visibleLinesChanged.connect(self.visibleLinesChanged)
-##      
+
         if self.ui.sw_main.count() ==1:
             self.change_tab(0)
 
@@ -758,18 +691,11 @@ class Scope(QtGui.QWidget):
                 ## MOVE TO changeTab
                 self.ui.sw_main.setCurrentIndex(sw_ind)
                 self.ui.b_closetab.hide()
-##                try:
-##                    self.ui.l_filename.setText(wdg.title)
-##                except:
-##                    self.ui.l_filename.setText('')
                 self.setTitle(wdg)
                 try:
                     self.ui.b_tabicon.setIcon(wdg.icon)
                 except:
                     self.ui.b_tabicon.setIcon(QtGui.QIcon())
-            
-##            if wdg.viewOnly:
-##                self.ui.b_closetab.hide()
                 
         else:
             self.ui.b_closetab.hide()
@@ -778,21 +704,12 @@ class Scope(QtGui.QWidget):
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
-    
-##        if tab_ind == -1 and self.ui.tab.count()>0: tab_ind == 0
-##        if sys.version_info.major==3:
-##            file_id = self.ui.tab.tabData(tab_ind)  # Python3 compatible code
-##        else:
-##        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
-##        print 'change tab',file_id,file_id in self.fileOpenD
+
         if file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
             self.Events.editorTabChanged.emit(wdg)
-##            self.ui.l_filename.setText(wdg.tabTitle)
             self.setTitle(wdg)
-##            scope.ui.l_filename.fontMetrics().width(wdg.tabTitle)
-##            scope.ui.l_filename.fontMetrics().elidedText(wdg.tabTitle,0,300)
             if wdg.filename != None:
                 self.ui.fr_tab.setToolTip(wdg.filename)
             elif wdg.type == 'file_new':
@@ -820,8 +737,7 @@ class Scope(QtGui.QWidget):
             run_enabled = lang in self.settings['run']
             
         self.ui.b_run.setEnabled(run_enabled)
-        self.editorMenu.runAction.setEnabled(run_enabled)
-        
+
         # Disable buttons based on function availability
         btnD = [
             ['indent',self.editorMenu.indentAction],
@@ -832,7 +748,6 @@ class Scope(QtGui.QWidget):
             ['toggleComment',self.ui.b_comment],
             ['toggleComment',self.editorMenu.commentAction],
             ['getText',self.ui.b_save],
-##            ['getText',self.ui.b_menu],
             ['toggleWordWrap',self.editorMenu.wordwrapAction],
             ['toggleWhitespace',self.editorMenu.whitespaceAction],
             ['getText',self.editorMenu.statsAction],
@@ -874,14 +789,8 @@ class Scope(QtGui.QWidget):
             
             if len(self.recentTabs) > 1:
                 self.changeTab(prevtab)
-##            else:
-##                self.changeTab(None)
     
     def closeTab(self,file_id,remove_from_workspace=1):
-##        if sys.version_info.major==3:
-##            file_id = self.ui.tab.tabData(tab_ind)
-##        else:
-##        file_id = self.ui.tab.tabData(tab_ind).toInt()[0]
         ok = 1
         if file_id >-1 and file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
@@ -918,12 +827,9 @@ class Scope(QtGui.QWidget):
         wdg = self.currentEditor()
         try:
             if wdg.lastText != wdg.getText():
-##                wdg.tabTitle=wdg.title+'*'
                 wdg.titleSuffix = '*'
             else:
-##                wdg.tabTitle=wdg.title
                 wdg.titleSuffix = ''
-##            self.ui.l_filename.setText(wdg.tabTitle)
             self.setTitle(wdg)
         except:
             self.ui.l_statusbar.setText('Error: text changed signal')
@@ -949,7 +855,6 @@ class Scope(QtGui.QWidget):
         else:
             if 'getText' in dir(wdg):
                 try:
-##                    if wdg.lastText != unicode(wdg.getText(),'utf-8'):
                     if wdg.lastText != wdg.getText():
                         resp = QtGui.QMessageBox.warning(self,'Save File',"Do you want to save the file <b>"+wdg.title+"</b>?",QtGui.QMessageBox.Yes,QtGui.QMessageBox.No,QtGui.QMessageBox.Cancel)
                         if resp == QtGui.QMessageBox.Yes:
@@ -988,11 +893,9 @@ class Scope(QtGui.QWidget):
                 else:
                     wdg.filename = os.path.abspath(str(filename))
                     wdg.title = os.path.basename(wdg.filename)
-##                    self.ui.l_filename.setText(wdg.title)
                     wdg.tabTitle = self.getTitle(wdg.filename)
                     self.ui.l_filename.setToolTip(wdg.filename)
                     wdg.type = 'file'
-##                    self.setTitle(wdg)
 
             if filename != None:
                 self.Events.editorBeforeSave.emit(wdg)
@@ -1007,9 +910,6 @@ class Scope(QtGui.QWidget):
                     self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
                     wdg.titleSuffix = ''
                     self.setTitle(wdg)
-##                    self.ui.l_filename.setText(wdg.title)
-##                    wdg.tabTitle = wdg.title
-##                    self.ui.l_filename.setToolTip(wdg.filename)
                     
                     # Save Signal
                     self.Events.editorSaved.emit(wdg)
@@ -1017,7 +917,6 @@ class Scope(QtGui.QWidget):
                 except:
                     QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                     self.ui.l_statusbar.setText('Error Saving: '+filename)
-                
 
                 # If Settings File, reload
                 if filename == self.settings_filename:
@@ -1136,11 +1035,16 @@ class Scope(QtGui.QWidget):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         if 'getText' in dir(wdg):
             txt = wdg.getText()
-            lines = len(txt.split('\n'))
+            lines = len(txt.splitlines())
             words = len(txt.split())
-            self.ui.l_statusbar.setText('Lines: %d    Words: %d' %(lines,words))
+            if 'getCursorPosition' in dir(wdg):
+                row,col = wdg.getCursorPosition()
+                self.ui.l_statusbar.setText('Row: %d    Column: %d    Lines: %d    Words: %d    ' %(row+1,col,lines,words))
+            else:
+                self.ui.l_statusbar.setText('Lines: %d    Words: %d    ' %(lines,words))
     
     def colorPicker(self):
+        dclr = [255,255,255,255]
         dclr = [255,255,255,255]
         # Check for selected text
         if 'getSelectedText' in dir(self.currentEditor()):
@@ -1189,7 +1093,6 @@ class Scope(QtGui.QWidget):
         btn = QtGui.QPushButton()
         btn.setIcon(icon)
         btn.setIconSize(QtCore.QSize(32,32))
-    ##    btn.setProperty("class",  "toolbar toolbar-individual")
         btn.setToolTip(tooltip)
         layout = self.ui.fr_leftbar.layout()
         layout.insertWidget(layout.count()-1,btn)
@@ -1220,11 +1123,7 @@ class Scope(QtGui.QWidget):
             icn = QtGui.QIcon()
             if os.path.exists(self.pluginPath+plug+'/icon.png'):
                 icn = QtGui.QIcon(self.pluginPath+plug+'/icon.png')
-            
-##            pluginWidget = None
 
-
-            
             # Check settings for location
             if plug in self.settings['plugins'] and 'location' in self.settings['plugins'][plug]:
                 loc = self.settings['plugins'][plug]['location']
@@ -1247,10 +1146,6 @@ class Scope(QtGui.QWidget):
                 self.ui.sw_bottom.addWidget(pluginWidget)
                 ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
                 self.ui.tabbar_bottom.setTabToolTip(ti,title)
-##            elif loc == 'tools':
-##                # Add to tools menu
-##                act = self.toolsMenu.addAction(icn,title)
-##                act.plugin_name = plug
 
             self.pluginD[plug]=Plugin
             os.chdir(curdir)
@@ -1370,16 +1265,12 @@ class Scope(QtGui.QWidget):
     def findFocus(self):
         if self.ui.fr_topbar.isHidden():
             self.ui.fr_topbar.setVisible(1)
-        if self.ui.fr_find.isHidden():
-            self.ui.b_toggle_find.toggle()
         self.ui.le_find.setFocus()
         self.ui.le_find.selectAll()
         
     def gotoFocus(self):
         if self.ui.fr_topbar.isHidden():
             self.ui.fr_topbar.setVisible(1)
-        if self.ui.fr_find.isHidden():
-            self.ui.b_toggle_find.toggle()
         self.ui.le_goto.setFocus()
         self.ui.le_goto.selectAll()
         
@@ -1390,7 +1281,6 @@ class Scope(QtGui.QWidget):
     
     #---Workspace
     def workspaceSave(self,wksp=None):
-        
         if wksp == None:
             wksp = self.currentWorkspace
         # Save the current Workspace
@@ -1452,7 +1342,6 @@ class Scope(QtGui.QWidget):
             # Add workspace to tabspace
             wD['widget'] = self.tabspace.addWorkspace(wksp)
             wD['type'] = wtype
-            
             
             # Load Files
             last_file = None
@@ -1578,7 +1467,6 @@ class Scope(QtGui.QWidget):
 
         # Setup Webview stylesheet
         settings = QtWebKit.QWebSettings.globalSettings()
-##        settings.setUserStyleSheetUrl(QtCore.QUrl(self.pathPrefix+self.scopePath+'/style/webview.css'))
         settings.setUserStyleSheetUrl(QtCore.QUrl('file://'+self.scopePath+'/style/webview.css'))
 
         # Configure Settings
