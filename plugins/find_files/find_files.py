@@ -17,6 +17,10 @@ class Find_Files(QtGui.QWidget):
             pth = os.path.expanduser('~')
         self.ui.le_path.setText(pth)
         
+        # Set default extensions
+        if 'default_ext' in self.IDE.settings['plugins']['find_files']:
+            self.ui.le_ext.setText(self.IDE.settings['plugins']['find_files']['default_ext'])
+        
         if parent != None:
             # IDE specific code
             if self.IDE.currentWorkspace != None and self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'] != None:

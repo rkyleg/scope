@@ -30,6 +30,6 @@ class Plugin(object):
     def addFindFilesWidget(self):
         if self.widget == None:
             self.loadWidget()
-            self.parent.addMainWidget(self.widget,'find files',icon=self.btn.icon(),typ='app')
+            self.parent.addMainWidget(self.widget,self.title,icon=self.btn.icon(),typ='app')
             self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
         self.widget.toggle()
