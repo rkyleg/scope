@@ -183,7 +183,7 @@ class OutputPage(QtGui.QWidget):
         txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(self.process.readAllStandardError()).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;'))+"</font>"
         txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
 ##        txt = '<a style="color:rgb(121,213,255);"'+re_file.sub(r" href='\g<2>'>\g<2></a>",txt)
-        print txt
+##        print txt
         self.appendText(txt)
 
     def processError(self,err):
