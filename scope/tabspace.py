@@ -186,6 +186,7 @@ class editortab(QtGui.QWidget):
         li = self.parent().parent()
 ##        print 'close',self.id
 ##        print li, li.indexFromItem(self.item)
+##        print 'close',ignoreCheck
         if ignoreCheck:
             ok =1
         else:

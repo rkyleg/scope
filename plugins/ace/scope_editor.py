@@ -9,6 +9,7 @@ def get_themes():
             themes.append(f[6:-3])
     return themes
 
+
 class Settings(object):
     '''Modifiable settings and their defaults'''
     wordwrap = {'type':'bool'}
@@ -33,5 +34,11 @@ class Editor(object):
         return editor
         
     def getLang(self):
-        '''Return a list of strings of the available languages'''
-        return []
+        '''Get Languages'''
+        fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
+        lexers = []
+        for f in sorted(os.listdir(fld)):
+            if f.startswith('mode'):
+                lexers.append(f[5:-3])
+        
+        return lexers

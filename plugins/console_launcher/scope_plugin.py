@@ -16,7 +16,7 @@ class Plugin(object):
     
     def load(self):
         def launch_console():
-            wksp_pth = ''
+            wksp_pth = None
             if self.parent.currentWorkspace != None:
                 wksp_pth = self.parent.workspaces[self.parent.currentWorkspace]['basefolder']
             else:
@@ -24,6 +24,11 @@ class Plugin(object):
                     wksp_pth = self.parent.settings['plugins']['filebrowser']['defaultPath']
                 except:
                     pass
+            
+            if wksp_pth == None: wksp_pth=''
+            if wksp_pth == '':
+                if self.parent.currentEditor().filename != None:
+                    wksp_pth = os.path.dirname(self.parent.currentEditor().filename)
             
             if os.name =='nt':
                 if wksp_pth != '': wksp_pth = '/K "cd /d '+wksp_pth.replace('/','\\')+'"'
