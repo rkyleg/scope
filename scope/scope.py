@@ -6,7 +6,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.3-dev'
+__version__ = '0.3.4-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -811,7 +811,9 @@ class Scope(QtGui.QWidget):
                 
                 if file_id in self.recentTabs:
                     self.recentTabs.remove(file_id)
-                    
+                
+                self.fileD.pop(file_id)
+                
                 del wdg
         
         # Remove from workspace tabs
