@@ -42,7 +42,9 @@ class WorkspaceWidget(QtGui.QListWidget):
     def select(self,m_ind,hide_tabs=1):
         itm = self.itemFromIndex(m_ind)
         wdg = self.itemWidget(itm)
-        ok = self.ide.openFile(file_id=wdg.id)
+        file_id=wdg.id
+
+        ok = self.ide.openFile(file_id=file_id)
         if not ok:
             resp = QtGui.QMessageBox.warning(self,'File not Found','This file no longer exists or there was an error opening it<br><br>Do you want to remove the tab?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:

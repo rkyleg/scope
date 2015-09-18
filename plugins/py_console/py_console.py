@@ -1,7 +1,6 @@
 #!/usr/bin/python
 #
 # PyConsole is a Python Shell console for Scope IDE
-# by Cole Hagen
 #
 # PyConsole is a modified version of pycute4 by Rob Reilink.
 # pycute4 source: http://pyqtlive.googlecode.com/hg/pycute4.py

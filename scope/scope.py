@@ -1,12 +1,13 @@
 # --------------------------------------------------------------------------------
 # Scope IDE
-# Copyright 2013-2015 Cole Hagen
+#
+# developed by lucidlylogicole
 #
 # Scope is licensed under the GNU General Public License (GPL 3)
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.5-dev'
+__version__ = '0.3.6-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -820,8 +821,8 @@ class Scope(QtGui.QWidget):
                 t.close(ignoreCheck=1)
                 self.fileD[file_id]['tabs'].remove(t)
         
-        if ok:
-            self.fileD.pop(file_id)
+##        if ok:
+##            self.fileD.pop(file_id)
 
         return ok
 
@@ -1332,6 +1333,7 @@ class Scope(QtGui.QWidget):
                 wtype='blank'
                 wksp = 'workspace '+str(self.workspaceCount)
                 self.workspaces[wksp]={'files':[],'basefolder':None,'lastOpenFile':None}
+##                self.workspaces[wksp]={'files':[],'basefolder':self.settings['plugins']['filebrowser']['defaultPath'],'lastOpenFile':None}
             else:
                 # Open existing workspace settings
                 f = open(self.settingPath+'/workspaces/'+wksp,'r')
