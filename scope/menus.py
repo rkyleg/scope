@@ -152,34 +152,49 @@ class EditorMenu(QtGui.QMenu):
 ##        self.addMenu(self.parent.workspaceMenu)
         
         #---Editor
-        self.editorMenu=QtGui.QMenu('&Text',self)
-        self.addMenu(self.editorMenu)
-        
-        # Tab Indent
-        icn = QtGui.QIcon(self.parent.iconPath+'indent.png')
-        self.indentAction = self.editorMenu.addAction(icn,'Indent',self.parent.editorIndent)
-        icn = QtGui.QIcon(self.parent.iconPath+'indent_remove.png')
-        self.unindentAction = self.editorMenu.addAction(icn,'Unindent',self.parent.editorUnindent)
-        
-        self.editorMenu.addSeparator()
-        
-        # Comment
-        icn = QtGui.QIcon(self.parent.iconPath+'comment.png')
-        self.commentAction = self.editorMenu.addAction(icn,'Comment/Uncomment',self.parent.editorToggleComment)
-        
-        # Whitespace
-        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
-        self.whitespaceAction = self.editorMenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
-        
-        # Wordwrap
-        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
-        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
+##        self.editorMenu=QtGui.QMenu('&Text',self)
+##        self.addMenu(self.editorMenu)
+##        
+##        # Tab Indent
+##        icn = QtGui.QIcon(self.parent.iconPath+'indent.png')
+##        self.indentAction = self.editorMenu.addAction(icn,'Indent',self.parent.editorIndent)
+##        icn = QtGui.QIcon(self.parent.iconPath+'indent_remove.png')
+##        self.unindentAction = self.editorMenu.addAction(icn,'Unindent',self.parent.editorUnindent)
+##        
+##        self.editorMenu.addSeparator()
+##        
+##        # Comment
+##        icn = QtGui.QIcon(self.parent.iconPath+'comment.png')
+##        self.commentAction = self.editorMenu.addAction(icn,'Comment/Uncomment',self.parent.editorToggleComment)
+##        
+##        # Whitespace
+##        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
+##        self.whitespaceAction = self.editorMenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
+##        
+##        # Wordwrap
+##        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
+##        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
         
         
         # Stats
         icn = QtGui.QIcon()
         self.statsAction = self.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
 
+        # Check for file changes
+        icn = QtGui.QIcon()
+        act = self.addAction(icn,'&Check file changes',self.parent.checkFileChanges)
+        
+        self.addSeparator()
+        
+        # Whitespace
+        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
+        self.whitespaceAction = self.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
+        
+        # Wordwrap
+        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
+        self.wordwrapAction = self.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
+        
+        self.addSeparator()
         
         #---Window
         self.viewMenu=QtGui.QMenu('&Window',self)
@@ -215,15 +230,12 @@ class EditorMenu(QtGui.QMenu):
 ##        
 ##        self.addSeparator()
         
-        self.editorMenu.addSeparator()
+##        self.editorMenu.addSeparator()
         
 ##        # Run
 ##        icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
 ##        self.runAction = self.addAction(icn,'Run (F5)',self.parent.editorRun)
         
-        # Check for file changes
-        icn = QtGui.QIcon()
-        act = self.addAction(icn,'&Check file changes',self.parent.checkFileChanges)
 
         # -----
         # Print

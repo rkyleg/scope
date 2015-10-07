@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.6-dev'
+__version__ = '0.3.7-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -309,6 +309,13 @@ class Scope(QtGui.QWidget):
         # Add Start/Home
         QtGui.QApplication.processEvents()
         self.showHome()
+        
+        # Setup File Checking
+        if self.settings['checkFileChanges']:
+            self.fileCheckTimer = QtCore.QTimer()
+            self.fileCheckTimer.setInterval(1000*self.settings['checkFileChanges'])
+            self.fileCheckTimer.timeout.connect(self.checkFileChanges2)
+            self.fileCheckTimer.start()
 
     #---Events
     def closeEvent(self,event):
@@ -741,13 +748,13 @@ class Scope(QtGui.QWidget):
 
         # Disable buttons based on function availability
         btnD = [
-            ['indent',self.editorMenu.indentAction],
+##            ['indent',self.editorMenu.indentAction],
             ['indent',self.ui.b_indent],
             ['unindent',self.ui.b_unindent],
-            ['unindent',self.editorMenu.unindentAction],
+##            ['unindent',self.editorMenu.unindentAction],
             ['find',self.ui.fr_find],
             ['toggleComment',self.ui.b_comment],
-            ['toggleComment',self.editorMenu.commentAction],
+##            ['toggleComment',self.editorMenu.commentAction],
             ['getText',self.ui.b_save],
             ['toggleWordWrap',self.editorMenu.wordwrapAction],
             ['toggleWhitespace',self.editorMenu.whitespaceAction],
@@ -1500,6 +1507,8 @@ class Scope(QtGui.QWidget):
                 else:
                     self.settings['prog_lang'][l]['fave']=int(self.settings['prog_lang'][l]['fave'])
         
+        self.settings['checkFileChanges'] = int(self.settings['checkFileChanges'])
+        
         self.Events.settingsLoaded.emit()
         
     def openSettings(self):
@@ -1515,9 +1524,15 @@ class Scope(QtGui.QWidget):
             self.workspaceSave()
 
     #---FileModify Checker
-    def checkFileChanges(self):
+    def checkFileChanges2(self):
+        self.checkFileChanges(nothing_message=0)
+        #
+    def checkFileChanges(self,nothing_message=1):
 ##        while 1:
 ##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
+##            self.ui.l_statusbar.setText('Checking for File Changes...')
+##            print 'checking messages',time.time()
+##            QtGui.QApplication.processEvents()
             chngs = 0
             close_tabs = []
             for file_id in self.fileOpenD:
@@ -1538,21 +1553,24 @@ class Scope(QtGui.QWidget):
                             txt = f.read()
                             f.close()
                             wdg.setText(txt)
-                            wdg.modTime = os.path.getmtime(wdg.filename)
+                        wdg.modTime = os.path.getmtime(wdg.filename)
             
             if close_tabs != []:
                 close_tabs.reverse()
                 for i in close_tabs:
                     self.closeTab(i)
-            if not chngs:
+            if not chngs and nothing_message:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
 ##            self.fileLastCheck = time.time()
+
+##            self.ui.l_statusbar.setText('')
+##            QtGui.QApplication.processEvents()
 
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
 
-    scopeApp = Scope(dev_mode=1)
+    scopeApp = Scope(dev_mode=0)
     os.chdir('../')
     scopeApp.load()
     scopeApp.show()
