@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.8-dev'
+__version__ = '0.3.9-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1554,6 +1554,8 @@ class Scope(QtGui.QWidget):
                         resp = QtGui.QMessageBox.warning(self,'File Does not exist',str(wdg.filename)+' does not exist anymore.<br><<br>Do you want to keep the file open?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                         if resp == QtGui.QMessageBox.No:
                             close_tabs.append(file_id)
+                        else:
+                            wdg.modTime = os.path.getmtime(wdg.filename)
                         chngs = 1
                     elif os.path.getmtime(wdg.filename) > wdg.modTime:
                         resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
