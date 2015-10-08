@@ -32,4 +32,8 @@ class Plugin(object):
             self.loadWidget()
             self.parent.addMainWidget(self.widget,self.title,icon=self.btn.icon(),typ='app')
             self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
-        self.widget.toggle()
+        self.toggle()
+
+    
+    def toggle(self):
+        self.parent.ui.sw_main.setCurrentWidget(self.widget)

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.7-dev'
+__version__ = '0.3.8-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -429,6 +429,14 @@ class Scope(QtGui.QWidget):
         for file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
+                
+                # Check if in current workspace and add tab if not
+                wksp_tab = self.tabspace.tabs.currentWidget()
+                if wksp_tab != None:
+                    if not file_id in wksp_tab.tabD:
+                        self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
+                
+                # Change tab to the file
                 self.changeTab(file_id)
                 fileopen = file_id
                 break
@@ -504,7 +512,8 @@ class Scope(QtGui.QWidget):
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
-                    self.changeTab(file_open)
+
+##                    self.changeTab(file_open)
                     return 1
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
@@ -591,7 +600,7 @@ class Scope(QtGui.QWidget):
         wdg.id = file_id
         wdg.lang = wdgD['lang']
         wdg.viewOnly = wdgD['viewOnly']
-        wdg.editor = wdgD['editor']
+        wdg.pluginEditor = wdgD['editor']
         wdg.pluginRightVisible=wdgD['pluginRightVisible']
         wdg.modTime = None
         wdg.icon = wdgD['icon']
@@ -638,7 +647,7 @@ class Scope(QtGui.QWidget):
         wdg = self.Editors[editor].getWidget(**kargs)
         
         file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang,typ=typ)
-        wdg.editor = editor
+        wdg.pluginEditor = editor
         wdg.pluginRightVisible=0
 
         # Add Icon
@@ -1310,9 +1319,9 @@ class Scope(QtGui.QWidget):
                         
                         if file_id in self.fileOpenD:
                             wdg = self.fileOpenD[file_id]
-                            editor = wdg.editor
+                            editor = wdg.pluginEditor
                         else:
-                            editor = itm.editor
+                            editor = itm.pluginEditor
                         if itm.filename != None:
                             wD['files'].append({'filename':itm.filename,'editor':editor})
 
@@ -1370,6 +1379,9 @@ class Scope(QtGui.QWidget):
 
             if last_file != None:
                 self.openFile(last_file)
+            
+            # Current Directory
+            self.currentPath = wD['basefolder']
             
             self.workspaceMenu.saveWact.setDisabled(0)
             self.workspaceMenu.renameWact.setDisabled(0)

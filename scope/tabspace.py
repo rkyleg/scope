@@ -131,7 +131,7 @@ class editortab(QtGui.QWidget):
         self.id = file_id
         self.filename = filename
         self.ide = ide
-        self.editor = ''
+        self.pluginEditor = ''
         
         # Layout
         layout = QtGui.QHBoxLayout()
