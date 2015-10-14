@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.9-dev'
+__version__ = '0.3.10-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -311,6 +311,7 @@ class Scope(QtGui.QWidget):
         self.showHome()
         
         # Setup File Checking
+        self.fileCheck_ignore = [] # List of file_ids to ignore checking
         if self.settings['checkFileChanges']:
             self.fileCheckTimer = QtCore.QTimer()
             self.fileCheckTimer.setInterval(1000*self.settings['checkFileChanges'])
@@ -644,7 +645,11 @@ class Scope(QtGui.QWidget):
         }
         
         # Load Editors
-        wdg = self.Editors[editor].getWidget(**kargs)
+        if editor == 'webview':
+            from plugins.webview import webview
+            wdg = webview.WebView(self)
+        else:
+            wdg = self.Editors[editor].getWidget(**kargs)
         
         file_id=self.addMainWidget(wdg,title,filename=filename,viewOnly=0,lang=lang,typ=typ)
         wdg.pluginEditor = editor
@@ -1550,12 +1555,12 @@ class Scope(QtGui.QWidget):
             for file_id in self.fileOpenD:
                 wdg = self.fileOpenD[file_id]
                 if wdg.filename != None and wdg.modTime != None:
-                    if not os.path.exists(wdg.filename):
+                    if not os.path.exists(wdg.filename) and file_id not in self.fileCheck_ignore:
                         resp = QtGui.QMessageBox.warning(self,'File Does not exist',str(wdg.filename)+' does not exist anymore.<br><<br>Do you want to keep the file open?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                         if resp == QtGui.QMessageBox.No:
                             close_tabs.append(file_id)
                         else:
-                            wdg.modTime = os.path.getmtime(wdg.filename)
+                            self.fileCheck_ignore.append(file_id)
                         chngs = 1
                     elif os.path.getmtime(wdg.filename) > wdg.modTime:
                         resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
