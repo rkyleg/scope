@@ -1,6 +1,4 @@
-_**WARNING: Scope is currently in alpha stage and is likely not suitable for daily use.**_
-
-*Scope is a redesign of Armadillo IDE*
+_**Scope is currently in beta stage.** For more information on where this is going, please see the [roadmap](/docs/roadmap.md)_
 
 # <img src="style/img/scope.png" height="48px;"> Scope IDE
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
