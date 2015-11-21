@@ -6,7 +6,8 @@ class Settings(object):
     # attribute=value
     
 class Plugin(object):
-    title = 'Python Shell ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+##    title = 'Python Shell ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')'
+    title = 'Python Console'
     location = 'bottom'
     settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
@@ -18,5 +19,5 @@ class Plugin(object):
         '''Called when loading the plugin'''
         
     def loadWidget(self):
-        self.widget = py_console.Console(self.parent)
+        self.widget = py_console.PyConsole(self.parent)
         return self.widget
