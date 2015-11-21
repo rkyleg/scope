@@ -13,7 +13,7 @@ class WorkspaceWidget(QtGui.QListWidget):
 ##        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
         self.setSpacing(2)
-        self.clicked.connect(self.select)
+##        self.clicked.connect(self.select)
         self.tabD = {}
 ##        self.setViewMode(1)
     
@@ -39,6 +39,19 @@ class WorkspaceWidget(QtGui.QListWidget):
             
         return tab
     
+    def mousePressEvent(self, event):
+##        print 'mouse clicked',event.button()
+        ind = self.indexAt(event.pos())
+        btn = event.button()
+        if btn == 1: #left
+            self.select(ind)
+        elif btn == 4: # middle
+            itm = self.itemFromIndex(ind)
+            wdg = self.itemWidget(itm)
+            wdg.close()
+        elif btn == 2: # right
+            self.rightclick(event)
+    
     def select(self,m_ind,hide_tabs=1):
         itm = self.itemFromIndex(m_ind)
         wdg = self.itemWidget(itm)
@@ -53,6 +66,36 @@ class WorkspaceWidget(QtGui.QListWidget):
         else:
             if hide_tabs:
                 self.ide.tabspace.toggle(0)
+    
+    def rightclick(self,event):
+        ind = self.indexAt(event.pos())
+        itm = self.itemFromIndex(ind)
+        current_ind = self.currentIndex()
+        if itm != None:
+            wdg = self.itemWidget(itm)
+        
+            # Right Click Menu
+            menu = QtGui.QMenu()
+            
+            icn = QtGui.QIcon(self.ide.iconPath+'run.png')
+            menu.addAction(icn,'Run')
+            
+            icn = QtGui.QIcon(self.ide.iconPath+'close_blue.png')
+            menu.addAction(icn,'Close')
+            
+            act = menu.exec_(self.cursor().pos())
+            if act != None:
+                acttxt = str(act.text())
+                
+                if acttxt == 'Close':
+                    wdg.close()
+                elif acttxt == 'Run':
+                    #TODO: If file not open
+                    if wdg.id not in self.ide.fileOpenD:
+                        self.select(ind)
+                    self.ide.editorRun(self.ide.fileOpenD[wdg.id])
+                    if current_ind != None:
+                        self.select(current_ind)
     
     def keyPressEvent(self,event):
         ky = event.key()

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.11'
+__version__ = '0.3.12-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -981,8 +981,10 @@ class Scope(QtGui.QWidget):
             txt = self.ui.le_find.text()
             wdg.find(txt)
 
-    def editorRun(self):
-        wdg = self.ui.sw_main.currentWidget()
+    def editorRun(self,wdg=None):
+        print wdg
+        if wdg == None or isinstance(wdg,bool):
+            wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
             if self.settings['run'][wdg.lang]['cmd']=='preview':
                 if 'preview' in self.pluginD:

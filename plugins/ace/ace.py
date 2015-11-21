@@ -108,7 +108,8 @@ class WebView(QtWebKit.QWebView):
             'theme':'twighlight',
             'newLineMode':'unix',
             'showWhitespace':'false',
-            'fontFamily':'courier,freemono'
+            'fontFamily':'courier,freemono',
+            'autocomplete':'true',
         }
         
         # Load settings
@@ -140,6 +141,7 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.setShowInvisibles('+str(self.settings['showWhitespace'])+');'
         js += 'editor.focus();'
         js += 'editor.setOptions({fontFamily:"'+self.settings['fontFamily']+'"});'
+        js += 'editor.setOptions({enableBasicAutocompletion: "'+self.settings['autocomplete']+'"});'
         self.page().mainFrame().evaluateJavaScript(js)
         
         # Additional Settings

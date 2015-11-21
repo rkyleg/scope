@@ -294,7 +294,10 @@ class Console(QtGui.QTextEdit):
             elif key == QtCore.Qt.Key_L: # launch
                 from subprocess import Popen
                 try:
-                    Popen(["python",os.path.abspath(__file__)])
+                    if os.name =='nt':
+                        Popen(["pythonw",os.path.abspath(__file__)])
+                    else:
+                        Popen(["python",os.path.abspath(__file__)])
                 except:
                     QtGui.QMessageBox.warning(self,'Error','The Python Shell could not open with your default Python install.  Please make sure you have Python 2.7 (or 2.6) installed and the Python executable is in your system path')
             else:
