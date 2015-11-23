@@ -5,80 +5,45 @@
 
 import os, sys, re
 from code import InteractiveInterpreter as Interpreter
-from PyQt4 import QtGui,QtCore, Qsci
+from PyQt4 import QtGui,QtCore
 from PyQt4.QtCore import Qt
-
-from scintilla_style import styleD # scintilla style
-
-##if sys.version_info.major==3:
-##    from . import highlighter
-##else:
-##    import highlighter
-
 from console_ui import Ui_Form
 
 re_file     = re.compile('(\s*)(File "(.*))\n')
 re_loc = re.compile('File "([^"]*)", line (\d+)')
 
 class PyConsole(QtGui.QWidget):
-    def __init__(self,parent=None,locals=None, log='',fontSize=10):
+    def __init__(self,parent=None,locals=None, log='',fontSize=10,commandWidget=None):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         
         #--- Signals
-##        self.ui.le_cmd.returnPressed.connect(self.enter)
-        self.ui.le_cmd.keyPressEvent = self.cmdKeyPress
-##        self.ui.sci_cmd.keyPressEvent = self.cmdKeyPress
-        
+
         # Setup TextBrowser
-##        self.highlighter = highlighter.MyHighlighter(self.ui.tb_view)
-##        self.highlighter = highlighter.MyHighlighter(self.ui.le_cmd)
         self.ui.tb_view.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
         self.ui.tb_view.keyPressEvent = self.tb_out_keypress
-        
-##        self.ui.frame.layout().addWidget(QtGui.QLabel(''),0,3,1,1)
-        
+
         # Setup Command 
-##        self.ui.te_cmd.sizeHint = self.cmdSizeHint
-        self.lex = Qsci.QsciLexerPython()
-        self.ui.le_cmd.setLexer(self.lex)
-        for i in range(5):
-            self.ui.le_cmd.setMarginWidth(i,0)
-        
-        # Set Dark Color
-        style_obj = set(styleD.keys()).intersection(dir(self.lex))
-        self.ui.le_cmd.setCaretForegroundColor(QtGui.QColor(255,255,255))
-        shade=30
-        self.ui.le_cmd.setCaretLineBackgroundColor(QtGui.QColor(shade,shade,shade))
-        self.lex.setDefaultPaper(QtGui.QColor(shade,shade,shade))
-        self.lex.setPaper(QtGui.QColor(shade,shade,shade),self.lex.Default)
-        self.ui.le_cmd.setColor(QtGui.QColor(255,255,255))
-        self.ui.le_cmd.setMarginsBackgroundColor(QtGui.QColor(60,60,60))
-        self.ui.le_cmd.setWhitespaceBackgroundColor(QtGui.QColor(80,80,80))
-        self.ui.le_cmd.setFoldMarginColors(QtGui.QColor(200,200,200),QtGui.QColor(90,90,90))
-##            self.ui.te_sci.setPaper(QColor(80,80,80))
-        self.ui.le_cmd.setMarginsForegroundColor(QtGui.QColor(200,200,200))
-##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
-        
-        self.ui.le_cmd.setMatchedBraceBackgroundColor(QtGui.QColor(shade,shade,shade))
-        self.ui.le_cmd.setMatchedBraceForegroundColor(QtGui.QColor(170,0,255))
-        self.ui.le_cmd.setUnmatchedBraceBackgroundColor(QtGui.QColor(shade,shade,shade))
-        
-        # Set defaults for all:
-        style_obj = set(styleD.keys()).intersection(dir(self.lex))
-        style_obj.remove('Default')
-        style_obj = set(['Default']).union(sorted(style_obj))
-        
-        for c in sorted(style_obj,reverse=1):
-            clr = styleD[c]
-            if clr == '':
-                clr = styleD['Default']
+        if not commandWidget:
             try:
-                exec('self.lex.setPaper(QtGui.QColor(30,30,30),self.lex.'+c+')')
-                exec('self.lex.setColor(QtGui.QColor('+clr+'),self.lex.'+c+')')
+                import scintilla_cmd
+                commandWidget = scintilla_cmd.cmd_widget()
             except:
-                print 'no keyword',c
+                commandWidget = None
+        
+        if commandWidget:
+            # Scintilla Commandline
+            self.ui.le_cmd = commandWidget
+            
+        else:
+            # Line Edit
+            self.ui.le_cmd = QtGui.QLineEdit()
+            self.ui.le_cmd.widgetObject = QtGui.QLineEdit
+            self.ui.le_cmd.type = 'qlineedit'
+        
+        self.ui.frame.layout().addWidget(self.ui.le_cmd,0,2,1,1)
+        self.ui.le_cmd.keyPressEvent = self.cmdKeyPress
         
         # font
         if os.name == 'posix':
@@ -186,22 +151,30 @@ class PyConsole(QtGui.QWidget):
             self.write(line+'\n',mode=1,prefix=unicode(self.ui.l_prompt.text())+' ')
             self.lines.append(line)
             
-            source = '\n'.join(self.lines)
-            self.more = self.interpreter.runsource(source)
-
-            self.indent=''
-            if self.more:
-                self.prompt = sys.ps2
-                self.indent = line[0:len(line)-len(line.lstrip())]
-                if line.rstrip():
-                    if line.rstrip()[-1]==':':
-                        self.indent+='    '
-                        
-            else:
-                self.prompt = sys.ps1
+            if line == 'clear':
+                # Clear Text
+                self.prompt = '>>>'
+                self.ui.tb_view.setText('')
+                self.ui.le_cmd.setText('')
                 self.lines = []
-                
-            self.setCommandText(self.indent)
+            
+            else:
+                source = '\n'.join(self.lines)
+                self.more = self.interpreter.runsource(source)
+
+                self.indent=''
+                if self.more:
+                    self.prompt = sys.ps2
+                    self.indent = line[0:len(line)-len(line.lstrip())]
+                    if line.rstrip():
+                        if line.rstrip()[-1]==':':
+                            self.indent+='    '
+                            
+                else:
+                    self.prompt = sys.ps1
+                    self.lines = []
+                    
+                self.setCommandText(self.indent)
         self.ui.l_prompt.setText(self.prompt)
         
 
@@ -264,8 +237,9 @@ class PyConsole(QtGui.QWidget):
 ##                txt = QtGui.QApplication.clipboard().text('plain').split(QtCore.QRegExp("[\r\n]"),QtCore.QString.SkipEmptyParts)
                 txt = str(QtGui.QApplication.clipboard().text('plain').toUtf8()).decode('utf-8').splitlines()
                 if len(txt) > 0:
-                    self.ui.le_cmd.replaceSelectedText(txt[0])
-##                    self.ui.le_cmd.insertText(txt[0])
+                    
+                    
+                    self.ui.le_cmd.insert(txt[0])
                     if len(txt) > 1:
                         self.enter()
                         for t in txt[1:-1]:
@@ -277,11 +251,12 @@ class PyConsole(QtGui.QWidget):
         
         if not handled:
 ##            QtGui.QLineEdit.keyPressEvent(self.ui.le_cmd,e)
-            Qsci.QsciScintilla.keyPressEvent(self.ui.le_cmd,e)
+            self.ui.le_cmd.widgetObject.keyPressEvent(self.ui.le_cmd,e)
     
     def setCommandText(self,text):
         self.ui.le_cmd.setText(text)
-        self.ui.le_cmd.setCursorPosition(0,len(text))
+        if self.ui.le_cmd.type == 'qscintilla':
+            self.ui.le_cmd.setCursorPosition(0,len(text))
     
     def readline(self):
         """

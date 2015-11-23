@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'console.ui'
 #
-# Created: Sat Nov 21 03:09:12 2015
+# Created: Mon Nov 23 17:48:35 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
         self.tb_view = QtGui.QTextBrowser(Form)
         self.tb_view.setStyleSheet(_fromUtf8("QTextBrowser {\n"
-"    background:rgb(30,30,30);\n"
+"    background:rgb(20,20,20);\n"
 "    color:white;\n"
 "}"))
         self.tb_view.setObjectName(_fromUtf8("tb_view"))
@@ -46,7 +46,9 @@ class Ui_Form(object):
 "   border-top:1px solid rgb(60,60,60)\n"
 "}\n"
 "QLineEdit {\n"
+"border:0px;\n"
 "color:white;\n"
+"background:transparent;\n"
 "}\n"
 "QLabel {\n"
 "    color:rgb(38,90,150);\n"
@@ -59,20 +61,6 @@ class Ui_Form(object):
         self.gridLayout.setSpacing(2)
         self.gridLayout.setContentsMargins(2, 1, 2, 1)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
-        self.le_cmd = Qsci.QsciScintilla(self.frame)
-        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.le_cmd.sizePolicy().hasHeightForWidth())
-        self.le_cmd.setSizePolicy(sizePolicy)
-        self.le_cmd.setMaximumSize(QtCore.QSize(16777215, 18))
-        self.le_cmd.setToolTip(_fromUtf8(""))
-        self.le_cmd.setWhatsThis(_fromUtf8(""))
-        self.le_cmd.setFrameShape(QtGui.QFrame.NoFrame)
-        self.le_cmd.setVerticalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.le_cmd.setHorizontalScrollBarPolicy(QtCore.Qt.ScrollBarAlwaysOff)
-        self.le_cmd.setObjectName(_fromUtf8("le_cmd"))
-        self.gridLayout.addWidget(self.le_cmd, 0, 1, 1, 1)
         self.l_prompt = QtGui.QLabel(self.frame)
         self.l_prompt.setObjectName(_fromUtf8("l_prompt"))
         self.gridLayout.addWidget(self.l_prompt, 0, 0, 1, 1)
@@ -85,4 +73,3 @@ class Ui_Form(object):
         Form.setWindowTitle(_translate("Form", "Form", None))
         self.l_prompt.setText(_translate("Form", ">>>", None))
 
-from PyQt4 import Qsci
