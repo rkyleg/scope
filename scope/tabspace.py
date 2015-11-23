@@ -13,7 +13,7 @@ class WorkspaceWidget(QtGui.QListWidget):
 ##        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
         self.setSpacing(2)
-##        self.clicked.connect(self.select)
+        self.clicked.connect(self.select)
         self.tabD = {}
 ##        self.setViewMode(1)
     
@@ -41,16 +41,23 @@ class WorkspaceWidget(QtGui.QListWidget):
     
     def mousePressEvent(self, event):
 ##        print 'mouse clicked',event.button()
+        handled = 0
         ind = self.indexAt(event.pos())
         btn = event.button()
         if btn == 1: #left
-            self.select(ind)
+##            self.select(ind)
+            handled = 0
         elif btn == 4: # middle
             itm = self.itemFromIndex(ind)
             wdg = self.itemWidget(itm)
             wdg.close()
+            handled = 1
         elif btn == 2: # right
             self.rightclick(event)
+            handled = 1
+        
+        if not handled:
+            QtGui.QListWidget.mousePressEvent(self,event)
     
     def select(self,m_ind,hide_tabs=1):
         itm = self.itemFromIndex(m_ind)
