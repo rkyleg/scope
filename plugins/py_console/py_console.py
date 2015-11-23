@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 #!/usr/bin/python
 #
 # PyConsole is a Python Shell console for Scope IDE
@@ -34,8 +35,9 @@ class PyConsole(QtGui.QWidget):
 ##        self.highlighter = highlighter.MyHighlighter(self.ui.tb_view)
 ##        self.highlighter = highlighter.MyHighlighter(self.ui.le_cmd)
         self.ui.tb_view.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
+        self.ui.tb_view.keyPressEvent = self.tb_out_keypress
         
-        
+##        self.ui.frame.layout().addWidget(QtGui.QLabel(''),0,3,1,1)
         
         # Setup Command 
 ##        self.ui.te_cmd.sizeHint = self.cmdSizeHint
@@ -71,15 +73,12 @@ class PyConsole(QtGui.QWidget):
         for c in sorted(style_obj,reverse=1):
             clr = styleD[c]
             if clr == '':
-##                    clr = '255,255,255'
                 clr = styleD['Default']
-##                print c,clr
             try:
                 exec('self.lex.setPaper(QtGui.QColor(30,30,30),self.lex.'+c+')')
                 exec('self.lex.setColor(QtGui.QColor('+clr+'),self.lex.'+c+')')
             except:
                 print 'no keyword',c
-        
         
         # font
         if os.name == 'posix':
@@ -100,9 +99,6 @@ class PyConsole(QtGui.QWidget):
         
         self.ui.tb_view.setTabStopWidth(QtGui.QFontMetrics(font).width('    ')-1)
 
-##        self.setTextInteractionFlags(QtCore.Qt.TextEditorInteraction | QtCore.Qt.TextBrowserInteraction)
-
-        
         # Setup Interpreter
         if locals==None:
             locals={'self':self,'scope':parent}
@@ -170,37 +166,46 @@ class PyConsole(QtGui.QWidget):
         return QtCore.QSize(20,20)
     
     def enter(self):
-##        print 'enter'
         line = unicode(self.ui.le_cmd.text())
         
         if line.strip():
             self.history.append(line)
             self.pointer = len(self.history)
-            self.write(unicode(self.ui.l_prompt.text())+' '+line+'\n',mode=1)
+##            self.write(line+'\n',mode=1,prefix=unicode(self.ui.l_prompt.text())+' ')
         else:
             line = ''
-
-        self.lines.append(line)
-        source = '\n'.join(self.lines)
-        self.more = self.interpreter.runsource(source)
-        self.indent=''
-        if self.more:
-            self.prompt = sys.ps2
-            self.indent = line[0:len(line)-len(line.lstrip())]
-            if line.rstrip():
-                if line.rstrip()[-1]==':':
-                    self.indent+='    '
-                    
-        else:
-            self.prompt = sys.ps1
-            self.lines = []
+        
+        # Clear if 2 blank lines in a row
+        cmd_reset = 0
+        if len(self.lines) > 0:
+            if self.lines[-1].rstrip() =='' and line.rstrip()=='':
+                self.lines = []
+                cmd_reset = 1
+        
+        if not cmd_reset:
+            self.write(line+'\n',mode=1,prefix=unicode(self.ui.l_prompt.text())+' ')
+            self.lines.append(line)
             
-##        print 'indent',len(self.indent)
-        self.setCommandText(self.indent)
+            source = '\n'.join(self.lines)
+            self.more = self.interpreter.runsource(source)
+
+            self.indent=''
+            if self.more:
+                self.prompt = sys.ps2
+                self.indent = line[0:len(line)-len(line.lstrip())]
+                if line.rstrip():
+                    if line.rstrip()[-1]==':':
+                        self.indent+='    '
+                        
+            else:
+                self.prompt = sys.ps1
+                self.lines = []
+                
+            self.setCommandText(self.indent)
         self.ui.l_prompt.setText(self.prompt)
         
 
-    def write(self, text,mode=0):
+    def write(self, text,mode=0,prefix=None):
         # modes
         #  0 = output
         #  1 = input
@@ -209,32 +214,30 @@ class PyConsole(QtGui.QWidget):
 ##        hack.append(text+'\n')
 ##        self.ui.tb_view.setText(hack)
 ##        print len(text),len(text.rstrip())
+
         self.writecount += 1
         if text.rstrip() or 1:
             self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
-##            self.ui.tb_view.insertPlainText(text.rstrip()+'\n')
             if mode == 2: # Error
-                txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(text)).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</font>"
+                txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</font>"
                 txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
-##                text = '<div style="color:red">'+text.replace('\n','<br>').replace('\t','&nbsp;&nbsp;&nbsp;&nbsp;')+'</div>'
                 self.ui.tb_view.insertHtml(txt)
             elif mode == 1: # Input
-                txt = '<div style="color:rgb(89,197,254);">'+str(QtCore.QString(text)).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
+                txt = '<div style="color:rgb(89,197,254);">'
+                if prefix:
+                    txt += '<span style="color:rgb(38,90,150);">'+prefix.replace('>','&gt;')+'</span>'
+                txt +=str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
                 self.ui.tb_view.insertHtml(txt)
             else: # Write
-                txt = '<div style="color:rgb(255,255,255);">'+str(QtCore.QString(text)).replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
+                txt = '<div style="color:rgb(255,255,255);">'+str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
                 self.ui.tb_view.insertHtml(txt)
-##            self.ui.tb_view.insertPlainText(text)
-    ##        self.ui.tb_view.insertHtml(text.replace('\n','<br>')+'<br>')
+
             self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
     
     def cmdKeyPress(self,e):
         key   = e.key()
         handled = 0
-##        print key
-        # Copy ahead of disable
-##        if e.modifiers() & QtCore.Qt.ControlModifier:
-##            pass
+
         if key == Qt.Key_Up:
             if len(self.history):
                 if self.pointer > 0:
@@ -252,20 +255,24 @@ class PyConsole(QtGui.QWidget):
                     self.setCommandText(self.history[self.pointer])
                     handled = 1
         elif key == Qt.Key_Enter or key == Qt.Key_Return:
-##            print 'enter'
             self.enter()
             handled = 1
         elif key == Qt.Key_Tab:
             self.__insertText('   ')
-        if key == QtCore.Qt.Key_V:  # paste
-            txt = unicode(QtGui.QApplication.clipboard().text()).splitlines()
-            if len(txt) > 1:
-                for t in txt[:-1]:
-##                    self.write(t)
-                    self.setCommandText(t)
-                    self.enter()
-            self.setCommandText(txt[-1])
-            handled = 1
+        if e.modifiers() & QtCore.Qt.ControlModifier:
+            if key == QtCore.Qt.Key_V:  # paste
+##                txt = QtGui.QApplication.clipboard().text('plain').split(QtCore.QRegExp("[\r\n]"),QtCore.QString.SkipEmptyParts)
+                txt = str(QtGui.QApplication.clipboard().text('plain').toUtf8()).decode('utf-8').splitlines()
+                if len(txt) > 0:
+                    self.ui.le_cmd.replaceSelectedText(txt[0])
+##                    self.ui.le_cmd.insertText(txt[0])
+                    if len(txt) > 1:
+                        self.enter()
+                        for t in txt[1:-1]:
+                            self.setCommandText(t)
+                            self.enter()
+                        self.setCommandText(txt[-1])
+                    handled = 1
                     
         
         if not handled:
@@ -309,6 +316,29 @@ class PyConsole(QtGui.QWidget):
         """
         return 1
 
+    #---Output Overrides
+    def tb_out_keypress(self,e):
+        key   = e.key()
+        handled = 0
+        
+        # Copy ahead of disable
+        if e.modifiers() & QtCore.Qt.ControlModifier:
+            # Copy
+            if key == Qt.Key_C:
+                txt = str(self.ui.tb_view.textCursor().selectedText().toUtf8()).replace('\xc2\xa0',' ').decode('utf-8')
+##                QtGui.QApplication.clipboard().clear()
+                ntxt = []
+                for ln in txt.splitlines():
+                    t = ln
+                    if ln.startswith('>>> ') or ln.startswith('... '):
+                        t = ln[4:]
+                    ntxt.append(t)
+                txt = '\n'.join(ntxt)
+                QtGui.QApplication.clipboard().setText(txt)
+                handled = 1
+        
+        if not handled:
+            QtGui.QTextEdit.keyPressEvent(self.ui.tb_view,e)
 
 #---Main
 if __name__=='__main__':
