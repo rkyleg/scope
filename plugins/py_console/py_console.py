@@ -3,6 +3,9 @@
 #
 # PyConsole is a Python Shell console for Scope IDE
 
+# VERSION
+__version__ = '0.2.1'
+
 import os, sys, re
 from code import InteractiveInterpreter as Interpreter
 from PyQt4 import QtGui,QtCore
@@ -13,13 +16,11 @@ re_file     = re.compile('(\s*)(File "(.*))\n')
 re_loc = re.compile('File "([^"]*)", line (\d+)')
 
 class PyConsole(QtGui.QWidget):
-    def __init__(self,parent=None,locals=None, log='',fontSize=10,commandWidget=None):
+    def __init__(self,parent=None,locals=None, log='', fontSize=10, commandWidget=None):
         QtGui.QWidget.__init__(self, parent)
         self.ui = Ui_Form()
         self.ui.setupUi(self)
         
-        #--- Signals
-
         # Setup TextBrowser
         self.ui.tb_view.setWordWrapMode(QtGui.QTextOption.WrapAnywhere)
         self.ui.tb_view.keyPressEvent = self.tb_out_keypress
@@ -105,7 +106,7 @@ class PyConsole(QtGui.QWidget):
         self.history = []
         self.pointer = 0
         self.indent = ''
-        
+        self.prompt = '>>>'
         self.writecount = 0
         
         # interpreter prompt.
@@ -118,10 +119,7 @@ class PyConsole(QtGui.QWidget):
         except AttributeError:
             sys.ps2 = "... "
         
-        if __name__ =='__main__':
-            self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')\n',mode=1)
-        else:
-            self.write('# Scope Python ('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+') Shell\n    - only modules included with Scope are available\n    - Ctrl+l to launch popup (outside of Scope) with the default installed Python\n',mode=1)
+        self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')\n',mode=1)
         
         # Focus to command prompt
         self.ui.le_cmd.setFocus()
@@ -189,35 +187,37 @@ class PyConsole(QtGui.QWidget):
 ##        print len(text),len(text.rstrip())
 
         self.writecount += 1
-        if text.rstrip() or 1:
-            self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
-            if mode == 2: # Error
-                txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</font>"
-                txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
-                self.ui.tb_view.insertHtml(txt)
-            elif mode == 1: # Input
-                txt = '<div style="color:rgb(89,197,254);">'
-                if prefix:
-                    txt += '<span style="color:rgb(38,90,150);">'+prefix.replace('>','&gt;')+'</span>'
-                txt +=str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
-                self.ui.tb_view.insertHtml(txt)
-            else: # Write
-                txt = '<div style="color:rgb(255,255,255);">'+str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
-                self.ui.tb_view.insertHtml(txt)
+##        if text.rstrip() or 1:
+        self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
+        if mode == 2: # Error
+            txt = '<font style="color:rgb(255,112,99);">' + str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</font>"
+            txt = re_file.sub(r"<a style=""color:rgb(121,213,255);"" href='\g<2>'>\g<2></a>",txt)
+            self.ui.tb_view.insertHtml(txt)
+        elif mode == 1: # Input
+            txt = '<div style="color:rgb(89,197,254);">'
+            if prefix:
+                txt += '<span style="color:rgb(38,90,150);">'+prefix.replace('>','&gt;')+'</span>'
+            txt +=str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
+            self.ui.tb_view.insertHtml(txt)
+        else: # Write
+            txt = '<div style="color:rgb(255,255,255);">'+str(QtCore.QString(text).toUtf8()).decode('utf-8').replace('<','&lt;').replace('>','&gt;').replace('  ','&nbsp;&nbsp;').replace('\n','<br>')+"</div>"
+            self.ui.tb_view.insertHtml(txt)
 
-            self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
+        self.ui.tb_view.moveCursor(QtGui.QTextCursor.End, 0)
     
     def cmdKeyPress(self,e):
         key   = e.key()
         handled = 0
 
         if key == Qt.Key_Up:
+            # Up
             if len(self.history):
                 if self.pointer > 0:
                     self.pointer -= 1
                     self.setCommandText(self.history[self.pointer])
                     handled = 1
         elif key == Qt.Key_Down:
+            # Down
             if len(self.history) and self.pointer<len(self.history):
                 if self.pointer == len(self.history)-1:
                     self.setCommandText('')
@@ -228,12 +228,19 @@ class PyConsole(QtGui.QWidget):
                     self.setCommandText(self.history[self.pointer])
                     handled = 1
         elif key == Qt.Key_Enter or key == Qt.Key_Return:
-            self.enter()
+            # Enter
+            if self.reading:
+                self.reading = 0
+            else:
+                self.enter()
             handled = 1
         elif key == Qt.Key_Tab:
             self.__insertText('   ')
+        
+        # Ctrl
         if e.modifiers() & QtCore.Qt.ControlModifier:
             if key == QtCore.Qt.Key_V:  # paste
+                # V
 ##                txt = QtGui.QApplication.clipboard().text('plain').split(QtCore.QRegExp("[\r\n]"),QtCore.QString.SkipEmptyParts)
                 txt = str(QtGui.QApplication.clipboard().text('plain').toUtf8()).decode('utf-8').splitlines()
                 if len(txt) > 0:
@@ -245,8 +252,17 @@ class PyConsole(QtGui.QWidget):
                             self.enter()
                         self.setCommandText(txt[-1])
                     handled = 1
-                    
-        
+            elif key == QtCore.Qt.Key_L: # launch
+                # L
+                from subprocess import Popen
+                try:
+                    if os.name =='nt':
+                        Popen(["pythonw",os.path.abspath(__file__)])
+                    else:
+                        Popen(["python",os.path.abspath(__file__)])
+                except:
+                    QtGui.QMessageBox.warning(self,'Error','The Python Shell could not open with your default Python install.  Please make sure you have Python 2.7 (or 2.6) installed and the Python executable is in your system path')
+
         if not handled:
 ##            QtGui.QLineEdit.keyPressEvent(self.ui.le_cmd,e)
             self.ui.le_cmd.widgetObject.keyPressEvent(self.ui.le_cmd,e)
@@ -262,14 +278,18 @@ class PyConsole(QtGui.QWidget):
         """
         self.reading = 1
         self.ui.le_cmd.setText('')
+        self.ui.l_prompt.setText('?')
 ##        self.moveCursor(QtGui.QTextCursor.End, 0)
         while self.reading:
             QtGui.QApplication.processEvents()
         line = self.ui.le_cmd.text()
+        
         if len(line) == 0:
-            return '\n'
+            return_line = '\n'
         else:
-            return unicode(line) 
+            return_line = str(line)
+        self.write('\n')
+        return return_line
 
     def writelines(self, text):
         """
@@ -318,7 +338,7 @@ if __name__=='__main__':
     import sys
     app=QtGui.QApplication(sys.argv)
     console=PyConsole()
-    console.setStyleSheet('QTextEdit {background:rgb(30,30,30);color:white;}')
-    console.resize(600,400)
+##    console.setStyleSheet('QTextEdit {background:rgb(30,30,30);color:white;}')
+##    console.resize(600,400)
     console.show()
-    app.exec_()
+    sys.exit(app.exec_())

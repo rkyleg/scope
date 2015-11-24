@@ -6,12 +6,16 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>413</width>
-    <height>176</height>
+    <width>580</width>
+    <height>272</height>
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Form</string>
+   <string>Python Console</string>
+  </property>
+  <property name="windowIcon">
+   <iconset>
+    <normaloff>../scope/plugins/py_console/icon.png</normaloff>../scope/plugins/py_console/icon.png</iconset>
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <property name="margin">

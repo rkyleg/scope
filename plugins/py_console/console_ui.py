@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'console.ui'
 #
-# Created: Mon Nov 23 21:42:04 2015
+# Created: Mon Nov 23 22:49:02 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,10 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(413, 176)
+        Form.resize(580, 272)
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../scope/plugins/py_console/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        Form.setWindowIcon(icon)
         self.gridLayout_2 = QtGui.QGridLayout(Form)
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setSpacing(0)
@@ -69,6 +72,6 @@ class Ui_Form(object):
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
-        Form.setWindowTitle(_translate("Form", "Form", None))
+        Form.setWindowTitle(_translate("Form", "Python Console", None))
         self.l_prompt.setText(_translate("Form", ">>>", None))
 
