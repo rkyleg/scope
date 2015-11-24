@@ -4,7 +4,7 @@
 # PyConsole is a Python Shell console for Scope IDE
 
 # VERSION
-__version__ = '0.2.1'
+__version__ = '0.2.2'
 
 import os, sys, re
 from code import InteractiveInterpreter as Interpreter
@@ -235,7 +235,8 @@ class PyConsole(QtGui.QWidget):
                 self.enter()
             handled = 1
         elif key == Qt.Key_Tab:
-            self.__insertText('   ')
+            self.ui.le_cmd.insert('    ')
+            handled=1
         
         # Ctrl
         if e.modifiers() & QtCore.Qt.ControlModifier:
