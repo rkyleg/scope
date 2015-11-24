@@ -34,9 +34,8 @@
     <widget class="QFrame" name="frame">
      <property name="styleSheet">
       <string notr="true">QFrame#frame {
-	background-color2: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));
-background-color:rgb(30,30,30);
-color:white;
+   background-color:rgb(30,30,30);
+   color:white;
    border-top:1px solid rgb(60,60,60)
 }
 QLineEdit {

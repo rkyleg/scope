@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'console.ui'
 #
-# Created: Mon Nov 23 17:48:35 2015
+# Created: Mon Nov 23 21:42:04 2015
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -40,9 +40,8 @@ class Ui_Form(object):
         self.gridLayout_2.addWidget(self.tb_view, 0, 0, 1, 1)
         self.frame = QtGui.QFrame(Form)
         self.frame.setStyleSheet(_fromUtf8("QFrame#frame {\n"
-"    background-color2: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));\n"
-"background-color:rgb(30,30,30);\n"
-"color:white;\n"
+"   background-color:rgb(30,30,30);\n"
+"   color:white;\n"
 "   border-top:1px solid rgb(60,60,60)\n"
 "}\n"
 "QLineEdit {\n"

@@ -237,8 +237,6 @@ class PyConsole(QtGui.QWidget):
 ##                txt = QtGui.QApplication.clipboard().text('plain').split(QtCore.QRegExp("[\r\n]"),QtCore.QString.SkipEmptyParts)
                 txt = str(QtGui.QApplication.clipboard().text('plain').toUtf8()).decode('utf-8').splitlines()
                 if len(txt) > 0:
-                    
-                    
                     self.ui.le_cmd.insert(txt[0])
                     if len(txt) > 1:
                         self.enter()
