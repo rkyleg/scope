@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.16-dev'
+__version__ = '0.3.17-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -17,7 +17,10 @@ sip.setapi('QVariant',1)
 import sys, json, codecs, time, importlib, subprocess
 from PyQt4 import QtCore, QtGui, QtWebKit
 from menus import *
-import os,shutil,datetime, webbrowser, threading
+import os,shutil,datetime, webbrowser, threading, sys
+
+sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),'../site-packages'))
+import bunch
 
 class Scope(QtGui.QWidget):
     def __init__(self, parent=None,dev_mode=0):
@@ -982,7 +985,6 @@ class Scope(QtGui.QWidget):
             wdg.find(txt)
 
     def editorRun(self,wdg=None):
-        print wdg
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
@@ -1086,7 +1088,7 @@ class Scope(QtGui.QWidget):
                     if len(sel_clrs) == 3: sclr.append(255)
                     dclr = sclr
                 except:
-                    print 'invalid color',sel_clrs
+                    print('invalid color',sel_clrs)
         
         clrdlg = QtGui.QColorDialog(self)
         clr=clrdlg.getColor(QtGui.QColor(dclr[0],dclr[1],dclr[2],dclr[3]),self,'Select color',QtGui.QColorDialog.ShowAlphaChannel)
