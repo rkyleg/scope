@@ -14,7 +14,7 @@ import sip
 ##sip.setapi('QString',1)
 sip.setapi('QVariant',1)
 
-import sys, json, codecs, time, importlib
+import sys, json, codecs, time, importlib, subprocess
 from PyQt4 import QtCore, QtGui, QtWebKit
 from menus import *
 import os,shutil,datetime, webbrowser, threading
@@ -1586,6 +1586,34 @@ class Scope(QtGui.QWidget):
 
 ##            self.ui.l_statusbar.setText('')
 ##            QtGui.QApplication.processEvents()
+
+    #---Other Functions
+    def openFileExternal(self,path=None,program=None):
+        '''Open the path external to Scope with the OS default'''
+
+        if path == None:
+            wdg = self.currentEditor()
+            if wdg != None:
+                path = wdg.filename
+        
+        if path != None:
+            if os.name=='nt':path = path.replace('/','\\')
+            dpth = os.path.dirname(path)
+            if os.path.isdir(path) and program != None:
+                # Use specified file browser
+                subprocess.Popen([program,path],cwd=dpth)
+            else:
+                # use default filebrowser
+                curdir = os.path.abspath('.')
+                os.chdir(os.path.dirname(path))
+                if os.name == 'nt':
+    ##                        subprocess.Popen(path,shell=True,cwd=dpth)
+                    os.startfile(path)
+                elif os.name=='posix':
+                    subprocess.Popen(['xdg-open', path],cwd=dpth)
+                elif os.name=='mac':
+                    subprocess.Popen(['open', path],cwd=dpth)
+                os.chdir(curdir)
 
 def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))

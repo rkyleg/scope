@@ -175,6 +175,9 @@ class EditorMenu(QtGui.QMenu):
 ##        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
 ##        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
         
+        # Open External
+        icn = QtGui.QIcon(self.parent.iconPath+'file_go.png')
+        self.statsAction = self.addAction(icn,'Open (external)',self.parent.openFileExternal)
         
         # Stats
         icn = QtGui.QIcon()

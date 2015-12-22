@@ -84,8 +84,11 @@ class WorkspaceWidget(QtGui.QListWidget):
             # Right Click Menu
             menu = QtGui.QMenu()
             
-            icn = QtGui.QIcon(self.ide.iconPath+'run.png')
+            icn = QtGui.QIcon(self.ide.iconPath+'tri_right.png')
             menu.addAction(icn,'Run')
+            
+            icn = QtGui.QIcon(self.ide.iconPath+'file_go.png')
+            menu.addAction(icn,'Open (external)')
             
             icn = QtGui.QIcon(self.ide.iconPath+'close_blue.png')
             menu.addAction(icn,'Close')
@@ -103,6 +106,9 @@ class WorkspaceWidget(QtGui.QListWidget):
                     self.ide.editorRun(self.ide.fileOpenD[wdg.id])
                     if current_ind != None:
                         self.select(current_ind)
+                elif acttxt == 'Open (external)':
+                    self.ide.tabspace.toggle(0)
+                    self.ide.openFileExternal(wdg.filename)
     
     def keyPressEvent(self,event):
         ky = event.key()

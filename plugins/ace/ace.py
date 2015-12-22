@@ -110,6 +110,7 @@ class WebView(QtWebKit.QWebView):
             'showWhitespace':'false',
             'fontFamily':'courier,freemono',
             'autocomplete':'true',
+            'enableSnippets':'true',
         }
         
         # Load settings
@@ -142,6 +143,7 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.focus();'
         js += 'editor.setOptions({fontFamily:"'+self.settings['fontFamily']+'"});'
         js += 'editor.setOptions({enableBasicAutocompletion: "'+self.settings['autocomplete']+'"});'
+        js += 'editor.setOptions({enableSnippets: "'+self.settings['enableSnippets']+'"});'
         self.page().mainFrame().evaluateJavaScript(js)
         
         # Additional Settings

@@ -290,24 +290,11 @@ class DirTree(QtGui.QWidget):
                 # Open File
                 self.openFile()
             elif acttxt == 'Open (external)':
+                externalFileBrowser = None
                 fbsD = self.ide.settings['plugins']['filebrowser']
-                if os.name=='nt':pth = pth.replace('/','\\')
-                dpth = os.path.dirname(pth)
                 if os.path.isdir(pth) and 'externalFileBrowser' in fbsD and fbsD['externalFileBrowser']!='':
-                    # Use specified file browser
-                    subprocess.Popen([fbsD['externalFileBrowser'],pth],cwd=dpth)
-                else:
-                    # use default filebrowser
-                    curdir = os.path.abspath('.')
-                    os.chdir(os.path.dirname(pth))
-                    if os.name == 'nt':
-##                        subprocess.Popen(pth,shell=True,cwd=dpth)
-                        os.startfile(pth)
-                    elif os.name=='posix':
-                        subprocess.Popen(['xdg-open', pth],cwd=dpth)
-##                    elif os.name=='mac':
-##                        subprocess.Popen(['open', pth],cwd=dpth)
-                    os.chdir(curdir)
+                    externalFileBrowser = fbsD['externalFileBrowser']
+                self.ide.openFileExternal(pth,externalFileBrowser)
             elif acttxt == 'Show All Files':
                 self.showAll = showAct.isChecked()
                 if citm != None:
