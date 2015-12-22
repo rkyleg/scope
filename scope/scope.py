@@ -625,6 +625,9 @@ class Scope(QtGui.QWidget):
             title = 'New '+lang
             typ = 'file_new'
         
+        if not editor in self.Editors: # If editor not available - then find one
+            editor = None
+        
         if editor == None:
             if lang in self.settings['prog_lang']:
                 editor = self.settings['prog_lang'][lang]['editor']
