@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.18-dev'
+__version__ = '0.3.19-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -149,6 +149,8 @@ class Scope(QtGui.QWidget):
             self.showMaximized()
             QtGui.QApplication.processEvents()
 
+        self.ui.b_back.hide()
+
         # Setup plugin views
         # Bottom
         h=int(self.settings['window']['pluginBottom']['height'])
@@ -200,6 +202,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_find.clicked.connect(self.editorFind)
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
 
+        self.ui.b_back.clicked.connect(self.back_to_editor)
 ##        self.fileOpenD={}
         
         # Create Tabspace
@@ -752,6 +755,9 @@ class Scope(QtGui.QWidget):
             lang = wdg.lang
             
             self.ui.b_closetab.show()
+            self.ui.fr_toolbar.show()
+            self.ui.fr_topleft.show()
+            self.ui.b_back.hide()
         else:
             wdg = None
             lang = None
@@ -802,7 +808,13 @@ class Scope(QtGui.QWidget):
             self.recentTabs.append(wdg.id)
         
             if wdg.viewOnly:
+                self.ui.fr_toolbar.hide()
+                self.ui.fr_topleft.hide()
                 self.ui.b_closetab.hide()
+                
+                # Back if current tab
+                if self.workspaceCount > 0 and len(self.recentTabs) > 1:
+                    self.ui.b_back.show()
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -901,6 +913,16 @@ class Scope(QtGui.QWidget):
             else: # Ignore checksave if no getText
                 ok=1
         return ok
+
+    def back_to_editor(self):
+        if len(self.recentTabs) > 1:
+            print self.fileD[self.recentTabs[-2]]
+            if self.fileD[self.recentTabs[-2]]['filename'] != None:
+                self.changeTab(self.recentTabs[-2])
+            else:
+                self.showTabspace()
+        else:
+            self.showTabspace()
 
     #---Editor Tools
     def editorSave(self):

@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>856</width>
-    <height>415</height>
+    <width>1048</width>
+    <height>500</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -840,6 +840,25 @@ border:0px;</string>
           </spacer>
          </item>
         </layout>
+       </widget>
+      </item>
+      <item row="0" column="9">
+       <widget class="QPushButton" name="b_back">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>back to last file</string>
+        </property>
+        <property name="text">
+         <string>back</string>
+        </property>
+        <property name="class" stdset="0">
+         <string>toolbar toolbar-left</string>
+        </property>
        </widget>
       </item>
      </layout>

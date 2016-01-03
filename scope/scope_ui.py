@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Sun Jan  3 02:08:48 2016
+# Created: Sun Jan  3 02:37:53 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(856, 415)
+        Form.resize(1048, 500)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/scope.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -395,6 +395,14 @@ class Ui_Form(object):
         spacerItem2 = QtGui.QSpacerItem(2, 2, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout.addItem(spacerItem2, 0, 10, 1, 1)
         self.gridLayout_2.addWidget(self.fr_toolbar, 0, 3, 1, 1)
+        self.b_back = QtGui.QPushButton(self.fr_topbar)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.b_back.sizePolicy().hasHeightForWidth())
+        self.b_back.setSizePolicy(sizePolicy)
+        self.b_back.setObjectName(_fromUtf8("b_back"))
+        self.gridLayout_2.addWidget(self.b_back, 0, 9, 1, 1)
         self.gridLayout_8.addWidget(self.fr_topbar, 0, 0, 1, 2)
 
         self.retranslateUi(Form)
@@ -432,4 +440,7 @@ class Ui_Form(object):
         self.b_save.setProperty("class", _translate("Form", "toolbar toolbar-big", None))
         self.b_menu.setToolTip(_translate("Form", "Editor Menu (Ctrl + M)", None))
         self.b_menu.setProperty("class", _translate("Form", "toolbar toolbar-left", None))
+        self.b_back.setToolTip(_translate("Form", "back to last file", None))
+        self.b_back.setText(_translate("Form", "back", None))
+        self.b_back.setProperty("class", _translate("Form", "toolbar toolbar-left", None))
 
