@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.19-dev'
+__version__ = '0.3.20-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -916,7 +916,6 @@ class Scope(QtGui.QWidget):
 
     def back_to_editor(self):
         if len(self.recentTabs) > 1:
-            print self.fileD[self.recentTabs[-2]]
             if self.fileD[self.recentTabs[-2]]['filename'] != None:
                 self.changeTab(self.recentTabs[-2])
             else:

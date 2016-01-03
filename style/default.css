@@ -177,15 +177,12 @@ QScrollBar::left-arrow:horizontal {
 
 }
 
-
-
-    QTabWidget::pane QFrame {
-        background:transparent;
-    }
-    QTabWidget::pane {
-        /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));*/
-    }
- 
+QTabWidget::pane QFrame {
+    background:transparent;
+}
+QTabWidget::pane {
+    /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));*/
+}
 
 QLabel#l_statusbar {
     /*background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(30, 30, 30, 255), stop:0.9 rgba(50, 50, 50, 255), stop:1 rgba(70, 70, 70, 255));*/
@@ -470,4 +467,7 @@ QLabel#l_statusbar {
     /*QFrame#fr_right {*/
         /*border-left 1px solid rgba(130,130,130,200);*/
     /*}*/
-
+    
+    QFrame#fr_right {
+        border-left:1px solid rgba(130,130,130,200);
+    }

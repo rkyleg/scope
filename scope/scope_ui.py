@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Sun Jan  3 02:37:53 2016
+# Created: Sun Jan  3 10:44:40 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -59,7 +59,7 @@ class Ui_Form(object):
         self.fr_right.setObjectName(_fromUtf8("fr_right"))
         self.gridLayout_7 = QtGui.QGridLayout(self.fr_right)
         self.gridLayout_7.setSpacing(0)
-        self.gridLayout_7.setContentsMargins(0, 0, 0, 4)
+        self.gridLayout_7.setContentsMargins(1, 0, 0, 4)
         self.gridLayout_7.setObjectName(_fromUtf8("gridLayout_7"))
         self.fr_bottom = QtGui.QFrame(self.fr_right)
         self.fr_bottom.setFrameShape(QtGui.QFrame.NoFrame)

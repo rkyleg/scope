@@ -66,6 +66,9 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
         self.ui.te_sci.dropEvent = self.dropEvent
         
+        # Remove Green border
+        self.ui.te_sci.setFrameShape(QtGui.QFrame.NoFrame)
+        
         # Default settings
         self.settings = {
 ##            'wrapBehaviours':1,
