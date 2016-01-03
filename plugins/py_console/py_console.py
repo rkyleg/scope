@@ -120,7 +120,7 @@ class PyConsole(QtGui.QWidget):
             sys.ps2 = "... "
         
         self.write('# Python '+'('+str(sys.version_info.major)+'.'+str(sys.version_info.minor)+'.'+str(sys.version_info.micro)+')\n',mode=1)
-        
+        self.write('\n')
         # Focus to command prompt
         self.ui.le_cmd.setFocus()
     

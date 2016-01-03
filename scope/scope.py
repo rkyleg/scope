@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.17-dev'
+__version__ = '0.3.18-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1624,7 +1624,7 @@ def runui():
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
 
-    scopeApp = Scope(dev_mode=0)
+    scopeApp = Scope(dev_mode=1)
     os.chdir('../')
     scopeApp.load()
     scopeApp.show()

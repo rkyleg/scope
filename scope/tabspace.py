@@ -12,7 +12,7 @@ class WorkspaceWidget(QtGui.QListWidget):
         self.setDragEnabled(1) # enable drag drop
 ##        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
-        self.setSpacing(2)
+        self.setSpacing(0)
         self.clicked.connect(self.select)
         self.tabD = {}
 ##        self.setViewMode(1)
@@ -265,7 +265,7 @@ class TabSpace(object):
 ##        QtGui.QTabWidget.__init__(self)
         self.tabs.setStyleSheet("""
             QTabWidget,QTabBar{
-                background:rgba(100,100,100,240);
+                background:rgba(40,40,40);
             }
             QTabWidget::tab-bar {
                 alignment: left;
@@ -274,31 +274,28 @@ class TabSpace(object):
             /* Style the tab using the tab sub-control. Note that
                 it reads QTabBar _not_ QTabWidget */
             QTabBar::tab {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                            stop: 0 #777777, stop: 0.4 #666666,
-                                            stop: 0.5 #555555, stop: 1.0 #444444);
-                border: 2px solid #C4C4C3;
+                background: transparent;
+                border2: 2px solid #C4C4C3;
                 border:0px;
-                border-top-color: #C2C7CB; /* same as the pane color */
-                border-bottom-left-radius: 5px;
-                border-bottom-right-radius: 5px;
-                
+                border-top-color2: #C2C7CB; /* same as the pane color */
+                border-bottom-left-radius2: 5px;
+                border-bottom-right-radius2: 5px;
+                border-right: 1px solid rgb(80,80,80);
+                border-bottom2: 1px solid rgba(130,130,130,200);
                 min-width: 8ex;
                 padding: 4px;
-                color:#CCCCCC
+                color:#BBBBBB
             }
-
-            QTabBar::tab:selected, QTabBar::tab:hover {
-                background: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                            stop: 0 #666666, stop: 0.4 #555555,
-                                            stop: 0.5 #444444, stop: 1.0 #333333);
+            QTabBar::tab:hover {
+                color:white;
             }
 
             QTabBar::tab:selected {
-                border-color: #9B9B9B;
-                border-bottom-color: #C2C7CB; /* same as pane color */
+                background: rgb(50,50,50);
+                border-color2: #9B9B9B;
+                border-top-color2: rgb(50,50,50); /* same as pane color */
                 color:white;
-                border-top:0px;
+
             }""")
 ##        self.tabs.setWindowOpacity(0.9)
 ##        self.tabs.setStyleSheet("background:transparent;")

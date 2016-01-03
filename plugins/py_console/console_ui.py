@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'console.ui'
 #
-# Created: Mon Nov 23 22:49:02 2015
+# Created: Sun Jan  3 00:57:10 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!

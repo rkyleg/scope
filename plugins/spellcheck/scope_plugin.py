@@ -19,10 +19,11 @@ class Plugin(object):
         # Add button 
         btn = QtGui.QPushButton()
         btn.setIcon(QtGui.QIcon('icon.png'))
-        btn.setProperty("class",  "toolbar toolbar-individual")
+        btn.setProperty("class",  "toolbar toolbar-right toolbar-left")
         btn.setToolTip('Spellcheck the selected text')
+        btn.setSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Expanding)
         layout = self.parent.ui.fr_toolbar.layout()
-        layout.addWidget(btn,0,layout.columnCount(),QtCore.Qt.AlignLeft,1)
+        layout.addWidget(btn,0,layout.columnCount()-1,QtCore.Qt.AlignLeft,1)
         btn.clicked.connect(self.widget.toggle)
         
     def loadWidget(self):
