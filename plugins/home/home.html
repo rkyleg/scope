@@ -12,7 +12,7 @@
     
         <!--<br>-->
         <div id="logo" style="text-align:center;vertical-align:bottom">
-            <img alt="" src="../style/img/scope.png" height="50px" />
+            <img alt="" src="../style/img/scope.png" height="40px" style="vertical-align:bottom;"/>
             <span id="scope-text">Scope</span> <span id="version"> IDE {{version}}</span>
             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             <a href="filebrowser"><div class="toolbutton top_buttons" style="font-size:18px;vertical-align:bottom;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>
@@ -21,31 +21,9 @@
             <br>
         </div>
         <br><br>
-        <!---Open Files-->
-        <!--<div class="panel" style="display:block;" id="open_files2">-->
-        <!--    <span class="section-title" style="display:table-cell;padding-right:10px;">{{workspace}}</span>-->
-            
-        <!--    <span style="display:table-cell;" id="open_files">-->
-        <!--    {{files}}-->
-        <!--    </span>-->
-            <!--For Testing-->
-                <!--<a href="#" class="file" id=0>file 1</a>-->
-                <!--<a href="#" class="file" id=1>file 1</a>-->
-                <!--<a href="#" class="file" id=2>file 1</a>-->
-                <!--<a href="#" class="file current" id=3>file 4</a>-->
-                <!--<a href="#" class="file" id=4>file 1</a>-->
-        <!--</div>-->
-        
-        <!---Toolbar-->
-        <!--<div style="text-align:center;margin-top:10px;">-->
-        <!--    <a href="filebrowser"><div class="file" style="font-size:18px;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>-->
-        <!--    <a href="settings"><div class="file" style="font-size:18px;"><img alt="" src="../style/img/wrench.png" /> Settings</div></a>-->
-        <!--</div>-->
         
         <!---New Files-->
         <div class="panel">
-            <!--<a href="filebrowser"><div class="newfile" style="font-size:18px;"><img alt="" src="../style/img/file_open.png" /> Open File</div></a>-->
-            <!--<br>-->
             <span class="section-title">Create New</span><br>
             {{new_files}}
             <br>
@@ -55,7 +33,6 @@
         <!---Workspaces-->
         <div class="panel" style="vertical-align:top;">
             <span class="section-title">Workspaces</span>
-            <!--<a href="workspace:new" class="toolbutton top_buttons" ><img src="../style/img/add.png" title="New Workspace"></a>-->
             <a href="workspace:new" class="toolbutton top_buttons" title="New Workspace" style="font-weight:bold;font-size:1.2em;"> + </a>
             <br>
             {{workspaces}}
@@ -74,20 +51,6 @@
         
     </div>
 </div>
-<!--<a href="close"><span class="close" style="vertical-align:middle;"> <img alt="" src="../style/img/close_hover.png" style="height:12px;"/> close</span></a>-->
-
-  <!--<script src="hud/jquery.min.js"></script>-->
-	<!--<script src="hud/sortable.min.js"></script>-->
-	<!--<script src="../src/html.sortable.src.js"></script>-->
-	<script>
-// 		$(function() {
-// 			$('#open_files').sortable({
-// 				// forcePlaceholderSize: true,
-// 				// placeholderClass: 'col col-4 border border-maroon',
-// 				// dragImage: null
-// 			});
-// 		});
-// 	</script>
 
 <script src="home/home.js"></script>
     
