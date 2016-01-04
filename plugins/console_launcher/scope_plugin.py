@@ -25,6 +25,7 @@ class Plugin(object):
                 except:
                     pass
             
+
             if wksp_pth == None: wksp_pth=''
             if wksp_pth == '':
                 if self.parent.currentEditor().filename != None:
@@ -36,7 +37,11 @@ class Plugin(object):
                 os.system('start cmd '+wksp_pth)
             else:
                 if wksp_pth != '': wksp_pth = '--working-directory='+wksp_pth
-                subprocess.Popen(["gnome-terminal",wksp_pth])
+                # subprocess.Popen(["gnome-terminal",wksp_pth])
+                # use x-terminal-emulator which is configured by update-alternatives --config x-terminal-emulator
+                # can choose which terminal to use as default (linux only of course)
+                # TODO handle Windows terminal 
+                subprocess.Popen(["x-terminal-emulator",wksp_pth])
 ##                os.system("gnome-terminal "+wksp_pth)
             
         # Add button 
