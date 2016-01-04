@@ -4,9 +4,9 @@ _**Scope is currently in beta stage.** For more information on where this is goi
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
 ## Screenshots
-<a href="docs/img/scope_home.png" target="_blank" title="Scope Home Screen"><img src="docs/img/scope_home.png" height=200></a>
-<a href="docs/img/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="docs/img/scope_editor.png" height=200></a>
-<a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=200></a>
+<a href="docs/img/scope_home.png" target="_blank" title="Scope Home Screen"><img src="docs/img/scope_home.png" height=300></a>
+<a href="docs/img/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="docs/img/scope_editor.png" height=300></a>
+<a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=300></a>
 
 ## Features
 - Cross Platform - Linux, Windows, and Mac (not tested)
