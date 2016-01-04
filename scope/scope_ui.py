@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Sun Jan  3 21:33:51 2016
+# Created: Sun Jan  3 22:25:41 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -445,7 +445,7 @@ class Ui_Form(object):
         self.b_indent.setToolTip(_translate("Form", "Indent (tab)", None))
         self.b_indent.setProperty("class", _translate("Form", "toolbar", None))
         self.b_menu.setToolTip(_translate("Form", "Editor Menu (Ctrl + M)", None))
-        self.b_menu.setProperty("class", _translate("Form", "toolbar", None))
+        self.b_menu.setProperty("class", _translate("Form", "toolbar toolbar-left", None))
         self.b_run.setToolTip(_translate("Form", "Run (F5)", None))
         self.b_run.setProperty("class", _translate("Form", "toolbar toolbar-big", None))
         self.b_back.setToolTip(_translate("Form", "back to last file", None))

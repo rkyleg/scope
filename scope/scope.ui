@@ -848,7 +848,7 @@ border:0px;</string>
             </size>
            </property>
            <property name="class" stdset="0">
-            <string>toolbar</string>
+            <string>toolbar toolbar-left</string>
            </property>
           </widget>
          </item>
