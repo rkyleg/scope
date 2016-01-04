@@ -206,7 +206,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/editor_windows.png</normaloff>../style/img/editor_windows.png</iconset>
+          <normaloff>../style/img/left_toolbar/window_switcher.png</normaloff>../style/img/left_toolbar/window_switcher.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -232,7 +232,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/editor_new.png</normaloff>../style/img/editor_new.png</iconset>
+          <normaloff>../style/img/left_toolbar/new.png</normaloff>../style/img/left_toolbar/new.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -252,7 +252,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/editor_workspace.png</normaloff>../style/img/editor_workspace.png</iconset>
+          <normaloff>../style/img/left_toolbar/workspace.png</normaloff>../style/img/left_toolbar/workspace.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -272,7 +272,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/home.png</normaloff>../style/img/home.png</iconset>
+          <normaloff>../style/img/left_toolbar/home.png</normaloff>../style/img/left_toolbar/home.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -292,7 +292,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/settings.png</normaloff>../style/img/settings.png</iconset>
+          <normaloff>../style/img/left_toolbar/settings.png</normaloff>../style/img/left_toolbar/settings.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -428,6 +428,9 @@ padding-top:2px;
                    <height>24</height>
                   </size>
                  </property>
+                 <property name="toolTip">
+                  <string>Find in file (Ctrl + F)</string>
+                 </property>
                  <property name="styleSheet">
                   <string notr="true">background:transparent;
 border:0px;</string>
@@ -488,6 +491,9 @@ border:0px;</string>
                 <width>50</width>
                 <height>16777215</height>
                </size>
+              </property>
+              <property name="toolTip">
+               <string>goto (Ctrl + G)</string>
               </property>
               <property name="placeholderText">
                <string>goto</string>
@@ -665,8 +671,8 @@ border:0px;</string>
          <property name="margin">
           <number>0</number>
          </property>
-         <item row="0" column="9">
-          <widget class="QPushButton" name="b_run">
+         <item row="0" column="4">
+          <widget class="QPushButton" name="b_save">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
              <horstretch>0</horstretch>
@@ -674,17 +680,23 @@ border:0px;</string>
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>Run (F5)</string>
+            <string>Save (Ctrl + S)</string>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/tri_right.png</normaloff>../style/img/tri_right.png</iconset>
+             <normaloff>../style/img/editor_toolbar/save.png</normaloff>../style/img/editor_toolbar/save.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
            <property name="class" stdset="0">
-            <string>toolbar toolbar-right</string>
+            <string>toolbar toolbar-big</string>
            </property>
           </widget>
          </item>
@@ -704,7 +716,13 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/comment-light.png</normaloff>../style/img/comment-light.png</iconset>
+             <normaloff>../style/img/editor_toolbar/comment.png</normaloff>../style/img/editor_toolbar/comment.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
            <property name="class" stdset="0">
             <string>toolbar</string>
@@ -727,7 +745,13 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/indent_remove-light.png</normaloff>../style/img/indent_remove-light.png</iconset>
+             <normaloff>../style/img/editor_toolbar/unindent.png</normaloff>../style/img/editor_toolbar/unindent.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
            <property name="class" stdset="0">
             <string>toolbar</string>
@@ -750,7 +774,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/color_swatch.png</normaloff>../style/img/color_swatch.png</iconset>
+             <normaloff>../style/img/editor_toolbar/color_swatch.png</normaloff>../style/img/editor_toolbar/color_swatch.png</iconset>
            </property>
            <property name="class" stdset="0">
             <string>toolbar</string>
@@ -773,35 +797,31 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/indent-light.png</normaloff>../style/img/indent-light.png</iconset>
+             <normaloff>../style/img/editor_toolbar/indent.png</normaloff>../style/img/editor_toolbar/indent.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
            <property name="class" stdset="0">
             <string>toolbar</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="4">
-          <widget class="QPushButton" name="b_save">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+         <item row="0" column="10">
+          <spacer name="horizontalSpacer_2">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
-           <property name="toolTip">
-            <string>Save (Ctrl + S)</string>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>2</width>
+             <height>2</height>
+            </size>
            </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/save.png</normaloff>../style/img/save.png</iconset>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-big</string>
-           </property>
-          </widget>
+          </spacer>
          </item>
          <item row="0" column="2">
           <widget class="QPushButton" name="b_menu">
@@ -819,25 +839,47 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/menu-light.png</normaloff>../style/img/menu-light.png</iconset>
+             <normaloff>../style/img/editor_toolbar/menu.png</normaloff>../style/img/editor_toolbar/menu.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
            </property>
            <property name="class" stdset="0">
-            <string>toolbar toolbar-left</string>
+            <string>toolbar</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="10">
-          <spacer name="horizontalSpacer_2">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
+         <item row="0" column="9">
+          <widget class="QPushButton" name="b_run">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
            </property>
-           <property name="sizeHint" stdset="0">
+           <property name="toolTip">
+            <string>Run (F5)</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/editor_toolbar/run.png</normaloff>../style/img/editor_toolbar/run.png</iconset>
+           </property>
+           <property name="iconSize">
             <size>
-             <width>2</width>
-             <height>2</height>
+             <width>18</width>
+             <height>18</height>
             </size>
            </property>
-          </spacer>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-big</string>
+           </property>
+          </widget>
          </item>
         </layout>
        </widget>

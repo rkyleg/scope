@@ -18,10 +18,11 @@ class NewMenu(QtGui.QMenu):
         a=self.addAction(icn,'open')
         a.setData('open')
         
+        self.addSeparator()
+        
         # Blank Text
         icn = QtGui.QIcon(parent.iconPath+'/files/text.png')
         self.addAction(icn,'text')
-        self.addSeparator()
         
         # Add Favorites First
         for lang in parent.settings['prog_lang']:
@@ -85,11 +86,11 @@ class WorkspaceMenu(QtGui.QMenu):
                 self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace.png'),wsp)
                 
         self.addSeparator()
+        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.renameWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_edit.png'),'Rename Workspace')
         self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
         
         self.addSeparator()
-        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.saveWact.setDisabled(1)
         self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
         self.closeWact.setDisabled(1)

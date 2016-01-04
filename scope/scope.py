@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.20-dev'
+__version__ = '0.3.21-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -56,6 +56,7 @@ class Scope(QtGui.QWidget):
         self.fileCount = -1
         self.ui.b_closetab.hide()
         self.saveEnabled = 1   # Enable saving to local file
+        self.last_editable_file = None # Last file from the editor
         
         # Workspace
         self.currentWorkspace = None
@@ -811,10 +812,12 @@ class Scope(QtGui.QWidget):
                 self.ui.fr_toolbar.hide()
                 self.ui.fr_topleft.hide()
                 self.ui.b_closetab.hide()
-                
                 # Back if current tab
-                if self.workspaceCount > 0 and len(self.recentTabs) > 1:
+                if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
                     self.ui.b_back.show()
+                    
+            elif wdg.filename != None:
+                self.last_editable_file = wdg.id
         
             # Check for file changes (Disabled for now)
 ##            self.checkFileChanges()
@@ -915,11 +918,13 @@ class Scope(QtGui.QWidget):
         return ok
 
     def back_to_editor(self):
-        if len(self.recentTabs) > 1:
-            if self.fileD[self.recentTabs[-2]]['filename'] != None:
-                self.changeTab(self.recentTabs[-2])
-            else:
-                self.showTabspace()
+        if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
+            self.changeTab(self.last_editable_file)
+##        if len(self.recentTabs) > 1:
+##            if self.fileD[self.recentTabs[-2]]['filename'] != None:
+##                self.changeTab(self.recentTabs[-2])
+##            else:
+##                self.showTabspace()
         else:
             self.showTabspace()
 

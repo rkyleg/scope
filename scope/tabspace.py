@@ -275,13 +275,8 @@ class TabSpace(object):
                 it reads QTabBar _not_ QTabWidget */
             QTabBar::tab {
                 background: transparent;
-                border2: 2px solid #C4C4C3;
                 border:0px;
-                border-top-color2: #C2C7CB; /* same as the pane color */
-                border-bottom-left-radius2: 5px;
-                border-bottom-right-radius2: 5px;
                 border-right: 1px solid rgb(80,80,80);
-                border-bottom2: 1px solid rgba(130,130,130,200);
                 min-width: 8ex;
                 padding: 4px;
                 color:#BBBBBB
@@ -292,8 +287,6 @@ class TabSpace(object):
 
             QTabBar::tab:selected {
                 background: rgb(50,50,50);
-                border-color2: #9B9B9B;
-                border-top-color2: rgb(50,50,50); /* same as pane color */
                 color:white;
 
             }""")
