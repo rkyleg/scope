@@ -38,12 +38,12 @@ background:transparent;
 }
 QListWidget::item {
 color:white;
+border-bottom:1px solid rgba(130,130,130,200);
+border-right:1px solid rgba(130,130,130,200);
 }
 QListWidget::item:selected {
 	background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));
 color:white;
-border-top-right-radius:5px;
-border-bottom-right-radius:5px;
 }</string>
       </property>
       <property name="frameShape">

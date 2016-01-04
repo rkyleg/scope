@@ -31,7 +31,6 @@ QMenu {
 QMenu::item:selected {
     background-color:rgb(0,85,127);
 }
-    
 
 /*---Left Plugins*/
 QTabWidget#tab_left::pane {

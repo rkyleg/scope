@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outputText.ui'
 #
-# Created: Thu Jul 30 01:27:47 2015
+# Created: Sun Jan  3 22:20:45 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -33,10 +33,10 @@ class Ui_OutWidget(object):
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
         self.fr_cmd = QtGui.QFrame(OutWidget)
         self.fr_cmd.setStyleSheet(_fromUtf8("QFrame#fr_cmd{\n"
-"\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(82, 82, 82, 255), stop:0.0590909 rgba(111, 111, 111, 255), stop:0.922727 rgba(99, 99, 99, 255), stop:1 rgba(151, 151, 151, 255));\n"
+"background:black;\n"
 "color:white;\n"
 "border:0px;\n"
+"border-bottom:1px solid rgba(130,130,130,200);\n"
 "}"))
         self.fr_cmd.setFrameShape(QtGui.QFrame.NoFrame)
         self.fr_cmd.setFrameShadow(QtGui.QFrame.Raised)
@@ -54,11 +54,11 @@ class Ui_OutWidget(object):
         self.le_cmd.setObjectName(_fromUtf8("le_cmd"))
         self.gridLayout_2.addWidget(self.le_cmd, 0, 1, 1, 1)
         self.label_2 = QtGui.QLabel(self.fr_cmd)
-        self.label_2.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
+        self.label_2.setStyleSheet(_fromUtf8("color:rgb(180,180,180);"))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         self.gridLayout_2.addWidget(self.label_2, 0, 2, 1, 1)
         self.label = QtGui.QLabel(self.fr_cmd)
-        self.label.setStyleSheet(_fromUtf8("color:rgb(200,200,200);"))
+        self.label.setStyleSheet(_fromUtf8("color:rgb(180,180,180);"))
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
         self.le_args = QtGui.QLineEdit(self.fr_cmd)
@@ -70,14 +70,21 @@ class Ui_OutWidget(object):
         self.gridLayout.addWidget(self.fr_cmd, 1, 1, 1, 1)
         self.l_title = QtGui.QLabel(OutWidget)
         self.l_title.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
-"color:white;border-top-right-radius:5px;border-top-left-radius:5px;padding:3px;"))
+"color:white;\n"
+"padding:3px;\n"
+"border:1px solid rgba(130,130,130,200);"))
         self.l_title.setText(_fromUtf8(""))
         self.l_title.setWordWrap(True)
         self.l_title.setObjectName(_fromUtf8("l_title"))
         self.gridLayout.addWidget(self.l_title, 0, 0, 1, 2)
         self.frame_2 = QtGui.QFrame(OutWidget)
-        self.frame_2.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0.00995025 rgba(94, 94, 94, 255), stop:0.174129 rgba(125, 125, 125, 255), stop:0.890547 rgba(164, 164, 164, 255), stop:1 rgba(188, 188, 188, 255));\n"
+        self.frame_2.setStyleSheet(_fromUtf8("QFrame#frame_2 {\n"
+"border-left:1px solid rgba(130,130,130,200);\n"
+"border-right:1px solid rgba(130,130,130,200);\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
+"}\n"
+"QPushButton,QToolButton {\n"
+"background:transparent;\n"
 "    border:0px;\n"
 "    padding:3px;\n"
 "    padding-left:6px;\n"
@@ -85,21 +92,18 @@ class Ui_OutWidget(object):
 "    width:30px;\n"
 "}\n"
 "QPushButton:hover,QToolButton:hover {\n"
-"    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0.00995025 rgba(114, 114, 114, 255), stop:0.174129 rgba(145, 145, 145, 255), stop:0.890547 rgba(184, 184, 184, 255), stop:1 rgba(208, 208, 208, 255));\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:1, stop:0 rgba(75, 75, 75, 100), stop:0.154545 rgba(106, 106, 106, 100), stop:0.831818 rgba(134, 134, 134, 100), stop:1 rgba(142, 142, 142, 100));\n"
 "}"))
         self.frame_2.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame_2.setFrameShadow(QtGui.QFrame.Raised)
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.gridLayout_3 = QtGui.QGridLayout(self.frame_2)
         self.gridLayout_3.setSpacing(0)
-        self.gridLayout_3.setContentsMargins(0, 0, 0, 2)
+        self.gridLayout_3.setContentsMargins(1, 0, 1, 2)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.b_stop = QtGui.QPushButton(self.frame_2)
         self.b_stop.setMinimumSize(QtCore.QSize(0, 30))
         self.b_stop.setMaximumSize(QtCore.QSize(30, 16777215))
-        self.b_stop.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    border-bottom:1px solid rgb(100,100,100);\n"
-"}"))
         self.b_stop.setText(_fromUtf8(""))
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -121,9 +125,6 @@ class Ui_OutWidget(object):
         self.b_run = QtGui.QPushButton(self.frame_2)
         self.b_run.setMinimumSize(QtCore.QSize(0, 30))
         self.b_run.setMaximumSize(QtCore.QSize(30, 16777215))
-        self.b_run.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    border-bottom:1px solid rgb(100,100,100);\n"
-"}"))
         self.b_run.setText(_fromUtf8(""))
         icon2 = QtGui.QIcon()
         icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
@@ -134,11 +135,6 @@ class Ui_OutWidget(object):
         self.b_save.setEnabled(True)
         self.b_save.setMinimumSize(QtCore.QSize(0, 30))
         self.b_save.setMaximumSize(QtCore.QSize(30, 16777215))
-        self.b_save.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    border-top:1px solid rgb(100,100,100);\n"
-"    border-bottom-right-radius:5px;\n"
-"    border-bottom-left-radius:5px;\n"
-"}"))
         self.b_save.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
