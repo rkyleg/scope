@@ -11,13 +11,15 @@ from PyQt4.QtGui import QWidget, QFileDialog
 
 
 class PyGit(QtGui.QWidget):
-    def __init__(self, parent=None, title=None, folder=None):
+
+    def __init__(self, parent=None):
         """
         :type parent: Scope
 
         """
         QtGui.QWidget.__init__(self, parent)
         self.ide = parent
+
         self.title = title
         self.folder = folder
         # self.join = os.path.join
@@ -32,6 +34,7 @@ class PyGit(QtGui.QWidget):
             self.repo = Repo(self.ide.scopePath)
         else:
             self.repo = Repo(self.ide.currentWorkspace)
+
         print self.repo.active_branch
         self.ui.lblBranchText.setText(str(self.repo.head.reference))
         self.ui.lblWorkingDirText.setText(self.repo.working_dir)
@@ -46,11 +49,12 @@ class PyGit(QtGui.QWidget):
         #--- Signals
         self.ui.btnGitStatus.clicked.connect(self.get_status)
         self.ui.btnUpdateWorkingDir.clicked.connect(self.working_dir)
-        
+
     def get_editor_file_name(self):
         wdg = self.ide.ui.sw_main.widget(self.ide.ui.sw_main.currentIndex())
         filename = wdg.filename
         return filename
+
 
     def commit(self):
         pass
@@ -75,3 +79,4 @@ class PyGit(QtGui.QWidget):
         print dir
         file = str(QFileDialog.getExistingDirectory(self, "Select Directory"))
         self.ui.lblWorkingDirText.setText(file)
+
