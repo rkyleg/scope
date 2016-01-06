@@ -33,10 +33,32 @@ QMenu::item:selected {
 }
 
 /*---Left Plugins*/
-QTabWidget#tab_left::pane {
+QTabWidget.tab_left::pane {
     border:0px;
     border-radius:5px;
+    background: rgb(40,40,40);
 }
+
+/*QTabWidget,QTabBar{*/
+/*    background:rgba(40,40,40);*/
+/*}*/
+/*QTabBar::tab,QTabWidget::tab  {*/
+/*    background: transparent;*/
+/*    border:0px;*/
+/*    border-right: 1px solid rgb(80,80,80);*/
+/*    min-width: 8ex;*/
+/*    padding: 4px;*/
+/*    color:#BBBBBB;*/
+/*    background: rgb(40,40,40);*/
+/*}*/
+
+/*QTabBar::tab:selected {*/
+/*    background: rgb(50,50,50);*/
+/*    color:white;*/
+/*}*/
+/*QTabBar::tab:hover {*/
+/*    color:white;*/
+/*}*/
 
 QTreeView::branch:has-children:!has-siblings:closed,
 QTreeView::branch:closed:has-children:has-siblings {

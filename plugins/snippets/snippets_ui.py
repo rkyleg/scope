@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Thu Jul 30 01:26:52 2015
+# Created: Wed Jan  6 03:00:35 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,10 +26,10 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(519, 114)
+        Form.resize(573, 163)
         Form.setMinimumSize(QtCore.QSize(0, 20))
         self.gridLayout_3 = QtGui.QGridLayout(Form)
-        self.gridLayout_3.setMargin(1)
+        self.gridLayout_3.setMargin(0)
         self.gridLayout_3.setSpacing(0)
         self.gridLayout_3.setObjectName(_fromUtf8("gridLayout_3"))
         self.split_main = QtGui.QSplitter(Form)
@@ -65,7 +65,10 @@ class Ui_Form(object):
         self.b_reload.setObjectName(_fromUtf8("b_reload"))
         self.gridLayout.addWidget(self.b_reload, 0, 0, 1, 1)
         self.li_snips = QtGui.QListWidget(self.frame)
-        self.li_snips.setStyleSheet(_fromUtf8("QListWidget {background:transparent;}"))
+        self.li_snips.setStyleSheet(_fromUtf8("QListWidget {background:transparent;border-top:1px solid rgb(80,80,80);}\n"
+"QListWidget::item {\n"
+"border-bottom:1px solid rgb(80,80,80);\n"
+"}"))
         self.li_snips.setFrameShape(QtGui.QFrame.NoFrame)
         self.li_snips.setProperty("isWrapping", False)
         self.li_snips.setResizeMode(QtGui.QListView.Adjust)
@@ -89,51 +92,72 @@ class Ui_Form(object):
         self.frame_2.setObjectName(_fromUtf8("frame_2"))
         self.gridLayout_2 = QtGui.QGridLayout(self.frame_2)
         self.gridLayout_2.setMargin(0)
-        self.gridLayout_2.setHorizontalSpacing(4)
-        self.gridLayout_2.setVerticalSpacing(0)
+        self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
-        self.b_new = QtGui.QPushButton(self.frame_2)
-        self.b_new.setMaximumSize(QtCore.QSize(26, 16777215))
-        self.b_new.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
-"    border-top:1px solid rgb(100,100,100);\n"
+        self.te_code = QtGui.QPlainTextEdit(self.frame_2)
+        self.te_code.setStyleSheet(_fromUtf8("background:transparent;"))
+        self.te_code.setFrameShape(QtGui.QFrame.NoFrame)
+        self.te_code.setReadOnly(True)
+        self.te_code.setObjectName(_fromUtf8("te_code"))
+        self.gridLayout_2.addWidget(self.te_code, 0, 2, 6, 1)
+        self.frame_3 = QtGui.QFrame(self.frame_2)
+        self.frame_3.setStyleSheet(_fromUtf8("QFrame#frame_3 {\n"
+"border-left:1px solid rgba(130,130,130,200);\n"
+"border-right:1px solid rgba(130,130,130,200);\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:0, y2:1, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
+"}\n"
+"QPushButton,QToolButton {\n"
+"background:transparent;\n"
+"    border:0px;\n"
+"    padding:3px;\n"
+"    padding-left:6px;\n"
+"    padding-right:6px;\n"
+"    width:30px;\n"
+"}\n"
+"QPushButton:hover,QToolButton:hover {\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:1, stop:0 rgba(75, 75, 75, 100), stop:0.154545 rgba(106, 106, 106, 100), stop:0.831818 rgba(134, 134, 134, 100), stop:1 rgba(142, 142, 142, 100));\n"
 "}"))
-        self.b_new.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/new.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_new.setIcon(icon1)
-        self.b_new.setObjectName(_fromUtf8("b_new"))
-        self.gridLayout_2.addWidget(self.b_new, 3, 0, 1, 1)
-        self.b_insert = QtGui.QPushButton(self.frame_2)
-        self.b_insert.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.frame_3.setFrameShape(QtGui.QFrame.NoFrame)
+        self.frame_3.setFrameShadow(QtGui.QFrame.Raised)
+        self.frame_3.setObjectName(_fromUtf8("frame_3"))
+        self.gridLayout_4 = QtGui.QGridLayout(self.frame_3)
+        self.gridLayout_4.setMargin(0)
+        self.gridLayout_4.setSpacing(0)
+        self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
+        self.b_insert = QtGui.QPushButton(self.frame_3)
+        self.b_insert.setMaximumSize(QtCore.QSize(28, 16777215))
         self.b_insert.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-bottom:1px solid rgb(100,100,100);\n"
 "    border-top-right-radius:5px;\n"
 "    border-top-left-radius:5px;\n"
 "}"))
         self.b_insert.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_insert.setIcon(icon2)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/up.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_insert.setIcon(icon1)
         self.b_insert.setObjectName(_fromUtf8("b_insert"))
-        self.gridLayout_2.addWidget(self.b_insert, 0, 0, 1, 1)
-        self.b_edit = QtGui.QPushButton(self.frame_2)
-        self.b_edit.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.gridLayout_4.addWidget(self.b_insert, 0, 0, 1, 1)
+        self.b_new = QtGui.QPushButton(self.frame_3)
+        self.b_new.setMaximumSize(QtCore.QSize(28, 16777215))
+        self.b_new.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
+"    border-top:1px solid rgb(100,100,100);\n"
+"}"))
+        self.b_new.setText(_fromUtf8(""))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/new.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_new.setIcon(icon2)
+        self.b_new.setObjectName(_fromUtf8("b_new"))
+        self.gridLayout_4.addWidget(self.b_new, 2, 0, 1, 1)
+        self.b_edit = QtGui.QPushButton(self.frame_3)
+        self.b_edit.setMaximumSize(QtCore.QSize(28, 16777215))
         self.b_edit.setText(_fromUtf8(""))
         icon3 = QtGui.QIcon()
         icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/edit.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_edit.setIcon(icon3)
         self.b_edit.setObjectName(_fromUtf8("b_edit"))
-        self.gridLayout_2.addWidget(self.b_edit, 1, 0, 1, 1)
-        self.te_code = QtGui.QPlainTextEdit(self.frame_2)
-        self.te_code.setStyleSheet(_fromUtf8("background:transparent;"))
-        self.te_code.setFrameShape(QtGui.QFrame.NoFrame)
-        self.te_code.setReadOnly(True)
-        self.te_code.setObjectName(_fromUtf8("te_code"))
-        self.gridLayout_2.addWidget(self.te_code, 0, 1, 6, 1)
-        spacerItem = QtGui.QSpacerItem(20, 2, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.gridLayout_2.addItem(spacerItem, 5, 0, 1, 1)
-        self.b_fldr = QtGui.QPushButton(self.frame_2)
-        self.b_fldr.setMaximumSize(QtCore.QSize(26, 16777215))
+        self.gridLayout_4.addWidget(self.b_edit, 1, 0, 1, 1)
+        self.b_fldr = QtGui.QPushButton(self.frame_3)
+        self.b_fldr.setMaximumSize(QtCore.QSize(28, 16777215))
         self.b_fldr.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
 "    border-top:1px solid rgb(100,100,100);\n"
 "    border-bottom-right-radius:5px;\n"
@@ -144,7 +168,10 @@ class Ui_Form(object):
         icon4.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/folder_open.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         self.b_fldr.setIcon(icon4)
         self.b_fldr.setObjectName(_fromUtf8("b_fldr"))
-        self.gridLayout_2.addWidget(self.b_fldr, 4, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.b_fldr, 3, 0, 1, 1)
+        spacerItem = QtGui.QSpacerItem(20, 2, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.gridLayout_4.addItem(spacerItem, 4, 0, 1, 1)
+        self.gridLayout_2.addWidget(self.frame_3, 1, 0, 1, 2)
         self.gridLayout_3.addWidget(self.split_main, 0, 0, 1, 1)
 
         self.retranslateUi(Form)
@@ -156,8 +183,8 @@ class Ui_Form(object):
         self.le_search.setPlaceholderText(_translate("Form", "search", None))
         self.cb_ext.setItemText(0, _translate("Form", "All", None))
         self.b_reload.setToolTip(_translate("Form", "reload snippets directory", None))
-        self.b_new.setToolTip(_translate("Form", "new snippet", None))
         self.b_insert.setToolTip(_translate("Form", "insert into current editor", None))
+        self.b_new.setToolTip(_translate("Form", "new snippet", None))
         self.b_edit.setToolTip(_translate("Form", "edit snippet", None))
         self.b_fldr.setToolTip(_translate("Form", "open snippet directory", None))
 
