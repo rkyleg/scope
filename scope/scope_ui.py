@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Wed Jan  6 02:51:21 2016
+# Created: Wed Jan  6 03:03:50 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -91,6 +91,9 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.sw_bottom.sizePolicy().hasHeightForWidth())
         self.sw_bottom.setSizePolicy(sizePolicy)
+        self.sw_bottom.setStyleSheet(_fromUtf8("QStackedWidget#sw_bottom {\n"
+"border-top:1px solid rgb(80,80,80);\n"
+"}"))
         self.sw_bottom.setObjectName(_fromUtf8("sw_bottom"))
         self.page = QtGui.QWidget()
         self.page.setObjectName(_fromUtf8("page"))
