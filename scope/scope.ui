@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1048</width>
-    <height>500</height>
+    <width>938</width>
+    <height>488</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -206,7 +206,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/left_toolbar/window_switcher.png</normaloff>../style/img/left_toolbar/window_switcher.png</iconset>
+          <normaloff>../style/img/window_switcher.png</normaloff>../style/img/window_switcher.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -232,7 +232,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/left_toolbar/new.png</normaloff>../style/img/left_toolbar/new.png</iconset>
+          <normaloff>../style/img/new_file.png</normaloff>../style/img/new_file.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -252,7 +252,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/left_toolbar/workspace.png</normaloff>../style/img/left_toolbar/workspace.png</iconset>
+          <normaloff>../style/img/workspace.png</normaloff>../style/img/workspace.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -272,7 +272,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/left_toolbar/home.png</normaloff>../style/img/left_toolbar/home.png</iconset>
+          <normaloff>../style/img/home.png</normaloff>../style/img/home.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -292,7 +292,7 @@ padding-top:2px;
         </property>
         <property name="icon">
          <iconset>
-          <normaloff>../style/img/left_toolbar/settings.png</normaloff>../style/img/left_toolbar/settings.png</iconset>
+          <normaloff>../style/img/settings.png</normaloff>../style/img/settings.png</iconset>
         </property>
         <property name="iconSize">
          <size>
@@ -433,7 +433,8 @@ padding-top:2px;
                  </property>
                  <property name="styleSheet">
                   <string notr="true">background:transparent;
-border:0px;</string>
+border:0px;
+padding-left:4px;</string>
                  </property>
                  <property name="placeholderText">
                   <string>find</string>
@@ -453,7 +454,7 @@ border:0px;</string>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>32</width>
+                   <width>28</width>
                    <height>16777215</height>
                   </size>
                  </property>
@@ -494,6 +495,9 @@ border:0px;</string>
               </property>
               <property name="toolTip">
                <string>goto (Ctrl + G)</string>
+              </property>
+              <property name="styleSheet">
+               <string notr="true">padding-left:4px;</string>
               </property>
               <property name="placeholderText">
                <string>goto</string>
@@ -687,7 +691,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/save.png</normaloff>../style/img/editor_toolbar/save.png</iconset>
+             <normaloff>../style/img/save.png</normaloff>../style/img/save.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -716,7 +720,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/comment.png</normaloff>../style/img/editor_toolbar/comment.png</iconset>
+             <normaloff>../style/img/comment.png</normaloff>../style/img/comment.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -745,7 +749,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/unindent.png</normaloff>../style/img/editor_toolbar/unindent.png</iconset>
+             <normaloff>../style/img/unindent.png</normaloff>../style/img/unindent.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -774,7 +778,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/color_swatch.png</normaloff>../style/img/editor_toolbar/color_swatch.png</iconset>
+             <normaloff>../style/img/color_swatch.png</normaloff>../style/img/color_swatch.png</iconset>
            </property>
            <property name="class" stdset="0">
             <string>toolbar</string>
@@ -797,7 +801,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/indent.png</normaloff>../style/img/editor_toolbar/indent.png</iconset>
+             <normaloff>../style/img/indent.png</normaloff>../style/img/indent.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -839,7 +843,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/menu.png</normaloff>../style/img/editor_toolbar/menu.png</iconset>
+             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -868,7 +872,7 @@ border:0px;</string>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/editor_toolbar/run.png</normaloff>../style/img/editor_toolbar/run.png</iconset>
+             <normaloff>../style/img/run.png</normaloff>../style/img/run.png</iconset>
            </property>
            <property name="iconSize">
             <size>

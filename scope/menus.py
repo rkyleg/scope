@@ -74,6 +74,10 @@ class WorkspaceMenu(QtGui.QMenu):
         self.setIcon(QtGui.QIcon(self.parent.iconPath+'workspace.png'))
         self.loadMenu()
         self.triggered.connect(self.loadWorkspace)
+        
+        fnt = self.font()
+        fnt.setPointSize(11)
+        self.setFont(fnt)
     
     def loadMenu(self):
         self.clear()

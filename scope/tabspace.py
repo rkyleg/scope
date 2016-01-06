@@ -398,7 +398,7 @@ class TabSpace(object):
 ##        self.tabs.removeTab(ind)
     
     def show(self):
-        h=200 # default height
+        h=int(self.ide.settings['window']['window_switcher']['height']) # default height
         if self.ide != None:
             g=self.ide.geometry()
             

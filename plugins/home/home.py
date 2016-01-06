@@ -117,7 +117,7 @@ class Home(object):
             if os.path.exists(self.IDE.settingPath+'/workspaces'):
                 for w in sorted(os.listdir(self.IDE.settingPath+'/workspaces'),key=lambda x: x.lower()):
     ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
-                    wksp += '<a href="workspace:'+w+'"><div class="newfile"><img src="'+icn_wksp+'"> '+w+'</div></a> '
+                    wksp += '<a href="workspace:'+w+'"><div class="newfile"><img class="file-icon" src="'+icn_wksp+'"> '+w+'</div></a> '
 
             cur_wksp = self.IDE.currentWorkspace
             if cur_wksp == None: cur_wksp = ''

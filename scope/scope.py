@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.21-dev'
+__version__ = '0.3.22-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1446,6 +1446,8 @@ class Scope(QtGui.QWidget):
             else:
                 self.workspaceSave(str(resp))
                 self.workspaceOpen(str(resp))
+                
+                self.workspaceMenu.loadMenu()
     
     def workspaceRename(self,wksp=None):
         if os.path.exists(self.settingPath+'/workspaces'):
@@ -1462,7 +1464,7 @@ class Scope(QtGui.QWidget):
                         self.workspaceClose(owskp)
                     npth = self.settingPath+'/workspaces/'+str(resp)
                     os.rename(pth,npth)
-                    self.loadMenu()
+                    self.workspaceMenu.loadMenu()
                     self.workspaceOpen(str(resp))
         else:
             QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to rename')
@@ -1500,8 +1502,9 @@ class Scope(QtGui.QWidget):
         if ok:
             self.Events.workspaceClosed.emit(wksp)
             self.workspaces.pop(str(wksp))
-            self.workspaceMenu.saveWact.setDisabled(1)
-            self.workspaceMenu.closeWact.setDisabled(1)
+            if len(self.workspaces) == 0:
+                self.workspaceMenu.saveWact.setDisabled(1)
+                self.workspaceMenu.closeWact.setDisabled(1)
             
         return ok
 
