@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Wed Jan  6 03:03:50 2016
+# Created: Thu Jan  7 00:18:15 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!

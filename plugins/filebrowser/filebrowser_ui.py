@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'filebrowser.ui'
 #
-# Created: Thu Aug  6 21:41:34 2015
+# Created: Thu Jan  7 00:17:18 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -51,10 +51,9 @@ class Ui_Form(object):
         self.gridLayout.addWidget(self.tr_dir, 1, 0, 1, 2)
         self.frame = QtGui.QFrame(Form)
         self.frame.setStyleSheet(_fromUtf8("QFrame#frame {\n"
-"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(32, 32, 32, 255), stop:0.0590909 rgba(41, 41, 41, 255), stop:0.922727 rgba(59, 59,59, 255), stop:1 rgba(71, 71, 71, 255));\n"
-"border-bottom:1px solid rgb(70,70,70);\n"
-"border-top-left-radius:3px;\n"
-"border-top-right-radius:3px;\n"
+"        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
+"        border-bottom:1px solid rgba(130,130,130,200);\n"
+"\n"
 "}"))
         self.frame.setFrameShape(QtGui.QFrame.NoFrame)
         self.frame.setFrameShadow(QtGui.QFrame.Raised)

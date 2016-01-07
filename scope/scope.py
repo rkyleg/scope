@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.3.22-dev'
+__version__ = '0.4.0-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -184,7 +184,7 @@ class Scope(QtGui.QWidget):
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
         self.ui.sw_main.currentChanged.connect(self.change_tab)
-        self.ui.b_show_tabs.clicked.connect(self.showTabsClicked)
+        self.ui.b_show_tabs.clicked.connect(self.toggleWindowSwitcher)
         self.ui.b_settings.clicked.connect(self.openSettings)
         
         self.ui.b_home.clicked.connect(self.showHome)
@@ -206,8 +206,8 @@ class Scope(QtGui.QWidget):
         self.ui.b_back.clicked.connect(self.back_to_editor)
 ##        self.fileOpenD={}
         
-        # Create Tabspace
-        self.createTabspace()
+        # Create Window Switcher
+        self.createWindowSwitcher()
         
         #--- Key Shortcuts
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_E,self,self.editorToggleComment) #Toggle Comment
@@ -231,7 +231,7 @@ class Scope(QtGui.QWidget):
         
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleBottomPlugin) # Hide Bottom Tab
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F4,self,self.nextBottomPlugin) # Show next bottom tab
-        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.showTabspace) # Show Tabbar
+        QtGui.QShortcut(QtCore.Qt.Key_F1,self,self.toggleWindowSwitcher) # Show Tabbar
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
         
@@ -439,7 +439,7 @@ class Scope(QtGui.QWidget):
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 
                 # Check if in current workspace and add tab if not
-                wksp_tab = self.tabspace.tabs.currentWidget()
+                wksp_tab = self.WindowSwitcher.tabs.currentWidget()
                 if wksp_tab != None:
                     if not file_id in wksp_tab.tabD:
                         self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
@@ -920,13 +920,8 @@ class Scope(QtGui.QWidget):
     def back_to_editor(self):
         if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
             self.changeTab(self.last_editable_file)
-##        if len(self.recentTabs) > 1:
-##            if self.fileD[self.recentTabs[-2]]['filename'] != None:
-##                self.changeTab(self.recentTabs[-2])
-##            else:
-##                self.showTabspace()
         else:
-            self.showTabspace()
+            self.toggleWindowSwitcher()
 
     #---Editor Tools
     def editorSave(self):
@@ -1308,16 +1303,12 @@ class Scope(QtGui.QWidget):
         if self.HomeWidget != None:
             self.HomeWidget.toggleHome()
     
-    def showTabsClicked(self,checked):
-        if self.ui.b_show_tabs.isChecked() and not self.tabspace.tabs.isVisible():
-            self.tabspace.toggle(mode=checked,ignore_button=1)
+    def toggleWindowSwitcher(self):
+        self.WindowSwitcher.toggle()
     
-    def showTabspace(self):
-        self.tabspace.toggle()
-    
-    def createTabspace(self):
-        import tabspace
-        self.tabspace = tabspace.TabSpace(parent=self)
+    def createWindowSwitcher(self):
+        import window_switcher
+        self.WindowSwitcher = window_switcher.WindowSwitcher(parent=self)
     
     #---Shortcuts
     def findFocus(self):
@@ -1376,8 +1367,8 @@ class Scope(QtGui.QWidget):
         # Load workspace
         if wksp in self.workspaces: # and wksp != None:
             self.Events.workspaceChanged.emit(wksp)
-            self.tabspace.show()
-            self.tabspace.tabs.setCurrentWidget(self.workspaces[wksp]['widget'])
+            self.WindowSwitcher.show()
+            self.WindowSwitcher.tabs.setCurrentWidget(self.workspaces[wksp]['widget'])
         else:
             self.workspaceCount +=1
             
@@ -1398,8 +1389,8 @@ class Scope(QtGui.QWidget):
             self.currentWorkspace=wksp
             wD = self.workspaces[wksp]
 
-            # Add workspace to tabspace
-            wD['widget'] = self.tabspace.addWorkspace(wksp)
+            # Add workspace to window switcher
+            wD['widget'] = self.WindowSwitcher.addWorkspace(wksp)
             wD['type'] = wtype
             
             # Load Files
@@ -1426,14 +1417,14 @@ class Scope(QtGui.QWidget):
             self.workspaceMenu.closeWact.setDisabled(0)
             
             if show_tabs:
-                self.showTabspace()
+                self.toggleWindowSwitcher()
 
             self.Events.workspaceOpened.emit(wksp)
     
     def addWorkspaceEditor(self,file_id,title,filename,editor=''):
         if self.currentWorkspace == None:
             self.workspaceOpen(None,show_tabs=0)
-        tab = self.tabspace.tabs.currentWidget().addEditortab(file_id,title,filename,editor)
+        tab = self.WindowSwitcher.tabs.currentWidget().addEditortab(file_id,title,filename,editor)
         if not tab in self.fileD[file_id]['tabs']:
             self.fileD[file_id]['tabs'].append(tab)
     
