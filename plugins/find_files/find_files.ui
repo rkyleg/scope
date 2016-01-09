@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2" rowstretch="0">
    <property name="margin">
-    <number>4</number>
+    <number>0</number>
    </property>
    <property name="spacing">
     <number>4</number>
@@ -38,7 +38,11 @@
       <item row="2" column="0" colspan="3">
        <widget class="QTreeWidget" name="tr_results">
         <property name="styleSheet">
-         <string notr="true"> QTreeWidget::branch:has-siblings:!adjoins-item {
+         <string notr="true"> QTreeWidget {
+border:0px;
+outline:none;
+}
+QTreeWidget::branch:has-siblings:!adjoins-item {
      border-image: url(style/img/none.png) 0;
  }
  QTreeWidget::branch:has-siblings:adjoins-item {
@@ -71,6 +75,30 @@
       </item>
       <item row="0" column="0" colspan="3">
        <widget class="QFrame" name="frame_3">
+        <property name="maximumSize">
+         <size>
+          <width>16777215</width>
+          <height>26</height>
+         </size>
+        </property>
+        <property name="styleSheet">
+         <string notr="true">QFrame#frame_3 {
+background:rgb(40,40,40);
+border-bottom:1px solid rgba(130,130,130,200);
+}
+QLineEdit {
+border:0px;
+border-left:1px solid rgba(130,130,130,200);
+background:transparent;
+}
+QPushButton {
+background:transparent;
+outline:0;
+}
+QPushButton:hover {
+background:rgba(100,100,100,100)
+}</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
         </property>
@@ -78,53 +106,55 @@
          <enum>QFrame::Raised</enum>
         </property>
         <layout class="QGridLayout" name="gridLayout_4">
-         <property name="margin">
+         <property name="leftMargin">
           <number>0</number>
+         </property>
+         <property name="topMargin">
+          <number>0</number>
+         </property>
+         <property name="rightMargin">
+          <number>0</number>
+         </property>
+         <property name="bottomMargin">
+          <number>1</number>
          </property>
          <property name="spacing">
           <number>2</number>
          </property>
-         <item row="0" column="0">
-          <widget class="QPushButton" name="b_browse_2">
+         <item row="0" column="5">
+          <widget class="QLineEdit" name="le_search">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+             <horstretch>2</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
            <property name="toolTip">
-            <string>search settings</string>
+            <string>Search Term</string>
            </property>
            <property name="text">
             <string/>
            </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../style/img/wrench.png</normaloff>../../style/img/wrench.png</iconset>
-           </property>
-           <property name="checkable">
-            <bool>true</bool>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="b_browse">
-           <property name="toolTip">
-            <string>select a path</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../../style/img/file_open.png</normaloff>../../style/img/file_open.png</iconset>
+           <property name="placeholderText">
+            <string>search term</string>
            </property>
           </widget>
          </item>
          <item row="0" column="3">
           <widget class="QLineEdit" name="le_path">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>4</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="toolTip">
             <string>Path to search (recursively)</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QLineEdit {
+border-left:0px;
+}</string>
            </property>
            <property name="placeholderText">
             <string>path</string>
@@ -134,7 +164,7 @@
          <item row="0" column="4">
           <widget class="QLineEdit" name="le_ext">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+            <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
              <horstretch>1</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
@@ -150,22 +180,55 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="5">
-          <widget class="QLineEdit" name="le_search">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
-             <horstretch>2</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
+         <item row="0" column="1">
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
            </property>
+           <property name="sizeType">
+            <enum>QSizePolicy::Fixed</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>6</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="b_browse">
            <property name="toolTip">
-            <string>Search Term</string>
+            <string>select a path</string>
+           </property>
+           <property name="styleSheet">
+            <string notr="true">QPushButton {
+border-left:1px solid rgba(130,130,130,200);
+}</string>
            </property>
            <property name="text">
             <string/>
            </property>
-           <property name="placeholderText">
-            <string>search term</string>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../style/img/file_open.png</normaloff>../../style/img/file_open.png</iconset>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0">
+          <widget class="QPushButton" name="b_browse_2">
+           <property name="toolTip">
+            <string>search settings</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../../style/img/wrench.png</normaloff>../../style/img/wrench.png</iconset>
+           </property>
+           <property name="checkable">
+            <bool>true</bool>
            </property>
           </widget>
          </item>
@@ -186,27 +249,23 @@
            </property>
           </widget>
          </item>
-         <item row="0" column="1">
-          <spacer name="horizontalSpacer">
-           <property name="orientation">
-            <enum>Qt::Horizontal</enum>
-           </property>
-           <property name="sizeType">
-            <enum>QSizePolicy::Fixed</enum>
-           </property>
-           <property name="sizeHint" stdset="0">
-            <size>
-             <width>6</width>
-             <height>20</height>
-            </size>
-           </property>
-          </spacer>
-         </item>
         </layout>
        </widget>
       </item>
       <item row="3" column="0" colspan="3">
        <widget class="QFrame" name="frame">
+        <property name="styleSheet">
+         <string notr="true">QFrame#frame {
+border-top:1px solid rgba(130,130,130,200);
+}
+QPushButton {
+background:transparent;
+outline:none;
+}
+QPushButton:hover {
+background:rgba(100,100,100,100);
+}</string>
+        </property>
         <property name="frameShape">
          <enum>QFrame::NoFrame</enum>
         </property>

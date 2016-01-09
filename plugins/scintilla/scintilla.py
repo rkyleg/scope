@@ -154,7 +154,7 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
         
         # Customize Python lexer
-        if 1 and type(self.lex) == type(Qsci.QsciLexerPython()):
+        if self.ide.settings['editors']['scintilla']['theme']=='dark' and type(self.lex) == type(Qsci.QsciLexerPython()):
 ##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
             self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
             

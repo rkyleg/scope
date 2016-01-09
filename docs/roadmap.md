@@ -13,6 +13,7 @@ When adding features, Scope will attempt to adhere to the following ideals
 - Create a plugin manager interface that will allow installing plugins from a web link or a zip file
 - Move out some of the extra plugins from the main source
 - Lock down API - stop making changes and have a good API for creating plugins
+- Code Cleanup - with lots of redesigns, the code can be improved
 - Good documentation on using and creating plugins
 
 ## Longer term features planned

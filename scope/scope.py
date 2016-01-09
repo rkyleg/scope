@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.4.0-dev'
+__version__ = '0.4.1-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -104,8 +104,9 @@ class Scope(QtGui.QWidget):
         
         # Style
         style_path = self.settings['style']
-        if not os.path.exists(style_path):
-            style_path = 'style/default.css'
+##        print style_path
+##        if not os.path.exists(os.path.abspath(style_path)):
+##            style_path = 'style/default.css'
 
         f = open(style_path,'r')
         style = f.read()
@@ -1640,11 +1641,11 @@ class Scope(QtGui.QWidget):
                     subprocess.Popen(['open', path],cwd=dpth)
                 os.chdir(curdir)
 
-def runui():
+def runui(dev_mode=0):
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
 
-    scopeApp = Scope(dev_mode=1)
+    scopeApp = Scope(dev_mode=dev_mode)
     os.chdir('../')
     scopeApp.load()
     scopeApp.show()
@@ -1652,4 +1653,4 @@ def runui():
 
 if __name__ == "__main__":
     sys.path.append(os.path.abspath('../'))
-    runui()
+    runui(dev_mode=1)
