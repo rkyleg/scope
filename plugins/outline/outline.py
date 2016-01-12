@@ -75,8 +75,8 @@ class Outline(QtGui.QWidget):
                 if 'analyzeLine' in funcs:
                     self.outlineLangD[l]=mod.analyzeLine
 
-        self.alwaysUpdate = int(self.ide.settings['plugins']['outline']['alwaysUpdate'])
-        if self.alwaysUpdate==0:
+        self.alwaysUpdate = self.ide.settings['plugins']['outline']['alwaysUpdate']
+        if self.alwaysUpdate:
             self.ide.Events.editorSaved.connect(self.updateOutline)
             
         # Update location
@@ -157,7 +157,7 @@ class Outline(QtGui.QWidget):
                     self.updateLocation(wdg,lines)
     
     def updateLocation(self,wdg,lines):
-        if self.ide.settings['visibleLineTracking']=='1':
+        if self.ide.settings['visibleLineTracking']:
             trwdg = self.wdgD[wdg].ui.tr_outline
             hi=0
     ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue

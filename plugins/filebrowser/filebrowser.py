@@ -50,7 +50,7 @@ class DirTree(QtGui.QWidget):
         # Show All
         self.showAll=0
         if 'showAll' in self.ide.settings['plugins']['filebrowser']:
-            self.showAll = int(self.ide.settings['plugins']['filebrowser']['showAll'])
+            self.showAll = self.ide.settings['plugins']['filebrowser']['showAll']
         
         self.ui.tr_dir.itemDoubleClicked.connect(self.itmClicked)
         self.ui.tr_dir.itemExpanded.connect(self.itmExpanded)

@@ -332,7 +332,7 @@ class WindowSwitcher(object):
             self.ide.ui.b_show_tabs.setChecked(0)
     
     def show(self):
-        h=int(self.ide.settings['window']['window_switcher']['height']) # default height
+        h=self.ide.settings['window_switcher']['height'] # default height
         if self.ide != None:
             g=self.ide.geometry()
             

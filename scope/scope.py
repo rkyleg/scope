@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.4.1-dev'
+__version__ = '0.5.0-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -117,12 +117,12 @@ class Scope(QtGui.QWidget):
         #--- Window Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
         coords= QtGui.QApplication.desktop().screenGeometry(screen).getCoords() 
-        if self.settings['window']['openMode']=='1':
+        if self.settings['window']['openMode']==1:
             # get margins from settings
-            dl=int(self.settings['window']['margin']['left'])
-            dr=int(self.settings['window']['margin']['right'])
-            dt=int(self.settings['window']['margin']['top'])
-            db=int(self.settings['window']['margin']['bottom'])
+            dl=self.settings['window']['margin']['left']
+            dr=self.settings['window']['margin']['right']
+            dt=self.settings['window']['margin']['top']
+            db=self.settings['window']['margin']['bottom']
             
             # set up width and height
             ws=coords[2]-coords[0] # screen width
@@ -146,7 +146,7 @@ class Scope(QtGui.QWidget):
             # Set screen size
             self.setGeometry(coords[0]+dl,coords[1]+dt,(w-dl-dr),(h-dt-db))
             QtGui.QApplication.processEvents()
-        elif self.settings['window']['openMode']=='2':
+        elif self.settings['window']['openMode']==2:
             # Fullscreen
             self.showMaximized()
             QtGui.QApplication.processEvents()
@@ -155,32 +155,32 @@ class Scope(QtGui.QWidget):
 
         # Setup plugin views
         # Bottom
-        h=int(self.settings['window']['pluginBottom']['height'])
+        h=self.settings['pluginBottom']['height']
         self.ui.split_bottom.setSizes([self.height()-h,h])
-        if self.settings['window']['pluginBottom']['visible']!='1':
+        if self.settings['pluginBottom']['visible']!=1:
             self.ui.sw_bottom.setHidden(1)
         
         # Left
-        lw=int(self.settings['window']['pluginLeft']['width'])
+        lw=self.settings['pluginLeft']['width']
         self.ui.split_left.setSizes([lw,self.width()-lw])
-        if self.settings['window']['pluginLeft']['visible']!='1':
+        if self.settings['pluginLeft']['visible']!=1:
             self.ui.fr_left.setVisible(0)
         
         # Right
-        rw=self.settings['window']['pluginRight']['width']
+        rw=self.settings['pluginRight']['width']
         if rw.endswith('%'):
             rw = float(rw[:-1])/100*(self.width()-lw)
         else:
             rw=int(rw)
         
         self.ui.split_right.setSizes([self.width()-rw-lw,rw])
-        if self.settings['window']['pluginRight']['visible']!='1':
+        if self.settings['pluginRight']['visible']!=1:
             self.ui.tab_right.setVisible(0)
 
         # Tab Direction
         tabLocD = {'top':QtGui.QTabWidget.North,'bottom':QtGui.QTabWidget.South,'left':QtGui.QTabWidget.West,'right':QtGui.QTabWidget.East}
-        self.ui.tab_left.setTabPosition(tabLocD[self.settings['window']['pluginLeft']['tabPosition']])
-        self.ui.tab_right.setTabPosition(tabLocD[self.settings['window']['pluginRight']['tabPosition']])
+        self.ui.tab_left.setTabPosition(tabLocD[self.settings['pluginLeft']['tabPosition']])
+        self.ui.tab_right.setTabPosition(tabLocD[self.settings['pluginRight']['tabPosition']])
 
         #--- Signals
         self.ui.b_closetab.clicked.connect(self.close_tab)
@@ -453,7 +453,7 @@ class Scope(QtGui.QWidget):
     
     def getTitle(self,filename):
         title = os.path.basename(filename)
-        if int(self.settings['view_folder']):
+        if self.settings['window_switcher']['view_folder']:
             title = os.path.split(os.path.dirname(filename))[1]+'/'+title
         elif filename.endswith('.py') and title=='__init__.py':
             title = os.path.split(os.path.dirname(filename))[1]+'/init'
@@ -464,7 +464,7 @@ class Scope(QtGui.QWidget):
         self.ui.l_filename.setText(widget.title+widget.titleSuffix)
         
         # Show Full Path
-        if self.settings['showPath'] =='1':
+        if self.settings['showPath']:
             if widget.type == 'file':
 
                 w = w-70-self.ui.l_filename.fontMetrics().width(widget.title+widget.titleSuffix)
@@ -703,7 +703,7 @@ class Scope(QtGui.QWidget):
 
         if 'editorTextChanged' in dir(wdg):
             wdg.Events.editorChanged.connect(self.editorTextChanged)
-        if 'visibleLinesChanged' in dir(wdg) and self.settings['visibleLineTracking']=='1':
+        if 'visibleLinesChanged' in dir(wdg) and self.settings['visibleLineTracking']:
             wdg.Events.visibleLinesChanged.connect(self.visibleLinesChanged)
 
         if self.ui.sw_main.count() ==1:
@@ -1188,41 +1188,21 @@ class Scope(QtGui.QWidget):
             tabtext = title
             
             if loc == 'left':
-                if self.settings['window']['pluginLeft']['showTabText']!='1': tabtext=''
+                if not self.settings['pluginLeft']['showTabText']: tabtext=''
                 ti = self.ui.tab_left.addTab(pluginWidget,icn,tabtext)
                 self.ui.tab_left.setTabToolTip(ti,title)
             elif loc=='right':
-                if self.settings['window']['pluginRight']['showTabText']!='1': tabtext=''
+                if not self.settings['pluginRight']['showTabText']: tabtext=''
                 ti = self.ui.tab_right.addTab(pluginWidget,icn,tabtext)
                 self.ui.tab_right.setTabToolTip(ti,title)
             elif loc == 'bottom':
-                if self.settings['window']['pluginBottom']['showTabText']!='1': tabtext=''
+                if not self.settings['pluginBottom']['showTabText']: tabtext=''
                 self.ui.sw_bottom.addWidget(pluginWidget)
                 ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
                 self.ui.tabbar_bottom.setTabToolTip(ti,title)
 
             self.pluginD[plug]=Plugin
             os.chdir(curdir)
-
-    def addPlugin(self,plug):
-        if not plug in self.pluginD:
-            self.loadPlugin(plug)
-        else:
-            plugin = self.pluginD[plug]
-            pluginWidget = plugin.loadWidget()
-            if loc == 'left':
-                if self.settings['window']['pluginLeft']['showTabText']!='1': tabtext=''
-                ti = self.ui.tab_left.addTab(pluginWidget,icn,tabtext)
-                self.ui.tab_left.setTabToolTip(ti,title)
-            elif loc=='right':
-                if self.settings['window']['pluginRight']['showTabText']!='1': tabtext=''
-                ti = self.ui.tab_right.addTab(pluginWidget,icn,tabtext)
-                self.ui.tab_right.setTabToolTip(ti,title)
-            elif loc == 'bottom':
-                if self.settings['window']['pluginBottom']['showTabText']!='1': tabtext=''
-                self.ui.sw_bottom.addWidget(pluginWidget)
-                ti=self.ui.tabbar_bottom.addTab(icn,tabtext)
-                self.ui.tabbar_bottom.setTabToolTip(ti,title)
 
     #---   Left Plugins
     def toggleLeftPlugin(self):
@@ -1267,8 +1247,8 @@ class Scope(QtGui.QWidget):
         if self.currentEditor() != None:
             self.currentEditor().pluginRightVisible=self.ui.tab_right.isVisible()
         
-        if 'leftToggle' in self.settings['window']['pluginRight']:
-            if self.settings['window']['pluginRight']['leftToggle']=='1':
+        if 'leftToggle' in self.settings['pluginRight']:
+            if self.settings['pluginRight']['leftToggle']:
                 self.ui.fr_left.setVisible(self.ui.tab_right.isHidden())
 
     def toggleRightPluginFull(self):
@@ -1510,21 +1490,23 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
         
-        from plugins.configobj import configobj
+        import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
-        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf')
+        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
+##        print config
         try:
-            user_config = configobj.ConfigObj(self.settings_filename)
+            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
             if type(user_config['editors'])==type([]): # Check editor settings 
                 error
             config.merge(user_config)
         except:
-            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<Br><Br>Using default settings<Br><br><i>Compare your settings with the default_settings</i>')
+            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
+            user_config = None
         self.settings = config
 
         # Setup Webview stylesheet
-        settings = QtWebKit.QWebSettings.globalSettings()
-        settings.setUserStyleSheetUrl(QtCore.QUrl('file://'+self.scopePath+'/style/webview.css'))
+        wsettings = QtWebKit.QWebSettings.globalSettings()
+        wsettings.setUserStyleSheetUrl(QtCore.QUrl('file://'+self.scopePath+'/style/webview.css'))
 
         # Configure Settings
         self.settings['run']={}
@@ -1532,7 +1514,8 @@ class Scope(QtGui.QWidget):
             ok = 1
             #~ self.settings['run_preview'][l]=0
             # Remove default languages if not in user config
-            if 'prog_lang' in user_config:
+            
+            if user_config != None and 'prog_lang' in user_config:
                 if l not in user_config['prog_lang']:
                     self.settings['prog_lang'].pop(l)
                     ok = 0
@@ -1565,7 +1548,7 @@ class Scope(QtGui.QWidget):
             QtGui.QApplication.processEvents()
         
         # Save Workspace
-        if self.currentWorkspace != None and int(self.settings['save_workspace_on_close']):
+        if self.currentWorkspace != None and self.settings['save_workspace_on_close']:
             self.workspaceSave()
 
     #---FileModify Checker
