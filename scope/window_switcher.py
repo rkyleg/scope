@@ -73,11 +73,14 @@ class WorkspaceWidget(QtGui.QListWidget):
         ind = self.indexAt(event.pos())
         itm = self.itemFromIndex(ind)
         current_ind = self.currentIndex()
+        
+        # Right Click Menu
+        menu = QtGui.QMenu()
+        
         if itm != None:
             wdg = self.itemWidget(itm)
         
-            # Right Click Menu
-            menu = QtGui.QMenu()
+
             
             icn = QtGui.QIcon(self.ide.iconPath+'tri_right.png')
             menu.addAction(icn,'Run')
@@ -88,22 +91,28 @@ class WorkspaceWidget(QtGui.QListWidget):
             icn = QtGui.QIcon(self.ide.iconPath+'close_blue.png')
             menu.addAction(icn,'Close')
             
-            act = menu.exec_(self.cursor().pos())
-            if act != None:
-                acttxt = str(act.text())
-                
-                if acttxt == 'Close':
-                    wdg.close()
-                elif acttxt == 'Run':
-                    #TODO: If file not open
-                    if wdg.id not in self.ide.fileOpenD:
-                        self.select(ind)
-                    self.ide.editorRun(self.ide.fileOpenD[wdg.id])
-                    if current_ind != None:
-                        self.select(current_ind)
-                elif acttxt == 'Open (external)':
-                    self.ide.WindowSwitcher.toggle(0)
-                    self.ide.openFileExternal(wdg.filename)
+            menu.addSeparator()
+        menu.addAction('Close All')
+        
+        act = menu.exec_(self.cursor().pos())
+        if act != None:
+            acttxt = str(act.text())
+            
+            if acttxt == 'Close':
+                wdg.close()
+            elif acttxt == 'Run':
+                #TODO: If file not open
+                if wdg.id not in self.ide.fileOpenD:
+                    self.select(ind)
+                self.ide.editorRun(self.ide.fileOpenD[wdg.id])
+                if current_ind != None:
+                    self.select(current_ind)
+            elif acttxt == 'Open (external)':
+                self.ide.WindowSwitcher.toggle(0)
+                self.ide.openFileExternal(wdg.filename)
+            elif acttxt == 'Close All':
+                for fid in self.tabD.keys():
+                    self.tabD[fid].close()
     
     def keyPressEvent(self,event):
         ky = event.key()

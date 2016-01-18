@@ -76,7 +76,7 @@ class Outline(QtGui.QWidget):
                     self.outlineLangD[l]=mod.analyzeLine
 
         self.alwaysUpdate = self.ide.settings['plugins']['outline']['alwaysUpdate']
-        if self.alwaysUpdate:
+        if not self.alwaysUpdate:
             self.ide.Events.editorSaved.connect(self.updateOutline)
             
         # Update location

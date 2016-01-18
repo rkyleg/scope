@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.0-dev'
+__version__ = '0.5.1-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1490,7 +1490,10 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
         
-        import configobj
+        try:
+            import configobj
+        except:
+            from configobj import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
 ##        print config
