@@ -89,19 +89,9 @@ class Scope(QtGui.QWidget):
             QtGui.QApplication.setStyle(self.settings['widgetstyle'])
         
         self.setAcceptDrops(1)
-        
-##        # Filesystem watercher - NOT USED CAUSE TO MANY SIGNALS FIRE OFF
-##        self.startinit = 1
-        self.fileLastCheck = time.time()
-##        self.filesystemwatcher = QtCore.QFileSystemWatcher(self)
-##        self.filesystemwatcher.fileChanged.connect(self.file_changed)
 
-##        import thread
-##        thread = thread.start_new_thread(self.checkFileChanges, (self,))
-        
         # Style
         style_path = self.settings['style']
-##        print style_path
 ##        if not os.path.exists(os.path.abspath(style_path)):
 ##            style_path = 'style/default.css'
 
@@ -297,14 +287,7 @@ class Scope(QtGui.QWidget):
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
 
-        # Load FileCheck Thread
-        self.fileLastCheck = time.time()
-##        self.fileModD = {}
-##        fmt = threading.Thread(target=self.checkFileChanges,args=(self))
-##        fmt.start()
-        
         # Open file if in sys arg
-        # print "SYS",sys.argv
         if len(sys.argv)>1:
             if os.path.exists(sys.argv[1]) and os.path.isfile(sys.argv[1]):
                 self.openFile(sys.argv[1])
@@ -332,15 +315,6 @@ class Scope(QtGui.QWidget):
             if not ok:
                 cancelled=1
                 break
-        
-        # Check if anything needs saving
-##        for file_id in self.fileOpenD:
-####            file_id = self.ui.tab.tabData(i).toInt()[0]
-##            wdg = self.fileOpenD[file_id]
-##            ok = self.checkSave(wdg)
-##            if not ok:
-##                cancelled = 1
-##                break
 
         if cancelled:
             event.ignore()
@@ -518,8 +492,6 @@ class Scope(QtGui.QWidget):
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
-
-##                    self.changeTab(file_open)
                     return 1
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
@@ -729,8 +701,6 @@ class Scope(QtGui.QWidget):
                 
         else:
             self.ui.b_closetab.hide()
-        
-        
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
@@ -773,13 +743,10 @@ class Scope(QtGui.QWidget):
 
         # Disable buttons based on function availability
         btnD = [
-##            ['indent',self.editorMenu.indentAction],
             ['indent',self.ui.b_indent],
             ['unindent',self.ui.b_unindent],
-##            ['unindent',self.editorMenu.unindentAction],
             ['find',self.ui.fr_find],
             ['toggleComment',self.ui.b_comment],
-##            ['toggleComment',self.editorMenu.commentAction],
             ['getText',self.ui.b_save],
             ['toggleWordWrap',self.editorMenu.wordwrapAction],
             ['toggleWhitespace',self.editorMenu.whitespaceAction],
@@ -817,9 +784,6 @@ class Scope(QtGui.QWidget):
             elif wdg.filename != None:
                 self.last_editable_file = wdg.id
         
-            # Check for file changes (Disabled for now)
-##            self.checkFileChanges()
-                
     def close_tab(self):
         if self.currentEditor() != None:
             if len(self.recentTabs) > 1:
@@ -861,9 +825,6 @@ class Scope(QtGui.QWidget):
                 t.close(ignoreCheck=1)
                 self.fileD[file_id]['tabs'].remove(t)
         
-##        if ok:
-##            self.fileD.pop(file_id)
-
         return ok
 
     def editorTextChanged(self):
@@ -1126,8 +1087,6 @@ class Scope(QtGui.QWidget):
             atxt=apfx=''
             if a < 255:
                 atxt=',%0.2g' %(a/255.0)
-##                apfx='a'
-##            txt = 'rgb%s(%d,%d,%d%s)' %(apfx,r,g,b,atxt)
             txt = '%d,%d,%d%s' %(r,g,b,atxt)
             if 'insertText' in dir(self.currentEditor()):
                 self.currentEditor().insertText(txt)
@@ -1363,7 +1322,6 @@ class Scope(QtGui.QWidget):
                 wtype='blank'
                 wksp = 'workspace '+str(self.workspaceCount)
                 self.workspaces[wksp]={'files':[],'basefolder':None,'lastOpenFile':None}
-##                self.workspaces[wksp]={'files':[],'basefolder':self.settings['plugins']['filebrowser']['defaultPath'],'lastOpenFile':None}
             else:
                 # Open existing workspace settings
                 f = open(self.settingPath+'/workspaces/'+wksp,'r')
@@ -1469,9 +1427,6 @@ class Scope(QtGui.QWidget):
         if wk_ok:
             pass
             # Check if anything needs saving and if not in other workspace
-##            for file_id in self.fileOpenD.keys():
-##                file_id = self.ui.tab.tabData(i).toInt()[0]
-##                self.closeTab(file_id)
         
         ok=fl_ok*wk_ok
         
@@ -1497,7 +1452,6 @@ class Scope(QtGui.QWidget):
         from site_pkg.configobj import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
-##        print config
         try:
             user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
             if type(user_config['editors'])==type([]): # Check editor settings 
@@ -1560,11 +1514,6 @@ class Scope(QtGui.QWidget):
         self.checkFileChanges(nothing_message=0)
         #
     def checkFileChanges(self,nothing_message=1):
-##        while 1:
-##        if self.fileLastCheck < time.time()-5:##        if self.fileLastCheck < time.time()-5:
-##            self.ui.l_statusbar.setText('Checking for File Changes...')
-##            print 'checking messages',time.time()
-##            QtGui.QApplication.processEvents()
             chngs = 0
             close_tabs = []
             for file_id in self.fileOpenD:
@@ -1595,10 +1544,6 @@ class Scope(QtGui.QWidget):
                     self.closeTab(i)
             if not chngs and nothing_message:
                 QtGui.QMessageBox.warning(self,'No Changes','No external changes to current open files were found')
-##            self.fileLastCheck = time.time()
-
-##            self.ui.l_statusbar.setText('')
-##            QtGui.QApplication.processEvents()
 
     #---Other Functions
     def openFileExternal(self,path=None,program=None):

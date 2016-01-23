@@ -10,16 +10,12 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot()
     def closeHome(self):
         pass
-##        print 'close hud'
-##        self.parent.toggleHUD()
     
     @QtCore.pyqtSlot('int')
     def closetab(self,id):
-##        print 'closetab',id
         ok = self.parent.IDE.closeTab(id)
         if ok:
             cid = str(self.parent.IDE.currentEditor().id)
-##            print 'highlight',cid
             QtGui.QApplication.processEvents()
             self.parent.webview.page().mainFrame().evaluateJavaScript('closetab('+str(id)+');highlighttab("'+cid+'");')
         return ok
@@ -30,20 +26,14 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot('int')
     def opentab(self,id):
         self.parent.IDE.changeTab(id)
-##        self.parent.toggleHUD()
-    
 
 class Home(object):
     def __init__(self,parent):
         self.IDE=parent
-##        self.IDE.Events.resized.connect(self.resize)
     
         # Create home widget
         from plugins.webview import webview
         self.webview=webview.WebView(self.IDE)
-##        self.webview.setWindowOpacity(0.6)
-##        self.webview.setStyleSheet("QWebView{background:transparent}")
-##        self.webview.setAttribute(QtCore.Qt.WA_TranslucentBackground)
     
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.webview.linkClicked.connect(self.homeClicked)
@@ -52,31 +42,11 @@ class Home(object):
         self.webview.filename = None
 
         self.jsObject = jsObject(parent=self)
-        
-##        self.webview.setStyleSheet('''
-##            a {
-##                text-decoration:none;
-##                font-weight:bold;
-##                
-##                color: rgb(22,90,117);
-##            }
-##        ''')
+
     
     def toggleHome(self,visible=None):
-##        if visible == None:
-##            visible = not self.webview.isVisible()
-##        if visible:
             self.viewHome()
-##        else:
             self.IDE.ui.sw_main.setCurrentWidget(self.webview)
-##            self.IDE.change_tab(self.IDE.ui.sw_main.indexOf(self.webview))
-##        else:
-##            self.webview.hide()
-##            QtGui.QApplication.processEvents()
-##            if self.IDE.currentEditor() != None:
-##                self.IDE.currentEditor().setFocus()
-##        else:
-##            self.viewHUD()
             
     def viewHome(self):
             cur_itm=0
@@ -143,12 +113,7 @@ class Home(object):
                 self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
             
             self.webview.page().mainFrame().addToJavaScriptWindowObject('HOME',self.jsObject)
-##            self.webview.setGeometry(0,0,g.width(),g.height())
             self.webview.show()
-##            QtGui.QApplication.processEvents()
-##            h = self.webview.page().mainFrame().contentsSize().height()
-##            print h
-##            self.webview.setGeometry(0,0,g.width(),h)
             self.webview.setFocus()
     
     def homeClicked(self,url):
@@ -157,24 +122,19 @@ class Home(object):
         if lnk.startswith('opentab:'):
             i=int(lnk.split('opentab:')[1])
             self.IDE.changeTab(i)
-##            self.toggleHUD()
         elif lnk.startswith('closetab:'):
             i=int(lnk.split('closetab:')[1])
             self.IDE.closeTab(i)
         elif lnk.startswith('new:'):
             lang = lnk.split('new:')[1]
             self.IDE.addEditorWidget(lang)
-##            self.toggleHUD()
         elif lnk.startswith('workspace:'):
             wk = lnk.split('workspace:')[1]
             if wk=='new':
                 self.IDE.workspaceNew()
                 self.IDE.showHome()
-##                self.addStart(wdg=wdg)
             else:
                 self.IDE.workspaceOpen(wk)
-##                self.viewHUD()
-##            self.toggleHUD()
         elif lnk.startswith('editor:'):
             e = lnk.split('editor:')[1]
             ld = self.IDE.editorD[e]
@@ -192,17 +152,13 @@ class Home(object):
             
             if resp != None:
                 self.IDE.addEditorWidget(str(resp.text()),editor=e)
-##                self.toggleHUD()
         
         elif lnk=='filebrowser':
             self.IDE.openFile()
-##            self.toggleHUD()
         elif lnk=='settings':
             self.IDE.openSettings()
         else:
             self.webview.load2(url)
-##        elif lnk=='close':
-##            self.toggleHUD()
     
     def resize(self):
         g=self.IDE.geometry()

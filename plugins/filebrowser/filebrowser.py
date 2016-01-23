@@ -72,7 +72,6 @@ class DirTree(QtGui.QWidget):
         self.ide.ui.tab_left.setCurrentIndex(i)
     
     def browse(self):
-##        print self.ui.le_path.text()
         npth = QtGui.QFileDialog.getExistingDirectory(self,'Select directory to search',self.ui.le_root.text())
         if not npth.isEmpty(): 
             self.ui.le_root.setText(npth)
@@ -250,14 +249,8 @@ class DirTree(QtGui.QWidget):
             
                 menu.addSeparator()
             
-##            # Other File Options
-##            menu.addAction(QtGui.QIcon(self.ide.iconPath+'forward.png'),'Open (external)')
-            
-
             if os.path.isfile(pth):
                 menu.addAction(QtGui.QIcon(self.ide.iconPath+'edit.png'),'Rename')
-##                menu.addAction(QtGui.QIcon(self.ide.iconPath+'copy.png'),'Copy File')
-##                menu.addSeparator()
                 menu.addAction(QtGui.QIcon(self.ide.iconPath+'delete.png'),'Delete File')
             
             for act in menu.actions():  # Set Icon to visible
@@ -269,10 +262,7 @@ class DirTree(QtGui.QWidget):
             menu.addAction(QtGui.QIcon(self.ide.iconPath+'new.png'),'New File')
             menu.addAction(QtGui.QIcon(self.ide.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
-##            menu.addAction(QtGui.QIcon(),'Open (external)')
-##            menu.addSeparator()
-            
-        
+
         menu.addSeparator()
         menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Refresh')
         # Show All files

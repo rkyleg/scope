@@ -31,7 +31,6 @@ class jsObject(QtCore.QObject):
     @QtCore.pyqtSlot('QString')
     def getLines(self,ltxt):
         lines = str(ltxt).split(',')
-##        print 'ace lines',lines
         fline = float(lines[0])
         lline = float(lines[1])
         self.lines = [fline,lline]
@@ -81,7 +80,6 @@ class WebView(QtWebKit.QWebView):
             pfx="file:///"
         else:
             pfx="file://"
-##        url = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/'))
         url = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/editor.html')
 
         self.setUrl(url)
@@ -121,7 +119,6 @@ class WebView(QtWebKit.QWebView):
                 self.settings[ky]=self.parent.settings['editors']['ace'][ky]
         
         # Setup Editor
-##        js = '''editor.getSession().setMode("ace/mode/'''+lang+'");'
         js = "editor.getSession().on('change',function (e) {pythonjs.textChanged()});"
         js += "editor.getSession().on('changeScrollTop',function (e) {pythonjs.visibleLinesChanged()});"
         
@@ -145,20 +142,6 @@ class WebView(QtWebKit.QWebView):
         js += 'editor.setOptions({enableBasicAutocompletion: "'+self.settings['autocomplete']+'"});'
         js += 'editor.setOptions({enableSnippets: "'+self.settings['enableSnippets']+'"});'
         self.page().mainFrame().evaluateJavaScript(js)
-        
-        # Additional Settings
-##        if 'settingJS' in self.parent.settings.editors['ace']:
-##            jstxt = self.parent.settings.editors['ace']['settingJS']
-
-##        jstxt = 'editor.setHighlightSelectedWord(false); editor.setOptions({enableBasicAutocompletion: true});'
-##        js = ''
-##        for jt in jstxt.split('\n'):
-##            txt = jt.strip()
-##            if not txt.endswith(';'): txt = txt=';'
-##            js += jstxt
-##        
-##        if js != '':
-##            self.page().mainFrame().evaluateJavaScript(js)
         
         self.gotoLine(1)
 
@@ -199,11 +182,9 @@ class WebView(QtWebKit.QWebView):
         menu = QtGui.QMenu('ace menu')
         
         # Edit Menu
-##        menu = QtGui.QMenu('edit',menu)
         menu.addAction(QtGui.QIcon(),'Cut')
         menu.addAction(QtGui.QIcon(),'Copy')
         menu.addAction(QtGui.QIcon(),'Paste')
-##        menu.addMenu(emenu)
         menu.addSeparator()
         # Settings Menu
         smenu = QtGui.QMenu('Ace',menu)
@@ -277,12 +258,8 @@ class WebView(QtWebKit.QWebView):
         return txt
     
     def getSelectedText(self):
-##        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));")
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getSelectedText());")
-##        self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(editor.getCopyText());")
-##        print self.editorJS.editorHtml
         txt = str(self.editorJS.editorHtml.toUtf8()).decode('utf-8')
-##        print txt
         return txt
     
     def selectAll(self):
@@ -355,7 +332,6 @@ class WebView(QtWebKit.QWebView):
         
         ctxt = self.editorJS.editorHtml
         if unicode(ctxt).lower() == unicode(ftxt).lower():
-##            if '"' in rtxt: rtxt=rtxt.replace('"','\"')
             self.editorJS.editorHtml = rtxt
             js = "var rtxt =  pythonjs.html;editor.replace(rtxt);"
             self.page().mainFrame().evaluateJavaScript(js)
@@ -365,7 +341,6 @@ class WebView(QtWebKit.QWebView):
         if cs: tcs='true'
         if wo: two='true'
         
-##        if "'" in ftxt: ftxt=ftxt.replace("'","\''")
         self.editorJS.editorHtml = ftxt
         js='''var ftxt =  pythonjs.html;
         editor.find(ftxt,{backwards:false,wrap:true,caseSensitive:'''+tcs+",wholeWord:"+two+",regExp:"+tre+"});"
@@ -398,7 +373,6 @@ class WebView(QtWebKit.QWebView):
     def toggleBehaviours(self):
         self.settings['behaviours'] = abs(self.settings['behaviours']-1)
         js = 'editor.setBehavioursEnabled('+['false','true'][self.settings['behaviours']]+');'
-##        print self.settings['behaviours'],js
         self.page().mainFrame().evaluateJavaScript(js)
 
     def toggleWrapBehaviours(self):
@@ -411,8 +385,6 @@ class WebView(QtWebKit.QWebView):
     
     #---Visible Lines
     def getVisibleLines(self):
-##        self.page().mainFrame().evaluateJavaScript("pythonjs.getLines(editor.getFirstVisibleRow());")
-##        line_first = self.editorJS.lines
         self.page().mainFrame().evaluateJavaScript("pythonjs.getLines(getVisibleLines());")
         line_first = self.editorJS.lines[0]
         line_last = self.editorJS.lines[1]
@@ -424,6 +396,3 @@ class WebView(QtWebKit.QWebView):
     def getCursorPosition(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getPosition(getCurrentPosition());")
         return self.editorJS.currentPosition
-    
-##    def setFocus(self):
-##        self.page().mainFrame().evaluateJavaScript('editor.focus();')

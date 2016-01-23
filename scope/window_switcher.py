@@ -79,8 +79,6 @@ class WorkspaceWidget(QtGui.QListWidget):
         
         if itm != None:
             wdg = self.itemWidget(itm)
-        
-
             
             icn = QtGui.QIcon(self.ide.iconPath+'tri_right.png')
             menu.addAction(icn,'Run')
@@ -382,4 +380,3 @@ class WindowSwitcher(object):
                     if litm.id == fid:
                         li.setCurrentRow(i)
                         break
-

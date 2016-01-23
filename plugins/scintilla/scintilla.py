@@ -189,7 +189,7 @@ class Sci(QtGui.QWidget):
                     exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
                     exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
                 except:
-                    print 'no keyword',c
+                    print('no keyword',c)
     
     def keyPressEvent(self,event):
         ky = event.key()
