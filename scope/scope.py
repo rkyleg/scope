@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.2-dev'
+__version__ = '0.5.3-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -926,56 +926,63 @@ class Scope(QtGui.QWidget):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
         
         if wdg != None:
-            if wdg.filename != None:
-                filename = wdg.filename
-            else:
-                fileext = ''
-                # Don't show extensions for now (not working in Linux)
-                if os.name =='nt':
-                    for e in self.settings['extensions']:
-                        if self.settings['extensions'][e]==wdg.lang:
-                            fileext+=wdg.lang+' (*.'+e+");;"
-                fileext += "All (*.*)"
-                
-                filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.currentPath,fileext)
-                if filename=='':
-                    filename=None
-                else:
-                    wdg.filename = os.path.abspath(str(filename))
-                    wdg.title = os.path.basename(wdg.filename)
-                    wdg.tabTitle = self.getTitle(wdg.filename)
-                    self.ui.l_filename.setToolTip(wdg.filename)
-                    wdg.type = 'file'
-
-            if filename != None:
-                self.Events.editorBeforeSave.emit(wdg)
-                try:
-                    txt = wdg.getText()
-                    if self.saveEnabled:
-                        f = codecs.open(wdg.filename,'w','utf8')
-                        f.write(txt)
-                        f.close()
-                    wdg.lastText = txt
-                    wdg.modTime = os.path.getmtime(filename)
-                    self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
-                    wdg.titleSuffix = ''
-                    self.setTitle(wdg)
-                    
-                    # Save Signal
-                    self.Events.editorSaved.emit(wdg)
-                    
-                except:
-                    QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
-                    self.ui.l_statusbar.setText('Error Saving: '+filename)
-
-                # If Settings File, reload
-                if filename == self.settings_filename:
-                    self.loadSettings()
             
-            # Update tabs
-            for t in self.fileD[wdg.id]['tabs']:
-                t.setTitle(wdg.tabTitle+wdg.titleSuffix)
-                t.item.setToolTip(wdg.filename)
+            if wdg.type == 'app':
+                # Check if app has save
+                if 'appSave' in dir(wdg):
+                    wdg.appSave()
+            else:
+                # File Save
+                if wdg.filename != None:
+                    filename = wdg.filename
+                else:
+                    fileext = ''
+                    # Don't show extensions for now (not working in Linux)
+                    if os.name =='nt':
+                        for e in self.settings['extensions']:
+                            if self.settings['extensions'][e]==wdg.lang:
+                                fileext+=wdg.lang+' (*.'+e+");;"
+                    fileext += "All (*.*)"
+                    
+                    filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",self.currentPath,fileext)
+                    if filename=='':
+                        filename=None
+                    else:
+                        wdg.filename = os.path.abspath(str(filename))
+                        wdg.title = os.path.basename(wdg.filename)
+                        wdg.tabTitle = self.getTitle(wdg.filename)
+                        self.ui.l_filename.setToolTip(wdg.filename)
+                        wdg.type = 'file'
+
+                if filename != None:
+                    self.Events.editorBeforeSave.emit(wdg)
+                    try:
+                        txt = wdg.getText()
+                        if self.saveEnabled:
+                            f = codecs.open(wdg.filename,'w','utf8')
+                            f.write(txt)
+                            f.close()
+                        wdg.lastText = txt
+                        wdg.modTime = os.path.getmtime(filename)
+                        self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
+                        wdg.titleSuffix = ''
+                        self.setTitle(wdg)
+                        
+                        # Save Signal
+                        self.Events.editorSaved.emit(wdg)
+                        
+                    except:
+                        QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
+                        self.ui.l_statusbar.setText('Error Saving: '+filename)
+
+                    # If Settings File, reload
+                    if filename == self.settings_filename:
+                        self.loadSettings()
+                
+                # Update tabs
+                for t in self.fileD[wdg.id]['tabs']:
+                    t.setTitle(wdg.tabTitle+wdg.titleSuffix)
+                    t.item.setToolTip(wdg.filename)
             
     def editorSaveAs(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
