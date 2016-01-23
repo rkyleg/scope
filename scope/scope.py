@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.1-dev'
+__version__ = '0.5.2-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -18,9 +18,6 @@ import sys, json, codecs, time, importlib, subprocess
 from PyQt4 import QtCore, QtGui, QtWebKit
 from menus import *
 import os,shutil,datetime, webbrowser, threading, sys
-
-sys.path.append(os.path.join(os.path.abspath(os.path.dirname(__file__)),'../site-packages'))
-import bunch
 
 class Scope(QtGui.QWidget):
     def __init__(self, parent=None,dev_mode=0):
@@ -1490,10 +1487,7 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
         
-        try:
-            import configobj
-        except:
-            from configobj import configobj
+        from site_pkg.configobj import configobj
         self.settings_filename = self.settingPath+'/settings.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
 ##        print config

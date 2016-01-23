@@ -86,8 +86,8 @@ class Preview(QtGui.QWidget):
 
         if cmd == 'markdown':
             # If markdown generate preview tab
-            import plugins.mkdown as mkdown
-            html = mkdown.generate(text=html,style='',custom=0)
+            import site_pkg.commonmark as commonmark
+            html = commonmark.generate(text=html,style='',custom=0)
 ##                self.ide.webview_preview(html,filename)
 
         elif cmd != None:
@@ -120,8 +120,8 @@ class Preview(QtGui.QWidget):
             # Markdown
         if lnk.startswith('file:') and lnk.endswith('.md'):
             filename = str(url.toLocalFile())
-            import plugins.mkdown as mkdown
-            html = mkdown.generate(filename,custom=1)
+            import site_pkg.commonmark as commonmark
+            html = commonmark.generate(filename,custom=1)
             
             burl = url
             pwdg.webview.setText(html,burl)
