@@ -14,7 +14,7 @@ class Output(QtGui.QWidget):
         self.ide = parent
         
         self.wdgD = {}
-        self.outD = {}
+##        self.outD = {}
         
         self.ui.split_pages.setSizes([200,self.ide.width()-200])
         
@@ -22,12 +22,12 @@ class Output(QtGui.QWidget):
 
     def editorTabChanged(self,wdg):
         if wdg in self.wdgD:
-            owdg = self.wdgD[wdg]
+            owdg = self.wdgD[wdg.id]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
     def editorTabClosed(self,wdg):
         if wdg in self.wdgD:
-            owdg = self.wdgD[wdg]
+            owdg = self.wdgD[wdg.id]
             self.closeOutputWidget(owdg)
 
     def closeOutputWidget(self,owdg):
@@ -40,9 +40,9 @@ class Output(QtGui.QWidget):
                 owdg.stopProcess()
                 ok=1
         if ok:
-            wdg = self.outD[owdg]
-            self.wdgD.pop(wdg)
-            self.outD.pop(owdg)
+##            wdg = self.outD[owdg]
+            self.wdgD.pop(owdg.file_id)
+##            self.outD.pop(owdg)
             self.ui.li_pages.takeItem(self.ui.li_pages.row(owdg.listItem))
             self.ui.sw_pages.removeWidget(owdg)
 
@@ -56,9 +56,9 @@ class Output(QtGui.QWidget):
             if cmd != 'preview':
                 i = self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
                 self.ide.ui.tabbar_bottom.setCurrentIndex(i)
-            if wdg in self.wdgD:
+            if wdg.id in self.wdgD:
                 # Process was run
-                owdg = self.wdgD[wdg]
+                owdg = self.wdgD[wdg.id]
                 self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
 
             else:
@@ -73,8 +73,8 @@ class Output(QtGui.QWidget):
                     itm.setToolTip(wdg.filename)
                 self.ui.li_pages.addItem(itm)
 
-                self.wdgD[wdg] = owdg
-                self.outD[owdg]=wdg
+                self.wdgD[wdg.id] = owdg
+                owdg.file_id = wdg.id
                 
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
@@ -95,7 +95,7 @@ class Output(QtGui.QWidget):
         opentxt = ''
         resp = QtGui.QMessageBox.Yes
         for wdg in self.wdgD:
-            owdg = self.wdgD[wdg]
+            owdg = self.wdgD[wdg.id]
             if owdg.status != 'done':
                 opentxt+='<br>'+'&nbsp;'*5+os.path.split(owdg.filename)[1]
                 break
@@ -104,7 +104,7 @@ class Output(QtGui.QWidget):
             resp=QtGui.QMessageBox.warning(self,'Kill Running Processes','The following output processes are still running:'+opentxt+'<br><br>Do you want to kill all running processes?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:
                 for wdg in self.wdgD:
-                    owdg = self.wdgD[wdg]
+                    owdg = self.wdgD[wdg.id]
                     if owdg.status != 'done':
                         owdg.stopProcess()
         
@@ -112,7 +112,7 @@ class Output(QtGui.QWidget):
         if resp == QtGui.QMessageBox.Yes:
             for wdg in self.wdgD:
 ##                ind = self.ui.sw_pages.indexOf(owdg)
-                owdg = self.wdgD[wdg]
+                owdg = self.wdgD[wdg.id]
                 self.ui.sw_pages.removeWidget(owdg)
             self.ui.li_pages.clear()
             

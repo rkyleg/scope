@@ -178,6 +178,7 @@ class DirTree(QtGui.QWidget):
             # Add Files
             for f in sorted(dirlist, key=lambda s: s.lower()):
                 citm = QtGui.QTreeWidgetItem([f,pth+f])
+                citm.setToolTip(0,f)
                 
                 ext = os.path.splitext(f)[1][1:]
                 if not os.path.isdir(pth+f) and ((not f.startswith('.') and ext in self.extD) or self.showAll):

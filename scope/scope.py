@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.3-dev'
+__version__ = '0.5.4-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -682,7 +682,13 @@ class Scope(QtGui.QWidget):
 
     def currentEditor(self):
         return self.ui.sw_main.currentWidget()
-
+    
+    def getEditorWidget(self,file_id):
+        if file_id in self.fileOpenD:
+            return self.fileOpenD[file_id]
+        else:
+            return None
+    
     def change_tab(self,sw_ind):
         wdg = self.currentEditor()
         if wdg != None:
@@ -817,6 +823,7 @@ class Scope(QtGui.QWidget):
                 if file_id in self.recentTabs:
                     self.recentTabs.remove(file_id)
                 
+                wdg.deleteLater()
                 del wdg
         
         # Remove from workspace tabs

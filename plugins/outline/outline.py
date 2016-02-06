@@ -56,7 +56,7 @@ class Outline(QtGui.QWidget):
         self.ui.setupUi(self)
         self.ide = parent
         self.wdgD = {}
-        self.treeD = {}
+##        self.treeD = {}
         
         # Create blank page for default
         self.ui.sw_outline.insertWidget(0,QtGui.QWidget())
@@ -94,8 +94,8 @@ class Outline(QtGui.QWidget):
         self.ui.sw_outline.insertWidget(sw_ind,owdg)
         self.ui.sw_outline.setCurrentIndex(sw_ind)
 
-        self.wdgD[wdg] = owdg
-        self.treeD[owdg]=wdg
+        self.wdgD[wdg.id] = owdg
+##        self.treeD[owdg]=wdg
 
         if self.alwaysUpdate==1:
             # Add Text Changed Signal
@@ -123,7 +123,7 @@ class Outline(QtGui.QWidget):
             self.ide.ui.tab_left.setCurrentIndex(i)
         
         if wdg != None:
-            trwdg = self.wdgD[wdg].ui.tr_outline
+            trwdg = self.wdgD[wdg.id].ui.tr_outline
             if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
                 # Select tab if language
     ##            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'])
@@ -136,7 +136,7 @@ class Outline(QtGui.QWidget):
     ##            trwdg.addTopLevelItem(itm)
     ##            self.format(itm,'filename')
                 
-                self.wdgD[wdg].ui.b_find_close.click()
+                self.wdgD[wdg.id].ui.b_find_close.click()
                 txt = wdg.getText()
 ##                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
                 txtlines = txt.splitlines()
@@ -158,13 +158,13 @@ class Outline(QtGui.QWidget):
     
     def updateLocation(self,wdg,lines):
         if self.ide.settings['visibleLineTracking']:
-            trwdg = self.wdgD[wdg].ui.tr_outline
+            trwdg = self.wdgD[wdg.id].ui.tr_outline
             hi=0
     ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
     ##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
             brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
             
-            for t in range(trwdg.topLevelItemCount()-1,-1,-1):
+            for t in xrange(trwdg.topLevelItemCount()-1,-1,-1):
                 itm = trwdg.topLevelItem(t)
                 line = int(str(itm.text(1)))
                 if line>=lines[0] and line<=lines[1]:
@@ -199,8 +199,8 @@ class Outline(QtGui.QWidget):
         trwdg.ui.le_find.setFocus()
     
     def editorTabChanged(self,wdg):
-        if wdg in self.wdgD:
-            owdg = self.wdgD[wdg]
+        if wdg.id in self.wdgD:
+            owdg = self.wdgD[wdg.id]
             self.ui.sw_outline.setCurrentWidget(owdg)
         else:
             self.ui.sw_outline.setCurrentIndex(0)
@@ -210,8 +210,8 @@ class Outline(QtGui.QWidget):
 ##        self.ui.fr_find.hide()
         
     def editorTabClosed(self,wdg):
-        owdg = self.wdgD[wdg]
-        self.wdgD.pop(wdg)
+        owdg = self.wdgD[wdg.id]
+        self.wdgD.pop(wdg.id)
         self.ui.sw_outline.removeWidget(owdg)
         
     def goto(self,itm,col):
