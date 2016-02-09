@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.4-dev'
+__version__ = '0.5.5-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1174,6 +1174,36 @@ class Scope(QtGui.QWidget):
             self.pluginD[plug]=Plugin
             os.chdir(curdir)
 
+    def installPlugin(self,plugin_name,plugin_pkg):
+        plug_path = os.path.join(self.pluginPath,plugin_name)
+        if not os.path.exists(plug_path):
+            os.mkdir(plug_path)
+        import zipfile
+        
+        if plugin_pkg.startswith('http'):
+            import requests, StringIO
+            r = requests.get(plugin_pkg)
+            z = zipfile.ZipFile(StringIO.StringIO(r.content))
+        else:
+            z = zipfile.ZipFile(plugin_pkg,'r')
+        
+        # Ignore root directory in zip
+        root = z.namelist()[0].split('/')[0]+'/'
+        for zfile in z.namelist():
+            npth = str(zfile).replace(root,'')
+            if npth != '':
+##                print npth,'   ',os.path.join(plug_path,npth)
+                if npth.endswith('/'):
+                    if not os.path.exists(os.path.join(plug_path,npth)):
+                        os.mkdir(os.path.join(plug_path,npth))
+                else:
+                    data = z.read(zfile)
+                    myfile = open(os.path.join(plug_path,npth), "wb")
+                    myfile.write(data)
+                    myfile.close()
+            
+        z.close()
+
     #---   Left Plugins
     def toggleLeftPlugin(self):
         self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
@@ -1503,9 +1533,18 @@ class Scope(QtGui.QWidget):
         self.settings['checkFileChanges'] = int(self.settings['checkFileChanges'])
         
         self.Events.settingsLoaded.emit()
-        
+    
     def openSettings(self):
-        self.openFile(self.settings_filename)
+        menu = QtGui.QMenu(self.ui.b_settings)
+        menu.addAction('Edit Settings')
+##        menu.addAction('Plugins')
+        s = self.ui.b_settings.size()
+        bpos = self.ui.b_settings.mapToGlobal(QtCore.QPoint(s.width(),0))
+        act = menu.exec_(bpos)
+        if act != None:
+            acttxt = str(act.text())
+            if acttxt == 'Edit Settings':
+                self.openFile(self.settings_filename)
 
     def saveSettings(self):
         if self.fullscreen_mode:

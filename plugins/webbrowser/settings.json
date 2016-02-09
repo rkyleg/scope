@@ -1,0 +1,11 @@
+{
+    "inspector":1,
+    "statusbar":1,
+    "networkManager":1,
+    "proxy_path":"",
+    "proxy_port":"",
+    "createNewWindow":1,
+    "pluginsEnabled":0,
+    "javascriptEnabled":1,
+    "userAgent":""
+}
