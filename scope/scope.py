@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.5-dev'
+__version__ = '0.5.6-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1482,12 +1482,12 @@ class Scope(QtGui.QWidget):
         if not os.path.exists(self.settingPath):
             os.mkdir(self.settingPath)
         
-        if not os.path.exists(self.settingPath+'/settings.conf'):
+        if not os.path.exists(self.settingPath+'/scope.conf'):
             import shutil
-            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/settings.conf')
+            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/scope.conf')
         
         from site_pkg.configobj import configobj
-        self.settings_filename = self.settingPath+'/settings.conf'
+        self.settings_filename = self.settingPath+'/scope.conf'
         config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
         try:
             user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
