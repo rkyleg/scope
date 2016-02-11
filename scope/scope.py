@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.5.6-dev'
+__version__ = '0.6.0-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1482,22 +1482,44 @@ class Scope(QtGui.QWidget):
         if not os.path.exists(self.settingPath):
             os.mkdir(self.settingPath)
         
-        if not os.path.exists(self.settingPath+'/scope.conf'):
+        if not os.path.exists(self.settingPath+'/scope.json'):
             import shutil
-            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',self.settingPath+'/scope.conf')
+            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json',self.settingPath+'/scope.json')
         
-        from site_pkg.configobj import configobj
-        self.settings_filename = self.settingPath+'/scope.conf'
-        config = configobj.ConfigObj(os.path.abspath(os.path.dirname(__file__))+'/default_settings.conf',unrepr=True,_inspec=True,list_values=False)
-        try:
-            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
-            if type(user_config['editors'])==type([]): # Check editor settings 
-                error
-            config.merge(user_config)
-        except:
-            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
-            user_config = None
-        self.settings = config
+##        from site_pkg.configobj import configobj
+        self.settings_filename = self.settingPath+'/scope.json'
+        dflt_path = os.path.abspath(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json')
+        
+        # Default Settings
+        with open(dflt_path,'r') as setf:
+            config = json.load(setf)
+        
+        with open(self.settings_filename,'r') as setf:
+            mysettings = json.load(setf)
+        
+        self.settings = config.copy()
+        self.settings.update(mysettings)
+        
+##        try:
+##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
+##            if type(user_config['editors'])==type([]): # Check editor settings 
+##                error
+##            config.merge(user_config)
+##        except:
+##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
+##            user_config = None
+        
+##        print dflt_path
+##        config = configobj.ConfigObj(dflt_path,unrepr=True,_inspec=True,list_values=False)
+##        try:
+##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
+##            if type(user_config['editors'])==type([]): # Check editor settings 
+##                error
+##            config.merge(user_config)
+##        except:
+##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
+##            user_config = None
+##        self.settings = config
 
         # Setup Webview stylesheet
         wsettings = QtWebKit.QWebSettings.globalSettings()
@@ -1510,8 +1532,8 @@ class Scope(QtGui.QWidget):
             #~ self.settings['run_preview'][l]=0
             # Remove default languages if not in user config
             
-            if user_config != None and 'prog_lang' in user_config:
-                if l not in user_config['prog_lang']:
+            if 'prog_lang' in self.settings:
+                if l not in self.settings['prog_lang']:
                     self.settings['prog_lang'].pop(l)
                     ok = 0
                     
