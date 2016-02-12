@@ -81,8 +81,11 @@ class Preview(QtGui.QWidget):
         html = wdg.getText()
 
         cmd=None
-        if 'preview_cmd' in self.ide.settings['prog_lang'][wdg.lang]:
-            cmd=self.ide.settings['prog_lang'][wdg.lang]['preview_cmd']
+##        if 'preview_cmd' in self.ide.settings['prog_lang'][wdg.lang]:
+        if 'run' in self.ide.settings['prog_lang'][wdg.lang]:
+            pcmd=self.ide.settings['prog_lang'][wdg.lang]['run'].split('preview ')
+            if len(pcmd)>1:
+                cmd = pcmd[1]
 
         if cmd == 'markdown':
             # If markdown generate preview tab

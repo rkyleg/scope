@@ -18,7 +18,8 @@
     "home",
     "find_files",
     "console_launcher",
-    "webbrowser"
+    "webbrowser",
+    "settings"
 ],
 
 "activeEditors":["ace","scintilla","ckeditor"],
@@ -83,8 +84,7 @@
 
 "prog_lang": {
     "default": {
-        "editor":"scintilla",
-        "previewLocation":"plugin"
+        "editor":"scintilla"
     },
     "python": {
         "editor":"scintilla",
@@ -106,8 +106,7 @@
     "markdown": {
         "editor":"ace",
         "wordwrap":1,
-        "run":"preview",
-        "preview_cmd":"markdown"
+        "run":"preview markdown"
     },
     "json": {
         "editor":"ace"

@@ -5,6 +5,9 @@ QWidget {
 	background: rgb(50,50,50);
 	color:white;
 }
+QWebView {
+    color:black;
+}
 QLabel,QTabWidget::pane {
     background:transparent;
 }

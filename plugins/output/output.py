@@ -21,12 +21,12 @@ class Output(QtGui.QWidget):
         self.ui.li_pages.contextMenuEvent = self.listMenuEvent
 
     def editorTabChanged(self,wdg):
-        if wdg in self.wdgD:
+        if wdg.id in self.wdgD:
             owdg = self.wdgD[wdg.id]
             self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
     
     def editorTabClosed(self,wdg):
-        if wdg in self.wdgD:
+        if wdg.id in self.wdgD:
             owdg = self.wdgD[wdg.id]
             self.closeOutputWidget(owdg)
 
@@ -94,7 +94,7 @@ class Output(QtGui.QWidget):
     def killAll(self):
         opentxt = ''
         resp = QtGui.QMessageBox.Yes
-        for wdg in self.wdgD:
+        for wdg.id in self.wdgD:
             owdg = self.wdgD[wdg.id]
             if owdg.status != 'done':
                 opentxt+='<br>'+'&nbsp;'*5+os.path.split(owdg.filename)[1]
@@ -103,14 +103,14 @@ class Output(QtGui.QWidget):
         if opentxt != '':
             resp=QtGui.QMessageBox.warning(self,'Kill Running Processes','The following output processes are still running:'+opentxt+'<br><br>Do you want to kill all running processes?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:
-                for wdg in self.wdgD:
+                for wdg.id in self.wdgD:
                     owdg = self.wdgD[wdg.id]
                     if owdg.status != 'done':
                         owdg.stopProcess()
         
         # Close all Tabs
         if resp == QtGui.QMessageBox.Yes:
-            for wdg in self.wdgD:
+            for wdg.id in self.wdgD:
 ##                ind = self.ui.sw_pages.indexOf(owdg)
                 owdg = self.wdgD[wdg.id]
                 self.ui.sw_pages.removeWidget(owdg)

@@ -1,5 +1,5 @@
 from PyQt4 import QtGui, QtCore, QtWebKit, QtNetwork
-import os, time, sys, new, json
+import os, time, sys, json
 from qt_webbrowser_ui import Ui_Form
 
 class NetworkAccessManager(QtNetwork.QNetworkAccessManager):
@@ -35,7 +35,8 @@ class WebBrowser(QtGui.QWidget):
             if k in settings:
                 settings[k]=kargs[k]
 
-        self.ui.webView.keyPressEvent = new.instancemethod(self.webview_keyPress,self.ui.webView,self.ui.webView.__class__)
+##        self.ui.webView.keyPressEvent = new.instancemethod(self.webview_keyPress,self.ui.webView,self.ui.webView.__class__)
+        self.ui.webView.keyPressEvent = self.webview_keyPress
         
         # Address Bar (and signals)
         self.ui.webView.urlChanged.connect(self.update_url)
@@ -64,7 +65,8 @@ class WebBrowser(QtGui.QWidget):
         # Set UserAgent - this makes things not work
         if settings['userAgent'] != '':
             self.user_agent = settings['userAgent'] 
-            self.ui.webView.page().userAgentForUrl = new.instancemethod(self.user_agent_for_url,self.ui.webView.page(),self.ui.webView.page().__class__)
+##            self.ui.webView.page().userAgentForUrl = new.instancemethod(self.user_agent_for_url,self.ui.webView.page(),self.ui.webView.page().__class__)
+            self.ui.webView.page().userAgentForUrl = self.user_agent_for_url
         
         # Allow flash and java plugins
         if settings['pluginsEnabled']:
@@ -78,14 +80,16 @@ class WebBrowser(QtGui.QWidget):
         if settings['networkManager']:
             self.ui.webView.page().setNetworkAccessManager(NetworkAccessManager())
         
-        if settings['javascriptEnabled']:
-            # Setup Javascript console
-            self.ui.webView.page().javaScriptConsoleMessage = new.instancemethod(self.javascript_console_msg,self.ui.webView.page(),self.ui.webView.page().__class__)
+##        if settings['javascriptEnabled']:
+##            # Setup Javascript console
+##            self.ui.webView.page().javaScriptConsoleMessage = new.instancemethod(self.javascript_console_msg,self.ui.webView.page(),self.ui.webView.page().__class__)
+##            self.ui.webView.page().javaScriptConsoleMessage = self.javascript_console_msg
         
         # Override Create new Window
         if settings['createNewWindow']:
             self.ui.webView.hoverLink = ''
-            self.ui.webView.createWindow = new.instancemethod(self.new_window,self.ui.webView,self.ui.webView.__class__)
+##            self.ui.webView.createWindow = new.instancemethod(self.new_window,self.ui.webView,self.ui.webView.__class__)
+            self.ui.webView.createWindow = self.new_window
         
         # Setup Statusbar Hover
         if settings['statusbar']:
@@ -101,10 +105,20 @@ class WebBrowser(QtGui.QWidget):
     def go(self):
         lnk = self.ui.le_address.text()
         if lnk !='':
-            if lnk[:4] != 'http' and lnk[:4]!='file':
+            if lnk[:4] =='file' or lnk[0]=='/' or lnk[1]==':':
+                if os.name =='nt':
+                    url = QtCore.QUrl.fromLocalFile(lnk.replace('file:///',''))
+                else:
+                    url = QtCore.QUrl.fromLocalFile(lnk.replace('file://',''))
+            elif lnk[:4] != 'http' and lnk[:4]!='file':
                 lnk = 'http://'+lnk
                 self.ui.le_address.setText(lnk)
-            self.ui.webView.load(QtCore.QUrl(lnk))
+                url = QtCore.QUrl(lnk)
+            else:
+                url = QtCore.QUrl(lnk)
+
+            self.ui.webView.load(url)
+##            self.ui.webView.setUrl(url)
 
     def link_clicked(self,url):
         self.ui.le_address.setText(url.toString())
@@ -159,10 +173,11 @@ class WebBrowser(QtGui.QWidget):
 ##        return "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/40.0.2214.111 Safari/537.36"
         return self.user_agent
     
-    def javascript_console_msg(self,webpage, message, lineNumber, sourceID):
-        self.ui.l_status.setText('JS ERROR: %s line %d: %s' % (sourceID, lineNumber, message))
-
-    def new_window(self,webview,windowtype):
+##    def javascript_console_msg(self,webpage, message, lineNumber, sourceID):
+##        print 'javascript error'
+##        self.ui.l_status.setText('JS ERROR: %s line %d: %s' % (sourceID, lineNumber, message))
+##
+    def new_window(self,windowtype):
         if windowtype == 0 and self.hoverLink != '':
             nwdg = WebBrowser(url=self.hoverLink)
             nwdg.show()
@@ -182,7 +197,7 @@ class WebBrowser(QtGui.QWidget):
     def toggleInspector(self):
         self.webInspector.setVisible(not self.webInspector.isVisible())
 
-    def webview_keyPress(self,webview,event):
+    def webview_keyPress(self,event):
         handled = False
         if event.modifiers() & QtCore.Qt.ControlModifier:       # Ctrl
             if event.key() == QtCore.Qt.Key_F:                  # F

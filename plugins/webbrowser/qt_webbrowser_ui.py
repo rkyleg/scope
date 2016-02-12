@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'qt_webbrowser.ui'
 #
-# Created: Mon Feb  8 21:51:17 2016
+# Created: Fri Feb 12 17:38:08 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -38,17 +38,17 @@ class Ui_Form(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.fr_top.sizePolicy().hasHeightForWidth())
         self.fr_top.setSizePolicy(sizePolicy)
+        self.fr_top.setMaximumSize(QtCore.QSize(16777215, 26))
         self.fr_top.setStyleSheet(_fromUtf8("QFrame#fr_top {\n"
 "    border-bottom:1px solid gray;\n"
 "background-color:rgb(50,50,50)\n"
 "}\n"
 "QPushButton {\n"
 "background:transparent;\n"
-"color:rgb(230,230,230);\n"
-"font-weight:bold;\n"
+"border:0px;\n"
 "}\n"
 "QPushButton:hover {\n"
-"color:white;\n"
+"background:rgba(70,70,70,150);\n"
 "}"))
         self.fr_top.setFrameShape(QtGui.QFrame.NoFrame)
         self.fr_top.setFrameShadow(QtGui.QFrame.Raised)
@@ -61,27 +61,39 @@ class Ui_Form(object):
         self.b_back = QtGui.QPushButton(self.fr_top)
         self.b_back.setMinimumSize(QtCore.QSize(26, 0))
         self.b_back.setMaximumSize(QtCore.QSize(26, 26))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_left.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_back.setIcon(icon)
         self.b_back.setObjectName(_fromUtf8("b_back"))
         self.gridLayout_2.addWidget(self.b_back, 0, 5, 1, 1)
         self.b_forward = QtGui.QPushButton(self.fr_top)
         self.b_forward.setMinimumSize(QtCore.QSize(26, 0))
         self.b_forward.setMaximumSize(QtCore.QSize(26, 26))
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_forward.setIcon(icon1)
         self.b_forward.setObjectName(_fromUtf8("b_forward"))
         self.gridLayout_2.addWidget(self.b_forward, 0, 6, 1, 1)
         self.b_go = QtGui.QPushButton(self.fr_top)
         self.b_go.setMinimumSize(QtCore.QSize(26, 0))
         self.b_go.setMaximumSize(QtCore.QSize(26, 26))
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("img/refresh.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_go.setIcon(icon2)
         self.b_go.setObjectName(_fromUtf8("b_go"))
         self.gridLayout_2.addWidget(self.b_go, 0, 3, 2, 1)
         self.b_stop = QtGui.QPushButton(self.fr_top)
         self.b_stop.setMinimumSize(QtCore.QSize(26, 0))
         self.b_stop.setMaximumSize(QtCore.QSize(26, 26))
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("img/stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_stop.setIcon(icon3)
         self.b_stop.setObjectName(_fromUtf8("b_stop"))
         self.gridLayout_2.addWidget(self.b_stop, 0, 4, 2, 1)
         self.fr_addr = QtGui.QFrame(self.fr_top)
         self.fr_addr.setMinimumSize(QtCore.QSize(0, 22))
-        self.fr_addr.setMaximumSize(QtCore.QSize(16777215, 22))
         self.fr_addr.setStyleSheet(_fromUtf8("QFrame#fr_addr {\n"
+"   border:0px;\n"
 "    border-right:1px solid gray;\n"
 "}"))
         self.fr_addr.setFrameShape(QtGui.QFrame.NoFrame)
@@ -107,6 +119,11 @@ class Ui_Form(object):
         self.pb_load.setObjectName(_fromUtf8("pb_load"))
         self.gridLayout_3.addWidget(self.pb_load, 1, 1, 1, 1)
         self.le_address = QtGui.QLineEdit(self.fr_addr)
+        sizePolicy = QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Expanding)
+        sizePolicy.setHorizontalStretch(0)
+        sizePolicy.setVerticalStretch(0)
+        sizePolicy.setHeightForWidth(self.le_address.sizePolicy().hasHeightForWidth())
+        self.le_address.setSizePolicy(sizePolicy)
         font = QtGui.QFont()
         font.setFamily(_fromUtf8("Tahoma"))
         self.le_address.setFont(font)
@@ -164,13 +181,9 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         self.b_back.setToolTip(_translate("Form", "back", None))
-        self.b_back.setText(_translate("Form", "⇦", None))
         self.b_forward.setToolTip(_translate("Form", "forward", None))
-        self.b_forward.setText(_translate("Form", "⇨", None))
         self.b_go.setToolTip(_translate("Form", "reload/go", None))
-        self.b_go.setText(_translate("Form", "⤶", None))
         self.b_stop.setToolTip(_translate("Form", "stop", None))
-        self.b_stop.setText(_translate("Form", "■", None))
         self.le_address.setPlaceholderText(_translate("Form", "url", None))
         self.le_find.setPlaceholderText(_translate("Form", "find", None))
 

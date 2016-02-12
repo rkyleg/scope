@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.1'
+__version__ = '0.6.2'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -120,14 +120,14 @@ class Scope(QtGui.QWidget):
                 w=float(wd[:-1])/100.0*ws
             else:
                 try:
-                    w=int(wd)
+                    w=int(wd.replace('px','').strip())
                 except:
                     w=ws
             if hd.endswith('%'):
                 h=float(hd[:-1])/100.0*hs
             else:
                 try:
-                    h=int(hd)
+                    h=int(hd.replace('px','').strip())
                 except:
                     h=hs
             # Set screen size
@@ -985,7 +985,7 @@ class Scope(QtGui.QWidget):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
-            if self.settings['run'][wdg.lang]['cmd']=='preview':
+            if self.settings['run'][wdg.lang]['cmd'].startswith('preview'):
                 if 'preview' in self.pluginD:
                     self.pluginD['preview'].widget.previewRun(wdg)
                     if self.ui.tab_right.isHidden():
