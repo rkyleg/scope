@@ -6,7 +6,20 @@
 "visibleLineTracking":1,
 "checkFileChanges":2,
 
-"activePlugins":["filebrowser","outline","py_console","find_replace","output","snippets","preview","scratch","home","find_files"],
+"activePlugins":[
+    "filebrowser",
+    "outline",
+    "py_console",
+    "find_replace",
+    "output",
+    "snippets",
+    "preview",
+    "scratch",
+    "home",
+    "find_files",
+    "console_launcher",
+    "webbrowser"
+],
 
 "activeEditors":["ace","scintilla","ckeditor"],
 

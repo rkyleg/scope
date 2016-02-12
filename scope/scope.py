@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.0-dev'
+__version__ = '0.6.1-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1494,8 +1494,13 @@ class Scope(QtGui.QWidget):
         with open(dflt_path,'r') as setf:
             config = json.load(setf)
         
-        with open(self.settings_filename,'r') as setf:
-            mysettings = json.load(setf)
+        mysettings={}
+        try:
+            with open(self.settings_filename,'r') as setf:
+                mysettings = json.load(setf)
+        except:
+            err = str(sys.exc_info()[1])
+            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the scope/default_settings.json</i><br><br><b>Error:</b>'+err)
         
         self.settings = config.copy()
         self.settings.update(mysettings)
