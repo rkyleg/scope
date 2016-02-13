@@ -156,8 +156,7 @@ class Home(object):
         elif lnk=='filebrowser':
             self.IDE.openFile()
         elif lnk=='settings':
-##            self.IDE.openSettings()
-            self.IDE.openFile(self.IDE.settings_filename)
+            self.IDE.openSettings()
         else:
             self.webview.load2(url)
     

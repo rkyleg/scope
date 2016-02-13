@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.2'
+__version__ = '0.6.4-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -102,6 +102,12 @@ class Scope(QtGui.QWidget):
         self.stylePath = os.path.abspath(style_path)
         
         #--- Window Setup
+        
+        # Default zen mode
+        self.fullscreen_mode = 0
+        self.editor_fullmode = 0
+        
+        # Screen Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
         coords= QtGui.QApplication.desktop().screenGeometry(screen).getCoords() 
         if self.settings['window']['openMode']==1:
@@ -283,9 +289,6 @@ class Scope(QtGui.QWidget):
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
         #--- Other Setup
-        # Default zen mode
-        self.fullscreen_mode = 0
-        self.editor_fullmode = 0
 
         # Open file if in sys arg
         if len(sys.argv)>1:
@@ -381,7 +384,11 @@ class Scope(QtGui.QWidget):
             self.showNormal()
             if self.editor_fullmode:
                 self.toggleFullEditor(fullscreen=1)
-
+    
+    def toggleAppScreen(self):
+        if self.currentEditor().type == 'app':
+            self.ui.fr_leftbar.setVisible(0)
+    
     #---File
     def getFileId(self,filename):
         file_id = None
@@ -786,6 +793,10 @@ class Scope(QtGui.QWidget):
                 # Back if current tab
                 if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
                     self.ui.b_back.show()
+                
+                # Show Full Mode
+##                self.editor_fullmode=0
+##                self.toggleFullEditor()
                     
             elif wdg.filename != None:
                 self.last_editable_file = wdg.id
@@ -943,9 +954,9 @@ class Scope(QtGui.QWidget):
                         QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                         self.ui.l_statusbar.setText('Error Saving: '+filename)
 
-                    # If Settings File, reload
-                    if filename == self.settings_filename:
-                        self.loadSettings()
+##                    # If Settings File, reload
+##                    if filename == self.settings_filename:
+##                        self.loadSettings()
                 
                 # Update tabs
                 for t in self.fileD[wdg.id]['tabs']:
@@ -1562,16 +1573,17 @@ class Scope(QtGui.QWidget):
         self.Events.settingsLoaded.emit()
     
     def openSettings(self):
-        menu = QtGui.QMenu(self.ui.b_settings)
-        menu.addAction('Edit Settings')
-##        menu.addAction('Plugins')
-        s = self.ui.b_settings.size()
-        bpos = self.ui.b_settings.mapToGlobal(QtCore.QPoint(s.width(),0))
-        act = menu.exec_(bpos)
-        if act != None:
-            acttxt = str(act.text())
-            if acttxt == 'Edit Settings':
-                self.openFile(self.settings_filename)
+        self.pluginD['settings'].addSettingsWidget()
+##        menu = QtGui.QMenu(self.ui.b_settings)
+##        menu.addAction('Edit Settings')
+####        menu.addAction('Plugins')
+##        s = self.ui.b_settings.size()
+##        bpos = self.ui.b_settings.mapToGlobal(QtCore.QPoint(s.width(),0))
+##        act = menu.exec_(bpos)
+##        if act != None:
+##            acttxt = str(act.text())
+##            if acttxt == 'Edit Settings':
+##                self.openFile(self.settings_filename)
 
     def saveSettings(self):
         if self.fullscreen_mode:
