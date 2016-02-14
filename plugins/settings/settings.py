@@ -14,14 +14,8 @@ class Settings_Editor(QtGui.QWidget):
         
         # Add Ace editor
         import plugins.ace.ace
-        self.ui.te_lang = plugins.ace.ace.WebView(self.IDE,lang='json')
-        self.ui.fr_lang_ed.layout().addWidget(self.ui.te_lang)
-        
-        self.ui.te_editor = plugins.ace.ace.WebView(self.IDE,lang='json')
-        self.ui.fr_ed_ed.layout().addWidget(self.ui.te_editor)
-
-        self.ui.te_gen = plugins.ace.ace.WebView(self.IDE,lang='json')
-        self.ui.fr_gen_ed.layout().addWidget(self.ui.te_gen)
+        self.ui.te_json = plugins.ace.ace.WebView(self.IDE,lang='json')
+        self.ui.fr_json.layout().addWidget(self.ui.te_json)
 
 ##        import plugins.scintilla.scintilla
 ##        wv = plugins.scintilla.scintilla.Sci(self.IDE,Qsci.QsciLexerJavaScript(),lang='json')
@@ -33,64 +27,24 @@ class Settings_Editor(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/plugins.json',os.path.join(self.IDE.settingPath,'plugins.json'))
         
-        # Load Settings
-        self.load_settings()
+        self.ui.split_v.setSizes([self.IDE.width()/2,self.IDE.width()/2])
+        self.ui.split_h.setSizes([self.IDE.height()/2,self.IDE.height()/2])
         
-        self.ui.splitter.setSizes([self.IDE.width()/2,self.IDE.width()/2])
+        self.ui.fr_plugins.hide()
         
         # Signals
         self.ui.li_catg.currentRowChanged.connect(self.catg_change)
-        self.ui.b_save_ext.clicked.connect(self.save_ext)
-        self.ui.b_save_lang.clicked.connect(self.save_lang)
-        self.ui.b_save_editors.clicked.connect(self.save_editors)
-        self.ui.b_save_gen.clicked.connect(self.save_general)
-        self.ui.b_reload.clicked.connect(self.reload_settings)
-    
+        self.ui.b_save_json.clicked.connect(self.save_json)
+
         self.ui.tr_plugins.itemDoubleClicked.connect(self.plugin_dclick)
         self.ui.b_plugin_file_add.clicked.connect(self.plugin_add_file)
         self.ui.b_plugin_url_add.clicked.connect(self.plugin_add_url)
         
+        self.ui.tr_plugins.itemSelectionChanged.connect(self.plugin_select)
+        
         self.ui.li_catg.setCurrentRow(0)
     
-    def reload_settings(self):
-        resp = QtGui.QMessageBox.warning(self.IDE,'Reload Settings','Do you want to reload the settings?<br><br>Any unsaved settings will be lost.',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
-        if resp == QtGui.QMessageBox.Yes:
-            self.load_settings()
-    
-    def load_settings(self):
-        setD = self.getSettingsCopy()
-        
-        # General
-        genD = OrderedDict()
-        for ky in setD:
-            if ky not in ['editors','prog_lang','plugins','extensions','activePlugins','activeEditors']:
-                genD[ky] = setD[ky]
-        txt = json.dumps(genD,indent=4)
-        self.ui.te_gen.setText(txt)
-        
-        # Editors
-        txt = json.dumps(setD['editors'],indent=4)
-        self.ui.te_editor.setText(txt)
-        
-        # Languages
-        txt = json.dumps(setD['prog_lang'],indent=4)
-        self.ui.te_lang.setText(txt)
-        
-        # Extensions
-        txt = ''
-        for ext in setD['extensions']:
-            if txt != '': txt += '\n'
-            txt += ext+'='+setD['extensions'][ext]
-        self.ui.te_ext.setPlainText(txt)
-
-        # Plugins
-        self.load_plugins()
-    
     def getSettingsCopy(self):
-        
-
-##        from site_pkg.configobj import configobj
-##        self.settings_filename = self.IDE.settingPath+'/scope.json'
         dflt_path = os.path.abspath(self.IDE.scopePath+'/scope/default_settings.json')
         
         # Default Settings
@@ -117,73 +71,103 @@ class Settings_Editor(QtGui.QWidget):
         self.IDE.ui.l_statusbar.setText('Saved: Settings')
         self.IDE.loadSettings()
     
-    def appSave(self):
-        ind = self.ui.sw_main.currentIndex()
-        if ind == 0:
-            self.save_general()
-        elif ind == 1:
-            self.save_editors()
-        elif ind == 2:
-            self.save_lang()
-        elif ind == 3:
-            self.save_ext()
+##    def appSave(self):
+##        ind = self.ui.li_catg.currentIndex()
+##        if ind == 0:
+##            self.save_general()
+##        elif ind == 1:
+##            self.save_editors()
+##        elif ind == 2:
+##            self.save_lang()
+##        elif ind == 3:
+##            self.save_ext()
     
     def catg_change(self,ind):
-        self.ui.sw_main.setCurrentIndex(ind)
         
-##        setD = self.getSettingsCopy()
-##        
-##        if ind == 3: # Extensions
-##            txt = ''
-##            for ext in setD['extensions']:
-##                if txt != '': txt += '\n'
-##                txt += ext+'='+setD['extensions'][ext]
-##            
-##            self.ui.te_ext.setPlainText(txt)
-##        elif ind == 2: # Languages
-##            txt = json.dumps(setD['prog_lang'],indent=4)
-##            self.ui.te_lang.setText(txt)
-    
-    def save_ext(self):
-        txt = str(self.ui.te_ext.toPlainText())
-        extD = OrderedDict()
-        for rw in txt.splitlines():
-            if rw.strip() != '':
-                exts = rw.split('=')
-                if len(exts) > 1:
-                    extD[exts[0].strip()] = exts[1].strip()
+        setD = self.getSettingsCopy()
         
-        newSettings = self.getSettingsCopy()
-        newSettings['extensions'] = extD
-        self.saveSettings(newSettings)
+        h=''
+        if ind == 4: # Plugins
+##            self.ui.sw_main.setCurrentIndex(1)
+            with open(self.IDE.pluginPath+'/settings/docs/plugins.html','r') as f:
+                h = f.read()
+            self.load_plugins()
+            
+            self.ui.fr_plugins.show()
+            txt = ''
+            title = 'Plugin'
+            self.ui.fr_json.setEnabled(0)
+        else:
+##            self.ui.sw_main.setCurrentIndex(0)
+            
+            self.ui.fr_plugins.hide()
+            
+            if ind == 0: # General
+                title = 'General'
+                with open(self.IDE.pluginPath+'/settings/docs/general.html','r') as f:
+                    h = f.read()
+                
+                genD = OrderedDict()
+                for ky in setD:
+                    if ky not in ['editors','prog_lang','plugins','extensions','activePlugins','activeEditors']:
+                        genD[ky] = setD[ky]
+                txt = json.dumps(genD,indent=4)
+                
+            elif ind == 1: # Editors
+                title = 'Editors'
+                with open(self.IDE.pluginPath+'/settings/docs/editors.html','r') as f:
+                    h = f.read()
+                
+                txt = json.dumps(setD['editors'],indent=4)
+            elif ind == 2: # Languages
+                title = 'Programing Languages'
+                with open(self.IDE.pluginPath+'/settings/docs/languages.html','r') as f:
+                    h = f.read()
+                
+                txt = json.dumps(setD['prog_lang'],indent=4)
+            elif ind == 3: # Extensions
+                title = 'Extensions'
+                with open(self.IDE.pluginPath+'/settings/docs/extensions.html','r') as f:
+                    h = f.read()
+                
+                txt = json.dumps(setD['extensions'],indent=4)
+            
+        self.ui.te_json.setText(txt)
     
-    def save_lang(self):
-        try:
-            langD = json.loads(str(self.ui.te_lang.getText()))
-        except:
-            QtGui.QMessageBox.warning(self.IDE,'Error Saving Language Settings','Error:<br>'+str(sys.exc_info()[1]))
+        self.ui.l_title.setText(' '+title+' Settings')
+            
+        self.ui.tb_help.setHtml(h)
+        
+    def save_json(self):
+        ind = self.ui.li_catg.currentRow()
         newSettings = self.getSettingsCopy()
-        newSettings['prog_lang'] = langD
-        self.saveSettings(newSettings)
-    
-    def save_editors(self):
+        
+        ok = 0
+        
+        # Get current settings
         try:
-            editorD = json.loads(str(self.ui.te_editor.getText()))
-        except:
-            QtGui.QMessageBox.warning(self.IDE,'Error Saving Editors Settings','Error:<br>'+str(sys.exc_info()[1]))
-        newSettings = self.getSettingsCopy()
-        newSettings['editors'] = editorD
-        self.saveSettings(newSettings)
-    
-    def save_general(self):
-        try:
-            genD = json.loads(str(self.ui.te_gen.getText()))
+            jsonD = json.loads(str(self.ui.te_json.getText()),object_pairs_hook=OrderedDict)
+            ok = 1
         except:
             QtGui.QMessageBox.warning(self.IDE,'Error Saving General Settings','Error:<br>'+str(sys.exc_info()[1]))
-        newSettings = self.getSettingsCopy()
-        for ky in genD:
-            newSettings[ky] = genD[ky]
-        self.saveSettings(newSettings)
+        
+        if ok:
+            if ind == 0: # General
+                for ky in jsonD:
+                    newSettings[ky] = jsonD[ky]
+            elif ind == 1: # Editors
+                newSettings['editors'] = jsonD
+            elif ind == 2: # Languages
+                newSettings['prog_lang']  = jsonD
+            elif ind == 3: # Extensions
+                newSettings['extensions'] = jsonD
+            elif ind == 4: # Plugins
+                itm = self.ui.tr_plugins.currentItem()
+                if itm != None:
+                    plug = str(itm.plug)
+                    newSettings['plugins'][plug]=jsonD
+                    
+            self.saveSettings(newSettings)
     
     #---Plugins
     def load_plugins(self):
@@ -193,12 +177,13 @@ class Settings_Editor(QtGui.QWidget):
         
         self.ui.tr_plugins.clear()
         for plug in sorted(pluginD.keys()):
-            enbl=''
-            if plug in self.IDE.pluginD:
-                enbl = 'Y'
-            itm = QtGui.QTreeWidgetItem([pluginD[plug]['title'],enbl,pluginD[plug]['desc']])
-            itm.plug = plug
-            self.ui.tr_plugins.addTopLevelItem(itm)
+            if not plug in ['settings']:
+                enbl=''
+                if plug in self.IDE.pluginD:
+                    enbl = 'Y'
+                itm = QtGui.QTreeWidgetItem([pluginD[plug]['title'],enbl,pluginD[plug]['desc']])
+                itm.plug = plug
+                self.ui.tr_plugins.addTopLevelItem(itm)
         self.ui.tr_plugins.resizeColumnToContents(0)
         self.ui.tr_plugins.resizeColumnToContents(1)
 
@@ -218,21 +203,39 @@ class Settings_Editor(QtGui.QWidget):
                 
             self.saveSettings(newSettings)
     
+    def plugin_select(self):
+        itm = self.ui.tr_plugins.currentItem()
+        if itm != None:
+            plug = str(itm.plug)
+            self.ui.fr_json.setEnabled(1)
+            
+            # Main settings
+            scopeSettings = self.getSettingsCopy()
+            
+            # Load Settings
+            with open(os.path.join(self.IDE.pluginPath,plug+'/plugin.json'),'r') as f:
+                plugD = json.load(f,object_pairs_hook=OrderedDict)
+            
+            pD = OrderedDict()
+            for ky in plugD['settings']:
+                pD[ky] = plugD['settings'][ky]
+            
+                if plug in scopeSettings['plugins']:
+                    if ky in scopeSettings['plugins'][plug]:
+                        pD[ky] = scopeSettings['plugins'][plug][ky]
+            
+            self.ui.te_json.setText(json.dumps(pD,indent=4))
+            self.ui.l_title.setText(itm.text(0)+' Plugin Settings')
+    
     def plugin_add_file(self):
         filename = QtGui.QFileDialog.getOpenFileName(self,"Select Plugin Zip File",self.IDE.currentPath," (*.zip)")
         if not filename.isEmpty():
-##            resp,ok = QtGui.QInputDialog.getText(self,'Enter the Plugin Folder Name','')
-##            if ok:
-                self.installPlugin(str(filename))
-                
-                # Add to plugins.json
-                
-    
+            self.installPlugin(str(filename))
+
     def plugin_add_url(self):
         resp,ok = QtGui.QInputDialog.getText(self,'Add Plugin','Paste the url to the plugin zip file')
         if ok:
             self.installPlugin(str(resp))
-
 
     def installPlugin(self,plugin_pkg):
 
@@ -266,11 +269,9 @@ class Settings_Editor(QtGui.QWidget):
                 ok = 1
         
         if ok:
-        
             for zfile in z.namelist():
                 npth = str(zfile).replace(root,'')
                 if npth != '':
-    ##                print npth,'   ',os.path.join(plug_path,npth)
                     if npth.endswith('/'):
                         if not os.path.exists(os.path.join(plug_path,npth)):
                             os.mkdir(os.path.join(plug_path,npth))
@@ -279,7 +280,7 @@ class Settings_Editor(QtGui.QWidget):
                         myfile = open(os.path.join(plug_path,npth), "wb")
                         myfile.write(data)
                         myfile.close()
-            
+        
         z.close()
         
         # Add to plugins.json file
