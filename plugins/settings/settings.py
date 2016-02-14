@@ -86,22 +86,6 @@ class Settings_Editor(QtGui.QWidget):
         # Plugins
         self.load_plugins()
     
-    def load_plugins(self):
-        # Plugins
-        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
-            pluginD = json.load(f)
-        
-        self.ui.tr_plugins.clear()
-        for plug in pluginD:
-            enbl=''
-            if plug in self.IDE.pluginD:
-                enbl = 'Y'
-            itm = QtGui.QTreeWidgetItem([pluginD[plug]['title'],enbl,pluginD[plug]['desc']])
-            itm.plug = plug
-            self.ui.tr_plugins.addTopLevelItem(itm)
-        self.ui.tr_plugins.resizeColumnToContents(0)
-        self.ui.tr_plugins.resizeColumnToContents(1)
-    
     def getSettingsCopy(self):
         
 
@@ -202,6 +186,22 @@ class Settings_Editor(QtGui.QWidget):
         self.saveSettings(newSettings)
     
     #---Plugins
+    def load_plugins(self):
+        # Plugins
+        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
+            pluginD = json.load(f)
+        
+        self.ui.tr_plugins.clear()
+        for plug in sorted(pluginD.keys()):
+            enbl=''
+            if plug in self.IDE.pluginD:
+                enbl = 'Y'
+            itm = QtGui.QTreeWidgetItem([pluginD[plug]['title'],enbl,pluginD[plug]['desc']])
+            itm.plug = plug
+            self.ui.tr_plugins.addTopLevelItem(itm)
+        self.ui.tr_plugins.resizeColumnToContents(0)
+        self.ui.tr_plugins.resizeColumnToContents(1)
+
     def plugin_dclick(self,itm,col):
         if col == 1:
             newSettings = self.getSettingsCopy()
