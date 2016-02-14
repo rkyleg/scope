@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings.ui'
 #
-# Created: Sat Feb 13 11:03:03 2016
+# Created: Sat Feb 13 16:58:58 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -99,7 +99,10 @@ class Ui_Form(object):
         self.b_reload.setIconSize(QtCore.QSize(12, 12))
         self.b_reload.setObjectName(_fromUtf8("b_reload"))
         self.gridLayout.addWidget(self.b_reload, 1, 0, 1, 1)
-        self.sw_main = QtGui.QStackedWidget(Form)
+        self.splitter = QtGui.QSplitter(Form)
+        self.splitter.setOrientation(QtCore.Qt.Horizontal)
+        self.splitter.setObjectName(_fromUtf8("splitter"))
+        self.sw_main = QtGui.QStackedWidget(self.splitter)
         self.sw_main.setObjectName(_fromUtf8("sw_main"))
         self.pg_gen = QtGui.QWidget()
         self.pg_gen.setObjectName(_fromUtf8("pg_gen"))
@@ -303,9 +306,9 @@ class Ui_Form(object):
         self.gridLayout_9.setObjectName(_fromUtf8("gridLayout_9"))
         spacerItem4 = QtGui.QSpacerItem(247, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_9.addItem(spacerItem4, 0, 2, 1, 1)
-        self.pushButton = QtGui.QPushButton(self.pg_plug)
-        self.pushButton.setObjectName(_fromUtf8("pushButton"))
-        self.gridLayout_9.addWidget(self.pushButton, 0, 3, 1, 1)
+        self.b_plugin_file_add = QtGui.QPushButton(self.pg_plug)
+        self.b_plugin_file_add.setObjectName(_fromUtf8("b_plugin_file_add"))
+        self.gridLayout_9.addWidget(self.b_plugin_file_add, 0, 3, 1, 1)
         self.label_9 = QtGui.QLabel(self.pg_plug)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -314,17 +317,28 @@ class Ui_Form(object):
         self.label_9.setFont(font)
         self.label_9.setObjectName(_fromUtf8("label_9"))
         self.gridLayout_9.addWidget(self.label_9, 0, 0, 1, 1)
-        self.pushButton_2 = QtGui.QPushButton(self.pg_plug)
-        self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
-        self.gridLayout_9.addWidget(self.pushButton_2, 0, 4, 1, 1)
-        self.treeWidget = QtGui.QTreeWidget(self.pg_plug)
-        self.treeWidget.setObjectName(_fromUtf8("treeWidget"))
-        self.gridLayout_9.addWidget(self.treeWidget, 1, 0, 1, 5)
+        self.b_plugin_url_add = QtGui.QPushButton(self.pg_plug)
+        self.b_plugin_url_add.setObjectName(_fromUtf8("b_plugin_url_add"))
+        self.gridLayout_9.addWidget(self.b_plugin_url_add, 0, 4, 1, 1)
+        self.tr_plugins = QtGui.QTreeWidget(self.pg_plug)
+        self.tr_plugins.setObjectName(_fromUtf8("tr_plugins"))
+        self.gridLayout_9.addWidget(self.tr_plugins, 2, 0, 1, 5)
+        self.label_10 = QtGui.QLabel(self.pg_plug)
+        self.label_10.setObjectName(_fromUtf8("label_10"))
+        self.gridLayout_9.addWidget(self.label_10, 1, 0, 1, 5)
         self.sw_main.addWidget(self.pg_plug)
-        self.gridLayout.addWidget(self.sw_main, 0, 1, 3, 1)
+        self.textBrowser = QtGui.QTextBrowser(self.splitter)
+        self.textBrowser.setStyleSheet(_fromUtf8("QTextBrowser {\n"
+"    background:transparent;\n"
+"    color:white;\n"
+"    border-left:1px solid gray;\n"
+"}"))
+        self.textBrowser.setFrameShape(QtGui.QFrame.NoFrame)
+        self.textBrowser.setObjectName(_fromUtf8("textBrowser"))
+        self.gridLayout.addWidget(self.splitter, 0, 1, 2, 1)
 
         self.retranslateUi(Form)
-        self.sw_main.setCurrentIndex(0)
+        self.sw_main.setCurrentIndex(4)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -358,10 +372,11 @@ class Ui_Form(object):
         self.label_2.setText(_translate("Form", "For list of languages - look at the options for each editor\n"
 "Format is:\n"
 "extension=language", None))
-        self.pushButton.setText(_translate("Form", "Add from File", None))
+        self.b_plugin_file_add.setText(_translate("Form", "Add from File", None))
         self.label_9.setText(_translate("Form", " Plugins", None))
-        self.pushButton_2.setText(_translate("Form", "Add from URL", None))
-        self.treeWidget.headerItem().setText(0, _translate("Form", "Plugin Name", None))
-        self.treeWidget.headerItem().setText(1, _translate("Form", "Enabled", None))
-        self.treeWidget.headerItem().setText(2, _translate("Form", "Description", None))
+        self.b_plugin_url_add.setText(_translate("Form", "Add from URL", None))
+        self.tr_plugins.headerItem().setText(0, _translate("Form", "Plugin Name", None))
+        self.tr_plugins.headerItem().setText(1, _translate("Form", "Enabled", None))
+        self.tr_plugins.headerItem().setText(2, _translate("Form", "Description", None))
+        self.label_10.setText(_translate("Form", " A restart may be needed for plugin changes to take affect", None))
 

@@ -28,8 +28,15 @@ class Settings_Editor(QtGui.QWidget):
         
 ##        self.ui.fr_lang_ed.layout().addWidget(self.ui.te_lang)
         
+        # Setup Plugins file
+        if not os.path.exists(os.path.join(self.IDE.settingPath,'plugins.json')):
+            import shutil
+            shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/plugins.json',os.path.join(self.IDE.settingPath,'plugins.json'))
+        
         # Load Settings
         self.load_settings()
+        
+        self.ui.splitter.setSizes([self.IDE.width()/2,self.IDE.width()/2])
         
         # Signals
         self.ui.li_catg.currentRowChanged.connect(self.catg_change)
@@ -39,6 +46,10 @@ class Settings_Editor(QtGui.QWidget):
         self.ui.b_save_gen.clicked.connect(self.save_general)
         self.ui.b_reload.clicked.connect(self.reload_settings)
     
+        self.ui.tr_plugins.itemDoubleClicked.connect(self.plugin_dclick)
+        self.ui.b_plugin_file_add.clicked.connect(self.plugin_add_file)
+        self.ui.b_plugin_url_add.clicked.connect(self.plugin_add_url)
+        
         self.ui.li_catg.setCurrentRow(0)
     
     def reload_settings(self):
@@ -71,6 +82,25 @@ class Settings_Editor(QtGui.QWidget):
             if txt != '': txt += '\n'
             txt += ext+'='+setD['extensions'][ext]
         self.ui.te_ext.setPlainText(txt)
+
+        # Plugins
+        self.load_plugins()
+    
+    def load_plugins(self):
+        # Plugins
+        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
+            pluginD = json.load(f)
+        
+        self.ui.tr_plugins.clear()
+        for plug in pluginD:
+            enbl=''
+            if plug in self.IDE.pluginD:
+                enbl = 'Y'
+            itm = QtGui.QTreeWidgetItem([pluginD[plug]['title'],enbl,pluginD[plug]['desc']])
+            itm.plug = plug
+            self.ui.tr_plugins.addTopLevelItem(itm)
+        self.ui.tr_plugins.resizeColumnToContents(0)
+        self.ui.tr_plugins.resizeColumnToContents(1)
     
     def getSettingsCopy(self):
         
@@ -170,3 +200,95 @@ class Settings_Editor(QtGui.QWidget):
         for ky in genD:
             newSettings[ky] = genD[ky]
         self.saveSettings(newSettings)
+    
+    #---Plugins
+    def plugin_dclick(self,itm,col):
+        if col == 1:
+            newSettings = self.getSettingsCopy()
+            plug = str(itm.plug)
+            if str(itm.text(col)) == 'Y':
+                itm.setText(col,'')
+                newSettings['activePlugins'].remove(plug)
+            else:
+                itm.setText(col,'Y')
+                newSettings['activePlugins'].append(plug)
+                
+                if not plug in self.IDE.pluginD:
+                    self.IDE.loadPlugin(plug)
+                
+            self.saveSettings(newSettings)
+    
+    def plugin_add_file(self):
+        filename = QtGui.QFileDialog.getOpenFileName(self,"Select Plugin Zip File",self.IDE.currentPath," (*.zip)")
+        if not filename.isEmpty():
+##            resp,ok = QtGui.QInputDialog.getText(self,'Enter the Plugin Folder Name','')
+##            if ok:
+                self.installPlugin(str(filename))
+                
+                # Add to plugins.json
+                
+    
+    def plugin_add_url(self):
+        resp,ok = QtGui.QInputDialog.getText(self,'Add Plugin','Paste the url to the plugin zip file')
+        if ok:
+            self.installPlugin(str(resp))
+
+
+    def installPlugin(self,plugin_pkg):
+
+        import zipfile
+        
+        if plugin_pkg.startswith('http'):
+            import requests, StringIO
+            r = requests.get(plugin_pkg)
+            z = zipfile.ZipFile(StringIO.StringIO(r.content))
+        else:
+            z = zipfile.ZipFile(plugin_pkg,'r')
+        
+        # Ignore root directory in zip
+        root = z.namelist()[0].split('/')[0]+'/'
+        
+        # Get Plugin Info
+        plugD = json.loads(z.read(root+'plugin.json'))
+        
+        plugin_name = plugD['folder_name']
+        
+        # Check Plugin Name
+        plug_path = os.path.join(self.IDE.pluginPath,plugin_name)
+        
+        ok = 0
+        if not os.path.exists(plug_path):
+            os.mkdir(plug_path)
+            ok = 1
+        else:
+            resp = QtGui.QMessageBox.warning(self.IDE,'Plugin Exists','This plugin already exists. Do you want to overwrite the current plugin?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
+            if resp == QtGui.QMessageBox.Yes:
+                ok = 1
+        
+        if ok:
+        
+            for zfile in z.namelist():
+                npth = str(zfile).replace(root,'')
+                if npth != '':
+    ##                print npth,'   ',os.path.join(plug_path,npth)
+                    if npth.endswith('/'):
+                        if not os.path.exists(os.path.join(plug_path,npth)):
+                            os.mkdir(os.path.join(plug_path,npth))
+                    else:
+                        data = z.read(zfile)
+                        myfile = open(os.path.join(plug_path,npth), "wb")
+                        myfile.write(data)
+                        myfile.close()
+            
+        z.close()
+        
+        # Add to plugins.json file
+        if ok:
+            with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
+                pluginD = json.load(f)
+            
+            pluginD[plugin_name]={'title':plugD['title'],'desc':plugD['desc'],'version':plugD['version']}
+            with open(os.path.join(self.IDE.settingPath,'plugins.json'),'w') as f:
+                json.dump(pluginD,f,indent=4)
+                
+            self.load_plugins()

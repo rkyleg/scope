@@ -1,0 +1,15 @@
+{
+    "filebrowser":{"title":"File Browser","desc":"Browse and open files","version":"0"},
+    "outline":{"title":"Outline","desc":"Code outline","version":"0"},
+    "py_console":{"title":"Python Console","desc":"Embedded Python Console","version":"0"},
+    "find_replace":{"title":"Find/Replace","desc":"Find and replace within the current editor","version":"0"},
+    "output":{"title":"Run/Output","desc":"Handles running files and displaying the output","version":"0"},
+    "snippets":{"title":"Snippets","desc":"Manage and insert snippets","version":"0"},
+    "preview":{"title":"Preview","desc":"An html and markdown preview window","version":"0"},
+    "scratch":{"title":"Scratchpad","desc":"A simple scratchpad to temporarily store text","version":"0"},
+    "home":{"title":"Home","desc":"The Scope home page that is visible on startup","version":"0"},
+    "find_files":{"title":"Find in Files","desc":"Searches within files and displays results","version":"0"},
+    "console_launcher":{"title":"Console Launcher","desc":"Shortcut to launch an external terminal window","version":"0"},
+    "webbrowser":{"title":"Web Browser","desc":"A simple webkit webbrowser","version":"0"},
+    "settings":{"title":"Settings","desc":"The Settings manager for Scope","version":"0"}
+}

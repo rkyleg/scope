@@ -1,14 +1,9 @@
 import os, subprocess
 from PyQt4 import QtGui
     
-class Settings(object):
-    '''Modifiable settings and their defaults'''
-    # attribute=value
-    
 class Plugin(object):
     title = 'Launch Console'
     location = 'app'
-    settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
     def __init__(self,parent=None):

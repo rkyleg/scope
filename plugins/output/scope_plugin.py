@@ -1,13 +1,8 @@
 from . import output
 
-class Settings(object):
-    '''Modifiable settings and their defaults'''
-    # attribute=value
-    
 class Plugin(object):
     title = 'Output'
     location = 'bottom'
-    settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
     def __init__(self,parent=None):

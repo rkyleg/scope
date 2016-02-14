@@ -1,0 +1,10 @@
+{
+    "folder_name":"snippets",
+    "title":"Snippets",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Manage and insert snippets",
+    "settings":{
+        "path":""
+    }
+}

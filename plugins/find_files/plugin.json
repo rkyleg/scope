@@ -1,0 +1,10 @@
+{
+    "folder_name":"find_files",
+    "title":"Find in Files",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Searches within files and displays results",
+    "settings":{
+        "default_ext": ".py"
+    }
+}

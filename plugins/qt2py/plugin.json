@@ -1,0 +1,8 @@
+{
+    "folder_name":"qt2py",
+    "title":"PyQt Converter",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Converts Qt .ui files to Python files",
+    "settings":{}
+}

@@ -1,14 +1,9 @@
 from . import spellcheck
 from PyQt4 import QtGui, QtCore
 
-class Settings(object):
-    '''Modifiable settings and their defaults'''
-    # attribute=value
-    
 class Plugin(object):
     title = 'Spellcheck'
     location = None
-    settings = Settings.__dict__ # Settings must be a dictionary
     widget = None  # The widget for the plugin (set at getWidget)
     
     def __init__(self,parent=None):

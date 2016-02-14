@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.4-dev'
+__version__ = '0.6.5-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1184,36 +1184,6 @@ class Scope(QtGui.QWidget):
 
             self.pluginD[plug]=Plugin
             os.chdir(curdir)
-
-    def installPlugin(self,plugin_name,plugin_pkg):
-        plug_path = os.path.join(self.pluginPath,plugin_name)
-        if not os.path.exists(plug_path):
-            os.mkdir(plug_path)
-        import zipfile
-        
-        if plugin_pkg.startswith('http'):
-            import requests, StringIO
-            r = requests.get(plugin_pkg)
-            z = zipfile.ZipFile(StringIO.StringIO(r.content))
-        else:
-            z = zipfile.ZipFile(plugin_pkg,'r')
-        
-        # Ignore root directory in zip
-        root = z.namelist()[0].split('/')[0]+'/'
-        for zfile in z.namelist():
-            npth = str(zfile).replace(root,'')
-            if npth != '':
-##                print npth,'   ',os.path.join(plug_path,npth)
-                if npth.endswith('/'):
-                    if not os.path.exists(os.path.join(plug_path,npth)):
-                        os.mkdir(os.path.join(plug_path,npth))
-                else:
-                    data = z.read(zfile)
-                    myfile = open(os.path.join(plug_path,npth), "wb")
-                    myfile.write(data)
-                    myfile.close()
-            
-        z.close()
 
     #---   Left Plugins
     def toggleLeftPlugin(self):

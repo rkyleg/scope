@@ -153,421 +153,425 @@ QPushButton:hover {
      </property>
     </widget>
    </item>
-   <item row="0" column="1" rowspan="3">
-    <widget class="QStackedWidget" name="sw_main">
-     <property name="currentIndex">
-      <number>0</number>
+   <item row="0" column="1" rowspan="2">
+    <widget class="QSplitter" name="splitter">
+     <property name="orientation">
+      <enum>Qt::Horizontal</enum>
      </property>
-     <widget class="QWidget" name="pg_gen">
-      <layout class="QGridLayout" name="gridLayout_8">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label_7">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string> General Settings</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="2">
-        <spacer name="horizontalSpacer_2">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="b_save_gen">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>save</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>12</width>
-           <height>12</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="4">
-        <widget class="QLabel" name="label_8">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="margin">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="4">
-        <widget class="QFrame" name="fr_gen_ed">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QFrame#fr_gen_ed {
+     <widget class="QStackedWidget" name="sw_main">
+      <property name="currentIndex">
+       <number>4</number>
+      </property>
+      <widget class="QWidget" name="pg_gen">
+       <layout class="QGridLayout" name="gridLayout_8">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string> General Settings</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="2">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="1" column="3">
+         <widget class="QPushButton" name="b_save_gen">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>save</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0" colspan="4">
+         <widget class="QLabel" name="label_8">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
+          <property name="margin">
+           <number>5</number>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0" colspan="4">
+         <widget class="QFrame" name="fr_gen_ed">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="styleSheet">
+           <string notr="true">QFrame#fr_gen_ed {
 	border-top:1px solid gray;
 	border-bottom:1px solid gray;
 }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_7">
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_7">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pg_editors">
+       <layout class="QGridLayout" name="gridLayout_6">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="1">
+         <spacer name="horizontalSpacer_3">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_6">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string> Editors Settings</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="b_save_editors">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>save</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="3">
+         <widget class="QLabel" name="label_5">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;p&gt;Default settings for the editors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
           <property name="margin">
-           <number>0</number>
+           <number>5</number>
           </property>
-          <property name="spacing">
-           <number>0</number>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="QFrame" name="fr_ed_ed">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="pg_editors">
-      <layout class="QGridLayout" name="gridLayout_6">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item row="0" column="1">
-        <spacer name="horizontalSpacer_3">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_6">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string> Editors Settings</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <widget class="QPushButton" name="b_save_editors">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>save</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>12</width>
-           <height>12</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="3">
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;p&gt;Default settings for the editors&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="margin">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="3">
-        <widget class="QFrame" name="fr_ed_ed">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QFrame#fr_ed_ed {
+          <property name="styleSheet">
+           <string notr="true">QFrame#fr_ed_ed {
 	border-top:1px solid gray;
 	border-bottom:1px solid gray;
 }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_5">
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_5">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pg_lang">
+       <layout class="QGridLayout" name="gridLayout_4">
+        <property name="leftMargin">
+         <number>0</number>
+        </property>
+        <property name="topMargin">
+         <number>0</number>
+        </property>
+        <property name="rightMargin">
+         <number>0</number>
+        </property>
+        <property name="bottomMargin">
+         <number>4</number>
+        </property>
+        <property name="horizontalSpacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0" colspan="3">
+         <widget class="QLabel" name="label_3">
+          <property name="maximumSize">
+           <size>
+            <width>16777215</width>
+            <height>30</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string> Language Settings</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <spacer name="horizontalSpacer_4">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="b_save_lang">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>save</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="5">
+         <widget class="QLabel" name="label_4">
+          <property name="text">
+           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Standard keys are:&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;editor&lt;/span&gt; - the editor to use for the language&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;run&lt;/span&gt; - the command to execute for this language (filepath is appended to the end of the command)&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;fave&lt;/span&gt; - set to 0, if you don't want this language to show up in the favorites lists&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;theme&lt;/span&gt; - for ace editor, this will change the theme&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;wordwrap&lt;/span&gt; - 0 for no wordwrap, 1 for wordwrap&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+          </property>
+          <property name="wordWrap">
+           <bool>true</bool>
+          </property>
           <property name="margin">
-           <number>0</number>
+           <number>5</number>
           </property>
-          <property name="spacing">
-           <number>0</number>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="5">
+         <widget class="QFrame" name="fr_lang_ed">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
           </property>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="pg_lang">
-      <layout class="QGridLayout" name="gridLayout_4">
-       <property name="leftMargin">
-        <number>0</number>
-       </property>
-       <property name="topMargin">
-        <number>0</number>
-       </property>
-       <property name="rightMargin">
-        <number>0</number>
-       </property>
-       <property name="bottomMargin">
-        <number>4</number>
-       </property>
-       <property name="horizontalSpacing">
-        <number>0</number>
-       </property>
-       <item row="0" column="0" colspan="3">
-        <widget class="QLabel" name="label_3">
-         <property name="maximumSize">
-          <size>
-           <width>16777215</width>
-           <height>30</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string> Language Settings</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="3">
-        <spacer name="horizontalSpacer_4">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="b_save_lang">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>save</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>12</width>
-           <height>12</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="5">
-        <widget class="QLabel" name="label_4">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;The format for these settings are json&lt;/p&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600; text-decoration: underline;&quot;&gt;Standard keys are:&lt;/span&gt;&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;editor&lt;/span&gt; - the editor to use for the language&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;run&lt;/span&gt; - the command to execute for this language (filepath is appended to the end of the command)&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;fave&lt;/span&gt; - set to 0, if you don't want this language to show up in the favorites lists&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;theme&lt;/span&gt; - for ace editor, this will change the theme&lt;br/&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;wordwrap&lt;/span&gt; - 0 for no wordwrap, 1 for wordwrap&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="wordWrap">
-          <bool>true</bool>
-         </property>
-         <property name="margin">
-          <number>5</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="5">
-        <widget class="QFrame" name="fr_lang_ed">
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">QFrame#fr_lang_ed {
+          <property name="styleSheet">
+           <string notr="true">QFrame#fr_lang_ed {
 	border-top:1px solid gray;
 	border-bottom:1px solid gray;
 }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
-         </property>
-         <layout class="QGridLayout" name="gridLayout_3">
-          <property name="margin">
-           <number>0</number>
           </property>
-          <property name="spacing">
-           <number>0</number>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
           </property>
-         </layout>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="pg_ext">
-      <layout class="QGridLayout" name="gridLayout_2">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item row="0" column="0" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>   File extension to language mapping</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer_5">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>40</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="b_save_ext">
-         <property name="font">
-          <font>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string>save</string>
-         </property>
-         <property name="icon">
-          <iconset>
-           <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>12</width>
-           <height>12</height>
-          </size>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="4">
-        <widget class="QLabel" name="label_2">
-         <property name="text">
-          <string>For list of languages - look at the options for each editor
+          <property name="frameShadow">
+           <enum>QFrame::Raised</enum>
+          </property>
+          <layout class="QGridLayout" name="gridLayout_3">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>0</number>
+           </property>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pg_ext">
+       <layout class="QGridLayout" name="gridLayout_2">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="0" colspan="2">
+         <widget class="QLabel" name="label">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>   File extension to language mapping</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_5">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="b_save_ext">
+          <property name="font">
+           <font>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string>save</string>
+          </property>
+          <property name="icon">
+           <iconset>
+            <normaloff>../../style/img/save.png</normaloff>../../style/img/save.png</iconset>
+          </property>
+          <property name="iconSize">
+           <size>
+            <width>12</width>
+            <height>12</height>
+           </size>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="4">
+         <widget class="QLabel" name="label_2">
+          <property name="text">
+           <string>For list of languages - look at the options for each editor
 Format is:
 extension=language</string>
-         </property>
-         <property name="margin">
-          <number>10</number>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="4">
-        <widget class="QPlainTextEdit" name="te_ext">
-         <property name="styleSheet">
-          <string notr="true">QPlainTextEdit {
+          </property>
+          <property name="margin">
+           <number>10</number>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="4">
+         <widget class="QPlainTextEdit" name="te_ext">
+          <property name="styleSheet">
+           <string notr="true">QPlainTextEdit {
 	background:rgb(30,30,30);
 	color:white;
 	border:0px;
@@ -575,83 +579,103 @@ extension=language</string>
 	border-bottom:1px solid gray;
 	padding:10px;
 }</string>
-         </property>
-         <property name="frameShape">
-          <enum>QFrame::NoFrame</enum>
-         </property>
-        </widget>
-       </item>
-      </layout>
+          </property>
+          <property name="frameShape">
+           <enum>QFrame::NoFrame</enum>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="pg_plug">
+       <layout class="QGridLayout" name="gridLayout_9">
+        <property name="margin">
+         <number>0</number>
+        </property>
+        <property name="spacing">
+         <number>0</number>
+        </property>
+        <item row="0" column="2">
+         <spacer name="horizontalSpacer_6">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>247</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="b_plugin_file_add">
+          <property name="text">
+           <string>Add from File</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_9">
+          <property name="font">
+           <font>
+            <pointsize>11</pointsize>
+            <weight>75</weight>
+            <bold>true</bold>
+           </font>
+          </property>
+          <property name="text">
+           <string> Plugins</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="b_plugin_url_add">
+          <property name="text">
+           <string>Add from URL</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0" colspan="5">
+         <widget class="QTreeWidget" name="tr_plugins">
+          <column>
+           <property name="text">
+            <string>Plugin Name</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Enabled</string>
+           </property>
+          </column>
+          <column>
+           <property name="text">
+            <string>Description</string>
+           </property>
+          </column>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="5">
+         <widget class="QLabel" name="label_10">
+          <property name="text">
+           <string> A restart may be needed for plugin changes to take affect</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
      </widget>
-     <widget class="QWidget" name="pg_plug">
-      <layout class="QGridLayout" name="gridLayout_9">
-       <property name="margin">
-        <number>0</number>
-       </property>
-       <property name="spacing">
-        <number>0</number>
-       </property>
-       <item row="0" column="2">
-        <spacer name="horizontalSpacer_6">
-         <property name="orientation">
-          <enum>Qt::Horizontal</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>247</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="0" column="3">
-        <widget class="QPushButton" name="pushButton">
-         <property name="text">
-          <string>Add from File</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="0">
-        <widget class="QLabel" name="label_9">
-         <property name="font">
-          <font>
-           <pointsize>11</pointsize>
-           <weight>75</weight>
-           <bold>true</bold>
-          </font>
-         </property>
-         <property name="text">
-          <string> Plugins</string>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QPushButton" name="pushButton_2">
-         <property name="text">
-          <string>Add from URL</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="5">
-        <widget class="QTreeWidget" name="treeWidget">
-         <column>
-          <property name="text">
-           <string>Plugin Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Enabled</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-      </layout>
+     <widget class="QTextBrowser" name="textBrowser">
+      <property name="styleSheet">
+       <string notr="true">QTextBrowser {
+	background:transparent;
+	color:white;
+	border-left:1px solid gray;
+}</string>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::NoFrame</enum>
+      </property>
      </widget>
     </widget>
    </item>

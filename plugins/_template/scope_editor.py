@@ -1,13 +1,9 @@
 import os
 from PyQt4 import QtGui, QtCore
 
-class Settings(object):
-    '''Modifiable settings and their defaults'''
-    
 class Editor(object):
     title = 'Plugin Title'
     location = 'app' # left, bottom, right, app
-    settings = Settings.__dict__
     
     def __init__(self,parent=None):
         self.parent = parent

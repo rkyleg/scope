@@ -1,0 +1,11 @@
+{
+    "folder_name":"filebrowser",
+    "title":"File Browser",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Browse and open files",
+    "settings":{
+        "defaultPath": "", 
+        "showAll": 0
+    }
+}
