@@ -109,7 +109,7 @@ class Settings_Editor(QtGui.QWidget):
                 
                 genD = OrderedDict()
                 for ky in setD:
-                    if ky not in ['editors','prog_lang','plugins','extensions','activePlugins','activeEditors']:
+                    if ky not in ['editors','prog_lang','plugins','extensions','activePlugins']:
                         genD[ky] = setD[ky]
                 txt = json.dumps(genD,indent=4)
                 
@@ -135,7 +135,6 @@ class Settings_Editor(QtGui.QWidget):
         self.ui.te_json.setText(txt)
     
         self.ui.l_title.setText(' '+title+' Settings')
-            
         self.ui.tb_help.setHtml(h)
         
     def save_json(self):

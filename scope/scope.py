@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.7-dev'
+__version__ = '0.6.8-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -481,10 +481,11 @@ class Scope(QtGui.QWidget):
         if file_id != None:
             if file_id in self.fileOpenD:
                 self.changeTab(file_id)
-                
                 return 1
             else:
                 filename = self.fileD[file_id]['filename']
+                if editor == None:
+                    editor = self.fileD[file_id]['editor']
 
         if not filename:
             # Ask for filename if not specified
@@ -590,6 +591,8 @@ class Scope(QtGui.QWidget):
         wdg.modTime = None
         wdg.icon = wdgD['icon']
         wdg.type = wdgD['typ']
+        
+        
         
         self.fileOpenD[file_id]=wdg
         
@@ -1360,6 +1363,7 @@ class Scope(QtGui.QWidget):
                 if f not in [None,'None','']:
                     if type(f) == type({}):
                         fid = self.getFileId(f['filename'])
+                        self.fileD[fid]['editor'] = f['editor']
                         self.addWorkspaceEditor(fid,self.getTitle(f['filename']),f['filename'],f['editor'])
                         last_file =f['filename']
 
