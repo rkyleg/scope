@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.8-dev'
+__version__ = '0.6.9-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -92,9 +92,11 @@ class Scope(QtGui.QWidget):
 
         # Style
         style_path = self.settings['style']
-##        if not os.path.exists(os.path.abspath(style_path)):
-##            style_path = 'style/default.css'
-
+        if not os.path.exists(os.path.abspath(style_path)):
+            style_path = 'style/default.css'
+            QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
+            
+            
         f = open(style_path,'r')
         style = f.read()
         f.close()
@@ -192,6 +194,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_comment.clicked.connect(self.editorToggleComment)
         self.ui.b_color_picker.clicked.connect(self.colorPicker)
 
+        self.ui.b_compile.clicked.connect(self.editorCompile)
         self.ui.b_run.clicked.connect(self.editorRun)
         
         self.ui.b_find.clicked.connect(self.editorFind)
@@ -260,6 +263,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_menu.setMenu(self.editorMenu)
         
         #--- Plugins
+        self.leftPluginVisible = self.settings['pluginLeft']['visible']
         # Plugin tab bar
         self.ui.tabbar_bottom = QtGui.QTabBar()
         self.ui.fr_bottom.layout().addWidget(self.ui.tabbar_bottom)
@@ -275,6 +279,7 @@ class Scope(QtGui.QWidget):
         self.pluginD = {}
         self.prevPlugin=1
         curdir = os.path.abspath('.')
+        plugin_errors = []
         for plug in self.settings['activePlugins']:
             if self.dev_mode:
                 self.loadPlugin(plug)
@@ -283,8 +288,11 @@ class Scope(QtGui.QWidget):
                 try:
                     self.loadPlugin(plug)
                 except:
-                    QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+                    plugin_errors.append(plug)
+##                    QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
         self.ui.l_statusbar.setText('')
+        if plugin_errors:
+            self.ui.l_statusbar.setText('<font color=red>Plugins failed to load:</font> '+','.join(plugin_errors))
         os.chdir(curdir)
         self.ui.tabbar_bottom.setCurrentIndex(0)
         
@@ -388,6 +396,8 @@ class Scope(QtGui.QWidget):
     def toggleAppScreen(self):
         if self.currentEditor().type == 'app':
             self.ui.fr_leftbar.setVisible(0)
+        elif self.leftPluginVisible:
+            self.ui.fr_leftbar.setVisible(1)
     
     #---File
     def getFileId(self,filename):
@@ -754,8 +764,13 @@ class Scope(QtGui.QWidget):
         run_enabled=0
         if lang in self.settings['run']:
             run_enabled = lang in self.settings['run']
-            
         self.ui.b_run.setEnabled(run_enabled)
+
+        # Enable Compile
+        compile_enabled=0
+        if lang in self.settings['compile']:
+            compile_enabled = lang in self.settings['compile']
+        self.ui.b_compile.setEnabled(compile_enabled)
 
         # Disable buttons based on function availability
         btnD = [
@@ -780,6 +795,13 @@ class Scope(QtGui.QWidget):
         # Hide Right side
         pluginRightVisible=0
         if wdg != None:
+            
+            # Hide left bar if app
+            if wdg.type == 'app':
+                self.ui.fr_left.setVisible(0)
+            elif self.leftPluginVisible:
+                self.ui.fr_left.setVisible(1)
+            
             pluginRightVisible = wdg.pluginRightVisible
             if pluginRightVisible != self.ui.tab_right.isVisible():
                 self.toggleRightPlugin()
@@ -968,6 +990,7 @@ class Scope(QtGui.QWidget):
             
     def editorSaveAs(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
+        txt = wdg.getText()
         fileext = ''
         if wdg.filename != None:
             pth = wdg.filename
@@ -982,12 +1005,15 @@ class Scope(QtGui.QWidget):
         
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
-            
-            wdg.filename = os.path.abspath(str(filename))
-            wdg.title = os.path.basename(wdg.filename)
-            self.ui.l_filename.setText(wdg.title)
-            wdg.tabTitle = wdg.title
-            self.editorSave()
+            filename = os.path.abspath(str(filename))
+            with open(filename,'w') as f:
+                f.write(txt)
+            self.openFile(filename,editor=wdg.pluginEditor)
+##            wdg.filename = os.path.abspath(str(filename))
+##            wdg.title = os.path.basename(wdg.filename)
+##            self.ui.l_filename.setText(wdg.title)
+##            wdg.tabTitle = wdg.title
+##            self.editorSave()
                 
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -1010,10 +1036,24 @@ class Scope(QtGui.QWidget):
                 ok = self.checkSave(wdg)
                 filename = str(wdg.filename)
                 if ok and filename != 'None':
-                    if wdg.lang in self.settings['run']:
-                        # Otherwise run in output
-                        runD = self.settings['run'][wdg.lang]
-                        self.pluginD['output'].widget.runProcess(runD['cmd'],wdg)
+                    # Otherwise run in output
+                    runD = self.settings['run'][wdg.lang]
+                    args = None
+                    if 'ext' in runD:
+                        args = wdg.filename.split('.')[0]+'.'+runD['ext']
+                    self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,args=args)
+
+    def editorCompile(self,wdg=None):
+        if wdg == None or isinstance(wdg,bool):
+            wdg = self.ui.sw_main.currentWidget()
+        if wdg.lang in self.settings['compile']:
+            # Run Command
+            ok = self.checkSave(wdg)
+            filename = str(wdg.filename)
+            if ok and filename != 'None':
+                # Otherwise run in output
+                runD = self.settings['compile'][wdg.lang]
+                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -1191,7 +1231,8 @@ class Scope(QtGui.QWidget):
     #---   Left Plugins
     def toggleLeftPlugin(self):
         self.ui.fr_left.setVisible(self.ui.fr_left.isHidden())
-    
+        self.leftPluginVisible = not self.ui.fr_left.isHidden()
+        
     def nextLeftPlugin(self):
         self.ui.fr_left.setVisible(1)
         i=self.ui.tab_left.currentIndex()
@@ -1517,6 +1558,7 @@ class Scope(QtGui.QWidget):
 
         # Configure Settings
         self.settings['run']={}
+        self.settings['compile']={}
         for l in self.settings['prog_lang']:
             ok = 1
             #~ self.settings['run_preview'][l]=0
@@ -1535,7 +1577,11 @@ class Scope(QtGui.QWidget):
                 # add run to settings
                 if 'run' in self.settings['prog_lang'][l]:
                     self.settings['run'][l]={'cmd':self.settings['prog_lang'][l]['run']}
-
+                
+                # add compile to settings
+                if 'compile' in self.settings['prog_lang'][l]:
+                    self.settings['compile'][l]={'cmd':self.settings['prog_lang'][l]['compile']['cmd'],'ext':self.settings['prog_lang'][l]['compile']['ext']}
+                    
                 # Add fave to settings by default
                 if 'fave' not in self.settings['prog_lang'][l]:
                     self.settings['prog_lang'][l]['fave']=1

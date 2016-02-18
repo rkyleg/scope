@@ -48,7 +48,7 @@ class Output(QtGui.QWidget):
 
                     
     
-    def runProcess(self,cmd,wdg,text=''):
+    def runProcess(self,cmd,wdg,text='',args=None):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
@@ -89,6 +89,8 @@ class Output(QtGui.QWidget):
                     title = os.path.split(wdg.filename)[1]
                 owdg.ui.l_title.setText('<b>&nbsp;'+title+'</b>')
             else:
+                if args != None:
+                    self.ui.le_args.setText(args)
                 owdg.toggleProcess()
 
     def killAll(self):

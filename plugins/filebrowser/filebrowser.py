@@ -7,8 +7,8 @@ class FileBrowser(QtGui.QStackedWidget):
         self.ide = parent
         QtGui.QStackedWidget.__init__(self,parent)
         self.workspaceD = {}
-        pth = self.ide.settings['plugins']['filebrowser']['defaultPath']
-        ntree = self.addFilePage(pth)
+        self.defaultPath = self.ide.settings['plugins']['filebrowser']['defaultPath']
+        ntree = self.addFilePage(self.defaultPath)
         self.setCurrentWidget(ntree)
 
     def addFilePage(self,pth=None):
@@ -17,7 +17,9 @@ class FileBrowser(QtGui.QStackedWidget):
         ntree = DirTree(self.ide)
         os.chdir(curdir)
         self.addWidget(ntree)
-        if pth == None or not os.path.exists(pth):
+        if pth == None:
+            pth = self.defaultPath
+        if not os.path.exists(pth):
             pth = os.path.expanduser('~')
         ntree.ui.le_root.setText(pth) 
         ntree.loadRoot()
@@ -25,7 +27,8 @@ class FileBrowser(QtGui.QStackedWidget):
         
     def changeWorkspace(self,wksp):
         wksp = str(wksp)
-        if wksp == None:
+##        print 'change workspace: ',wksp
+        if wksp == 'None':
             self.setCurrentIndex(0)
         else:
             if wksp in self.workspaceD:
@@ -37,6 +40,15 @@ class FileBrowser(QtGui.QStackedWidget):
         self.workspaceD[wksp]=self.addFilePage(wD['basefolder'])
         self.workspaceD[wksp].wksp_id = wksp
         self.setCurrentWidget(self.workspaceD[wksp])
+    
+    def closeWorkspace(self,wksp):
+##        print 'close workspace: ',wksp
+        if wksp in self.workspaceD:
+            wdg = self.workspaceD[wksp]
+            self.removeWidget(wdg)
+            self.workspaceD.pop(wksp)
+            wdg.deleteLater()
+            del wdg
 
 class DirTree(QtGui.QWidget):
     def __init__(self,parent=None):

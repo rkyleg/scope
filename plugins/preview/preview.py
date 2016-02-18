@@ -111,6 +111,8 @@ class Preview(QtGui.QWidget):
             pwdg = self.wdgD[wdg]
             self.wdgD.pop(wdg)
             self.ui.sw_prev.removeWidget(pwdg)
+            pwdg.deleteLater()
+            del pwdg
     
     def load_finished(self):
         pwdg = self.ui.sw_prev.currentWidget()

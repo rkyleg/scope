@@ -165,7 +165,7 @@ class Find_Files(QtGui.QWidget):
                 self.IDE.openFile(pth)
     
     def changeWorkspace(self,wksp):
-        if wksp != None:
+        if wksp != 'None':
             wksp = str(wksp)
             if self.IDE.workspaces[wksp]['basefolder'] != None:
                 self.ui.le_path.setText(self.IDE.workspaces[wksp]['basefolder'])

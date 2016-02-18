@@ -136,7 +136,10 @@ class Settings_Editor(QtGui.QWidget):
     
         self.ui.l_title.setText(' '+title+' Settings')
         self.ui.tb_help.setHtml(h)
-        
+    
+    def appSave(self):
+        self.save_json()
+    
     def save_json(self):
         ind = self.ui.li_catg.currentRow()
         newSettings = self.getSettingsCopy()

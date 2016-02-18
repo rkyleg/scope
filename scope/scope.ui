@@ -680,6 +680,35 @@ padding-left:4px;</string>
          <property name="margin">
           <number>0</number>
          </property>
+         <item row="0" column="2">
+          <widget class="QPushButton" name="b_menu">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Editor Menu (Ctrl + M)</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar toolbar-left</string>
+           </property>
+          </widget>
+         </item>
          <item row="0" column="4">
           <widget class="QPushButton" name="b_save">
            <property name="sizePolicy">
@@ -819,7 +848,7 @@ padding-left:4px;</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="10">
+         <item row="0" column="12">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
             <enum>Qt::Horizontal</enum>
@@ -832,36 +861,7 @@ padding-left:4px;</string>
            </property>
           </spacer>
          </item>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="b_menu">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>Editor Menu (Ctrl + M)</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar toolbar-left</string>
-           </property>
-          </widget>
-         </item>
-         <item row="0" column="9">
+         <item row="0" column="10">
           <widget class="QPushButton" name="b_run">
            <property name="sizePolicy">
             <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
@@ -887,6 +887,38 @@ padding-left:4px;</string>
            </property>
            <property name="class" stdset="0">
             <string>toolbar toolbar-big</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="9">
+          <widget class="QPushButton" name="b_compile">
+           <property name="enabled">
+            <bool>false</bool>
+           </property>
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="toolTip">
+            <string>Compile</string>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="icon">
+            <iconset>
+             <normaloff>../style/img/compile.png</normaloff>../style/img/compile.png</iconset>
+           </property>
+           <property name="iconSize">
+            <size>
+             <width>18</width>
+             <height>18</height>
+            </size>
+           </property>
+           <property name="class" stdset="0">
+            <string>toolbar</string>
            </property>
           </widget>
          </item>

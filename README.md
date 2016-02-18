@@ -9,14 +9,14 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 <a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=250></a>
 
 ## Features
-- Cross Platform - Linux, Windows, and Mac (not tested)
+- Cross Platform - Linux, Windows, and Mac
 - Support for multiple languages (Python, Javascript, HTML, Markdown, more...)
 - Focus on lightweight
 - Outline for code organization
 - Multiple options for code editors (Ace, Scintilla, CKEditor)
 - Run code from IDE with output screen
 - Splitview preview for html and markdown
-- Extend with your own plugins created with Python and PyQt
+- Extend with your own plugins created using with Python and PyQt
 - Multiple workspaces can be open at once
 - New interface for selecting tabs/open files
 

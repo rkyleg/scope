@@ -314,6 +314,8 @@ class WindowSwitcher(object):
     def changeWorkspace(self,ind):
         if ind == -1:
             self.ide.currentWorkspace = None
+            self.ide.Events.workspaceChanged.emit('None')
+            self.ide.setWindowTitle('Scope')
         else:
             self.ide.currentWorkspace = str(self.tabs.tabText(ind))
             # set current file to current file in workspace
@@ -337,6 +339,8 @@ class WindowSwitcher(object):
         if self.tabs.count()==0:
             self.tabs.hide()
             self.ide.ui.b_show_tabs.setChecked(0)
+            if 'home' in self.ide.pluginD:
+                self.ide.pluginD['home'].widget.toggleHome()
     
     def show(self):
         h=self.ide.settings['window_switcher']['height'] # default height

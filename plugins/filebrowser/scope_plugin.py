@@ -17,4 +17,11 @@ class Plugin(object):
 
         self.parent.Events.workspaceOpened.connect(self.widget.openWorkspace)
         self.parent.Events.workspaceChanged.connect(self.widget.changeWorkspace)
+        self.parent.Events.workspaceClosed.connect(self.widget.closeWorkspace)
         return self.widget
+    
+    def toggle(self):
+        if self.parent.ui.fr_left.isHidden():
+            self.parent.ui.fr_left.setVisible(1)
+        i=self.parent.ui.tab_left.indexOf(self.widget)
+        self.parent.ui.tab_left.setCurrentIndex(i)

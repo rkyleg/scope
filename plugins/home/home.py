@@ -48,6 +48,10 @@ class Home(object):
             self.viewHome()
             self.IDE.ui.sw_main.setCurrentWidget(self.webview)
             
+            # Toggle Filebrowser too
+            if 'filebrowser' in self.IDE.pluginD:
+                self.IDE.pluginD['filebrowser'].toggle()
+            
     def viewHome(self):
             cur_itm=0
             if os.name =='nt':
