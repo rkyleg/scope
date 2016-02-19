@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.9-dev'
+__version__ = '0.6.10-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -223,6 +223,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F2,self,self.nextLeftPlugin) # show next left plugin
         
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F5,self,self.editorCompile) # Compile
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleRightPlugin) # Toggle RIght Plugins
         
@@ -1053,7 +1054,8 @@ class Scope(QtGui.QWidget):
             if ok and filename != 'None':
                 # Otherwise run in output
                 runD = self.settings['compile'][wdg.lang]
-                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg)
+                nwfile = ''.join(filename.split('.')[:-1]) + '.'+runD['ext']
+                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,typ='compile',args=nwfile)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()
@@ -1481,7 +1483,7 @@ class Scope(QtGui.QWidget):
             wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
             for fid in wksp_tabs[:]:
                 if fid in self.fileOpenD.keys():
-                    if len(self.fileD[fid]['tabs']) < 2:
+##                    if len(self.fileD[fid]['tabs']) < 2:
                         fl_ok = self.closeTab(fid,remove_from_workspace=0)
                         if not fl_ok:
                             break

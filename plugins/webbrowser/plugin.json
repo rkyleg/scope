@@ -4,5 +4,16 @@
     "version":"0.1.1",
     "url":"",
     "desc":"A simple WebKit web browser",
-    "settings":{}
+    "settings":{
+        "inspector":1,
+        "statusbar":1,
+        "networkManager":1,
+        "proxy_path":"",
+        "proxy_port":8080,
+        "createNewWindow":1,
+        "pluginsEnabled":0,
+        "javascriptEnabled":1,
+        "userAgent":"",
+        "loadDefaultHome":1
+    }
 }

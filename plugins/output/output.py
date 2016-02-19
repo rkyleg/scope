@@ -48,7 +48,7 @@ class Output(QtGui.QWidget):
 
                     
     
-    def runProcess(self,cmd,wdg,text='',args=None):
+    def runProcess(self,cmd,wdg,text='',typ='run',args=None):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
@@ -60,7 +60,14 @@ class Output(QtGui.QWidget):
                 # Process was run
                 owdg = self.wdgD[wdg.id]
                 self.ui.li_pages.setCurrentRow(self.ui.sw_pages.indexOf(owdg))
-
+                if owdg.process_type != typ:
+                    # Update information if process is different
+                    if owdg.status != 'done':
+                        owdg.stopProcess()
+                    owdg.ui.le_cmd.setText(cmd)
+                    if args == None: args = ''
+                    owdg.ui.le_args.setText(args)
+                    
             else:
                 # Create new process
                 owdg = OutputPage(parent=self,ide=self.ide,filename=wdg.filename)
@@ -75,10 +82,13 @@ class Output(QtGui.QWidget):
 
                 self.wdgD[wdg.id] = owdg
                 owdg.file_id = wdg.id
+                owdg.process_type = typ
                 
                 self.ui.li_pages.setCurrentRow(sw_ind)
                 QtGui.QApplication.processEvents()
                 owdg.listItem = self.ui.li_pages.item(sw_ind)
+            
+            owdg.process_type = typ
             
             # Toggle/Run Process
             if cmd=='preview':
@@ -90,7 +100,7 @@ class Output(QtGui.QWidget):
                 owdg.ui.l_title.setText('<b>&nbsp;'+title+'</b>')
             else:
                 if args != None:
-                    self.ui.le_args.setText(args)
+                    owdg.ui.le_args.setText(args)
                 owdg.toggleProcess()
 
     def killAll(self):
@@ -151,6 +161,7 @@ class OutputPage(QtGui.QWidget):
         
         self.process = None
         self.status = 'done'
+        self.process_type = 'run'
         self.ui.fr_cmd.hide()
         
         self.ui.tb_out.setOpenLinks(0)

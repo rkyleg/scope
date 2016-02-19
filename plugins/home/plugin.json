@@ -4,5 +4,5 @@
     "version":"0.1.1",
     "url":"",
     "desc":"The Scope home page that is visible on startup",
-    "settings":{}
+    "settings":{"backgroundImage":""}
 }

@@ -27,8 +27,12 @@ class WebBrowser(QtGui.QWidget):
         self.ui.split_insp.addWidget(self.ui.webView)
         
         # Setup Settings
-        with open('settings.json') as f:
-            settings = json.load(f)
+        if 'settings' in kargs and kargs['settings'] != {}:
+            settings = kargs['settings']
+        else:
+            # Load Default Settings
+            with open('settings.json') as f:
+                settings = json.load(f)
         
         # update settings from kargs
         for k in kargs:
@@ -101,6 +105,9 @@ class WebBrowser(QtGui.QWidget):
         
         if 'url' in kargs:
             self.link_clicked(QtCore.QUrl(kargs['url']))
+        
+        elif settings['loadDefaultHome']:
+            self.load_home()
         
     def go(self):
         lnk = self.ui.le_address.text()
@@ -228,35 +235,38 @@ class WebBrowser(QtGui.QWidget):
         else:
             QtWebKit.QWebView.keyPressEvent(self.ui.webView,event)
 
+    def load_home(self):
+        # Generate HTML
+        html = '''
+            <style>
+                body{background:rgb(70,70,70);}
+                input{
+                    background:rgb(50,50,50);
+                    color:white;
+                    border:0px;
+                    border-radius:3px;
+                    outline:none;
+                    font-size:1.5em;
+                    text-align: center;
+                }
+                input::-webkit-input-placeholder {
+                   text-align: center;
+                }
+            </style>
+            <br><br>
+            <form method="get" action="https://www.google.com/search" style="text-align:center;">
+                <input name="q" type="text" placeholder="search Google">
+            </form>
+        '''
+        self.ui.webView.setHtml(html)
+
 #---Main
 if __name__ == '__main__':
-
-    # Generate HTML
-    html = '''
-        <style>
-            body{background:rgb(70,70,70);}
-            input{
-                background:rgb(50,50,50);
-                color:white;
-                border:0px;
-                border-radius:3px;
-                outline:none;
-                font-size:1.5em;
-                text-align: center;
-            }
-            input::-webkit-input-placeholder {
-               text-align: center;
-            }
-        </style>
-        <br><br>
-        <form method="get" action="https://www.google.com/search" style="text-align:center;">
-            <input name="q" type="text" placeholder="search Google">
-        </form>
-    '''
 
     # Start app
     qtApp = QtGui.QApplication(sys.argv)
     web_view = WebBrowser(inspector=1,progressbar=1,addressbar=1)
     web_view.show()
-    web_view.ui.webView.setHtml(html)
+    web_view.load_home()
+##    web_view.ui.webView.setHtml(html)
     qtApp.exec_()

@@ -113,8 +113,14 @@ class Home(object):
             burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/'))
             self.webview.setText(txt,burl)
             
-            if file_txt == '':
-                self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
+##            if file_txt == '':
+##                self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
+            
+            # Background Image
+            if 'home' in self.IDE.settings['plugins'] and 'backgroundImage' in self.IDE.settings['plugins']['home']:
+                if self.IDE.settings['plugins']['home']['backgroundImage'] != '':
+                    bkimgtxt = 'document.body.style.backgroundImage = "url(\''+self.IDE.settings['plugins']['home']['backgroundImage']+'\')";'
+                    self.webview.page().mainFrame().evaluateJavaScript(bkimgtxt)
             
             self.webview.page().mainFrame().addToJavaScriptWindowObject('HOME',self.jsObject)
             self.webview.show()
