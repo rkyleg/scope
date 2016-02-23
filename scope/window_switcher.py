@@ -63,7 +63,8 @@ class WorkspaceWidget(QtGui.QListWidget):
         if not ok:
             resp = QtGui.QMessageBox.warning(self,'File not Found','This file no longer exists or there was an error opening it<br><br>Do you want to remove the tab?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:
-                wdg.close(ignoreCheck=1)
+##                wdg.close(ignoreCheck=1)
+                wdg.closeClick()
             self.ide.WindowSwitcher.toggle(1)
         else:
             if hide_tabs:
@@ -97,7 +98,7 @@ class WorkspaceWidget(QtGui.QListWidget):
             acttxt = str(act.text())
             
             if acttxt == 'Close':
-                wdg.close()
+                wdg.closeClick()
             elif acttxt == 'Run':
                 #TODO: If file not open
                 if wdg.id not in self.ide.fileOpenD:
@@ -110,7 +111,7 @@ class WorkspaceWidget(QtGui.QListWidget):
                 self.ide.openFileExternal(wdg.filename)
             elif acttxt == 'Close All':
                 for fid in self.tabD.keys():
-                    self.tabD[fid].close()
+                    self.tabD[fid].closeClick()
     
     def keyPressEvent(self,event):
         ky = event.key()
@@ -195,7 +196,7 @@ class editortab(QtGui.QWidget):
         
         # Close Button
         cls_btn = QtGui.QPushButton()
-        cls_btn.clicked.connect(self.close)
+        cls_btn.clicked.connect(self.closeClick)
         cls_btn.setMaximumWidth(22)
         cls_btn.setProperty("class",'editor_tab_cls_btn')
         layout.addWidget(cls_btn)
@@ -208,22 +209,27 @@ class editortab(QtGui.QWidget):
         self.titleLabel.setText(title)
         self.item.setSizeHint(self.sizeHint())
     
-    def close(self,ignoreCheck=0):
+    def closeClick(self):
         li = self.parent().parent()
-
-        if ignoreCheck:
-            ok =1
-        else:
-            ok = li.ide.closeTab(self.id,remove_from_workspace=1)
+        id = self.id
+        ok = li.ide.closeTab(id,remove_from_workspace=1)
         if ok:
-            li.takeItem(li.row(self.item))
-            if self.id in li.tabD:
-                li.tabD.pop(self.id)
             li.ide.WindowSwitcher.highlightCurrent()
+            if li.currentRow() >-1:
+                li.select(li.currentIndex(),hide_tabs=0)
+            
         else:
             li.ide.WindowSwitcher.toggle(1)
+            
+    def close(self):
+        li = self.parent().parent()
+        
+        id = self.id
 
-
+        li.takeItem(li.row(self.item))
+        if id in li.tabD:
+            li.tabD.pop(id)
+        
 class WindowSwitcher(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
@@ -349,8 +355,14 @@ class WindowSwitcher(object):
             
             if h > g.height():
                 h = g.height()
-            dy = self.ide.ui.fr_topbar.height()
-            tlw = self.ide.ui.fr_leftbar.width()  # Left toolbar width
+            if self.ide.ui.fr_topbar.isVisible():
+                dy = self.ide.ui.fr_topbar.height()
+            else:
+                dy = 0
+            if self.ide.ui.fr_leftbar.isVisible():
+                tlw = self.ide.ui.fr_leftbar.width()  # Left toolbar width
+            else:
+                tlw = 0
             self.tabs.setGeometry(g.x()+tlw,g.y()+dy,g.width()-tlw,h)
         else:
             self.tabs.setGeometry(20,20,500,h)

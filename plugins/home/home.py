@@ -1,32 +1,6 @@
 from PyQt4 import QtGui, QtCore, QtWebKit
 import os
 
-class jsObject(QtCore.QObject):
-    filePath = ''
-    def __init__(self,parent):
-        QtCore.QObject.__init__(self)
-        self.parent = parent
-    
-    @QtCore.pyqtSlot()
-    def closeHome(self):
-        pass
-    
-    @QtCore.pyqtSlot('int')
-    def closetab(self,id):
-        ok = self.parent.IDE.closeTab(id)
-        if ok:
-            cid = str(self.parent.IDE.currentEditor().id)
-            QtGui.QApplication.processEvents()
-            self.parent.webview.page().mainFrame().evaluateJavaScript('closetab('+str(id)+');highlighttab("'+cid+'");')
-        return ok
-    
-    def highlighttab(self,id):
-        self.parent.webview.page().mainFrame().evaluateJavaScript('highlightTab("'+id+'");')
-    
-    @QtCore.pyqtSlot('int')
-    def opentab(self,id):
-        self.parent.IDE.changeTab(id)
-
 class Home(object):
     def __init__(self,parent):
         self.IDE=parent
@@ -40,9 +14,6 @@ class Home(object):
 
         self.webview.setupInspector()
         self.webview.filename = None
-
-        self.jsObject = jsObject(parent=self)
-
     
     def toggleHome(self,visible=None):
             self.viewHome()
@@ -90,7 +61,6 @@ class Home(object):
             icn_wksp = self.IDE.iconPath+'workspace.png'
             if os.path.exists(self.IDE.settingPath+'/workspaces'):
                 for w in sorted(os.listdir(self.IDE.settingPath+'/workspaces'),key=lambda x: x.lower()):
-    ##                wksp += '<a href="workspace:'+w+'"><span class="workspace"><span class="workspace_title">'+w+'</span><br><table width=100%><tr><td class="blueblob">&nbsp;&nbsp;</td><td width=100%><hr class="workspaceline"><hr class="workspaceline"></td></tr></table></span></a> '
                     wksp += '<a href="workspace:'+w+'"><div class="newfile"><img class="file-icon" src="'+icn_wksp+'"> '+w+'</div></a> '
 
             cur_wksp = self.IDE.currentWorkspace
@@ -113,29 +83,19 @@ class Home(object):
             burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(__file__)).replace('\\','/'))
             self.webview.setText(txt,burl)
             
-##            if file_txt == '':
-##                self.webview.page().mainFrame().evaluateJavaScript("document.getElementById('open_files').style.display='none';")
-            
             # Background Image
             if 'home' in self.IDE.settings['plugins'] and 'backgroundImage' in self.IDE.settings['plugins']['home']:
                 if self.IDE.settings['plugins']['home']['backgroundImage'] != '':
                     bkimgtxt = 'document.body.style.backgroundImage = "url(\''+self.IDE.settings['plugins']['home']['backgroundImage']+'\')";'
                     self.webview.page().mainFrame().evaluateJavaScript(bkimgtxt)
             
-            self.webview.page().mainFrame().addToJavaScriptWindowObject('HOME',self.jsObject)
             self.webview.show()
             self.webview.setFocus()
     
     def homeClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
-##        print(lnk)
-        if lnk.startswith('opentab:'):
-            i=int(lnk.split('opentab:')[1])
-            self.IDE.changeTab(i)
-        elif lnk.startswith('closetab:'):
-            i=int(lnk.split('closetab:')[1])
-            self.IDE.closeTab(i)
-        elif lnk.startswith('new:'):
+
+        if lnk.startswith('new:'):
             lang = lnk.split('new:')[1]
             self.IDE.addEditorWidget(lang)
         elif lnk.startswith('workspace:'):
