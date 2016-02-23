@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Wed Feb 17 16:16:27 2016
+# Created: Tue Feb 23 17:09:13 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -48,7 +48,7 @@ class Ui_Form(object):
         self.fr_left.setObjectName(_fromUtf8("fr_left"))
         self.gridLayout_5 = QtGui.QGridLayout(self.fr_left)
         self.gridLayout_5.setSpacing(0)
-        self.gridLayout_5.setContentsMargins(0, 1, 0, 0)
+        self.gridLayout_5.setContentsMargins(1, 1, 0, 0)
         self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
         self.tab_left = QtGui.QTabWidget(self.fr_left)
         self.tab_left.setObjectName(_fromUtf8("tab_left"))
@@ -467,7 +467,7 @@ class Ui_Form(object):
         self.b_indent.setProperty("class", _translate("Form", "toolbar", None))
         self.b_run.setToolTip(_translate("Form", "Run (F5)", None))
         self.b_run.setProperty("class", _translate("Form", "toolbar toolbar-big", None))
-        self.b_compile.setToolTip(_translate("Form", "Compile", None))
+        self.b_compile.setToolTip(_translate("Form", "Compile (F6)", None))
         self.b_compile.setProperty("class", _translate("Form", "toolbar", None))
         self.b_back.setToolTip(_translate("Form", "back to last file", None))
         self.b_back.setText(_translate("Form", "back", None))

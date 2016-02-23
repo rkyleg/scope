@@ -12,8 +12,9 @@ class Home(object):
         self.webview.page().setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.webview.linkClicked.connect(self.homeClicked)
 
-        self.webview.setupInspector()
+##        self.webview.setupInspector()
         self.webview.filename = None
+        self.webview.contextMenuEvent = self.contextMenuEvent
     
     def toggleHome(self,visible=None):
             self.viewHome()
@@ -137,3 +138,6 @@ class Home(object):
             
             g = self.webview.geometry()
             self.webview.webInspector.setGeometry(0,g.bottom()-300,g.width(),300)
+
+    def contextMenuEvent(self,event):
+        pass

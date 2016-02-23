@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.12-dev'
+__version__ = '0.6.13-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -223,7 +223,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F2,self,self.nextLeftPlugin) # show next left plugin
         
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F5,self,self.editorCompile) # Compile
+        QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.editorCompile) # Compile
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleRightPlugin) # Toggle RIght Plugins
         
@@ -1043,7 +1043,7 @@ class Scope(QtGui.QWidget):
                     if 'ext' in runD:
                         args = wdg.filename.split('.')[0]+'.'+runD['ext']
                     self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,args=args)
-
+    
     def editorCompile(self,wdg=None):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()

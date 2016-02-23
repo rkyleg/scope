@@ -53,7 +53,7 @@
       </property>
       <layout class="QGridLayout" name="gridLayout_5">
        <property name="leftMargin">
-        <number>0</number>
+        <number>1</number>
        </property>
        <property name="topMargin">
         <number>1</number>
@@ -902,7 +902,7 @@ padding-left:4px;</string>
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>Compile</string>
+            <string>Compile (F6)</string>
            </property>
            <property name="text">
             <string/>

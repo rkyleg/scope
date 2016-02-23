@@ -376,7 +376,7 @@ QLabel#l_statusbar {
     /*---Left Bar*/
     QFrame#fr_leftbar {
         background-color: qlineargradient(spread:pad, x1:1, y1:0, x2:0, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.1 rgba(50,50,50, 255), stop:0.9 rgba(50,50,50, 255), stop:1 rgba(60,60,60, 255));
-        border-right: 1px solid rgba(130,130,130,200);
+        /*border-right: 1px solid rgba(130,130,130,200);*/
     }
     QFrame#fr_leftbar > QPushButton {
         background:transparent;
@@ -391,4 +391,8 @@ QLabel#l_statusbar {
     QFrame#fr_leftbar > QPushButton:checked {
         background:rgb(50,50,50);
         border-bottom:1px solid rgb(130,130,130,200);
+    }
+    
+    QFrame#fr_left {
+        border-left: 1px solid rgba(130,130,130,200);
     }
