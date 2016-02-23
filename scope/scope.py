@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.11-dev'
+__version__ = '0.6.12-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1402,20 +1402,24 @@ class Scope(QtGui.QWidget):
             
             # Load Files
             last_file = None
+            last_editor = None
+            if 'lastOpenFile' in wD:
+                last_file = wD['lastOpenFile']
             for f in wD['files']:
                 if f not in [None,'None','']:
                     if type(f) == type({}):
                         fid = self.getFileId(f['filename'])
                         self.fileD[fid]['editor'] = f['editor']
                         self.addWorkspaceEditor(fid,self.getTitle(f['filename']),f['filename'],f['editor'])
-                        last_file =f['filename']
+                        
+                        if last_file == None:
+                            last_file =f['filename']
+                        elif last_file == f['filename']:
+                            last_editor = f['editor']
 
             # Goto lastopen file
-            if 'lastOpenFile' in wD:
-                last_file = wD['lastOpenFile']
-
             if last_file != None:
-                self.openFile(last_file)
+                self.openFile(last_file,editor=last_editor)
             
             # Current Directory
             self.currentPath = wD['basefolder']

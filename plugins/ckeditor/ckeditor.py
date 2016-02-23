@@ -94,7 +94,8 @@ class WebView(QtWebKit.QWebView):
 ##        self.okedit = 1
         self.editorTextChanged()
     
-    def contextMenuEvent(self):
+    def contextMenuEvent(self,event):
+##        QtWebKit.QWebView.contextMenuEvent(self,event)
         pass
     
     def editorTextChanged(self):

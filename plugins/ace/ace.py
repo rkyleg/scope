@@ -179,25 +179,31 @@ class WebView(QtWebKit.QWebView):
         self.editorTextChanged()
 
     def contextMenuEvent(self,event):
-        menu = QtGui.QMenu('ace menu')
+        menu = QtGui.QMenu('ace menu',self.parent)
         
         # Edit Menu
-        menu.addAction(QtGui.QIcon(),'Cut')
-        menu.addAction(QtGui.QIcon(),'Copy')
-        menu.addAction(QtGui.QIcon(),'Paste')
+        menuD=[['Cut','Ctrl+X'],['Copy','Ctrl+C'],['Paste','Ctrl+V'],['Select All','Ctrl+A']]
+        for rw in menuD:
+            if rw[0] in ['Select All']:
+                menu.addSeparator()
+            act = QtGui.QAction(rw[0],menu)
+            act.setShortcut(QtGui.QKeySequence(rw[1],0))
+            menu.addAction(act)
+            
+
         menu.addSeparator()
         # Settings Menu
         smenu = QtGui.QMenu('Ace',menu)
-        tmenu = QtGui.QMenu('theme',smenu)
-        fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
-        for f in sorted(os.listdir(fld)):
-            if f.startswith('theme'):
-                a=tmenu.addAction(QtGui.QIcon(),f[6:-3])
-                a.setData('theme')
-        smenu.addMenu(tmenu)
+##        tmenu = QtGui.QMenu('theme',smenu)
+##        fld = os.path.abspath(os.path.dirname(__file__)).replace('\\','/')+'/src-noconflict/'
+##        for f in sorted(os.listdir(fld)):
+##            if f.startswith('theme'):
+##                a=tmenu.addAction(QtGui.QIcon(),f[6:-3])
+##                a.setData('theme')
+##        smenu.addMenu(tmenu)
         menu.addMenu(smenu)
-        # Extra Settings
         
+        # Extra Settings
         smenu.addAction('Jump To Matching')
         act = QtGui.QAction(QtGui.QIcon(),'Behaviours Enabled',menu)
         act.setCheckable(1)
@@ -207,6 +213,9 @@ class WebView(QtWebKit.QWebView):
         act.setCheckable(1)
         act.setChecked(self.settings['wrapBehaviours'])
         smenu.addAction(act)
+        
+        smenu.addSeparator()
+        smenu.addAction('Settings')
         
         for act in menu.actions():  # Set Icon to visible
             act.setIconVisibleInMenu(1)
@@ -225,12 +234,16 @@ class WebView(QtWebKit.QWebView):
                 self.cut()
             elif acttxt == 'Paste':
                 self.paste()
+            elif acttxt == 'Select All':
+                self.selectAll()
             elif acttxt == 'Jump To Matching':
                 self.jumpToMatching()
             elif acttxt == 'Behaviours Enabled':
                 self.toggleBehaviours()
             elif acttxt == 'Wrap Behaviour Enabled':
                 self.toggleWrapBehaviours()
+            elif acttxt == 'Settings':
+                self.page().mainFrame().evaluateJavaScript('editor.execCommand("showSettingsMenu")')
         
     def copy(self):
         js = "pythonjs.getHtml(editor.session.getTextRange(editor.getSelectionRange()));"
@@ -240,6 +253,8 @@ class WebView(QtWebKit.QWebView):
         clip.setText(self.editorJS.editorHtml)
     
     def cut(self):
+        # Copy first
+        self.copy()
         js = "editor.insert("");"
         self.page().mainFrame().evaluateJavaScript(js)
     
