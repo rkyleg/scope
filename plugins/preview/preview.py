@@ -60,7 +60,7 @@ class Preview(QtGui.QWidget):
             if self.wdgD[wdg].isVisible():
                 self.previewRun(wdg)
     
-    def previewRun(self,wdg):
+    def previewRun(self,wdg,justset=0):
         if wdg not in self.wdgD:
             self.addPreview(wdg)
         else:
@@ -98,7 +98,7 @@ class Preview(QtGui.QWidget):
             
         pwdg.webview.setText(html,burl)
         if html != '':
-            self.ide.pluginD['output'].widget.runProcess('preview',wdg,text=html)
+            self.ide.pluginD['output'].widget.runProcess('preview',wdg,text=html,justset=justset)
             self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
             
 ##        QtGui.QApplication.processEvents()

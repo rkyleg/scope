@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.13-dev'
+__version__ = '0.6.14-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -223,7 +223,9 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F2,self,self.nextLeftPlugin) # show next left plugin
         
         QtGui.QShortcut(QtCore.Qt.Key_F5,self,self.editorRun) # Run
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F5,self,self.editorRunSetCmd) # Run - just set the command
         QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.editorCompile) # Compile
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F6,self,self.editorCompileSetCmd) # Compile - just set the command
         QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleRightPlugin) # Toggle RIght Plugins
         
@@ -1022,13 +1024,13 @@ class Scope(QtGui.QWidget):
             txt = self.ui.le_find.text()
             wdg.find(txt)
 
-    def editorRun(self,wdg=None):
+    def editorRun(self,wdg=None,justset=0):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
             if self.settings['run'][wdg.lang]['cmd'].startswith('preview'):
                 if 'preview' in self.pluginD:
-                    self.pluginD['preview'].widget.previewRun(wdg)
+                    self.pluginD['preview'].widget.previewRun(wdg,justset=justset)
                     if self.ui.tab_right.isHidden():
                         self.toggleRightPlugin()
                 else:
@@ -1042,9 +1044,12 @@ class Scope(QtGui.QWidget):
                     args = None
                     if 'ext' in runD:
                         args = wdg.filename.split('.')[0]+'.'+runD['ext']
-                    self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,args=args)
+                    self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,args=args,justset=justset)
     
-    def editorCompile(self,wdg=None):
+    def editorRunSetCmd(self,wdg=None):
+        self.editorRun(wdg,justset=1)
+    
+    def editorCompile(self,wdg=None,justset=0):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['compile']:
@@ -1055,7 +1060,10 @@ class Scope(QtGui.QWidget):
                 # Otherwise run in output
                 runD = self.settings['compile'][wdg.lang]
                 nwfile = ''.join(filename.split('.')[:-1]) + '.'+runD['ext']
-                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,typ='compile',args=nwfile)
+                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,typ='compile',args=nwfile,justset=justset)
+
+    def editorCompileSetCmd(self,wdg=None):
+        self.editorCompile(wdg=None,justset=1)
 
     def editorToggleComment(self):
         wdg = self.ui.sw_main.currentWidget()

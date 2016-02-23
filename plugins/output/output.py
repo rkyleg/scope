@@ -48,12 +48,12 @@ class Output(QtGui.QWidget):
 
                     
     
-    def runProcess(self,cmd,wdg,text='',typ='run',args=None):
+    def runProcess(self,cmd,wdg,text='',typ='run',args=None,justset=0):
         if cmd == 'webbrowser':
             # If webbrowser - launch in webbrowser
             webbrowser.open(wdg.filename)
         else:
-            if cmd != 'preview':
+            if cmd != 'preview' or justset:
                 i = self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
                 self.ide.ui.tabbar_bottom.setCurrentIndex(i)
             if wdg.id in self.wdgD:
@@ -91,7 +91,7 @@ class Output(QtGui.QWidget):
             owdg.process_type = typ
             
             # Toggle/Run Process
-            if cmd=='preview':
+            if cmd=='preview' and not justset:
                 owdg.setOutputText(text=text)
                 if wdg.filename==None:
                     title = wdg.title
@@ -101,7 +101,15 @@ class Output(QtGui.QWidget):
             else:
                 if args != None:
                     owdg.ui.le_args.setText(args)
-                owdg.toggleProcess()
+                
+                # Just set the command, don't run
+                if justset:
+                    owdg.ui.le_cmd.setText(cmd)
+                    owdg.ui.b_cmd.setChecked(1)
+                    if not owdg.ui.b_stop.isEnabled():
+                        owdg.ui.b_run.setEnabled(1)
+                else:
+                    owdg.toggleProcess()
 
     def killAll(self):
         opentxt = ''

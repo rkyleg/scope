@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outputText.ui'
 #
-# Created: Sun Jan  3 22:20:45 2016
+# Created: Tue Feb 23 17:25:51 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -172,5 +172,5 @@ class Ui_OutWidget(object):
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'FreeMono\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><a href=\"asdfasdf\"><span style=\" text-decoration: underline; color:#0000ff;\">adsfsdfasf</span></a></p></body></html>", None))
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
 
