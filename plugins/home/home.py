@@ -95,8 +95,10 @@ class Home(object):
     
     def homeClicked(self,url):
         lnk = str(url.toString()).split('/')[-1]
-
-        if lnk.startswith('new:'):
+        
+        if lnk.startswith('home:'):
+            self.viewHome()
+        elif lnk.startswith('new:'):
             lang = lnk.split('new:')[1]
             self.IDE.addEditorWidget(lang)
         elif lnk.startswith('workspace:'):

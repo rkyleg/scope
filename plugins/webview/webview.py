@@ -63,7 +63,7 @@ class WebView(QtWebKit.QWebView):
 
     def load_help(self,url):
         lnk = str(url.toString())
-        
+##        print lnk
         if lnk.startswith('http'):
             self.load2(url)
         else:
@@ -76,7 +76,9 @@ class WebView(QtWebKit.QWebView):
             with open(self.parent.scopePath+'/docs/main.html','r') as f:
                 mhtml = f.read()
             
-            mhtml = mhtml.replace('{{contents}}',chtml)
+            ind_fld = self.parent.scopePath+'/docs/'
+            
+            mhtml = mhtml.replace('{{contents}}',chtml).replace('{{fld}}',ind_fld)
             self.setText(mhtml,url)
         
 

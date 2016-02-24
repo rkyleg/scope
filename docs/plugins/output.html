@@ -1,0 +1,57 @@
+<h1>Output</h1>
+
+<p>The run button <img alt="" class="img-icon" src="../../style/img/run.png" /> uses the output plugin to run code and display output from the code. Multiple files can be running at once and they run in a separate process from the IDE.</p>
+
+<h1>Screen Overview</h1>
+
+<p><img alt="" src="../img/plugin_output.png" /></p>
+
+<h1>Set up your language to run</h1>
+
+<ol>
+	<li>Click the settings button <img alt="" class="img-icon" src="../../style/img/settings.png" /> to edit your settings.</li>
+	<li>In the <em>Languages</em> section, add/edit the run attribute for the language.</li>
+</ol>
+
+<pre>
+<code>"python": {
+       "run":"python -u"
+}
+</code></pre>
+
+<h2>Notes</h2>
+
+<ul>
+	<li>The run argument contains the command or path to the executable to run your code</li>
+	<li>Include additional arguments at the end. For Python, -u makes the output update as the code runs instead displaying only when it finishes.</li>
+	<li>Before executing the code, the current directory is changed to the file being run.</li>
+	<li>Make sure the appropriate software is installed and settings are set up as described above. For example, to run javascript in nodejs, nodejs must be installed.</li>
+	<li>The command is built as:</li>
+</ul>
+
+<pre>
+<code>    &lt;run&gt; &lt;filename&gt;
+    python -u test.py
+</code></pre>
+
+<h1>How to Run Code</h1>
+
+<ol>
+	<li>Click the run button <img alt="" class="img-icon" src="../../style/img/run.png" /> (or F5) in the top toolbar to execute the code.</li>
+</ol>
+
+<h1>Examples of different language settings</h1>
+
+<pre>
+<code class="language-json">"javascript": {
+    "run":"/home/username/nodejs/bin/node -i"
+}
+"coffee": {
+    "run":"coffee -p --print"
+}
+
+"python": {
+    "run":"C:\\python27\\python -u"
+}</code></pre>
+
+<p><em>Appropriate software needs to be installed before this will work.</em></p>

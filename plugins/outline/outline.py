@@ -20,10 +20,10 @@ class outlineTree(QtGui.QWidget):
         self.setProperty("class","pluginVertical")
         self.parent = parent
         
-        self.ui.fr_find.hide()
+##        self.ui.fr_find.hide()
         self.ui.l_title.hide()
         self.ui.le_find.textChanged.connect(self.find)
-        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
+##        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
 
 ##    def keyPressEvent(self,event):
 ##        ky = event.key()
@@ -136,7 +136,7 @@ class Outline(QtGui.QWidget):
     ##            trwdg.addTopLevelItem(itm)
     ##            self.format(itm,'filename')
                 
-                self.wdgD[wdg.id].ui.b_find_close.click()
+##                self.wdgD[wdg.id].ui.b_find_close.click()
                 txt = wdg.getText()
 ##                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
                 txtlines = txt.splitlines()
@@ -181,17 +181,17 @@ class Outline(QtGui.QWidget):
     def outlineMenu(self,event):
         menu = QtGui.QMenu('file menu')
         trwdg = self.ui.sw_outline.currentWidget()
-        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Update (F3)')
-        menu.addAction(QtGui.QIcon(self.ide.iconPath+'search.png'),'Find')
+        menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Update (Ctrl+O)')
+##        menu.addAction(QtGui.QIcon(self.ide.iconPath+'search.png'),'Find')
         act = menu.exec_(trwdg.ui.tr_outline.cursor().pos())
         if act != None:
             acttxt = str(act.text())
-            if acttxt=='Update (F3)':
+            if acttxt=='Update (Ctrl+O)':
                 self.updateOutline()
-            elif acttxt == 'Find':
-##                trwdg.ui.fr_find.show()
-##                trwdg.ui.le_find.setFocus()
-                self.findFocus()
+##            elif acttxt == 'Find':
+####                trwdg.ui.fr_find.show()
+####                trwdg.ui.le_find.setFocus()
+##                self.findFocus()
     
     def findFocus(self):
         trwdg = self.ui.sw_outline.currentWidget()

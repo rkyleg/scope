@@ -62,7 +62,7 @@ CKEDITOR.plugins.add( 'class_edit', {
         /* Listener for Context Menu Type */
         if (editor.contextMenu) {
             editor.contextMenu.addListener(function(element) {
-                console.log(element.getName())
+                // console.log(element.getName())
                 if (element && !element.isReadOnly() && !element.data( 'cke-realelement') && element.getName()!='body')
                 return {classEditItem : CKEDITOR.TRISTATE_OFF}
             })
