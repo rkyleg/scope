@@ -42,13 +42,6 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 ### Development
 The latest development version is available [here](https://github.com/lucidlylogicole/scope/tree/dev)
 
-## Documentation
-- **[Overview](docs/overview.md)**
-- **[Opening a File](docs/open_file.md)**
-- **[Keyboard Shortcuts](docs/keyboard_shortcuts.md)**
-- **[Editors](docs/editors.md)**
-- **[Roadmap](docs/roadmap.md)**
-
 ## License
 - **[License](LICENSE.txt)** - GNU General Public License (GPL 3)
 
