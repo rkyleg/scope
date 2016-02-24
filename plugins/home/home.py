@@ -129,7 +129,7 @@ class Home(object):
         elif lnk=='settings':
             self.IDE.openSettings()
         else:
-            self.webview.load2(url)
+            self.webview.load_help(url)
     
     def resize(self):
         g=self.IDE.geometry()

@@ -37,7 +37,6 @@ class WebView(QtWebKit.QWebView):
     
     def load2(self,url):
         # Custom load for handling markdown urls and external
-        
         lnk = str(url.toString())
             # Markdown
         if lnk.startswith('file:') and lnk.endswith('.md'):
@@ -61,6 +60,25 @@ class WebView(QtWebKit.QWebView):
             webbrowser.open(lnk)
         else:
             self.load(url)
+
+    def load_help(self,url):
+        lnk = str(url.toString())
+        
+        if lnk.startswith('http'):
+            self.load2(url)
+        else:
+            # Read filename html
+            filename = str(url.toLocalFile())
+            with open(filename,'r') as f:
+                chtml = f.read()
+            
+            # Get Main html
+            with open(self.parent.scopePath+'/docs/main.html','r') as f:
+                mhtml = f.read()
+            
+            mhtml = mhtml.replace('{{contents}}',chtml)
+            self.setText(mhtml,url)
+        
 
     def dropEvent(self,event):
         self.parent.dropEvent(event)
