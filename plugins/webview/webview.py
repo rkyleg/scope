@@ -63,24 +63,27 @@ class WebView(QtWebKit.QWebView):
 
     def load_help(self,url):
         lnk = str(url.toString())
-##        print lnk
         if lnk.startswith('http'):
             self.load2(url)
         else:
             # Read filename html
             filename = str(url.toLocalFile())
-            with open(filename,'r') as f:
+            with open(os.path.abspath(filename),'r') as f:
                 chtml = f.read()
             
             # Get Main html
             with open(self.parent.scopePath+'/docs/main.html','r') as f:
                 mhtml = f.read()
             
-            ind_fld = self.parent.scopePath+'/docs/'
-            
+            if os.name =='nt':
+                pfx="file:///"
+            else:
+                pfx="file://"
+                            
+            ind_fld = pfx+self.parent.scopePath+'/docs/'
             mhtml = mhtml.replace('{{contents}}',chtml).replace('{{fld}}',ind_fld)
             self.setText(mhtml,url)
-        
+            
 
     def dropEvent(self,event):
         self.parent.dropEvent(event)

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.16-dev'
+__version__ = '0.6.17-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -226,7 +226,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F5,self,self.editorRunSetCmd) # Run - just set the command
         QtGui.QShortcut(QtCore.Qt.Key_F6,self,self.editorCompile) # Compile
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F6,self,self.editorCompileSetCmd) # Compile - just set the command
-        QtGui.QShortcut(QtCore.Qt.Key_F7,self,self.toggleRightPluginFull) # Expand Right plugin
+        QtGui.QShortcut(QtCore.Qt.Key_F9,self,self.toggleRightPluginFull) # Expand Right plugin
         QtGui.QShortcut(QtCore.Qt.Key_F3,self,self.toggleRightPlugin) # Toggle RIght Plugins
         
         QtGui.QShortcut(QtCore.Qt.Key_F4,self,self.toggleBottomPlugin) # Hide Bottom Tab

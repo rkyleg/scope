@@ -18,6 +18,6 @@ class Plugin(object):
         self.parent.HomeWidget = self.widget
         icon = QtGui.QIcon(self.parent.iconPath+'home.png')
         self.parent.addMainWidget(self.widget.webview,'Home',icon=icon,typ='app')
-        QtGui.QShortcut(QtCore.Qt.Key_F9,self.parent,self.widget.toggleHome) # Show Heads up display
+        QtGui.QShortcut(QtCore.Qt.Key_F8,self.parent,self.widget.toggleHome) # Show Heads up display
         
         return self.widget

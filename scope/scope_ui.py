@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Tue Feb 23 17:09:13 2016
+# Created: Wed Feb 24 18:44:52 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,7 +26,7 @@ except AttributeError:
 class Ui_Form(object):
     def setupUi(self, Form):
         Form.setObjectName(_fromUtf8("Form"))
-        Form.resize(938, 488)
+        Form.resize(938, 496)
         icon = QtGui.QIcon()
         icon.addPixmap(QtGui.QPixmap(_fromUtf8("../style/img/scope.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         Form.setWindowIcon(icon)
@@ -440,7 +440,7 @@ class Ui_Form(object):
         self.b_show_tabs.setToolTip(_translate("Form", "Window Switcher - View Open Files and Workspaces (F1)", None))
         self.b_new.setToolTip(_translate("Form", "New File (Ctrl + N)", None))
         self.b_workspaces.setToolTip(_translate("Form", "Workspaces", None))
-        self.b_home.setToolTip(_translate("Form", "Home (F9)", None))
+        self.b_home.setToolTip(_translate("Form", "Home (F8)", None))
         self.b_settings.setToolTip(_translate("Form", "Settings", None))
         self.fr_find_2.setProperty("class", _translate("Form", "toolbarLineEdit", None))
         self.le_find.setToolTip(_translate("Form", "Find in file (Ctrl + F)", None))

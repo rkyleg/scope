@@ -307,8 +307,14 @@ class OutputPage(QtGui.QWidget):
 ##        wdg.load2(url)
     
     def saveFile(self):
-        fname = os.path.split(self.filename)[-1].split('.')[0]
-        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Output",fname+'_output.txt')
+        if self.filename == None:
+            fname = ''
+        else:
+            fname = os.path.split(self.filename)[-1].split('.')[0]
+        fileext = ''
+        if os.name =='nt':
+            fileext = 'Text (*.txt);;All (*.*)'
+        filename = QtGui.QFileDialog.getSaveFileName(self,"Save Output",fname,fileext)
         if filename!='':
             txt = self.ui.tb_out.toPlainText()
             txt = str(self.ui.tb_out.toPlainText().toUtf8()).decode('utf-8')
