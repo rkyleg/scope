@@ -11,6 +11,7 @@ When adding features, Scope will attempt to adhere to the following ideals
 ## Features planned
 *in no particular order or target date*
 - Improve documentation including how to customize Scope and create plugins.
+- Create a light color theme for bright environments
 - Create binaries for Mac and Linux - and maybe Linux rpm, apt packages
 - Create a pip package
 - Plugin app-like store with a central repository for plugins.  The plugin store would also show and manage plugin updates

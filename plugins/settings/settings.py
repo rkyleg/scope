@@ -99,7 +99,7 @@ class Settings_Editor(QtGui.QWidget):
             self.ui.fr_json.setEnabled(0)
         else:
 ##            self.ui.sw_main.setCurrentIndex(0)
-            
+            self.ui.fr_json.setEnabled(1)
             self.ui.fr_plugins.hide()
             
             if ind == 0: # General

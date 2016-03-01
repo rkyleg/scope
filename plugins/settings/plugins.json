@@ -11,5 +11,6 @@
     "find_files":{"title":"Find in Files","desc":"Searches within files and displays results","version":"0"},
     "console_launcher":{"title":"Console Launcher","desc":"Shortcut to launch an external terminal window","version":"0"},
     "webbrowser":{"title":"Web Browser","desc":"A simple webkit webbrowser","version":"0"},
-    "settings":{"title":"Settings","desc":"The Settings manager for Scope","version":"0"}
+    "settings":{"title":"Settings","desc":"The Settings manager for Scope","version":"0"},
+    "qt2py":{"title":"PyQt Converter","desc":"Converts Qt .ui files to Python files","version":"0"}
 }
