@@ -67,16 +67,6 @@ color:white;</string>
         </property>
        </widget>
       </item>
-      <item row="0" column="2">
-       <widget class="QLabel" name="label_2">
-        <property name="styleSheet">
-         <string notr="true">color:rgb(180,180,180);</string>
-        </property>
-        <property name="text">
-         <string>    Args:</string>
-        </property>
-       </widget>
-      </item>
       <item row="0" column="0">
        <widget class="QLabel" name="label">
         <property name="styleSheet">
@@ -84,15 +74,6 @@ color:white;</string>
         </property>
         <property name="text">
          <string>Command:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="3">
-       <widget class="QLineEdit" name="le_args">
-        <property name="styleSheet">
-         <string notr="true">background:transparent;
-border:0px;
-color:white;</string>
         </property>
        </widget>
       </item>

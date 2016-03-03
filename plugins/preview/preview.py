@@ -94,7 +94,12 @@ class Preview(QtGui.QWidget):
 ##                self.ide.webview_preview(html,filename)
 
         elif cmd != None:
-            html = subprocess.check_output(cmd+' '+wdg.filename,shell=True)
+            if '{{filename}}' in cmd:
+                fcmd = cmd.replace('{{filename}}',wdg.filename)
+            else:
+                fcmd = cmd+' '+wdg.filename
+            
+            html = subprocess.check_output(fcmd,shell=True)
             
         pwdg.webview.setText(html,burl)
         if html != '':

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.18'
+__version__ = '0.6.19-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -1042,9 +1042,9 @@ class Scope(QtGui.QWidget):
                     # Otherwise run in output
                     runD = self.settings['run'][wdg.lang]
                     args = None
-                    if 'ext' in runD:
-                        args = wdg.filename.split('.')[0]+'.'+runD['ext']
-                    self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,args=args,justset=justset)
+##                    if 'ext' in runD:
+##                        args = wdg.filename.split('.')[0]+'.'+runD['ext']
+                    self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,justset=justset)
     
     def editorRunSetCmd(self,wdg=None):
         self.editorRun(wdg,justset=1)
@@ -1059,8 +1059,10 @@ class Scope(QtGui.QWidget):
             if ok and filename != 'None':
                 # Otherwise run in output
                 runD = self.settings['compile'][wdg.lang]
-                nwfile = ''.join(filename.split('.')[:-1]) + '.'+runD['ext']
-                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,typ='compile',args=nwfile,justset=justset)
+                nwfile = None
+                if runD['new_ext'] != None:
+                    nwfile = ''.join(filename.split('.')[:-1]) + '.'+runD['new_ext']
+                self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,typ='compile',args={'new_file':nwfile},justset=justset)
 
     def editorCompileSetCmd(self,wdg=None):
         self.editorCompile(wdg=None,justset=1)
@@ -1594,8 +1596,9 @@ class Scope(QtGui.QWidget):
                 
                 # add compile to settings
                 if 'compile' in self.settings['prog_lang'][l]:
-                    self.settings['compile'][l]={'cmd':self.settings['prog_lang'][l]['compile']['cmd'],'ext':self.settings['prog_lang'][l]['compile']['ext']}
-                    
+                    self.settings['compile'][l]={'cmd':self.settings['prog_lang'][l]['compile']['cmd'],'new_ext':None}
+                    if 'new_ext' in self.settings['prog_lang'][l]['compile']:
+                        self.settings['compile'][l]['new_ext'] = self.settings['prog_lang'][l]['compile']['new_ext']
                 # Add fave to settings by default
                 if 'fave' not in self.settings['prog_lang'][l]:
                     self.settings['prog_lang'][l]['fave']=1
@@ -1645,7 +1648,7 @@ class Scope(QtGui.QWidget):
                         else:
                             self.fileCheck_ignore.append(file_id)
                         chngs = 1
-                    elif os.path.getmtime(wdg.filename) > wdg.modTime:
+                    elif os.path.exists(wdg.filename) and os.path.getmtime(wdg.filename) > wdg.modTime:
                         resp = QtGui.QMessageBox.warning(self,'File Modified',str(wdg.filename)+' has been modified.<br><<br>Do you want to reload it?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
                         
                         chngs=1
@@ -1692,13 +1695,18 @@ class Scope(QtGui.QWidget):
                     subprocess.Popen(['open', path],cwd=dpth)
                 os.chdir(curdir)
 
-def runui(dev_mode=0):
+def runui(dev_mode=0,open_file=None):
     os.chdir(os.path.abspath(os.path.dirname(__file__)))
     app = QtGui.QApplication(sys.argv)
 
     scopeApp = Scope(dev_mode=dev_mode)
     os.chdir('../')
     scopeApp.load()
+    
+    # Open File if exists
+    if open_file != None:
+        scopeApp.openFile(open_file)
+    
     scopeApp.show()
     sys.exit(app.exec_())
 
