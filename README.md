@@ -7,6 +7,7 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 <a href="docs/img/scope_home.png" target="_blank" title="Scope Home Screen"><img src="docs/img/scope_home.png" height=250></a>
 <a href="docs/img/scope_editor.png" target="_blank" title="Scope Screenshot"><img src="docs/img/scope_editor.png" height=250></a>
 <a href="docs/img/scope_tabs.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_tabs.png" height=250></a>
+<a href="docs/img/scope_preview.png" target="_blank" title="Scope File Tabs"><img src="docs/img/scope_preview.png" height=250></a>
 
 ## Features
 - A lightweight IDE with a clean interface that maximizes screen usage
