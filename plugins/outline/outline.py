@@ -58,6 +58,8 @@ class Outline(QtGui.QWidget):
         self.wdgD = {}
 ##        self.treeD = {}
         
+        self.show_decorators = 1
+        
         # Create blank page for default
         self.ui.sw_outline.insertWidget(0,QtGui.QWidget())
         
@@ -147,9 +149,10 @@ class Outline(QtGui.QWidget):
                     itmText = t[0]
                     typ = t[1]
                     lcnt = t[2]
-                    itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
-                    trwdg.addTopLevelItem(itm)
-                    self.format(itm,typ)
+                    if self.show_decorators or typ != 'decorator':
+                        itm =QtGui.QTreeWidgetItem([itmText,str(lcnt)])
+                        trwdg.addTopLevelItem(itm)
+                        self.format(itm,typ)
                 
                 # Update Location if possible
                 if 'getVisibleLines' in dir(wdg):
@@ -182,11 +185,21 @@ class Outline(QtGui.QWidget):
         menu = QtGui.QMenu('file menu')
         trwdg = self.ui.sw_outline.currentWidget()
         menu.addAction(QtGui.QIcon(self.ide.iconPath+'refresh.png'),'Update (Ctrl+O)')
+        
+        # Decorator Menu
+        menu.addSeparator()
+        decAct=menu.addAction(QtGui.QIcon(),'Show Decorators')
+        decAct.setCheckable(1)
+        decAct.setChecked(self.show_decorators)
+        menu.addAction(decAct)
 ##        menu.addAction(QtGui.QIcon(self.ide.iconPath+'search.png'),'Find')
         act = menu.exec_(trwdg.ui.tr_outline.cursor().pos())
         if act != None:
             acttxt = str(act.text())
             if acttxt=='Update (Ctrl+O)':
+                self.updateOutline()
+            elif acttxt =='Show Decorators':
+                self.show_decorators = decAct.isChecked()
                 self.updateOutline()
 ##            elif acttxt == 'Find':
 ####                trwdg.ui.fr_find.show()
