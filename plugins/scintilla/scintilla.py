@@ -78,7 +78,7 @@ class Sci(QtGui.QWidget):
 ##            'fontFamily':'Hack',
 ##            'fontFamily':'Ubuntu',
             'fontSize':10,
-##            'theme':'twighlight',
+            'theme':'dark',
 ##            'newLineMode':'unix',
             'showWhitespace':0,
         }

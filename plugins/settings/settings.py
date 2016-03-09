@@ -135,6 +135,18 @@ class Settings_Editor(QtGui.QWidget):
         self.ui.te_json.setText(txt)
     
         self.ui.l_title.setText(' '+title+' Settings')
+        
+        # Help Page
+        h = '''
+            <style>
+            html, body, li {
+                color:rgb(210,210,210);
+            }
+            b,strong,h1,h2,h3 {
+                color:white;
+            }
+            </style>
+        '''+h
         self.ui.tb_help.setHtml(h)
     
     def appSave(self):

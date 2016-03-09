@@ -74,7 +74,6 @@
     "scintilla": {
         "wordwrap":0,
         "autocomplete":1,
-        "newLineMode":"auto",
         "showWhitespace":0,
         "theme":"dark"
     },
