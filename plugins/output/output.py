@@ -54,10 +54,12 @@ class Output(QtGui.QWidget):
             webbrowser.open(wdg.filename)
         else:
             # Setup the Command
+            full_cmd = cmd
             if '{{filename}}' in cmd:
                 full_cmd = cmd.replace('{{filename}}',' "'+wdg.filename+'"')
             else:
-                full_cmd = cmd+' "'+wdg.filename+'"'
+                if wdg.filename != None:
+                    full_cmd = cmd+' "'+wdg.filename+'"'
             if 'new_file' in args:
                 full_cmd = full_cmd.replace('{{new_file}}',args['new_file'])
             
