@@ -137,17 +137,29 @@ class Settings_Editor(QtGui.QWidget):
         self.ui.l_title.setText(' '+title+' Settings')
         
         # Help Page
-        h = '''
-            <style>
-            html, body, li {
-                color:rgb(210,210,210);
-            }
-            b,strong,h1,h2,h3 {
-                color:white;
-            }
-            </style>
-        '''+h
-        self.ui.tb_help.setHtml(h)
+        if self.IDE.theme == 'light':
+            h_style = '''
+                <style>
+                html, body, li {
+                    color:rgb(80,80,80);
+                }
+                b,strong,h1,h2,h3 {
+                    color:black;
+                }
+                </style>
+            '''
+        else:
+            h_style = '''
+                <style>
+                html, body, li {
+                    color:rgb(210,210,210);
+                }
+                b,strong,h1,h2,h3 {
+                    color:white;
+                }
+                </style>
+            '''
+        self.ui.tb_help.setHtml(h_style+h)
     
     def appSave(self):
         self.save_json()

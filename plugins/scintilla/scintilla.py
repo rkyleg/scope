@@ -4,7 +4,7 @@ from PyQt4 import Qsci
 from PyQt4 import QtGui, QtCore, Qsci
 from .scintilla_ui import Ui_Form
 import os,sys, time
-from scintilla_style import styleD # scintilla style
+from scintilla_style import styleD, styleLightD # scintilla style
 
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
@@ -103,6 +103,8 @@ class Sci(QtGui.QWidget):
         
         xfont = self.settings['fontSize']
         
+        self.default_font = font
+        
         font.setPointSize(int(xfont))
         self.ui.te_sci.setFont(font)
         self.ui.te_sci.setMarginsFont(font)
@@ -153,43 +155,101 @@ class Sci(QtGui.QWidget):
         
         self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
         
+        self.setupStyle()
+    
+    def setupStyle(self,*kargs):
         # Customize Python lexer
-        if self.ide.settings['editors']['scintilla']['theme']=='dark' and type(self.lex) == type(Qsci.QsciLexerPython()):
-##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
-            self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
-            
-            shade=30
-            self.lex.setDefaultPaper(QColor(shade,shade,shade))
-            self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
-            self.ui.te_sci.setColor(QColor(255,255,255))
-            
-            self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
-            self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
-            self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
-##            self.ui.te_sci.setPaper(QColor(80,80,80))
-            self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
-##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
-            
-            self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
-            self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
-            self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
-            
-            # Set defaults for all:
-            style_obj = set(styleD.keys()).intersection(dir(self.lex))
-            style_obj.remove('Default')
-            style_obj = set(['Default']).union(sorted(style_obj))
-            
-            for c in sorted(style_obj,reverse=1):
-                clr = styleD[c]
-                if clr == '':
-##                    clr = '255,255,255'
-                    clr = styleD['Default']
-##                print c,clr
-                try:
-                    exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
-                    exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
-                except:
-                    print('no keyword',c)
+        if type(self.lex) == type(Qsci.QsciLexerPython()):
+            if self.ide.theme == 'dark':
+    ##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
+                self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
+                
+                shade=30
+                self.lex.setDefaultPaper(QColor(shade,shade,shade))
+                self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
+                self.ui.te_sci.setColor(QColor(255,255,255))
+                
+                self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
+                self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
+                self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
+    ##            self.ui.te_sci.setPaper(QColor(80,80,80))
+                self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
+    ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
+                
+                self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
+                self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                
+                # Set defaults for all:
+                style_obj = set(styleD.keys()).intersection(dir(self.lex))
+                style_obj.remove('Default')
+                style_obj = set(['Default']).union(sorted(style_obj))
+                
+                for c in sorted(style_obj,reverse=1):
+                    clr = styleD[c]
+                    if clr == '':
+    ##                    clr = '255,255,255'
+                        clr = styleD['Default']
+    ##                print c,clr
+                    try:
+                        exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
+                        exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
+                    except:
+                        print('no keyword',c)
+            else:
+                print 'light theme'
+                self.lex = Qsci.QsciLexerPython()
+                
+                self.lex.setDefaultFont(self.default_font)
+                self.ui.te_sci.setLexer(self.lex)
+                
+                if sys.version_info.major==3:
+                    self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytes('Courier','utf-8'))
+                else:
+        ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+                    self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, self.settings['fontFamily'])
+                
+                # Update From Light style
+                shade=255
+                self.lex.setDefaultPaper(QColor(shade,shade,shade))
+                print self.lex.Default
+                self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
+                self.ui.te_sci.setColor(QColor(0,0,0))
+                
+               
+##                self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
+##                self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
+##                self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
+    ##            self.ui.te_sci.setPaper(QColor(80,80,80))
+##                self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
+    ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
+                
+                self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
+                self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                
+                
+                style_obj = set(styleLightD.keys()).intersection(dir(self.lex))
+                style_obj.remove('Default')
+                style_obj = set(['Default']).union(sorted(style_obj))
+                for c in sorted(style_obj,reverse=1):
+                    clr = styleLightD[c]
+                    if clr == '':
+    ##                    clr = '255,255,255'
+                        clr = styleLightD['Default']
+    ##                print c,clr
+                    try:
+                        exec('self.lex.setPaper(QColor(255,255,255),self.lex.'+c+')')
+                        exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
+                    except:
+                        print('no keyword',c)
+                
+                self.ui.te_sci.setMarginsBackgroundColor(QColor(200,200,200))
+                self.ui.te_sci.setMarginsForegroundColor(QColor(60,60,60))
+                self.ui.te_sci.setFoldMarginColors(QColor(210,210,210),QColor(230,230,230))
+                
+
+
     
     def keyPressEvent(self,event):
         ky = event.key()
@@ -209,9 +269,15 @@ class Sci(QtGui.QWidget):
             if event.key() == QtCore.Qt.Key_Down:
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESDOWN)
+                handled = 1
             if event.key() == QtCore.Qt.Key_Up:
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESUP)
+                handled = 1
+##            elif event.key() == QtCore.Qt.Key_T:
+##                # Change theme between light and dark
+##                self.toggleTheme()
+##                handled = 1
         
         if not handled:
             Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
@@ -221,6 +287,7 @@ class Sci(QtGui.QWidget):
             self.okedit = 1
             self.editorTextChanged()
     
+    #---Editor Functions
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
 ##        if self.settings['newLineMode']=='unix':

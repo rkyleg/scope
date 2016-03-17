@@ -233,34 +233,42 @@ class editortab(QtGui.QWidget):
 class WindowSwitcher(object):
     def __init__(self,parent=None,wtyp='blank'):
         self.tabs = QtGui.QTabWidget(parent)
+        self.tabs.setProperty("class","window_switcher")
+        self.tabs.tabBar().setProperty("class","window_switcher")
+##        self.tabs.setProperty('class','window_tabs')
+        
+##        self.tabs.setStyleSheet("""
+##            QTabWidget,QTabBar{
+##                background:rgba(40,40,40);
+##            }""")
+##            QTabWidget::tab-bar {
+##                alignment: left;
+##            }
+##
+##            /* Style the tab using the tab sub-control. Note that
+##                it reads QTabBar _not_ QTabWidget */
+##            QTabBar::tab {
+##                background: transparent;
+##                border:0px;
+##                border-right: 1px solid rgb(80,80,80);
+##                min-width: 8ex;
+##                padding: 4px;
+##                color:#BBBBBB
+##            }
+##            QTabBar::tab:hover {
+##                color:white;
+##            }
+##
+##            QTabBar::tab:selected {
+##                background: rgb(50,50,50);
+##                color:white;
+##
+##            }""")
+            
 
-        self.tabs.setStyleSheet("""
-            QTabWidget,QTabBar{
-                background:rgba(40,40,40);
-            }
-            QTabWidget::tab-bar {
-                alignment: left;
-            }
 
-            /* Style the tab using the tab sub-control. Note that
-                it reads QTabBar _not_ QTabWidget */
-            QTabBar::tab {
-                background: transparent;
-                border:0px;
-                border-right: 1px solid rgb(80,80,80);
-                min-width: 8ex;
-                padding: 4px;
-                color:#BBBBBB
-            }
-            QTabBar::tab:hover {
-                color:white;
-            }
 
-            QTabBar::tab:selected {
-                background: rgb(50,50,50);
-                color:white;
-
-            }""")
+            
 ##        self.tabs.setWindowOpacity(0.9)
 ##        self.tabs.setStyleSheet("background:transparent;")
         
@@ -278,7 +286,7 @@ class WindowSwitcher(object):
         self.tabs.setTabPosition(QtGui.QTabWidget.South)
         self.tabs.setTabsClosable(True)
         self.tabs.setMovable(True)
-        self.tabs.setProperty("class","editorTabs")
+##        self.tabs.setProperty("class","editorTabs")
         self.tabs.setObjectName('editorTabBar')
         self.tabs.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
     

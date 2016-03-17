@@ -165,7 +165,10 @@ class Outline(QtGui.QWidget):
             hi=0
     ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
     ##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
-            brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
+            if self.ide.theme == 'light':
+                brsh=QtGui.QBrush(QtGui.QColor(180,180,180,150)) # gray
+            else:
+                brsh=QtGui.QBrush(QtGui.QColor(30,30,30,150)) # gray
             
             for t in xrange(trwdg.topLevelItemCount()-1,-1,-1):
                 itm = trwdg.topLevelItem(t)
@@ -238,16 +241,25 @@ class Outline(QtGui.QWidget):
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
+            if self.ide.theme == 'light':
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(42,90,139)))
+            else:
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
 ##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
         elif typ == 'function':
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(101,191,246)))
+            if self.ide.theme == 'light':
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(60,131,197)))
+            else:
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(101,191,246)))
 ##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
         elif typ == 'heading':
             fnt=QtGui.QFont()
             fnt.setBold(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(180,180,180)))
+            if self.ide.theme == 'light':
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(111,111,111)))
+            else:
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(180,180,180)))
         elif typ=='filename':
             fnt=QtGui.QFont()
             fnt.setBold(1)
@@ -258,6 +270,9 @@ class Outline(QtGui.QWidget):
             fnt=QtGui.QFont()
 ##            fnt.setItalic(1)
             itm.setFont(0,fnt)
-            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(161,225,150)))
+            if self.ide.theme == 'light':
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(78,150,78)))
+            else:
+                itm.setForeground(0,QtGui.QBrush(QtGui.QColor(161,225,150)))
 ##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(255,170,127)))
 ##            itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))

@@ -207,71 +207,10 @@ QLabel#l_statusbar {
     color:rgb(138,214,255);
 }
 
-    QTabWidget.editorTabs::pane {
-        background:rgb(50,50,50);
-        outline:0;
-    }
 
-    QListWidget.editor_tab {
-        outline:0;
-        border:0px;
-        padding:0px;
-        background-color:rgb(100,100,100);
-    }
-    QListWidget.editor_tab::item {
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(46, 46,46, 255), stop:0.218182 rgba(65, 65, 65, 255), stop:0.831818 rgba(81, 81, 81, 255), stop:1 rgba(95, 95, 95, 255));
-        border:1px solid rgba(130,130,130,200);
-        border-top:0px;
-        border-left:0px;
-        outline:0;
-    }
-    QListWidget.editor_tab::item:selected {
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));
-        outline:0;
-        border-top:0px;
-    }
-    QListWidget.editor_tab::item:hover {
-        background:rgb(220,220,220);
-        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));
-    }
-    QLabel.editor_tab {
-        color:white;
-    }
-    QPushButton.editor_tab_btn {
-        background:transparent;
-    	border:0px;
-    	padding:3px;
-    	padding-left:6px;
-    	padding-right:6px;
-    	outline:none;
-    	min-height:20px;
-    	max-height:20px;
-    	max-width:20px;
-    	min-width:20px;
-    }
+
     
-    QPushButton.editor_tab_cls_btn {
-        background:transparent;
-    	border:0px;
-    	padding:3px;
-    	padding-left:6px;
-    	padding-right:2px;
-    	outline:none;
-    	min-height:20px;
-    	max-height:20px;
-    	max-width:20px;
-    	min-width:20px;
-    }
-    
-    QPushButton.editor_tab_cls_btn {
-    	image: url(style/img/close.png);
-    }
-    
-    QPushButton.editor_tab_cls_btn:hover {
-    	image: url(style/img/close_hover.png);
-    }
-    
-    /*---Topbar*/
+/*---Topbar*/
     QFrame#fr_topbar {
         background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));
         border-bottom:1px solid rgba(130,130,130,200);
@@ -325,7 +264,7 @@ QLabel#l_statusbar {
         background:transparent;
     }
 
-    /*---  Toolbar Buttons*/
+/*---  Toolbar Buttons*/
     QPushButton.toolbar {
         background:transparent;
     	border:0px;
@@ -395,4 +334,98 @@ QLabel#l_statusbar {
     
     QFrame#fr_left {
         border-left: 1px solid rgba(130,130,130,200);
+    }
+
+
+
+/*---Window Switcher*/
+    QTabWidget.window_switcher,QTabBar.window_switcher{
+        background:rgba(40,40,40);
+    }
+    QTabWidget.window_switcher::tab-bar {
+        alignment: left;
+    }
+    
+    /* Style the tab using the tab sub-control. Note that
+        it reads QTabBar _not_ QTabWidget */
+    QTabBar.window_switcher::tab {
+        background: transparent;
+        border:0px;
+        border-right: 1px solid rgb(80,80,80);
+        border-radius:0px;
+        min-width: 8ex;
+        padding: 4px;
+        color:#BBBBBB
+    }
+    QTabBar.window_switcher::tab:hover {
+        color:white;
+    }
+    
+    QTabBar.window_switcher::tab:selected {
+        background: rgb(50,50,50);
+        color:white;
+    
+    }
+    QTabWidget.window_switcher::pane {
+        background:rgb(50,50,50);
+        outline:0;
+    }
+
+    QListWidget.editor_tab {
+        outline:0;
+        border:0px;
+        padding:0px;
+        background-color:rgb(100,100,100);
+    }
+    QListWidget.editor_tab::item {
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(46, 46,46, 255), stop:0.218182 rgba(65, 65, 65, 255), stop:0.831818 rgba(81, 81, 81, 255), stop:1 rgba(95, 95, 95, 255));
+        border:1px solid rgba(130,130,130,200);
+        border-top:0px;
+        border-left:0px;
+        outline:0;
+    }
+    QListWidget.editor_tab::item:selected {
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(29, 51, 60, 255), stop:0.218182 rgba(39, 68, 81, 255), stop:0.831818 rgba(51, 91, 108, 255), stop:1 rgba(56, 116, 125, 255));
+        outline:0;
+        border-top:0px;
+    }
+    QListWidget.editor_tab::item:hover {
+        background:rgb(220,220,220);
+        background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(26, 26, 26, 255), stop:0.218182 rgba(45, 45, 45, 255), stop:0.831818 rgba(61, 61, 61, 255), stop:1 rgba(75, 75, 75, 255));
+    }
+    QLabel.editor_tab {
+        color:white;
+    }
+    QPushButton.editor_tab_btn {
+        background:transparent;
+    	border:0px;
+    	padding:3px;
+    	padding-left:6px;
+    	padding-right:6px;
+    	outline:none;
+    	min-height:20px;
+    	max-height:20px;
+    	max-width:20px;
+    	min-width:20px;
+    }
+    
+    QPushButton.editor_tab_cls_btn {
+        background:transparent;
+    	border:0px;
+    	padding:3px;
+    	padding-left:6px;
+    	padding-right:2px;
+    	outline:none;
+    	min-height:20px;
+    	max-height:20px;
+    	max-width:20px;
+    	min-width:20px;
+    }
+    
+    QPushButton.editor_tab_cls_btn {
+    	image: url(style/img/close.png);
+    }
+    
+    QPushButton.editor_tab_cls_btn:hover {
+    	image: url(style/img/close_hover.png);
     }

@@ -15,6 +15,7 @@ class Editor(object):
     def load(self):
         '''Called when loading the plugin'''
         
+        
     def getWidget(self, lang, **kargs):
         lex = None
 
@@ -24,6 +25,7 @@ class Editor(object):
             pass
                 
         editor = scintilla.Sci(self.parent,lex,lang)
+        self.parent.Events.themeChanged.connect(editor.setupStyle)
         
         return editor
 

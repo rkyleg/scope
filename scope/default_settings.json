@@ -1,7 +1,9 @@
 {
 "save_workspace_on_close":1,
 "widgetstyle":"plastique",
-"style":"style/default.css",
+"theme":"dark",
+"darktheme":"style/dark.css",
+"lighttheme":"style/light.css",
 "showPath":1,
 "visibleLineTracking":1,
 "checkFileChanges":2,

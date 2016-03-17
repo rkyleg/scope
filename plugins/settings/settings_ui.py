@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings.ui'
 #
-# Created: Sun Feb 14 10:28:24 2016
+# Created: Wed Mar 16 11:09:50 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -180,7 +180,6 @@ class Ui_Form(object):
         self.tb_help = QtGui.QTextBrowser(self.split_v)
         self.tb_help.setStyleSheet(_fromUtf8("QTextBrowser {\n"
 "    background:transparent;\n"
-"    color:white;\n"
 "}"))
         self.tb_help.setFrameShape(QtGui.QFrame.NoFrame)
         self.tb_help.setObjectName(_fromUtf8("tb_help"))

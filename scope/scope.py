@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.22'
+__version__ = '0.6.23-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -75,6 +75,8 @@ class Scope(QtGui.QWidget):
             
             settingsLoaded = QtCore.pyqtSignal()
             
+            themeChanged = QtCore.pyqtSignal(str)
+            
             # Workspace Events
             workspaceChanged = QtCore.pyqtSignal(str)
             workspaceOpened = QtCore.pyqtSignal(str)
@@ -91,17 +93,19 @@ class Scope(QtGui.QWidget):
         self.setAcceptDrops(1)
 
         # Style
-        style_path = self.settings['style']
-        if not os.path.exists(os.path.abspath(style_path)):
-            style_path = 'style/default.css'
-            QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
+        self.setTheme(self.settings['theme'])
             
-            
-        f = open(style_path,'r')
-        style = f.read()
-        f.close()
-        self.setStyleSheet(style)
-        self.stylePath = os.path.abspath(style_path)
+##        style_path = self.settings['style']
+##        if not os.path.exists(os.path.abspath(style_path)):
+##            style_path = 'style/default.css'
+##            QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
+##            
+##            
+##        f = open(style_path,'r')
+##        style = f.read()
+##        f.close()
+##        self.setStyleSheet(style)
+##        self.stylePath = os.path.abspath(style_path)
         
         #--- Window Setup
         
@@ -235,6 +239,8 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.Key_F10,self,self.toggleFullEditor) # Editor full screen, but keep tabs
         QtGui.QShortcut(QtCore.Qt.Key_F11,self,self.toggleFullscreen) # Fullscreen Zen
         
+        QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_T,self,self.toggleTheme) # Toggle Theme
+        
         #--- Load Editors (and languages)
         self.editorD = {}
         self.Editors = {}
@@ -246,6 +252,7 @@ class Scope(QtGui.QWidget):
             except:
                 QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
+                print sys.exc_info()[1]
             
             if ld != []:
                 self.editorD[e] = ld
@@ -1630,6 +1637,33 @@ class Scope(QtGui.QWidget):
         # Save Workspace
         if self.currentWorkspace != None and self.settings['save_workspace_on_close']:
             self.workspaceSave()
+
+    def setTheme(self,theme):
+        self.theme = theme
+        if theme == 'light':
+            style_path = self.settings['lighttheme']
+        else:
+            style_path = self.settings['darktheme']
+##        style_path = self.settings['style']
+        if not os.path.exists(os.path.abspath(style_path)):
+            style_path = 'style/dark.css'
+            QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
+            
+            
+        f = open(style_path,'r')
+        style = f.read()
+        f.close()
+        self.setStyleSheet(style)
+        self.stylePath = os.path.abspath(style_path)
+    
+    def toggleTheme(self):
+        if self.theme == 'dark':
+            self.theme = 'light'
+        
+        else:
+            self.theme = 'dark'
+        self.setTheme(self.theme)
+        self.Events.themeChanged.emit(self.theme)
 
     #---FileModify Checker
     def checkFileChanges2(self):

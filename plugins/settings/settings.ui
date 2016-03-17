@@ -358,7 +358,6 @@ QListWidgetItem {
       <property name="styleSheet">
        <string notr="true">QTextBrowser {
 	background:transparent;
-	color:white;
 }</string>
       </property>
       <property name="frameShape">
