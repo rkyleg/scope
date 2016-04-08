@@ -6,6 +6,7 @@
     "desc":"Browse and open files",
     "settings":{
         "defaultPath": "", 
-        "showAll": 0
+        "showAll": 0,
+        "externalFileBrowser":""
     }
 }

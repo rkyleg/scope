@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.23-dev'
+__version__ = '0.6.24-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -94,18 +94,6 @@ class Scope(QtGui.QWidget):
 
         # Style
         self.setTheme(self.settings['theme'])
-            
-##        style_path = self.settings['style']
-##        if not os.path.exists(os.path.abspath(style_path)):
-##            style_path = 'style/default.css'
-##            QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
-##            
-##            
-##        f = open(style_path,'r')
-##        style = f.read()
-##        f.close()
-##        self.setStyleSheet(style)
-##        self.stylePath = os.path.abspath(style_path)
         
         #--- Window Setup
         
@@ -205,7 +193,6 @@ class Scope(QtGui.QWidget):
         self.ui.le_goto.returnPressed.connect(self.editorGoto)
 
         self.ui.b_back.clicked.connect(self.back_to_editor)
-##        self.fileOpenD={}
         
         # Create Window Switcher
         self.createWindowSwitcher()
@@ -542,9 +529,8 @@ class Scope(QtGui.QWidget):
                         title = os.path.basename(filename)
 
                         try:
-                            f = codecs.open(filename,'r','utf-8')
-                            txt = f.read()
-                            f.close()
+                            with codecs.open(filename,'r','utf-8') as f:
+                                txt = f.read()
                             
                         except:
                             QtGui.QMessageBox.warning(self,'Error Opening File','The following file could not be read.  Make sure it is ascii or utf-8 encoded<br><br>'+filename)
@@ -611,8 +597,6 @@ class Scope(QtGui.QWidget):
         wdg.modTime = None
         wdg.icon = wdgD['icon']
         wdg.type = wdgD['typ']
-        
-        
         
         self.fileOpenD[file_id]=wdg
         
@@ -973,9 +957,8 @@ class Scope(QtGui.QWidget):
                     try:
                         txt = wdg.getText()
                         if self.saveEnabled:
-                            f = codecs.open(wdg.filename,'w','utf8')
-                            f.write(txt)
-                            f.close()
+                            with codecs.open(wdg.filename,'w','utf8') as f:
+                                f.write(txt)
                         wdg.lastText = txt
                         wdg.modTime = os.path.getmtime(filename)
                         self.ui.l_statusbar.setText('Saved: '+wdg.title)#+' at '+datetime.datetime.now().ctime(),3000)
@@ -1016,7 +999,7 @@ class Scope(QtGui.QWidget):
         filename = QtGui.QFileDialog.getSaveFileName(self,"Save Code",pth,fileext)
         if filename!='':
             filename = os.path.abspath(str(filename))
-            with open(filename,'w') as f:
+            with codecs.open(filename,'w','utf-8') as f:
                 f.write(txt)
             self.openFile(filename,editor=wdg.pluginEditor)
 ##            wdg.filename = os.path.abspath(str(filename))
@@ -1384,9 +1367,8 @@ class Scope(QtGui.QWidget):
                 
                     # Save workspace dir
                     wD['basefolder']=self.workspaces[wksp]['basefolder']
-                f = open(self.settingPath+'/workspaces/'+wksp,'w')
-                f.write(json.dumps(wD))
-                f.close()
+                with open(self.settingPath+'/workspaces/'+wksp,'w') as f:
+                    f.write(json.dumps(wD))
     
     def workspaceOpen(self,wksp,show_tabs=1):
         # Load workspace
@@ -1405,9 +1387,8 @@ class Scope(QtGui.QWidget):
                 self.workspaces[wksp]={'files':[],'basefolder':None,'lastOpenFile':None}
             else:
                 # Open existing workspace settings
-                f = open(self.settingPath+'/workspaces/'+wksp,'r')
-                wD = json.loads(f.read())
-                f.close()
+                with open(self.settingPath+'/workspaces/'+wksp,'r') as f:
+                    wD = json.loads(f.read())
                 self.workspaces[wksp]=wD.copy()
             
             self.currentWorkspace=wksp
@@ -1650,9 +1631,8 @@ class Scope(QtGui.QWidget):
             QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
             
             
-        f = open(style_path,'r')
-        style = f.read()
-        f.close()
+        with open(style_path,'r') as f:
+            style = f.read()
         self.setStyleSheet(style)
         self.stylePath = os.path.abspath(style_path)
     
@@ -1688,9 +1668,8 @@ class Scope(QtGui.QWidget):
                         chngs=1
                         if resp == QtGui.QMessageBox.Yes:
                             QtGui.QApplication.processEvents()
-                            f = codecs.open(wdg.filename,'r','utf-8')
-                            txt = f.read()
-                            f.close()
+                            with codecs.open(wdg.filename,'r','utf-8') as f:
+                                txt = f.read()
                             wdg.setText(txt)
                         wdg.modTime = os.path.getmtime(wdg.filename)
             
