@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.24-dev'
+__version__ = '0.6.24'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
