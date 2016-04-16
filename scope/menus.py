@@ -31,7 +31,7 @@ class NewMenu(QtGui.QMenu):
                 if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
                     icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
                 else:
-                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                    icn = QtGui.QIcon(parent.iconPath+'/files/blank.png')
                 self.addAction(icn,lang)
         
         self.addSeparator()
@@ -45,7 +45,7 @@ class NewMenu(QtGui.QMenu):
                     if os.path.exists(parent.iconPath+'/files/'+l.lower()+'.png'):
                         icn = QtGui.QIcon(parent.iconPath+'/files/'+l.lower()+'.png')
                     else:
-                        icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                        icn = QtGui.QIcon(parent.iconPath+'/files/blank.png')
                     a=lmenu.addAction(icn,l)
                     a.setData(e)
                 self.addMenu(lmenu)

@@ -85,7 +85,7 @@ class Snippets(QtGui.QWidget):
                         elif os.path.exists(self.ide.iconPath+'files/'+ext+'.png'):
                             icn = QtGui.QIcon(self.ide.iconPath+'files/'+ext+'.png')
                         else:
-                            icn = QtGui.QIcon(self.ide.iconPath+'files/_blank.png')
+                            icn = QtGui.QIcon(self.ide.iconPath+'files/blank.png')
                         itm.setIcon(icn)
                         self.ui.li_snips.addItem(itm)
                     
