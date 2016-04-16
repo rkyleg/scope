@@ -47,7 +47,7 @@ class Home(object):
                         icn = self.IDE.iconPath+'files/'+lang+'.png'
                     # Set default Icon if language not found
                     if icn == None:
-                        icn = self.IDE.iconPath+'files/_blank.png'
+                        icn = self.IDE.iconPath+'files/blank.png'
 
                     nfiles += '<a href="new:'+lang+'" title="new '+lang+'" class="newfile"><img class="file-icon" src="'+pfx+icn+'""> '+lang+'</a>'
             
@@ -117,7 +117,7 @@ class Home(object):
                 if os.path.exists(self.IDE.iconPath+'/files/'+l.lower()+'.png'):
                     icn = QtGui.QIcon(self.IDE.iconPath+'/files/'+l.lower()+'.png')
                 else:
-                    icn = QtGui.QIcon(self.IDE.iconPath+'/files/_blank.png')
+                    icn = QtGui.QIcon(self.IDE.iconPath+'/files/blank.png')
                 a=lmenu.addAction(icn,l)
                 a.setData(e)
             

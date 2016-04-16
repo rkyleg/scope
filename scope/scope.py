@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.24'
+__version__ = '0.6.25'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -472,7 +472,7 @@ class Scope(QtGui.QWidget):
 
         if ext in self.settings['extensions']:
             lang = self.settings['extensions'][ext]
-        ipth = self.iconPath+'files/_blank.png'
+        ipth = self.iconPath+'files/blank.png'
         fipth = self.iconPath+'files/'+str(lang)+'.png'
         if os.path.exists(fipth):
             ipth = fipth
@@ -650,7 +650,7 @@ class Scope(QtGui.QWidget):
         wdg.pluginRightVisible=0
 
         # Add Icon
-        ipth = self.iconPath+'/files/_blank.png'
+        ipth = self.iconPath+'/files/blank.png'
         icn = QtGui.QPixmap(ipth)
         ipth = self.iconPath+'files/'+str(lang)+'.png'
         if os.path.exists(ipth):

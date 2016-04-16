@@ -140,7 +140,7 @@ class Find_Files(QtGui.QWidget):
                 ext = self.IDE.settings['extensions'][ext]
                 ipth = self.IDE.iconPath+'files/'+ext+'.png'
             else:
-                ipth = self.IDE.iconPath+'files/_blank.png'
+                ipth = self.IDE.iconPath+'files/blank.png'
             
             itm.setIcon(0,QtGui.QIcon(ipth))
 
