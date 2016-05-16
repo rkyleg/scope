@@ -23,7 +23,8 @@ class Find_Replace(QtGui.QWidget):
         self.ui.le_find.selectAll()
     
     def find(self):
-        ftxt = str(self.ui.le_find.text())
+        ftxt = self.ui.le_find.text()
+##        ftxt = str(self.ui.le_find.text())
         wdg = self.IDE.currentEditor()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
@@ -32,8 +33,10 @@ class Find_Replace(QtGui.QWidget):
             wdg.find(ftxt,re,cs,wo)
         
     def replace(self):
-        ftxt = str(self.ui.le_find.text())
-        rtxt = str(self.ui.le_replace.text())
+##        ftxt = str(self.ui.le_find.text())
+##        rtxt = str(self.ui.le_replace.text())
+        ftxt = self.ui.le_find.text()
+        rtxt = self.ui.le_replace.text()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()
@@ -42,8 +45,10 @@ class Find_Replace(QtGui.QWidget):
             wdg.replace(ftxt,rtxt,re,cs,wo)
         
     def replace_all(self):
-        ftxt = str(self.ui.le_find.text())
-        rtxt = str(self.ui.le_replace.text())
+##        ftxt = str(self.ui.le_find.text())
+##        rtxt = str(self.ui.le_replace.text())
+        ftxt = self.ui.le_find.text()
+        rtxt = self.ui.le_replace.text()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()

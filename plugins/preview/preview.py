@@ -54,8 +54,8 @@ class Preview(QtGui.QWidget):
         if wdg in self.wdgD:
             pwdg = self.wdgD[wdg]
             self.ui.sw_prev.setCurrentWidget(pwdg)
-            if self.ide.ui.tab_right.isVisible():
-                self.previewRun(wdg)
+##            if self.ide.ui.tab_right.isVisible():
+##                self.previewRun(wdg)
         else:
             self.ui.sw_prev.setCurrentIndex(0)
     
