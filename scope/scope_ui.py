@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'scope.ui'
 #
-# Created: Wed Feb 24 18:44:52 2016
+# Created: Sat Apr 23 00:38:53 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -270,6 +270,7 @@ class Ui_Form(object):
         font.setPointSize(10)
         self.l_filename.setFont(font)
         self.l_filename.setText(_fromUtf8(""))
+        self.l_filename.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.l_filename.setObjectName(_fromUtf8("l_filename"))
         self.gridLayout_6.addWidget(self.l_filename, 0, 4, 1, 1)
         self.b_tabicon = QtGui.QPushButton(self.fr_tab)
@@ -283,6 +284,7 @@ class Ui_Form(object):
         font.setPointSize(10)
         self.l_title_prefix.setFont(font)
         self.l_title_prefix.setText(_fromUtf8(""))
+        self.l_title_prefix.setTextInteractionFlags(QtCore.Qt.LinksAccessibleByMouse|QtCore.Qt.TextSelectableByKeyboard|QtCore.Qt.TextSelectableByMouse)
         self.l_title_prefix.setObjectName(_fromUtf8("l_title_prefix"))
         self.gridLayout_6.addWidget(self.l_title_prefix, 0, 2, 1, 1)
         self.b_closetab = QtGui.QPushButton(self.fr_tab)

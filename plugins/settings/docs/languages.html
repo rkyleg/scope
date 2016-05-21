@@ -5,10 +5,28 @@
 
 <ul>
 	<li style="margin: 0px;"><strong>editor</strong> - the editor to use for the language</li>
-	<li style="margin: 0px;"><strong>run</strong> - the command to execute for this language (filepath is appended to the end of the command)
-	<ul>
-		<li style="margin: 0px;">use the prefix &quot;preview &quot; followed by a command to generate html to generate html and show it in the preview pane</li>
+	<li style="margin: 0px;"><strong>run</strong> - the command to execute for this language
+	    <ul>
+	    <li>filepath is appended to the end of the command</li>
+	    <li>  &nbsp; or use {{filename}} to specify where to insert the filename in the command
+	       <br>  &nbsp;  &nbsp; Example: <code>python -u {{filename}}</code>
+	    </li>
+		<li style="margin: 0px;">use the prefix &quot;preview &quot; followed by a command to generate html to generate html and show it in the preview pane
+		    <br>  &nbsp;  &nbsp; Example: <code>preview /home/home/node/markdown.sh</code>
+		</li>
 	</ul>
+	</li>
+	<li><b>compile</b>
+	    <ul>
+	        <li><b>new_ext</b> - the extension to use for the new file created by the command (optional)</li>
+	        <li><b>cmd</b> - the command to run
+	            <ul>
+	                <li>{{filename}} - use within the command to insert the filename</li>
+	                <li>{{new_file}} - use within the command to insert the new filename with the extension</li>
+	            </ul>
+	        </li>
+	    </ul>
+	    Example: <code>"compile":{"new_ext":"min.js","cmd":"uglifyjs {{filename}} -o {{new_file}}"}</code>
 	</li>
 	<li style="margin: 0px;"><strong>fave</strong> - set to 0, if you don&#39;t want this language to show up in the favorites lists</li>
 	<li style="margin: 0px;"><strong>theme</strong> - for ace editor, this will change the theme</li>

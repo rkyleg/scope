@@ -13,6 +13,8 @@ body {
     /*border:1px solid gray;*/
     background: -webkit-linear-gradient(top, #004c75 0%,#112a44 100%);
     /*border-top-left-radius:10px;*/
+    background-size: cover;
+    background-position: center; 
     border-bottom:0px;
     border-right:0px;
     border-top:0px;

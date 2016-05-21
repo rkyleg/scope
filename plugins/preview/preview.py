@@ -35,6 +35,10 @@ class Preview(QtGui.QWidget):
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavaEnabled,True)
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptEnabled,True)
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptCanOpenWindows,True)
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.LocalStorageEnabled,True)
+##        pwdg.webview.settings().setLocalStoragePath(self.ide.settingPath)
+##        pwdg.webview.settings().enablePersistentStorage(self.ide.settingPath)
+        pwdg.webview.settings().enablePersistentStorage(QtCore.QDir.homePath())
         
         pwdg.webview.setupInspector()
         splitter.addWidget(pwdg.webview.webInspector)
@@ -50,8 +54,8 @@ class Preview(QtGui.QWidget):
         if wdg in self.wdgD:
             pwdg = self.wdgD[wdg]
             self.ui.sw_prev.setCurrentWidget(pwdg)
-            if self.ide.ui.tab_right.isVisible():
-                self.previewRun(wdg)
+##            if self.ide.ui.tab_right.isVisible():
+##                self.previewRun(wdg)
         else:
             self.ui.sw_prev.setCurrentIndex(0)
     
@@ -76,7 +80,8 @@ class Preview(QtGui.QWidget):
                 pfx="file:///"
             else:
                 pfx="file://"
-            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+##            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+            burl = QtCore.QUrl(pfx+os.path.abspath(burl).replace('\\','/'))
 
         html = wdg.getText()
 
