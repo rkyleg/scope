@@ -320,7 +320,7 @@ class Sci(QtGui.QWidget):
     
     def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
         stxt = str(self.ui.te_sci.selectedText())
-        if stxt.lower() == ftxt.lower():
+        if stxt.lower() == str(ftxt).lower():
             self.ui.te_sci.replace(rtxt)
         self.ui.te_sci.findFirst(ftxt,re,cs,wo,1)
     
