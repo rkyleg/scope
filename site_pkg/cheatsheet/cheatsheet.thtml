@@ -1,0 +1,103 @@
+
+<style>
+    html,body {
+        background:rgb(200,200,200);
+        margin-top:30px;
+        font-family:ubuntu;
+    }
+    
+    h1 {
+        position:fixed;
+        top:0;
+        left:0;
+        width:100%;
+        padding:6px;
+        background:rgba(60,60,60,0.8);
+        margin:0px;
+        color:white;
+    }
+    
+    .section {
+        display:inline-block;
+        width:100%;
+        background:white;
+        border-radius:5px;
+        margin:4px;
+        padding:0px;
+    }
+    
+    .section-header {
+        font-size:1.2em;
+        margin:0px;
+        padding:4px;
+        background:rgb(164,192,213);
+        border-top-left-radius:5px;
+        border-top-right-radius:5px;
+    }
+    
+    .cmd-sec {
+        padding:4px;
+        padding-left:20px;
+    }
+    .cmd, .opt {
+        font-family: monospace;
+        font-weight:bold;
+        /*font-size:1.2em;*/
+        margin-left:-10px;
+    }
+    .cmd {
+        
+    }
+    pre {
+        border:0px;
+        border-radius:4px;
+        padding:6px;
+        background:rgb(80,80,80);
+        color:white;
+        margin:2px;
+        margin-left:6px;
+        font-size:0.8em;
+    }
+    .desc {
+        color:rgb(60,60,60);
+        margin-left:10px;
+        font-size:0.9em;
+    }
+    .option {
+        margin-left:16px;
+    }
+    
+    .column-container {
+        column-count:3;
+        -moz-column-count:3;
+        -webkit-column-count:3;
+    }
+    
+</style>
+
+{{#title}}
+<h1>{{.}}</h1>
+{{/title}}
+
+<div class="column-container">
+
+{{#sections}}<div class="section">
+    <div class="section-header">{{title}}</div>
+    {{#commands}}
+        <div class="cmd-sec">
+            <span class="cmd">{{cmd}}</span>
+            <span class="desc">{{{desc}}}</span>
+            {{#options}}
+                <div class="option">
+                    <span class="opt">{{opt}}</span>
+                    <span class="desc">{{{desc}}}</span>
+                </div>
+            {{/options}}
+            {{#examples}}
+                <pre>{{.}}</pre>
+            {{/examples}}
+        </div>
+    {{/commands}}
+</div><br>{{/sections}}
+
+</div>
