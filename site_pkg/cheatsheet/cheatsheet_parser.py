@@ -1,5 +1,5 @@
 import os,sys, collections
-import codecs
+import codecs, traceback
 
 def parse(filename):
     
@@ -114,15 +114,16 @@ if len(sys.argv) > 1:
     
     result = ''
     
-##    try:
-    if mode == 'text':
-        result = parse(flnm)
-    elif mode == 'html':
-        result = toHtml(parse(flnm))
-##        print(toHtml(parse(flnm)))
-        #.replace('\n','<br>').replace(' ',' &nbsp;')
-##    except:
+    try:
+        if mode == 'text':
+            result = parse(flnm)
+        elif mode == 'html':
+            result = toHtml(parse(flnm))
+    ##        print(toHtml(parse(flnm)))
+            #.replace('\n','<br>').replace(' ',' &nbsp;')
+    except:
 ##        print('Error parsing file: %s' %'a')
+        result = traceback.format_exc()
     
     
     # Compile

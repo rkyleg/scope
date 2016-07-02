@@ -3,7 +3,7 @@
     html,body {
         background:rgb(200,200,200);
         margin-top:30px;
-        font-family:ubuntu;
+        font-family:ubuntu,helvetica;
     }
     
     h1 {
@@ -66,12 +66,23 @@
     .option {
         margin-left:16px;
     }
-    
-    .column-container {
-        column-count:3;
-        -moz-column-count:3;
-        -webkit-column-count:3;
+
+    @media screen and (min-width: 800px) {
+        .column-container {
+            column-count:2;
+            -moz-column-count:2;
+            -webkit-column-count:2;
+        }
     }
+
+    @media screen and (min-width: 1200px) {
+        .column-container {
+            column-count:3;
+            -moz-column-count:3;
+            -webkit-column-count:3;
+        }
+    }
+
     
 </style>
 
