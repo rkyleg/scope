@@ -12,7 +12,6 @@ try:
 except:
     USE_JEDI = 0
 
-
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
 ##    'HTML':Qsci.QsciLexerHTML(),
