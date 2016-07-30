@@ -15,8 +15,18 @@ class NewMenu(QtGui.QMenu):
         
         # Open File
         icn = QtGui.QIcon(parent.iconPath+'/file_open.png')
-        a=self.addAction(icn,'open')
+        a=self.addAction(icn,'Open')
         a.setData('open')
+        
+        # Open With
+        icn = QtGui.QIcon(parent.iconPath+'/file_open.png')
+        owmenu = QtGui.QMenu('Open With',self)
+        owmenu.setIcon(icn)
+        self.addMenu(owmenu)
+        for e in sorted(parent.editorD):
+            icn = ( QtGui.QIcon(parent.editorPath+'/'+e+'/'+e+'.png'))
+            a=owmenu.addAction(icn,e)
+            a.setData('open_with:'+e)
         
         self.addSeparator()
         
@@ -61,6 +71,8 @@ class NewMenu(QtGui.QMenu):
         editor = str(event.data().toString())
         if editor == 'open':
             self.parent.openFile()
+        elif editor.startswith('open_with'):
+            self.parent.openFile(editor=editor.split(':')[1])
         else:
             if editor == '': editor = None
             self.parent.addEditorWidget(str(event.text()),editor=editor)
