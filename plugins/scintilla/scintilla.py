@@ -6,6 +6,12 @@ from .scintilla_ui import Ui_Form
 import os,sys, time
 from scintilla_style import styleD, styleLightD # scintilla style
 
+try:
+    import jedi
+    USE_JEDI = 1
+except:
+    USE_JEDI = 0
+
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
 ##    'HTML':Qsci.QsciLexerHTML(),
@@ -228,16 +234,13 @@ class Sci(QtGui.QWidget):
                 self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
                 self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
                 
-                
                 style_obj = set(styleLightD.keys()).intersection(dir(self.lex))
                 style_obj.remove('Default')
                 style_obj = set(['Default']).union(sorted(style_obj))
                 for c in sorted(style_obj,reverse=1):
                     clr = styleLightD[c]
                     if clr == '':
-    ##                    clr = '255,255,255'
                         clr = styleLightD['Default']
-    ##                print c,clr
                     try:
                         exec('self.lex.setPaper(QColor(255,255,255),self.lex.'+c+')')
                         exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
@@ -247,9 +250,6 @@ class Sci(QtGui.QWidget):
                 self.ui.te_sci.setMarginsBackgroundColor(QColor(200,200,200))
                 self.ui.te_sci.setMarginsForegroundColor(QColor(60,60,60))
                 self.ui.te_sci.setFoldMarginColors(QColor(210,210,210),QColor(230,230,230))
-                
-
-
     
     def keyPressEvent(self,event):
         ky = event.key()
@@ -270,14 +270,16 @@ class Sci(QtGui.QWidget):
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESDOWN)
                 handled = 1
-            if event.key() == QtCore.Qt.Key_Up:
+            elif event.key() == QtCore.Qt.Key_Up:
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESUP)
                 handled = 1
-##            elif event.key() == QtCore.Qt.Key_T:
-##                # Change theme between light and dark
-##                self.toggleTheme()
-##                handled = 1
+            elif event.key() == QtCore.Qt.Key_C:
+                # Python Autocomplete
+                if USE_JEDI and self.ide.currentEditor().lang == 'python':
+                    'run autocomplete'
+                    self.jedi_autocomplete()
+                    handled = 1
         
         if not handled:
             Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
@@ -330,7 +332,7 @@ class Sci(QtGui.QWidget):
         while r:
             cnt +=1
             self.ui.te_sci.replace(rtxt)
-            QtGui.QApplication.processEvents()
+##            QtGui.QApplication.processEvents()
             r = self.ui.te_sci.findFirst(ftxt,re,cs,wo,0)
         QtGui.QMessageBox.information(self,'Replace All',str(cnt)+' occurrences replaced')
     
@@ -459,3 +461,38 @@ class Sci(QtGui.QWidget):
     
     def setFocus(self):
         self.ui.te_sci.setFocus()
+
+    #----Other Tools
+    def jedi_autocomplete(self):
+        # Setup jedi autocompletion
+        pos = self.ui.te_sci.getCursorPosition()
+        x,y = self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTXFROMPOSITION,pos[0],pos[1]),self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTYFROMPOSITION,pos[0],pos[1])
+##        x,y = self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTXFROMPOSITION,0,self.ui.te_sci.getCursorPosition()[0]),self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTYFROMPOSITION,0,self.ui.te_sci.getCursorPosition()[1])
+        
+        
+        line_first = self.ui.te_sci.firstVisibleLine()
+        x=pos[1]*self.settings['fontSize']+30
+        y = (pos[0]-line_first+2.5)*self.settings['fontSize']
+##        x += 100
+        y += 15
+##        y = pos[1]
+        
+        sc = jedi.Script(self.getText(),pos[0]+1,pos[1])
+        completions = sc.completions()
+        
+        menu = QtGui.QMenu()
+        menu.setStyleSheet("QMenu { menu-scrollable: 1; }")
+        
+        for c in xrange(len(completions)):
+##            print c
+            act = QtGui.QAction(completions[c].name,menu)
+            act.setData(c)
+            menu.addAction(act)
+        
+##        print x,',',y
+        act = menu.exec_(self.ui.te_sci.mapToGlobal(QtCore.QPoint(x,y)))
+##        act = menu.exec_(QtCore.QPoint(x+30,y+10))
+        if act != None:
+            acttxt = str(act.text())
+            c = int(str(act.data().toString()))
+            self.insertText(completions[c].complete)

@@ -146,4 +146,4 @@ class Preview(QtGui.QWidget):
             import webbrowser
             webbrowser.open(lnk)
         else:
-            pwdg.webview.load2(url)
+            pwdg.webview.load_link(url)

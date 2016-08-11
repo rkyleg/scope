@@ -15,6 +15,6 @@ class Plugin(object):
         
     def loadWidget(self):
         self.widget = py_console.PyConsole(self.parent)
-        self.widget.write('# Scope Python Console\n    - only modules included with Scope are available\n    - Ctrl+l to launch popup (outside of Scope) with the default installed Python\n',mode=1)
-        self.widget.write('\n')
+        self.widget.ui.tb_view.setText('Scope Python Console\n  - only modules included with Scope are available\n  - Ctrl+l to launch popup (outside of Scope) with the default installed Python\n')
+        
         return self.widget

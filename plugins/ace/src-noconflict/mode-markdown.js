@@ -55,7 +55,8 @@ oop.inherits(Mode, TextMode);
 
 (function() {
     this.type = "text";
-    this.lineCommentStart = ">";
+    // this.lineCommentStart = ">";
+    this.blockComment = {start: "<!--", end: "-->"};
     
     this.getNextLineIndent = function(state, line, tab) {
         if (state == "listblock") {
