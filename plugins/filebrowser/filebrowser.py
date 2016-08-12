@@ -247,20 +247,25 @@ class DirTree(QtGui.QWidget):
             menu.addAction(QtGui.QIcon(self.ide.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
             
-            if ext != '':
-                # Open menu
-                lang = None
-                cnt = 0
-                if ext in self.ide.settings['extensions']:
-                    lang = self.ide.settings['extensions'][ext]
-                for edtr in self.ide.editorD:
-                    if lang in self.ide.editorD[edtr] or ext in self.ide.editorD[edtr]:
-                        menu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
-                        cnt += 1
-                if cnt == 0:
-                    menu.addAction(QtGui.QIcon(),'Edit')
+            omenu = QtGui.QMenu('Edit With')
+            for edtr in sorted(self.ide.editorD.keys()):
+                omenu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),edtr)
+            menu.addMenu(omenu)
             
-                menu.addSeparator()
+##            if ext != '':
+##                # Open menu
+##                lang = None
+##                cnt = 0
+##                if ext in self.ide.settings['extensions']:
+##                    lang = self.ide.settings['extensions'][ext]
+##                for edtr in self.ide.editorD:
+##                    if lang in self.ide.editorD[edtr] or ext in self.ide.editorD[edtr]:
+##                        menu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
+##                        cnt += 1
+##                if cnt == 0:
+##                    menu.addAction(QtGui.QIcon(),'Edit')
+##            
+##                menu.addSeparator()
             
             if os.path.isfile(pth):
                 menu.addAction(QtGui.QIcon(self.ide.iconPath+'edit.png'),'Rename')
@@ -385,10 +390,12 @@ class DirTree(QtGui.QWidget):
                             fitm.setExpanded(1)
                         else:
                             self.loadRoot()
-            else:
-                # Open file in specific editor
-                lang = acttxt[10:]
-                self.ide.openFile(pth,editor=lang)
+            elif acttxt in self.ide.editorD:
+                self.ide.openFile(pth,editor=acttxt)
+##            else:
+##                # Open file in specific editor
+##                lang = acttxt[10:]
+##                self.ide.openFile(pth,editor=lang)
     
     def openFile(self):
         itm = self.ui.tr_dir.currentItem()
