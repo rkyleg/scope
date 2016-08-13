@@ -710,7 +710,7 @@ class Scope(QtGui.QWidget):
             if file_id != None:
                 self.changeTab(file_id)
         else:
-            self.ui.b_closetab.hide()
+            self.changeTab(None)
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
@@ -718,7 +718,7 @@ class Scope(QtGui.QWidget):
         if file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
-            self.Events.editorTabChanged.emit(wdg)
+            
             self.setTitle(wdg)
             if wdg.filename != None:
                 self.ui.fr_tab.setToolTip(wdg.filename)
@@ -742,7 +742,11 @@ class Scope(QtGui.QWidget):
             lang = None
             
             self.ui.b_closetab.hide()
+            self.ui.fr_toolbar.hide()
+            self.ui.fr_topleft.hide()
             self.ui.l_filename.setText('')
+            self.ui.l_title_prefix.setText('')
+            self.ui.b_tabicon.setIcon(QtGui.QIcon())
 
         # Enable Run
         run_enabled=0
@@ -782,7 +786,12 @@ class Scope(QtGui.QWidget):
             
             # Hide left bar if app
             if wdg.type == 'app':
-                self.ui.fr_left.setVisible(0)
+                if wdg.title == 'Home':
+                    # Show filebrowser with home
+                    if 'filebrowser' in self.pluginD:
+                        self.pluginD['filebrowser'].toggle()
+                else:
+                    self.ui.fr_left.setVisible(0)
             elif self.leftPluginVisible:
                 self.ui.fr_left.setVisible(1)
             
@@ -805,6 +814,12 @@ class Scope(QtGui.QWidget):
                     
             elif wdg.filename != None:
                 self.last_editable_file = wdg.id
+            
+            self.Events.editorTabChanged.emit(wdg)
+        else:
+            # Show filebrowser if blank
+            if 'filebrowser' in self.pluginD:
+                self.pluginD['filebrowser'].toggle()
         
     def close_tab(self):
         if self.currentEditor() != None:
@@ -1282,6 +1297,8 @@ class Scope(QtGui.QWidget):
     def showHome(self):
         if self.HomeWidget != None:
             self.HomeWidget.toggleHome()
+        else:
+            self.change_tab(None)
     
     def toggleWindowSwitcher(self):
         self.WindowSwitcher.toggle()

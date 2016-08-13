@@ -22,7 +22,4 @@ class Plugin(object):
         
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_O,self.parent,self.widget.updateOutlineToggle) 
         
-    ##    plugin.title = 'Outline'
-    ##    plugin.location = 'left'
-        
         return self.widget

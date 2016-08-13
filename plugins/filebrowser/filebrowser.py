@@ -7,8 +7,9 @@ class FileBrowser(QtGui.QStackedWidget):
         self.ide = parent
         QtGui.QStackedWidget.__init__(self,parent)
         self.workspaceD = {}
-        self.defaultPath = self.ide.settings['plugins']['filebrowser']['defaultPath']
-        ntree = self.addFilePage(self.defaultPath)
+##        self.defaultPath = self.ide.settings['plugins']['filebrowser']['defaultPath']
+##        ntree = self.addFilePage(self.defaultPath)
+        ntree = self.addFilePage(self.ide.settings['plugins']['filebrowser']['defaultPath'])
         self.setCurrentWidget(ntree)
 
     def addFilePage(self,pth=None):
@@ -18,7 +19,9 @@ class FileBrowser(QtGui.QStackedWidget):
         os.chdir(curdir)
         self.addWidget(ntree)
         if pth == None:
-            pth = self.defaultPath
+            # Grab 1st filebrowser path
+            pth = self.widget(0).ui.le_root.text()
+##            pth = self.defaultPath
         if not os.path.exists(pth):
             pth = os.path.expanduser('~')
         ntree.ui.le_root.setText(pth) 
@@ -27,7 +30,6 @@ class FileBrowser(QtGui.QStackedWidget):
         
     def changeWorkspace(self,wksp):
         wksp = str(wksp)
-##        print 'change workspace: ',wksp
         if wksp == 'None':
             self.setCurrentIndex(0)
         else:
