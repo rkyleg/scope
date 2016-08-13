@@ -429,14 +429,15 @@ class Scope(QtGui.QWidget):
             wdg = self.fileOpenD[file_id]
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 
-                # Check if in current workspace and add tab if not
+##                # Check if in current workspace and add tab if not
                 wksp_tab = self.WindowSwitcher.tabs.currentWidget()
                 if wksp_tab != None:
                     if not file_id in wksp_tab.tabD:
-                        self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
-                
-                # Change tab to the file
-                self.changeTab(file_id)
+                        print('isfileOpen: adding widget function moved')
+##                        self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
+##                
+##                # Change tab to the file
+##                self.changeTab(file_id)
                 fileopen = file_id
                 break
         return fileopen
@@ -512,6 +513,7 @@ class Scope(QtGui.QWidget):
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
+                    self.changeTab(file_open)
                     return 1
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
@@ -1290,6 +1292,7 @@ class Scope(QtGui.QWidget):
             self.ui.b_tabicon.setIcon(wdg.icon)
     
         else:
+            self.changeTab(openfile)
             QtGui.QApplication.processEvents()
             wdg = self.ui.sw_main.currentWidget()
         
