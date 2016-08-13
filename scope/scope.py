@@ -100,6 +100,7 @@ class Scope(QtGui.QWidget):
         # Default zen mode
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
+        self.toolbar_mode = 1
         
         # Screen Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
@@ -286,7 +287,7 @@ class Scope(QtGui.QWidget):
                     self.loadPlugin(plug)
                 except:
                     plugin_errors.append(plug)
-##                    QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+        
         self.ui.l_statusbar.setText('')
         if plugin_errors:
             self.ui.l_statusbar.setText('<font color=red>Plugins failed to load:</font> '+','.join(plugin_errors))
@@ -395,6 +396,10 @@ class Scope(QtGui.QWidget):
             self.ui.fr_leftbar.setVisible(0)
         elif self.leftPluginVisible:
             self.ui.fr_leftbar.setVisible(1)
+    
+    def toggleToolbar(self):
+        self.toolbar_mode = not self.toolbar_mode
+        self.ui.fr_toolbar.setVisible(self.toolbar_mode)
     
     #---File
     def getFileId(self,filename):
@@ -734,7 +739,8 @@ class Scope(QtGui.QWidget):
             lang = wdg.lang
             
             self.ui.b_closetab.show()
-            self.ui.fr_toolbar.show()
+            if self.toolbar_mode:
+                self.ui.fr_toolbar.show()
             self.ui.fr_topleft.show()
             self.ui.b_back.hide()
         else:
