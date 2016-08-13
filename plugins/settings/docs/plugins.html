@@ -28,6 +28,18 @@
 <h3><span style="line-height: 1.2; font-size: 13px;">Adding Plugins</span></h3>
 
 <ul>
-	<li>Plugins can installed by using the <strong>Add from File</strong> or <strong>Add from URL</strong> buttons</li>
-	<li>The plugins must be zipped and in a particular format</li>
+	<li>Plugins can installed by using the Install buttons:
+	    <ul>
+	        <li><strong>File</strong> - a zip file on your computer</li>
+	        <li><strong>URL</strong> - a url to a zip file</li>
+	        <li><strong>Manual</strong> - copy the plugin folder to <code>&lt;scope&gt;/plugins</code> then add with this button</li>
+	    </ul>
+	</li>
+	<li>For the File and URL methods, the plugins must be zipped</li>
+	<li>Plugins must be in a particular format to actually get loaded
+	    <ul>
+	        <li>See <code>&lt;scope&gt;/plugins/_template</code> for an example</li>
+	        <li>Delete the scope_editor.py file if creating a plugin and not another editor</li>
+	    </ul>
+	</li>
 </ul>

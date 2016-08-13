@@ -1,15 +1,10 @@
 import os
 from PyQt4 import QtGui, QtCore
 
-##class Settings(object):
-##    '''Modifiable settings and their defaults'''
-##    # attribute=value
-    
 class Plugin(object):
     title = 'Plugin Title'
     location = 'app' # left, bottom, right, app
-##    settings = Settings.__dict__ # Settings must be a dictionary
-    widget = None  # The widget for the plugin (set at getWidget)
+    widget = None  # The widget for the plugin (set at loadWidget)
     
     def __init__(self,parent=None):
         self.parent = parent
@@ -19,5 +14,5 @@ class Plugin(object):
         
     def loadWidget(self):
         '''Load the widget'''
-        self.widget = None
+        self.widget = None  # Set your PyQt widget here if a widget plugin
         return self.widget

@@ -13,14 +13,15 @@ class Settings_Editor(QtGui.QWidget):
         self.IDE = parent
         
         # Add Ace editor
-        import plugins.ace.ace
-        self.ui.te_json = plugins.ace.ace.WebView(self.IDE,lang='json')
-        self.ui.fr_json.layout().addWidget(self.ui.te_json)
-
-##        import plugins.scintilla.scintilla
-##        wv = plugins.scintilla.scintilla.Sci(self.IDE,Qsci.QsciLexerJavaScript(),lang='json')
+        if 'ace' in self.IDE.editorD:
+            import plugins.ace.ace
+            self.ui.te_json = plugins.ace.ace.WebView(self.IDE,lang='json')
+        else:
+            # Add Scintilla
+            import plugins.scintilla.scintilla
+            self.ui.te_json = plugins.scintilla.scintilla.Sci(self.IDE,Qsci.QsciLexerJavaScript(),lang='json')
         
-##        self.ui.fr_lang_ed.layout().addWidget(self.ui.te_lang)
+        self.ui.fr_json.layout().addWidget(self.ui.te_json)
         
         # Setup Plugins file
         if not os.path.exists(os.path.join(self.IDE.settingPath,'plugins.json')):
@@ -39,6 +40,7 @@ class Settings_Editor(QtGui.QWidget):
         self.ui.tr_plugins.itemDoubleClicked.connect(self.plugin_dclick)
         self.ui.b_plugin_file_add.clicked.connect(self.plugin_add_file)
         self.ui.b_plugin_url_add.clicked.connect(self.plugin_add_url)
+        self.ui.b_plugin_manual_add.clicked.connect(self.plugin_add_manual)
         
         self.ui.tr_plugins.itemSelectionChanged.connect(self.plugin_select)
         
@@ -263,6 +265,32 @@ class Settings_Editor(QtGui.QWidget):
         if ok:
             self.installPlugin(str(resp))
 
+    def plugin_add_manual(self):
+        
+        # Get Current Plugin Settings
+        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
+            pluginsD = json.load(f)
+        
+        # Search available plugins
+        pluglist = []
+        for fld in os.listdir(self.IDE.pluginPath):
+            plug_fld = os.path.join(self.IDE.pluginPath,fld)
+            if not fld in pluginsD and os.path.isdir(plug_fld):
+                if os.path.exists(os.path.join(plug_fld,'plugin.json')):
+                    pluglist.append(fld)
+        
+        resp,ok = QtGui.QInputDialog.getItem(self,'Add Plugin','1. Copy the new plugin folder to scope/plugins<br>2. Select folder:',pluglist,0,False)
+        if ok:
+##            print resp
+            plug_name = str(resp)
+            root = os.path.join(self.IDE.pluginPath,plug_name)
+            # Get Plugin Info
+            with open(os.path.join(root,'plugin.json'),'r') as f:
+                plugD = json.load(f)
+##            print plugD
+            self.pluginsAppend(plug_name,plugD)
+            
+
     def installPlugin(self,plugin_pkg):
 
         import zipfile
@@ -309,13 +337,17 @@ class Settings_Editor(QtGui.QWidget):
         
         z.close()
         
-        # Add to plugins.json file
         if ok:
-            with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
-                pluginD = json.load(f)
+            self.pluginsAppend(plugin_name, plugD)
+        
+    def pluginsAppend(self, plugin_name, plugD):
+        # Add to plugins.json file
+        
+        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'r') as f:
+            pluginD = json.load(f)
+        
+        pluginD[plugin_name]={'title':plugD['title'],'desc':plugD['desc'],'version':plugD['version']}
+        with open(os.path.join(self.IDE.settingPath,'plugins.json'),'w') as f:
+            json.dump(pluginD,f,indent=4)
             
-            pluginD[plugin_name]={'title':plugD['title'],'desc':plugD['desc'],'version':plugD['version']}
-            with open(os.path.join(self.IDE.settingPath,'plugins.json'),'w') as f:
-                json.dump(pluginD,f,indent=4)
-                
-            self.load_plugins()
+        self.load_plugins()
