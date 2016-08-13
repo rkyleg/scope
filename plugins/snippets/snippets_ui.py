@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'snippets.ui'
 #
-# Created: Wed Jan  6 03:00:35 2016
+# Created: Fri Aug 12 23:06:11 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -65,10 +65,7 @@ class Ui_Form(object):
         self.b_reload.setObjectName(_fromUtf8("b_reload"))
         self.gridLayout.addWidget(self.b_reload, 0, 0, 1, 1)
         self.li_snips = QtGui.QListWidget(self.frame)
-        self.li_snips.setStyleSheet(_fromUtf8("QListWidget {background:transparent;border-top:1px solid rgb(80,80,80);}\n"
-"QListWidget::item {\n"
-"border-bottom:1px solid rgb(80,80,80);\n"
-"}"))
+        self.li_snips.setStyleSheet(_fromUtf8("QListWidget {background:transparent;border-top:1px solid rgb(80,80,80);}"))
         self.li_snips.setFrameShape(QtGui.QFrame.NoFrame)
         self.li_snips.setProperty("isWrapping", False)
         self.li_snips.setResizeMode(QtGui.QListView.Adjust)
