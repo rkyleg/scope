@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.0-dev'
+__version__ = '0.7.1-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -239,7 +239,7 @@ class Scope(QtGui.QWidget):
             except:
                 QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
-                print sys.exc_info()[1]
+                print(sys.exc_info()[1])
             
             if ld != []:
                 self.editorD[e] = ld
@@ -709,16 +709,6 @@ class Scope(QtGui.QWidget):
             file_id = wdg.id
             if file_id != None:
                 self.changeTab(file_id)
-            else:
-                ## MOVE TO changeTab
-                self.ui.sw_main.setCurrentIndex(sw_ind)
-                self.ui.b_closetab.hide()
-                self.setTitle(wdg)
-                try:
-                    self.ui.b_tabicon.setIcon(wdg.icon)
-                except:
-                    self.ui.b_tabicon.setIcon(QtGui.QIcon())
-                
         else:
             self.ui.b_closetab.hide()
 
@@ -812,10 +802,6 @@ class Scope(QtGui.QWidget):
                 # Back if current tab
                 if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
                     self.ui.b_back.show()
-                
-                # Show Full Mode
-##                self.editor_fullmode=0
-##                self.toggleFullEditor()
                     
             elif wdg.filename != None:
                 self.last_editable_file = wdg.id
@@ -883,9 +869,6 @@ class Scope(QtGui.QWidget):
                     t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                 except:
                     print('error setting title',wdg.tabTitle+wdg.titleSuffix)
-    
-        # Check for file changes
-##        self.checkFileChanges()
     
     def visibleLinesChanged(self,wdg,lines):
         self.Events.editorVisibleLinesChanged.emit(wdg,lines)
@@ -971,10 +954,6 @@ class Scope(QtGui.QWidget):
                     except:
                         QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                         self.ui.l_statusbar.setText('Error Saving: '+filename)
-
-##                    # If Settings File, reload
-##                    if filename == self.settings_filename:
-##                        self.loadSettings()
                 
                 # Update tabs
                 for t in self.fileD[wdg.id]['tabs']:
@@ -1002,11 +981,6 @@ class Scope(QtGui.QWidget):
             with codecs.open(filename,'w','utf-8') as f:
                 f.write(txt)
             self.openFile(filename,editor=wdg.pluginEditor)
-##            wdg.filename = os.path.abspath(str(filename))
-##            wdg.title = os.path.basename(wdg.filename)
-##            self.ui.l_filename.setText(wdg.title)
-##            wdg.tabTitle = wdg.title
-##            self.editorSave()
                 
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -1032,8 +1006,6 @@ class Scope(QtGui.QWidget):
                     # Otherwise run in output
                     runD = self.settings['run'][wdg.lang]
                     args = None
-##                    if 'ext' in runD:
-##                        args = wdg.filename.split('.')[0]+'.'+runD['ext']
                     self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,justset=justset)
     
     def editorRunSetCmd(self,wdg=None):
@@ -1485,10 +1457,9 @@ class Scope(QtGui.QWidget):
             wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
             for fid in wksp_tabs[:]:
                 if fid in self.fileOpenD.keys():
-##                    if len(self.fileD[fid]['tabs']) < 2:
-                        fl_ok = self.closeTab(fid,remove_from_workspace=0)
-                        if not fl_ok:
-                            break
+                    fl_ok = self.closeTab(fid,remove_from_workspace=0)
+                    if not fl_ok:
+                        break
                 
         # Close open files
         if wk_ok:
@@ -1516,7 +1487,6 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json',self.settingPath+'/scope.json')
         
-##        from site_pkg.configobj import configobj
         self.settings_filename = self.settingPath+'/scope.json'
         dflt_path = os.path.abspath(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json')
         
@@ -1534,27 +1504,6 @@ class Scope(QtGui.QWidget):
         
         self.settings = config.copy()
         self.settings.update(mysettings)
-        
-##        try:
-##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
-##            if type(user_config['editors'])==type([]): # Check editor settings 
-##                error
-##            config.merge(user_config)
-##        except:
-##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
-##            user_config = None
-        
-##        print dflt_path
-##        config = configobj.ConfigObj(dflt_path,unrepr=True,_inspec=True,list_values=False)
-##        try:
-##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
-##            if type(user_config['editors'])==type([]): # Check editor settings 
-##                error
-##            config.merge(user_config)
-##        except:
-##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
-##            user_config = None
-##        self.settings = config
 
         # Setup Webview stylesheet
         wsettings = QtWebKit.QWebSettings.globalSettings()
@@ -1599,16 +1548,6 @@ class Scope(QtGui.QWidget):
     
     def openSettings(self):
         self.pluginD['settings'].addSettingsWidget()
-##        menu = QtGui.QMenu(self.ui.b_settings)
-##        menu.addAction('Edit Settings')
-####        menu.addAction('Plugins')
-##        s = self.ui.b_settings.size()
-##        bpos = self.ui.b_settings.mapToGlobal(QtCore.QPoint(s.width(),0))
-##        act = menu.exec_(bpos)
-##        if act != None:
-##            acttxt = str(act.text())
-##            if acttxt == 'Edit Settings':
-##                self.openFile(self.settings_filename)
 
     def saveSettings(self):
         if self.fullscreen_mode:
@@ -1625,11 +1564,9 @@ class Scope(QtGui.QWidget):
             style_path = self.settings['lighttheme']
         else:
             style_path = self.settings['darktheme']
-##        style_path = self.settings['style']
         if not os.path.exists(os.path.abspath(style_path)):
             style_path = 'style/dark.css'
             QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
-            
             
         with open(style_path,'r') as f:
             style = f.read()
@@ -1700,7 +1637,7 @@ class Scope(QtGui.QWidget):
                 curdir = os.path.abspath('.')
                 os.chdir(os.path.dirname(path))
                 if os.name == 'nt':
-    ##                        subprocess.Popen(path,shell=True,cwd=dpth)
+##                    subprocess.Popen(path,shell=True,cwd=dpth)
                     os.startfile(path)
                 elif os.name=='posix':
                     subprocess.Popen(['xdg-open', path],cwd=dpth)

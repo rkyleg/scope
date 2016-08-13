@@ -220,7 +220,7 @@ class OutputPage(QtGui.QWidget):
         self.appendText(txt)
 
     def processError(self,err):
-        print 'process error',err,self.status,self.process.state()
+        print('process error',err,self.status,self.process.state())
         if self.dispError:
             errD = {0:'Failed to Start',1:'Crashed',2:'Timedout',3:'Read Error',4:'Write Error',5:'Unknown Error'}
             errtxt = errD[err]

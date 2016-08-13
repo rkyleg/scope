@@ -10,12 +10,10 @@ class WorkspaceWidget(QtGui.QListWidget):
         self.setResizeMode(1)
         self.setDragDropMode(4) # internalmove
         self.setDragEnabled(1) # enable drag drop
-##        self.setStyleSheet("QListWidget{background:transparent;border:0px;margin:4px;}")
         self.setProperty("class",'editor_tab')
         self.setSpacing(0)
         self.clicked.connect(self.select)
         self.tabD = {}
-##        self.setViewMode(1)
     
     def addEditortab(self,file_id,title,filename,editor=''):
         if not file_id in self.tabD:
@@ -63,7 +61,6 @@ class WorkspaceWidget(QtGui.QListWidget):
         if not ok:
             resp = QtGui.QMessageBox.warning(self,'File not Found','This file no longer exists or there was an error opening it<br><br>Do you want to remove the tab?',QtGui.QMessageBox.Yes,QtGui.QMessageBox.No)
             if resp == QtGui.QMessageBox.Yes:
-##                wdg.close(ignoreCheck=1)
                 wdg.closeClick()
             self.ide.WindowSwitcher.toggle(1)
         else:
@@ -154,15 +151,6 @@ class WorkspaceWidget(QtGui.QListWidget):
         if not handled:
             QtGui.QListWidget.keyPressEvent(self,event)
 
-##    def tabMousePressEvent(self,event):
-####        print event.button(),event.button() == QtCore.Qt.MidButton
-##        if event.button() == QtCore.Qt.MidButton:
-##            i = self.ui.tab.tabAt(event.pos())
-##            self.closeTab(i)
-##        else:
-##            QtGui.QTabBar.mousePressEvent(self.ui.tab, event)
-
-
 class editortab(QtGui.QWidget):
     def __init__(self,ide,file_id,title,filename,editor=''):
         QtGui.QWidget.__init__(self)
@@ -202,7 +190,6 @@ class editortab(QtGui.QWidget):
         layout.addWidget(cls_btn)
         self.closeButton = cls_btn
         
-##        layout.setSizeConstraint(QtGui.QLayout.SetFixedSize)
         self.setLayout(layout)
     
     def setTitle(self,title):
@@ -217,7 +204,6 @@ class editortab(QtGui.QWidget):
             li.ide.WindowSwitcher.highlightCurrent()
             if li.currentRow() >-1:
                 li.select(li.currentIndex(),hide_tabs=0)
-            
         else:
             li.ide.WindowSwitcher.toggle(1)
             
@@ -235,50 +221,6 @@ class WindowSwitcher(object):
         self.tabs = QtGui.QTabWidget(parent)
         self.tabs.setProperty("class","window_switcher")
         self.tabs.tabBar().setProperty("class","window_switcher")
-##        self.tabs.setProperty('class','window_tabs')
-        
-##        self.tabs.setStyleSheet("""
-##            QTabWidget,QTabBar{
-##                background:rgba(40,40,40);
-##            }""")
-##            QTabWidget::tab-bar {
-##                alignment: left;
-##            }
-##
-##            /* Style the tab using the tab sub-control. Note that
-##                it reads QTabBar _not_ QTabWidget */
-##            QTabBar::tab {
-##                background: transparent;
-##                border:0px;
-##                border-right: 1px solid rgb(80,80,80);
-##                min-width: 8ex;
-##                padding: 4px;
-##                color:#BBBBBB
-##            }
-##            QTabBar::tab:hover {
-##                color:white;
-##            }
-##
-##            QTabBar::tab:selected {
-##                background: rgb(50,50,50);
-##                color:white;
-##
-##            }""")
-            
-
-
-
-            
-##        self.tabs.setWindowOpacity(0.9)
-##        self.tabs.setStyleSheet("background:transparent;")
-        
-        # Make translucent if not windows
-##        if os.name !='nt':
-##            self.tabs.setAttribute(QtCore.Qt.WA_TranslucentBackground,1)
-        
-##        self.tabs.setAttribute(QtCore.Qt.WA_NoSystemBackground,1)
-##        self.tabs.setAttribute(QtCore.Qt.WA_DeleteOnClose, 1);
-        
 
         self.ide = parent
         
@@ -286,14 +228,10 @@ class WindowSwitcher(object):
         self.tabs.setTabPosition(QtGui.QTabWidget.South)
         self.tabs.setTabsClosable(True)
         self.tabs.setMovable(True)
-##        self.tabs.setProperty("class","editorTabs")
         self.tabs.setObjectName('editorTabBar')
         self.tabs.setSizePolicy(QtGui.QSizePolicy(QtGui.QSizePolicy.Expanding,QtGui.QSizePolicy.Preferred))
     
         self.tabs.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Popup)
-##        self.tabs.setWindowFlags(QtCore.Qt.FramelessWindowHint | QtCore.Qt.Window)
-##        self.tabs.setWindowFlags(QtCore.Qt.Window | QtCore.Qt.FramelessWindowHint | QtCore.Qt.Popup)
-##        self.tabs.setWindowFlags(QtCore.Qt.SplashScreen)
         self.tabs.setWindowModality(QtCore.Qt.NonModal)
     
         # Signals
