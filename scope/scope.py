@@ -209,7 +209,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
         QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_S,self,self.editorStats) # Editor Stats
         
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Previous Tab
 
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.toggleLeftPlugin) # Toggle Left Plugin
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F2,self,self.nextLeftPlugin) # show next left plugin
@@ -1331,9 +1331,12 @@ class Scope(QtGui.QWidget):
         self.ui.le_goto.selectAll()
         
     def nextTab(self):
-        i = self.ui.sw_main.currentIndex()+1
-        if i == self.ui.sw_main.count():i=0
-        self.ui.sw_main.setCurrentIndex(i)
+        if len(self.recentTabs) > 1:
+            i = self.recentTabs[-2]
+##            i = self.ui.sw_main.currentIndex()+1
+##            if i == self.ui.sw_main.count():i=0
+##            self.ui.sw_main.setCurrentIndex(i)
+            self.changeTab(i)
     
     #---Workspace
     def workspaceSave(self,wksp=None):
@@ -1503,6 +1506,13 @@ class Scope(QtGui.QWidget):
                 self.workspaceMenu.closeWact.setDisabled(1)
             
         return ok
+
+    def getFileWorkspace(self,file_id):
+        wksps = []
+        for wk in self.workspaces:
+            if file_id in self.workspaces[wk]['files']:
+                wksps.append(wk)
+        return wksps
 
     #---Settings
     def loadSettings(self):
