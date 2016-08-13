@@ -156,6 +156,7 @@ class EditorMenu(QtGui.QMenu):
         
         #---Edit
         emenu = QtGui.QMenu('&Edit',self)
+        self.editMenu = emenu
         self.addMenu(emenu)
         
         # Indent
@@ -176,6 +177,7 @@ class EditorMenu(QtGui.QMenu):
         
         #---Run
         rmenu = QtGui.QMenu('&Run',self)
+        self.runMenu = rmenu
         self.addMenu(rmenu)
         
         # Run
@@ -192,6 +194,7 @@ class EditorMenu(QtGui.QMenu):
         
         #---View
         vmenu = QtGui.QMenu('&View',self)
+        self.viewMenu = vmenu
         self.addMenu(vmenu)
         # Whitespace
         icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
@@ -208,30 +211,30 @@ class EditorMenu(QtGui.QMenu):
         self.statsAction = vmenu.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
         
         #---Window
-        self.viewMenu=QtGui.QMenu('&Window',self)
-        self.addMenu(self.viewMenu)
+        self.windowMenu=QtGui.QMenu('&Window',self)
+        self.addMenu(self.windowMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
+        self.windowMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
+        self.windowMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
+        self.windowMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
         
         icn = QtGui.QIcon()
-        self.viewMenu.addAction(icn,'Toggle Toolbar',self.parent.toggleToolbar)
+        self.windowMenu.addAction(icn,'Toggle Toolbar',self.parent.toggleToolbar)
         
-        self.viewMenu.addSeparator()
+        self.windowMenu.addSeparator()
         
         # Full Editor Mode
         icn = QtGui.QIcon(self.parent.iconPath+'full_editor.png')
-        self.fullEditorAction = self.viewMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
+        self.fullEditorAction = self.windowMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
         
         # Full Screen
         icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
-        self.fullScreenAction = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
+        self.fullScreenAction = self.windowMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
 
         # Check for file changes
         icn = QtGui.QIcon()

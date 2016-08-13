@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.1-dev'
+__version__ = '0.7.2-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -780,9 +780,13 @@ class Scope(QtGui.QWidget):
         for btn in btnD:
             btn[1].setEnabled(btn[0] in dir(wdg))
         
+        # Enable/Disable Editor Menu
         try:
             self.editorMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
             self.editorMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+            self.editorMenu.editMenu.setEnabled('getText' in dir(wdg))
+            self.editorMenu.runMenu.setEnabled('getText' in dir(wdg))
+            self.editorMenu.viewMenu.setEnabled('getText' in dir(wdg))
         except:
             pass
         
