@@ -430,6 +430,7 @@ class Scope(QtGui.QWidget):
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 
 ##                # Check if in current workspace and add tab if not
+                # REMOVE THIS SECTION eventually
                 wksp_tab = self.WindowSwitcher.tabs.currentWidget()
                 if wksp_tab != None:
                     if not file_id in wksp_tab.tabD:
