@@ -275,21 +275,21 @@ class Settings_Editor(QtGui.QWidget):
         pluglist = []
         for fld in os.listdir(self.IDE.pluginPath):
             plug_fld = os.path.join(self.IDE.pluginPath,fld)
-            if not fld in pluginsD and os.path.isdir(plug_fld):
+            if not fld in pluginsD and os.path.isdir(plug_fld) and fld != '_template':
                 if os.path.exists(os.path.join(plug_fld,'plugin.json')):
                     pluglist.append(fld)
         
-        resp,ok = QtGui.QInputDialog.getItem(self,'Add Plugin','1. Copy the new plugin folder to scope/plugins<br>2. Select folder:',pluglist,0,False)
-        if ok:
-##            print resp
-            plug_name = str(resp)
-            root = os.path.join(self.IDE.pluginPath,plug_name)
-            # Get Plugin Info
-            with open(os.path.join(root,'plugin.json'),'r') as f:
-                plugD = json.load(f)
-##            print plugD
-            self.pluginsAppend(plug_name,plugD)
-            
+        if len(pluglist) == 0:
+            QtGui.QMessageBox.warning(self,'No Plugins','No additional plugins where found.<br>1.Copy the plugin folder to &lt;scope&gt;/plugins first <br>2. Make sure the plugin is in the correct format')
+        else:
+            resp,ok = QtGui.QInputDialog.getItem(self,'Add Plugin','1. Copy the new plugin folder to scope/plugins<br>2. Select folder:',pluglist,0,False)
+            if ok:
+                plug_name = str(resp)
+                root = os.path.join(self.IDE.pluginPath,plug_name)
+                # Get Plugin Info
+                with open(os.path.join(root,'plugin.json'),'r') as f:
+                    plugD = json.load(f)
+                self.pluginsAppend(plug_name,plugD)
 
     def installPlugin(self,plugin_pkg):
 

@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.7.2-dev'
+__version__ = '0.7.3-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -54,6 +54,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_closetab.hide()
         self.saveEnabled = 1   # Enable saving to local file
         self.last_editable_file = None # Last file from the editor
+        self.runCommands = {}
         
         # Workspace
         self.currentWorkspace = None
@@ -624,9 +625,14 @@ class Scope(QtGui.QWidget):
         if not editor in self.Editors: # If editor not available - then find one
             editor = None
         
+        editor_lang = lang
+        
         if editor == None:
             if lang in self.settings['prog_lang']:
                 editor = self.settings['prog_lang'][lang]['editor']
+                # Check if other language specified in settings
+                if 'editor_lang' in self.settings['prog_lang'][lang]:
+                    editor_lang = self.settings['prog_lang'][lang]['editor_lang']
             if editor == None:
                 if lang == 'webview':
                     editor = 'webview'
@@ -641,8 +647,14 @@ class Scope(QtGui.QWidget):
                                 editor = e
                                 break
         
+        # Check for editor_lang specified in settings
+        if lang in self.settings['prog_lang']:
+            # Check if other language specified in settings
+            if 'editor_lang' in self.settings['prog_lang'][lang]:
+                editor_lang = self.settings['prog_lang'][lang]['editor_lang']
+        
         kargs = {
-            'lang':lang,
+            'lang':editor_lang,
             'filename':filename,
         }
         
@@ -1020,13 +1032,18 @@ class Scope(QtGui.QWidget):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
-            if self.settings['run'][wdg.lang]['cmd'].startswith('preview'):
+            runcmd = self.settings['run'][wdg.lang]['cmd'].split(' ')[0]
+            if runcmd == 'preview':
+                # Preview
                 if 'preview' in self.pluginD:
                     self.pluginD['preview'].widget.previewRun(wdg,justset=justset)
                     if self.ui.tab_right.isHidden():
                         self.toggleRightPlugin()
                 else:
                     QtGui.QMessageBox.warning(self,'No Preview Plugin','The Preview plugin is not available.<br><br>Please add it to the activePlugins settings')
+            elif runcmd in self.runCommands:
+                # Custom plugin command
+                self.runCommands[runcmd](wdg)
             else:
                 ok = self.checkSave(wdg)
                 filename = str(wdg.filename)
