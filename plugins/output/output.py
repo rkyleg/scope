@@ -170,6 +170,7 @@ class OutputPage(QtGui.QWidget):
         self.status = 'done'
         self.process_type = 'run'
         self.ui.fr_cmd.hide()
+        self.ui.fr_cmdw.hide()
         
         self.ui.tb_out.setOpenLinks(0)
         self.ui.tb_out.anchorClicked.connect(self.urlClick)
@@ -181,6 +182,8 @@ class OutputPage(QtGui.QWidget):
         self.ui.b_stop.clicked.connect(self.stopProcess)
         
         self.ui.b_save.clicked.connect(self.saveFile)
+        
+        self.ui.le_cmdw.returnPressed.connect(self.writeProcess)
     
     def urlClick(self,url):
         pth = str(url.toString())
@@ -228,7 +231,7 @@ class OutputPage(QtGui.QWidget):
         self.status = 'done'
         self.ui.b_run.setEnabled(1)
         self.ui.b_stop.setEnabled(0)
-        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));color:white;border:1px solid rgba(130,130,130,200);padding:3px;')
+        self.ui.fr_title.setStyleSheet('QFrame#fr_title {background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));color:white;border:1px solid rgba(130,130,130,200);}')
         self.ui.tb_out.setStyleSheet('QTextBrowser{background-color:rgb(50,50,50);color:white;border-bottom-left-radius:5px;border-bottom-right-radius:5px;} a {color:rgb(121,213,255);}')
     
         # Update list pages
@@ -252,7 +255,7 @@ class OutputPage(QtGui.QWidget):
         self.dispError = 1
         
         self.ui.l_title.setText('<b>&nbsp;'+os.path.split(self.filename)[1]+'&nbsp;&nbsp;&nbsp;&nbsp;</b><font color=#ccc><b>Started:</b> '+datetime.datetime.now().strftime('%I:%M:%S.%f'))
-        self.ui.l_title.setStyleSheet('background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border:1px solid rgba(130,130,130,200);padding:3px;')
+        self.ui.fr_title.setStyleSheet('QFrame#fr_title {background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));color:white;border:1px solid rgba(130,130,130,200);}')
         self.ui.tb_out.setStyleSheet('background-color:rgb(30,30,30);border-bottom-left-radius:5px;border-bottom-right-radius:5px;')
         self.ui.tb_out.setText('')
         self.listItem.setForeground(QtGui.QBrush(QtGui.QColor(48, 85, 100)))
@@ -278,6 +281,12 @@ class OutputPage(QtGui.QWidget):
         self.dispError = 0
         self.process.kill()
         self.finished()
+    
+    def writeProcess(self):
+        txt = self.ui.le_cmdw.text()+'\n'
+##        self.appendText(txt)   # somehow process doesn't work after this
+        self.process.write(txt.toLocal8Bit())
+        self.ui.le_cmdw.clear()
     
     def saveFile(self):
         if self.filename == None:
