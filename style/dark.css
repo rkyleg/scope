@@ -176,7 +176,7 @@ QScrollBar::add-line:horizontal {
     border:1px outset rgb(65,65,65);
     background: rgb(65,65,65);
     width: 20px;
-    subcontrol-position: left;
+    subcontrol-position: right;
     subcontrol-origin: margin;
 }
 
@@ -184,15 +184,15 @@ QScrollBar::sub-line:horizontal {
     border:1px outset rgb(65,65,65);
     background: rgb(65,65,65);
     width: 20px;
-    subcontrol-position: right;
+    subcontrol-position: left;
     subcontrol-origin: margin;
 }
 QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-    image: url(style/img/tri_left_gray.png);
+    image: url(style/img/tri_right_gray.png);
     background: transparent;
 }
 QScrollBar::left-arrow:horizontal {
-    image: url(style/img/tri_right_gray.png);
+    image: url(style/img/tri_left_gray.png);
 
 }
 
@@ -207,9 +207,6 @@ QLabel#l_statusbar {
     color:rgb(138,214,255);
 }
 
-
-
-    
 /*---Topbar*/
     QFrame#fr_topbar {
         background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));
