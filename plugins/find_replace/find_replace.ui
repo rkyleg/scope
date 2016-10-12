@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>556</width>
-    <height>137</height>
+    <width>605</width>
+    <height>187</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -127,10 +127,20 @@
            </property>
           </widget>
          </item>
-         <item row="2" column="0">
+         <item row="0" column="1">
           <widget class="QCheckBox" name="ckbx_re">
            <property name="text">
             <string>Reg Exp</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QCheckBox" name="ckbx_whitespace">
+           <property name="toolTip">
+            <string>Find \n, \t, \r</string>
+           </property>
+           <property name="text">
+            <string>Whitespace</string>
            </property>
           </widget>
          </item>

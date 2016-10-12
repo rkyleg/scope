@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'settings.ui'
 #
-# Created: Wed Mar 16 11:09:50 2016
+# Created: Sat Aug 13 10:05:17 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -104,6 +104,12 @@ class Ui_Form(object):
         self.gridLayout_2.setMargin(0)
         self.gridLayout_2.setSpacing(0)
         self.gridLayout_2.setObjectName(_fromUtf8("gridLayout_2"))
+        self.b_plugin_url_add = QtGui.QPushButton(self.fr_plugins)
+        self.b_plugin_url_add.setObjectName(_fromUtf8("b_plugin_url_add"))
+        self.gridLayout_2.addWidget(self.b_plugin_url_add, 0, 4, 1, 1)
+        self.b_plugin_file_add = QtGui.QPushButton(self.fr_plugins)
+        self.b_plugin_file_add.setObjectName(_fromUtf8("b_plugin_file_add"))
+        self.gridLayout_2.addWidget(self.b_plugin_file_add, 0, 3, 1, 1)
         self.label_9 = QtGui.QLabel(self.fr_plugins)
         font = QtGui.QFont()
         font.setPointSize(11)
@@ -114,18 +120,21 @@ class Ui_Form(object):
         self.gridLayout_2.addWidget(self.label_9, 0, 0, 1, 1)
         spacerItem = QtGui.QSpacerItem(247, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
         self.gridLayout_2.addItem(spacerItem, 0, 1, 1, 1)
-        self.b_plugin_file_add = QtGui.QPushButton(self.fr_plugins)
-        self.b_plugin_file_add.setObjectName(_fromUtf8("b_plugin_file_add"))
-        self.gridLayout_2.addWidget(self.b_plugin_file_add, 0, 2, 1, 1)
-        self.b_plugin_url_add = QtGui.QPushButton(self.fr_plugins)
-        self.b_plugin_url_add.setObjectName(_fromUtf8("b_plugin_url_add"))
-        self.gridLayout_2.addWidget(self.b_plugin_url_add, 0, 3, 1, 1)
         self.tr_plugins = QtGui.QTreeWidget(self.fr_plugins)
+        self.tr_plugins.setStyleSheet(_fromUtf8("QTreeWidget#tr_plugins {\n"
+"border-top:1px solid gray;\n"
+"}"))
         self.tr_plugins.setFrameShape(QtGui.QFrame.NoFrame)
         self.tr_plugins.setIndentation(2)
         self.tr_plugins.setRootIsDecorated(False)
         self.tr_plugins.setObjectName(_fromUtf8("tr_plugins"))
-        self.gridLayout_2.addWidget(self.tr_plugins, 1, 0, 1, 4)
+        self.gridLayout_2.addWidget(self.tr_plugins, 1, 0, 1, 6)
+        self.b_plugin_manual_add = QtGui.QPushButton(self.fr_plugins)
+        self.b_plugin_manual_add.setObjectName(_fromUtf8("b_plugin_manual_add"))
+        self.gridLayout_2.addWidget(self.b_plugin_manual_add, 0, 5, 1, 1)
+        self.label_10 = QtGui.QLabel(self.fr_plugins)
+        self.label_10.setObjectName(_fromUtf8("label_10"))
+        self.gridLayout_2.addWidget(self.label_10, 0, 2, 1, 1)
         self.fr_json_2 = QtGui.QFrame(self.split_h)
         self.fr_json_2.setStyleSheet(_fromUtf8("QFrame#fr_json_2 {\n"
 "    border-top:1px solid gray;\n"
@@ -203,12 +212,17 @@ class Ui_Form(object):
         item = self.li_catg.item(4)
         item.setText(_translate("Form", "Plugins", None))
         self.li_catg.setSortingEnabled(__sortingEnabled)
+        self.b_plugin_url_add.setToolTip(_translate("Form", "Install plugin from url (with zip file)", None))
+        self.b_plugin_url_add.setText(_translate("Form", "Url", None))
+        self.b_plugin_file_add.setToolTip(_translate("Form", "Install plugin from zip file", None))
+        self.b_plugin_file_add.setText(_translate("Form", "File", None))
         self.label_9.setText(_translate("Form", " Plugins", None))
-        self.b_plugin_file_add.setText(_translate("Form", "Add from File", None))
-        self.b_plugin_url_add.setText(_translate("Form", "Add from URL", None))
         self.tr_plugins.headerItem().setText(0, _translate("Form", "Plugin Name", None))
         self.tr_plugins.headerItem().setText(1, _translate("Form", "Enabled", None))
         self.tr_plugins.headerItem().setText(2, _translate("Form", "Description", None))
+        self.b_plugin_manual_add.setToolTip(_translate("Form", "Manually intall plugin", None))
+        self.b_plugin_manual_add.setText(_translate("Form", "Manual", None))
+        self.label_10.setText(_translate("Form", "Install: ", None))
         self.l_title.setText(_translate("Form", " General Settings", None))
         self.b_save_json.setText(_translate("Form", "save", None))
 

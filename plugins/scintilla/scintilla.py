@@ -203,7 +203,7 @@ class Sci(QtGui.QWidget):
                     except:
                         print('no keyword',c)
             else:
-                print 'light theme'
+##                print 'light theme'
                 self.lex = Qsci.QsciLexerPython()
                 
                 self.lex.setDefaultFont(self.default_font)
@@ -218,7 +218,7 @@ class Sci(QtGui.QWidget):
                 # Update From Light style
                 shade=255
                 self.lex.setDefaultPaper(QColor(shade,shade,shade))
-                print self.lex.Default
+##                print self.lex.Default
                 self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
                 self.ui.te_sci.setColor(QColor(0,0,0))
                 

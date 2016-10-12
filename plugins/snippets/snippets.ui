@@ -99,10 +99,7 @@ background:transparent;
        <item row="1" column="0" colspan="4">
         <widget class="QListWidget" name="li_snips">
          <property name="styleSheet">
-          <string notr="true">QListWidget {background:transparent;border-top:1px solid rgb(80,80,80);}
-QListWidget::item {
-border-bottom:1px solid rgb(80,80,80);
-}</string>
+          <string notr="true">QListWidget {background:transparent;border-top:1px solid rgb(80,80,80);}</string>
          </property>
          <property name="frameShape">
           <enum>QFrame::NoFrame</enum>

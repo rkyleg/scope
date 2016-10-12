@@ -7,8 +7,9 @@ class FileBrowser(QtGui.QStackedWidget):
         self.ide = parent
         QtGui.QStackedWidget.__init__(self,parent)
         self.workspaceD = {}
-        self.defaultPath = self.ide.settings['plugins']['filebrowser']['defaultPath']
-        ntree = self.addFilePage(self.defaultPath)
+##        self.defaultPath = self.ide.settings['plugins']['filebrowser']['defaultPath']
+##        ntree = self.addFilePage(self.defaultPath)
+        ntree = self.addFilePage(self.ide.settings['plugins']['filebrowser']['defaultPath'])
         self.setCurrentWidget(ntree)
 
     def addFilePage(self,pth=None):
@@ -18,7 +19,9 @@ class FileBrowser(QtGui.QStackedWidget):
         os.chdir(curdir)
         self.addWidget(ntree)
         if pth == None:
-            pth = self.defaultPath
+            # Grab 1st filebrowser path
+            pth = self.widget(0).ui.le_root.text()
+##            pth = self.defaultPath
         if not os.path.exists(pth):
             pth = os.path.expanduser('~')
         ntree.ui.le_root.setText(pth) 
@@ -27,7 +30,6 @@ class FileBrowser(QtGui.QStackedWidget):
         
     def changeWorkspace(self,wksp):
         wksp = str(wksp)
-##        print 'change workspace: ',wksp
         if wksp == 'None':
             self.setCurrentIndex(0)
         else:
@@ -247,20 +249,25 @@ class DirTree(QtGui.QWidget):
             menu.addAction(QtGui.QIcon(self.ide.iconPath+'folder_add.png'),'New Folder')
             menu.addSeparator()
             
-            if ext != '':
-                # Open menu
-                lang = None
-                cnt = 0
-                if ext in self.ide.settings['extensions']:
-                    lang = self.ide.settings['extensions'][ext]
-                for edtr in self.ide.editorD:
-                    if lang in self.ide.editorD[edtr] or ext in self.ide.editorD[edtr]:
-                        menu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
-                        cnt += 1
-                if cnt == 0:
-                    menu.addAction(QtGui.QIcon(),'Edit')
+            omenu = QtGui.QMenu('Edit With')
+            for edtr in sorted(self.ide.editorD.keys()):
+                omenu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),edtr)
+            menu.addMenu(omenu)
             
-                menu.addSeparator()
+##            if ext != '':
+##                # Open menu
+##                lang = None
+##                cnt = 0
+##                if ext in self.ide.settings['extensions']:
+##                    lang = self.ide.settings['extensions'][ext]
+##                for edtr in self.ide.editorD:
+##                    if lang in self.ide.editorD[edtr] or ext in self.ide.editorD[edtr]:
+##                        menu.addAction(QtGui.QIcon(self.ide.editorPath+'/'+edtr+'/'+edtr+'.png'),'Edit with '+edtr)
+##                        cnt += 1
+##                if cnt == 0:
+##                    menu.addAction(QtGui.QIcon(),'Edit')
+##            
+##                menu.addSeparator()
             
             if os.path.isfile(pth):
                 menu.addAction(QtGui.QIcon(self.ide.iconPath+'edit.png'),'Rename')
@@ -385,10 +392,12 @@ class DirTree(QtGui.QWidget):
                             fitm.setExpanded(1)
                         else:
                             self.loadRoot()
-            else:
-                # Open file in specific editor
-                lang = acttxt[10:]
-                self.ide.openFile(pth,editor=lang)
+            elif acttxt in self.ide.editorD:
+                self.ide.openFile(pth,editor=acttxt)
+##            else:
+##                # Open file in specific editor
+##                lang = acttxt[10:]
+##                self.ide.openFile(pth,editor=lang)
     
     def openFile(self):
         itm = self.ui.tr_dir.currentItem()

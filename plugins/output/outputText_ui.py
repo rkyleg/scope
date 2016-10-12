@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'outputText.ui'
 #
-# Created: Wed Mar  2 20:42:07 2016
+# Created: Mon Sep 19 21:58:40 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -26,11 +26,52 @@ except AttributeError:
 class Ui_OutWidget(object):
     def setupUi(self, OutWidget):
         OutWidget.setObjectName(_fromUtf8("OutWidget"))
-        OutWidget.resize(608, 190)
+        OutWidget.resize(608, 153)
         self.gridLayout = QtGui.QGridLayout(OutWidget)
         self.gridLayout.setMargin(0)
         self.gridLayout.setSpacing(0)
         self.gridLayout.setObjectName(_fromUtf8("gridLayout"))
+        self.fr_title = QtGui.QFrame(OutWidget)
+        self.fr_title.setStyleSheet(_fromUtf8("QFrame#fr_title {\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
+"border:1px solid rgba(130,130,130,200);\n"
+"}"))
+        self.fr_title.setFrameShape(QtGui.QFrame.NoFrame)
+        self.fr_title.setFrameShadow(QtGui.QFrame.Raised)
+        self.fr_title.setObjectName(_fromUtf8("fr_title"))
+        self.gridLayout_5 = QtGui.QGridLayout(self.fr_title)
+        self.gridLayout_5.setMargin(0)
+        self.gridLayout_5.setSpacing(0)
+        self.gridLayout_5.setObjectName(_fromUtf8("gridLayout_5"))
+        self.l_title = QtGui.QLabel(self.fr_title)
+        self.l_title.setStyleSheet(_fromUtf8("color:white;border:0;"))
+        self.l_title.setText(_fromUtf8(""))
+        self.l_title.setWordWrap(True)
+        self.l_title.setObjectName(_fromUtf8("l_title"))
+        self.gridLayout_5.addWidget(self.l_title, 0, 0, 1, 1)
+        self.b_save = QtGui.QPushButton(self.fr_title)
+        self.b_save.setEnabled(True)
+        self.b_save.setMaximumSize(QtCore.QSize(30, 16777215))
+        self.b_save.setStyleSheet(_fromUtf8("QPushButton,QToolButton {\n"
+"background:transparent;\n"
+"    border:0px;\n"
+"    padding:3px;\n"
+"    padding-left:6px;\n"
+"    padding-right:6px;\n"
+"    width:30px;\n"
+"}\n"
+"QPushButton:hover,QToolButton:hover {\n"
+"background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:1, stop:0 rgba(75, 75, 75, 100), stop:0.154545 rgba(106, 106, 106, 100), stop:0.831818 rgba(134, 134, 134, 100), stop:1 rgba(142, 142, 142, 100));\n"
+"}"))
+        self.b_save.setText(_fromUtf8(""))
+        icon = QtGui.QIcon()
+        icon.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_save.setIcon(icon)
+        self.b_save.setIconSize(QtCore.QSize(16, 16))
+        self.b_save.setCheckable(True)
+        self.b_save.setObjectName(_fromUtf8("b_save"))
+        self.gridLayout_5.addWidget(self.b_save, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.fr_title, 1, 0, 1, 2)
         self.fr_cmd = QtGui.QFrame(OutWidget)
         self.fr_cmd.setStyleSheet(_fromUtf8("QFrame#fr_cmd{\n"
 "background:black;\n"
@@ -57,16 +98,46 @@ class Ui_OutWidget(object):
         self.label.setStyleSheet(_fromUtf8("color:rgb(180,180,180);"))
         self.label.setObjectName(_fromUtf8("label"))
         self.gridLayout_2.addWidget(self.label, 0, 0, 1, 1)
-        self.gridLayout.addWidget(self.fr_cmd, 1, 1, 1, 1)
-        self.l_title = QtGui.QLabel(OutWidget)
-        self.l_title.setStyleSheet(_fromUtf8("background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(50, 50, 50, 255), stop:0.831818 rgba(80, 80, 80, 255), stop:1 rgba(100, 100, 100, 255));\n"
+        self.gridLayout.addWidget(self.fr_cmd, 2, 1, 1, 1)
+        self.tb_out = QtGui.QTextBrowser(OutWidget)
+        font = QtGui.QFont()
+        font.setFamily(_fromUtf8("FreeMono"))
+        self.tb_out.setFont(font)
+        self.tb_out.setStyleSheet(_fromUtf8("QTextBrowser {\n"
+"background:rgb(50,50,50);\n"
 "color:white;\n"
-"padding:3px;\n"
-"border:1px solid rgba(130,130,130,200);"))
-        self.l_title.setText(_fromUtf8(""))
-        self.l_title.setWordWrap(True)
-        self.l_title.setObjectName(_fromUtf8("l_title"))
-        self.gridLayout.addWidget(self.l_title, 0, 0, 1, 2)
+"}\n"
+"a {color:rgb(121,213,255);}"))
+        self.tb_out.setFrameShape(QtGui.QFrame.NoFrame)
+        self.tb_out.setObjectName(_fromUtf8("tb_out"))
+        self.gridLayout.addWidget(self.tb_out, 4, 1, 1, 1)
+        self.fr_cmdw = QtGui.QFrame(OutWidget)
+        self.fr_cmdw.setStyleSheet(_fromUtf8("QFrame#fr_cmdw{\n"
+"background:black;\n"
+"color:white;\n"
+"border:0px;\n"
+"border-bottom:1px solid rgba(130,130,130,200);\n"
+"}"))
+        self.fr_cmdw.setFrameShape(QtGui.QFrame.NoFrame)
+        self.fr_cmdw.setFrameShadow(QtGui.QFrame.Raised)
+        self.fr_cmdw.setObjectName(_fromUtf8("fr_cmdw"))
+        self.gridLayout_4 = QtGui.QGridLayout(self.fr_cmdw)
+        self.gridLayout_4.setContentsMargins(4, 1, 4, 1)
+        self.gridLayout_4.setHorizontalSpacing(4)
+        self.gridLayout_4.setVerticalSpacing(0)
+        self.gridLayout_4.setObjectName(_fromUtf8("gridLayout_4"))
+        self.le_cmdw = QtGui.QLineEdit(self.fr_cmdw)
+        self.le_cmdw.setStyleSheet(_fromUtf8("background:transparent;\n"
+"border:0px;\n"
+"color:white;"))
+        self.le_cmdw.setText(_fromUtf8(""))
+        self.le_cmdw.setObjectName(_fromUtf8("le_cmdw"))
+        self.gridLayout_4.addWidget(self.le_cmdw, 0, 2, 1, 1)
+        self.label_4 = QtGui.QLabel(self.fr_cmdw)
+        self.label_4.setStyleSheet(_fromUtf8("color:rgb(180,180,180);"))
+        self.label_4.setObjectName(_fromUtf8("label_4"))
+        self.gridLayout_4.addWidget(self.label_4, 0, 1, 1, 1)
+        self.gridLayout.addWidget(self.fr_cmdw, 5, 1, 1, 1)
         self.frame_2 = QtGui.QFrame(OutWidget)
         self.frame_2.setStyleSheet(_fromUtf8("QFrame#frame_2 {\n"
 "border-left:1px solid rgba(130,130,130,200);\n"
@@ -95,71 +166,57 @@ class Ui_OutWidget(object):
         self.b_stop.setMinimumSize(QtCore.QSize(0, 30))
         self.b_stop.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_stop.setText(_fromUtf8(""))
-        icon = QtGui.QIcon()
-        icon.addPixmap(QtGui.QPixmap(_fromUtf8("stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_stop.setIcon(icon)
+        icon1 = QtGui.QIcon()
+        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("stop.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_stop.setIcon(icon1)
         self.b_stop.setObjectName(_fromUtf8("b_stop"))
         self.gridLayout_3.addWidget(self.b_stop, 1, 0, 1, 1)
         self.b_cmd = QtGui.QPushButton(self.frame_2)
-        self.b_cmd.setMinimumSize(QtCore.QSize(0, 30))
         self.b_cmd.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_cmd.setText(_fromUtf8(""))
-        icon1 = QtGui.QIcon()
-        icon1.addPixmap(QtGui.QPixmap(_fromUtf8("textfield.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_cmd.setIcon(icon1)
+        icon2 = QtGui.QIcon()
+        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("textfield.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_cmd.setIcon(icon2)
         self.b_cmd.setCheckable(True)
         self.b_cmd.setObjectName(_fromUtf8("b_cmd"))
         self.gridLayout_3.addWidget(self.b_cmd, 2, 0, 1, 1)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        spacerItem = QtGui.QSpacerItem(2, 2, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
         self.gridLayout_3.addItem(spacerItem, 4, 0, 1, 1)
         self.b_run = QtGui.QPushButton(self.frame_2)
         self.b_run.setMinimumSize(QtCore.QSize(0, 30))
         self.b_run.setMaximumSize(QtCore.QSize(30, 16777215))
         self.b_run.setText(_fromUtf8(""))
-        icon2 = QtGui.QIcon()
-        icon2.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_run.setIcon(icon2)
+        icon3 = QtGui.QIcon()
+        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/tri_right.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
+        self.b_run.setIcon(icon3)
         self.b_run.setObjectName(_fromUtf8("b_run"))
         self.gridLayout_3.addWidget(self.b_run, 0, 0, 1, 1)
-        self.b_save = QtGui.QPushButton(self.frame_2)
-        self.b_save.setEnabled(True)
-        self.b_save.setMinimumSize(QtCore.QSize(0, 30))
-        self.b_save.setMaximumSize(QtCore.QSize(30, 16777215))
-        self.b_save.setText(_fromUtf8(""))
-        icon3 = QtGui.QIcon()
-        icon3.addPixmap(QtGui.QPixmap(_fromUtf8("../../style/img/save.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
-        self.b_save.setIcon(icon3)
-        self.b_save.setCheckable(True)
-        self.b_save.setObjectName(_fromUtf8("b_save"))
-        self.gridLayout_3.addWidget(self.b_save, 3, 0, 1, 1)
-        self.gridLayout.addWidget(self.frame_2, 1, 0, 3, 1)
-        self.tb_out = QtGui.QTextBrowser(OutWidget)
-        font = QtGui.QFont()
-        font.setFamily(_fromUtf8("FreeMono"))
-        self.tb_out.setFont(font)
-        self.tb_out.setStyleSheet(_fromUtf8("QTextBrowser {\n"
-"background:rgb(50,50,50);\n"
-"color:white;\n"
-"}\n"
-"a {color:rgb(121,213,255);}"))
-        self.tb_out.setFrameShape(QtGui.QFrame.NoFrame)
-        self.tb_out.setObjectName(_fromUtf8("tb_out"))
-        self.gridLayout.addWidget(self.tb_out, 3, 1, 1, 1)
+        self.b_cmdw = QtGui.QPushButton(self.frame_2)
+        self.b_cmdw.setMaximumSize(QtCore.QSize(30, 16777215))
+        self.b_cmdw.setStyleSheet(_fromUtf8("color:white;"))
+        self.b_cmdw.setCheckable(True)
+        self.b_cmdw.setObjectName(_fromUtf8("b_cmdw"))
+        self.gridLayout_3.addWidget(self.b_cmdw, 5, 0, 1, 1)
+        self.gridLayout.addWidget(self.frame_2, 2, 0, 4, 1)
 
         self.retranslateUi(OutWidget)
         QtCore.QObject.connect(self.b_cmd, QtCore.SIGNAL(_fromUtf8("toggled(bool)")), self.fr_cmd.setVisible)
+        QtCore.QObject.connect(self.b_cmdw, QtCore.SIGNAL(_fromUtf8("clicked(bool)")), self.fr_cmdw.setVisible)
         QtCore.QMetaObject.connectSlotsByName(OutWidget)
 
     def retranslateUi(self, OutWidget):
         OutWidget.setWindowTitle(_translate("OutWidget", "Form", None))
-        self.label.setText(_translate("OutWidget", "Command:", None))
-        self.b_stop.setToolTip(_translate("OutWidget", "Stop", None))
-        self.b_cmd.setToolTip(_translate("OutWidget", "Show/Hide Command", None))
-        self.b_run.setToolTip(_translate("OutWidget", "Run", None))
         self.b_save.setToolTip(_translate("OutWidget", "Save output to file", None))
+        self.label.setText(_translate("OutWidget", "Command:", None))
         self.tb_out.setHtml(_translate("OutWidget", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
 "</style></head><body style=\" font-family:\'FreeMono\'; font-size:9pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
+        self.label_4.setText(_translate("OutWidget", ">>>", None))
+        self.b_stop.setToolTip(_translate("OutWidget", "Stop", None))
+        self.b_cmd.setToolTip(_translate("OutWidget", "Show/Hide Command", None))
+        self.b_run.setToolTip(_translate("OutWidget", "Run", None))
+        self.b_cmdw.setToolTip(_translate("OutWidget", "Show/Hide Interactive Command", None))
+        self.b_cmdw.setText(_translate("OutWidget", ">", None))
 

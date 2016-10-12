@@ -686,23 +686,23 @@ padding-left:4px;</string>
          <property name="margin">
           <number>0</number>
          </property>
-         <item row="0" column="2">
-          <widget class="QPushButton" name="b_menu">
+         <item row="0" column="5">
+          <widget class="QPushButton" name="b_indent">
            <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
              <horstretch>0</horstretch>
              <verstretch>0</verstretch>
             </sizepolicy>
            </property>
            <property name="toolTip">
-            <string>Editor Menu (Ctrl + M)</string>
+            <string>Indent (tab)</string>
            </property>
            <property name="text">
             <string/>
            </property>
            <property name="icon">
             <iconset>
-             <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
+             <normaloff>../style/img/indent.png</normaloff>../style/img/indent.png</iconset>
            </property>
            <property name="iconSize">
             <size>
@@ -711,7 +711,7 @@ padding-left:4px;</string>
             </size>
            </property>
            <property name="class" stdset="0">
-            <string>toolbar toolbar-left</string>
+            <string>toolbar</string>
            </property>
           </widget>
          </item>
@@ -825,35 +825,6 @@ padding-left:4px;</string>
            </property>
           </widget>
          </item>
-         <item row="0" column="5">
-          <widget class="QPushButton" name="b_indent">
-           <property name="sizePolicy">
-            <sizepolicy hsizetype="Minimum" vsizetype="MinimumExpanding">
-             <horstretch>0</horstretch>
-             <verstretch>0</verstretch>
-            </sizepolicy>
-           </property>
-           <property name="toolTip">
-            <string>Indent (tab)</string>
-           </property>
-           <property name="text">
-            <string/>
-           </property>
-           <property name="icon">
-            <iconset>
-             <normaloff>../style/img/indent.png</normaloff>../style/img/indent.png</iconset>
-           </property>
-           <property name="iconSize">
-            <size>
-             <width>18</width>
-             <height>18</height>
-            </size>
-           </property>
-           <property name="class" stdset="0">
-            <string>toolbar</string>
-           </property>
-          </widget>
-         </item>
          <item row="0" column="12">
           <spacer name="horizontalSpacer_2">
            <property name="orientation">
@@ -944,6 +915,35 @@ padding-left:4px;</string>
         </property>
         <property name="text">
          <string>back</string>
+        </property>
+        <property name="class" stdset="0">
+         <string>toolbar toolbar-left</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <widget class="QPushButton" name="b_menu">
+        <property name="sizePolicy">
+         <sizepolicy hsizetype="Minimum" vsizetype="Expanding">
+          <horstretch>0</horstretch>
+          <verstretch>0</verstretch>
+         </sizepolicy>
+        </property>
+        <property name="toolTip">
+         <string>Editor Menu (Ctrl + M)</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="icon">
+         <iconset>
+          <normaloff>../style/img/menu.png</normaloff>../style/img/menu.png</iconset>
+        </property>
+        <property name="iconSize">
+         <size>
+          <width>18</width>
+          <height>18</height>
+         </size>
         </property>
         <property name="class" stdset="0">
          <string>toolbar toolbar-left</string>

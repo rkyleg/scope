@@ -22,8 +22,27 @@ class Find_Replace(QtGui.QWidget):
         self.ui.le_find.setFocus()
         self.ui.le_find.selectAll()
     
-    def find(self):
+    def getFindText(self):
         ftxt = self.ui.le_find.text()
+        # Fix for lines and tabs
+        if self.ui.ckbx_whitespace.isChecked():
+            ftxt = ftxt.replace('\\n','\n')
+            ftxt = ftxt.replace('\\r','\r')
+            ftxt = ftxt.replace('\\t','\t')
+        return ftxt
+
+    def getReplaceText(self):
+        ftxt = self.ui.le_replace.text()
+        # Fix for lines and tabs
+        if self.ui.ckbx_whitespace.isChecked():
+            ftxt = ftxt.replace('\\n','\n')
+            ftxt = ftxt.replace('\\r','\r')
+            ftxt = ftxt.replace('\\t','\t')
+        return ftxt
+
+    def find(self):
+        ftxt = self.getFindText()
+        # Fix 
 ##        ftxt = str(self.ui.le_find.text())
         wdg = self.IDE.currentEditor()
         re = self.ui.ckbx_re.isChecked()
@@ -35,8 +54,10 @@ class Find_Replace(QtGui.QWidget):
     def replace(self):
 ##        ftxt = str(self.ui.le_find.text())
 ##        rtxt = str(self.ui.le_replace.text())
-        ftxt = self.ui.le_find.text()
-        rtxt = self.ui.le_replace.text()
+##        ftxt = self.ui.le_find.text()
+##        rtxt = self.ui.le_replace.text()
+        ftxt = self.getFindText()
+        rtxt = self.getReplaceText()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()
@@ -47,8 +68,9 @@ class Find_Replace(QtGui.QWidget):
     def replace_all(self):
 ##        ftxt = str(self.ui.le_find.text())
 ##        rtxt = str(self.ui.le_replace.text())
-        ftxt = self.ui.le_find.text()
-        rtxt = self.ui.le_replace.text()
+##        ftxt = self.ui.le_find.text()
+        ftxt = self.getFindText()
+        rtxt = self.getReplaceText()
         re = self.ui.ckbx_re.isChecked()
         cs = self.ui.ckbx_cs.isChecked()
         wo = self.ui.ckbx_wo.isChecked()

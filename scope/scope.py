@@ -7,7 +7,7 @@
 # --------------------------------------------------------------------------------
 
 # VERSION
-__version__ = '0.6.34'
+__version__ = '0.7.5-dev'
 
 # Make sure qvariant works for Python 2 and 3
 import sip
@@ -54,6 +54,7 @@ class Scope(QtGui.QWidget):
         self.ui.b_closetab.hide()
         self.saveEnabled = 1   # Enable saving to local file
         self.last_editable_file = None # Last file from the editor
+        self.runCommands = {}
         
         # Workspace
         self.currentWorkspace = None
@@ -100,6 +101,7 @@ class Scope(QtGui.QWidget):
         # Default zen mode
         self.fullscreen_mode = 0
         self.editor_fullmode = 0
+        self.toolbar_mode = 1
         
         # Screen Setup
         screen = QtGui.QApplication.desktop().screenNumber(QtGui.QApplication.desktop().cursor().pos())
@@ -208,7 +210,7 @@ class Scope(QtGui.QWidget):
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_W,self,self.editorWordWrap) # Toggle Wordwrap
         QtGui.QShortcut(QtCore.Qt.ALT+QtCore.Qt.Key_S,self,self.editorStats) # Editor Stats
         
-        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Toggle Wordwrap
+        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_Tab,self,self.nextTab) # Previous Tab
 
         QtGui.QShortcut(QtCore.Qt.Key_F2,self,self.toggleLeftPlugin) # Toggle Left Plugin
         QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F2,self,self.nextLeftPlugin) # show next left plugin
@@ -239,7 +241,7 @@ class Scope(QtGui.QWidget):
             except:
                 QtGui.QMessageBox.warning(self,'Failed to Load Editor','The editor, '+e+' failed to load')
                 ld = []
-                print sys.exc_info()[1]
+                print(sys.exc_info()[1])
             
             if ld != []:
                 self.editorD[e] = ld
@@ -286,7 +288,7 @@ class Scope(QtGui.QWidget):
                     self.loadPlugin(plug)
                 except:
                     plugin_errors.append(plug)
-##                    QtGui.QMessageBox.warning(self,'Plugin Load Failed','Could not load plugin: '+plug)
+        
         self.ui.l_statusbar.setText('')
         if plugin_errors:
             self.ui.l_statusbar.setText('<font color=red>Plugins failed to load:</font> '+','.join(plugin_errors))
@@ -396,6 +398,10 @@ class Scope(QtGui.QWidget):
         elif self.leftPluginVisible:
             self.ui.fr_leftbar.setVisible(1)
     
+    def toggleToolbar(self):
+        self.toolbar_mode = not self.toolbar_mode
+        self.ui.fr_toolbar.setVisible(self.toolbar_mode)
+    
     #---File
     def getFileId(self,filename):
         file_id = None
@@ -424,14 +430,16 @@ class Scope(QtGui.QWidget):
             wdg = self.fileOpenD[file_id]
             if wdg.filename != None and os.path.abspath(wdg.filename).lower() == os.path.abspath(filename).lower():
                 
-                # Check if in current workspace and add tab if not
+##                # Check if in current workspace and add tab if not
+                # REMOVE THIS SECTION eventually
                 wksp_tab = self.WindowSwitcher.tabs.currentWidget()
                 if wksp_tab != None:
                     if not file_id in wksp_tab.tabD:
-                        self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
-                
-                # Change tab to the file
-                self.changeTab(file_id)
+                        print('isfileOpen: adding widget function moved')
+##                        self.addWorkspaceEditor(file_id,wdg.title,wdg.filename,wdg.pluginEditor)
+##                
+##                # Change tab to the file
+##                self.changeTab(file_id)
                 fileopen = file_id
                 break
         return fileopen
@@ -507,6 +515,7 @@ class Scope(QtGui.QWidget):
                 # Check if file already open
                 file_open = self.isFileOpen(filename)
                 if file_open !=-1:
+                    self.changeTab(file_open)
                     return 1
                 else:
                     ext = os.path.splitext(str(filename))[1][1:]
@@ -616,9 +625,14 @@ class Scope(QtGui.QWidget):
         if not editor in self.Editors: # If editor not available - then find one
             editor = None
         
+        editor_lang = lang
+        
         if editor == None:
             if lang in self.settings['prog_lang']:
                 editor = self.settings['prog_lang'][lang]['editor']
+                # Check if other language specified in settings
+                if 'editor_lang' in self.settings['prog_lang'][lang]:
+                    editor_lang = self.settings['prog_lang'][lang]['editor_lang']
             if editor == None:
                 if lang == 'webview':
                     editor = 'webview'
@@ -633,8 +647,14 @@ class Scope(QtGui.QWidget):
                                 editor = e
                                 break
         
+        # Check for editor_lang specified in settings
+        if lang in self.settings['prog_lang']:
+            # Check if other language specified in settings
+            if 'editor_lang' in self.settings['prog_lang'][lang]:
+                editor_lang = self.settings['prog_lang'][lang]['editor_lang']
+        
         kargs = {
-            'lang':lang,
+            'lang':editor_lang,
             'filename':filename,
         }
         
@@ -709,18 +729,8 @@ class Scope(QtGui.QWidget):
             file_id = wdg.id
             if file_id != None:
                 self.changeTab(file_id)
-            else:
-                ## MOVE TO changeTab
-                self.ui.sw_main.setCurrentIndex(sw_ind)
-                self.ui.b_closetab.hide()
-                self.setTitle(wdg)
-                try:
-                    self.ui.b_tabicon.setIcon(wdg.icon)
-                except:
-                    self.ui.b_tabicon.setIcon(QtGui.QIcon())
-                
         else:
-            self.ui.b_closetab.hide()
+            self.changeTab(None)
 
     def changeTab(self,file_id):
         self.ui.l_statusbar.setText('')
@@ -728,7 +738,7 @@ class Scope(QtGui.QWidget):
         if file_id in self.fileOpenD:
             wdg = self.fileOpenD[file_id]
             self.ui.sw_main.setCurrentWidget(wdg)
-            self.Events.editorTabChanged.emit(wdg)
+            
             self.setTitle(wdg)
             if wdg.filename != None:
                 self.ui.fr_tab.setToolTip(wdg.filename)
@@ -744,7 +754,8 @@ class Scope(QtGui.QWidget):
             lang = wdg.lang
             
             self.ui.b_closetab.show()
-            self.ui.fr_toolbar.show()
+            if self.toolbar_mode:
+                self.ui.fr_toolbar.show()
             self.ui.fr_topleft.show()
             self.ui.b_back.hide()
         else:
@@ -752,7 +763,11 @@ class Scope(QtGui.QWidget):
             lang = None
             
             self.ui.b_closetab.hide()
+            self.ui.fr_toolbar.hide()
+            self.ui.fr_topleft.hide()
             self.ui.l_filename.setText('')
+            self.ui.l_title_prefix.setText('')
+            self.ui.b_tabicon.setIcon(QtGui.QIcon())
 
         # Enable Run
         run_enabled=0
@@ -780,9 +795,13 @@ class Scope(QtGui.QWidget):
         for btn in btnD:
             btn[1].setEnabled(btn[0] in dir(wdg))
         
+        # Enable/Disable Editor Menu
         try:
             self.editorMenu.menuSaveAction.setEnabled('getText' in dir(wdg))
             self.editorMenu.menuSaveAsAction.setEnabled('getText' in dir(wdg))
+            self.editorMenu.editMenu.setEnabled('getText' in dir(wdg))
+            self.editorMenu.runMenu.setEnabled('getText' in dir(wdg))
+            self.editorMenu.viewMenu.setEnabled('getText' in dir(wdg))
         except:
             pass
         
@@ -792,7 +811,12 @@ class Scope(QtGui.QWidget):
             
             # Hide left bar if app
             if wdg.type == 'app':
-                self.ui.fr_left.setVisible(0)
+                if wdg.title == 'Home':
+                    # Show filebrowser with home
+                    if 'filebrowser' in self.pluginD:
+                        self.pluginD['filebrowser'].toggle()
+                else:
+                    self.ui.fr_left.setVisible(0)
             elif self.leftPluginVisible:
                 self.ui.fr_left.setVisible(1)
             
@@ -812,13 +836,15 @@ class Scope(QtGui.QWidget):
                 # Back if current tab
                 if self.last_editable_file != None and self.last_editable_file in self.fileOpenD:
                     self.ui.b_back.show()
-                
-                # Show Full Mode
-##                self.editor_fullmode=0
-##                self.toggleFullEditor()
                     
             elif wdg.filename != None:
                 self.last_editable_file = wdg.id
+            
+            self.Events.editorTabChanged.emit(wdg)
+        else:
+            # Show filebrowser if blank
+            if 'filebrowser' in self.pluginD:
+                self.pluginD['filebrowser'].toggle()
         
     def close_tab(self):
         if self.currentEditor() != None:
@@ -883,9 +909,6 @@ class Scope(QtGui.QWidget):
                     t.setTitle(wdg.tabTitle+wdg.titleSuffix)
                 except:
                     print('error setting title',wdg.tabTitle+wdg.titleSuffix)
-    
-        # Check for file changes
-##        self.checkFileChanges()
     
     def visibleLinesChanged(self,wdg,lines):
         self.Events.editorVisibleLinesChanged.emit(wdg,lines)
@@ -971,10 +994,6 @@ class Scope(QtGui.QWidget):
                     except:
                         QtGui.QMessageBox.warning(self,'Error Saving','There was an error saving this file.  Make sure it is not open elsewhere and you have write access to it.  You may want to copy the text, paste it in another editor to not lose your work.<br><br><b>Error:</b><br>'+str(sys.exc_info()[1]))
                         self.ui.l_statusbar.setText('Error Saving: '+filename)
-
-##                    # If Settings File, reload
-##                    if filename == self.settings_filename:
-##                        self.loadSettings()
                 
                 # Update tabs
                 for t in self.fileD[wdg.id]['tabs']:
@@ -1002,11 +1021,6 @@ class Scope(QtGui.QWidget):
             with codecs.open(filename,'w','utf-8') as f:
                 f.write(txt)
             self.openFile(filename,editor=wdg.pluginEditor)
-##            wdg.filename = os.path.abspath(str(filename))
-##            wdg.title = os.path.basename(wdg.filename)
-##            self.ui.l_filename.setText(wdg.title)
-##            wdg.tabTitle = wdg.title
-##            self.editorSave()
                 
     def editorFind(self):
         wdg = self.ui.sw_main.widget(self.ui.sw_main.currentIndex())
@@ -1018,13 +1032,18 @@ class Scope(QtGui.QWidget):
         if wdg == None or isinstance(wdg,bool):
             wdg = self.ui.sw_main.currentWidget()
         if wdg.lang in self.settings['run']:
-            if self.settings['run'][wdg.lang]['cmd'].startswith('preview'):
+            runcmd = self.settings['run'][wdg.lang]['cmd'].split(' ')[0]
+            if runcmd == 'preview':
+                # Preview
                 if 'preview' in self.pluginD:
                     self.pluginD['preview'].widget.previewRun(wdg,justset=justset)
                     if self.ui.tab_right.isHidden():
                         self.toggleRightPlugin()
                 else:
                     QtGui.QMessageBox.warning(self,'No Preview Plugin','The Preview plugin is not available.<br><br>Please add it to the activePlugins settings')
+            elif runcmd in self.runCommands:
+                # Custom plugin command
+                self.runCommands[runcmd](wdg)
             else:
                 ok = self.checkSave(wdg)
                 filename = str(wdg.filename)
@@ -1032,8 +1051,6 @@ class Scope(QtGui.QWidget):
                     # Otherwise run in output
                     runD = self.settings['run'][wdg.lang]
                     args = None
-##                    if 'ext' in runD:
-##                        args = wdg.filename.split('.')[0]+'.'+runD['ext']
                     self.pluginD['output'].widget.runProcess(runD['cmd'],wdg,justset=justset)
     
     def editorRunSetCmd(self,wdg=None):
@@ -1293,6 +1310,7 @@ class Scope(QtGui.QWidget):
             self.ui.b_tabicon.setIcon(wdg.icon)
     
         else:
+            self.changeTab(openfile)
             QtGui.QApplication.processEvents()
             wdg = self.ui.sw_main.currentWidget()
         
@@ -1310,6 +1328,8 @@ class Scope(QtGui.QWidget):
     def showHome(self):
         if self.HomeWidget != None:
             self.HomeWidget.toggleHome()
+        else:
+            self.change_tab(None)
     
     def toggleWindowSwitcher(self):
         self.WindowSwitcher.toggle()
@@ -1332,9 +1352,12 @@ class Scope(QtGui.QWidget):
         self.ui.le_goto.selectAll()
         
     def nextTab(self):
-        i = self.ui.sw_main.currentIndex()+1
-        if i == self.ui.sw_main.count():i=0
-        self.ui.sw_main.setCurrentIndex(i)
+        if len(self.recentTabs) > 1:
+            i = self.recentTabs[-2]
+##            i = self.ui.sw_main.currentIndex()+1
+##            if i == self.ui.sw_main.count():i=0
+##            self.ui.sw_main.setCurrentIndex(i)
+            self.changeTab(i)
     
     #---Workspace
     def workspaceSave(self,wksp=None):
@@ -1485,10 +1508,9 @@ class Scope(QtGui.QWidget):
             wksp_tabs = self.workspaces[wksp]['widget'].tabD.keys()
             for fid in wksp_tabs[:]:
                 if fid in self.fileOpenD.keys():
-##                    if len(self.fileD[fid]['tabs']) < 2:
-                        fl_ok = self.closeTab(fid,remove_from_workspace=0)
-                        if not fl_ok:
-                            break
+                    fl_ok = self.closeTab(fid,remove_from_workspace=0)
+                    if not fl_ok:
+                        break
                 
         # Close open files
         if wk_ok:
@@ -1506,6 +1528,13 @@ class Scope(QtGui.QWidget):
             
         return ok
 
+    def getFileWorkspace(self,file_id):
+        wksps = []
+        for wk in self.workspaces:
+            if file_id in self.workspaces[wk]['files']:
+                wksps.append(wk)
+        return wksps
+
     #---Settings
     def loadSettings(self):
         # Create settings directory
@@ -1516,7 +1545,6 @@ class Scope(QtGui.QWidget):
             import shutil
             shutil.copyfile(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json',self.settingPath+'/scope.json')
         
-##        from site_pkg.configobj import configobj
         self.settings_filename = self.settingPath+'/scope.json'
         dflt_path = os.path.abspath(os.path.abspath(os.path.dirname(__file__))+'/default_settings.json')
         
@@ -1534,27 +1562,6 @@ class Scope(QtGui.QWidget):
         
         self.settings = config.copy()
         self.settings.update(mysettings)
-        
-##        try:
-##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
-##            if type(user_config['editors'])==type([]): # Check editor settings 
-##                error
-##            config.merge(user_config)
-##        except:
-##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
-##            user_config = None
-        
-##        print dflt_path
-##        config = configobj.ConfigObj(dflt_path,unrepr=True,_inspec=True,list_values=False)
-##        try:
-##            user_config = configobj.ConfigObj(self.settings_filename,unrepr=True,_inspec=True,list_values=False)
-##            if type(user_config['editors'])==type([]): # Check editor settings 
-##                error
-##            config.merge(user_config)
-##        except:
-##            QtGui.QMessageBox.warning(self,'Settings Load Failed','There is something wrong with the settings file and it failed to load.<br><br>Using default settings<br><br><i>Compare your settings with the default_settings</i>')
-##            user_config = None
-##        self.settings = config
 
         # Setup Webview stylesheet
         wsettings = QtWebKit.QWebSettings.globalSettings()
@@ -1599,16 +1606,6 @@ class Scope(QtGui.QWidget):
     
     def openSettings(self):
         self.pluginD['settings'].addSettingsWidget()
-##        menu = QtGui.QMenu(self.ui.b_settings)
-##        menu.addAction('Edit Settings')
-####        menu.addAction('Plugins')
-##        s = self.ui.b_settings.size()
-##        bpos = self.ui.b_settings.mapToGlobal(QtCore.QPoint(s.width(),0))
-##        act = menu.exec_(bpos)
-##        if act != None:
-##            acttxt = str(act.text())
-##            if acttxt == 'Edit Settings':
-##                self.openFile(self.settings_filename)
 
     def saveSettings(self):
         if self.fullscreen_mode:
@@ -1625,11 +1622,9 @@ class Scope(QtGui.QWidget):
             style_path = self.settings['lighttheme']
         else:
             style_path = self.settings['darktheme']
-##        style_path = self.settings['style']
         if not os.path.exists(os.path.abspath(style_path)):
             style_path = 'style/dark.css'
             QtGui.QMessageBox.warning(self,'Error Loading Style','The stylesheet is not a valid path:<br><br>'+os.path.abspath(style_path))
-            
             
         with open(style_path,'r') as f:
             style = f.read()
@@ -1700,7 +1695,7 @@ class Scope(QtGui.QWidget):
                 curdir = os.path.abspath('.')
                 os.chdir(os.path.dirname(path))
                 if os.name == 'nt':
-    ##                        subprocess.Popen(path,shell=True,cwd=dpth)
+##                    subprocess.Popen(path,shell=True,cwd=dpth)
                     os.startfile(path)
                 elif os.name=='posix':
                     subprocess.Popen(['xdg-open', path],cwd=dpth)

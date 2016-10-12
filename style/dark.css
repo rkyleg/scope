@@ -263,7 +263,9 @@ QLabel#l_statusbar {
         border-left:1px solid rgba(130,130,130,200);
         background:transparent;
     }
-
+    QPushButton#b_back {
+        border-left:1px solid rgba(130,130,130,200);
+    }
 /*---  Toolbar Buttons*/
     QPushButton.toolbar {
         background:transparent;

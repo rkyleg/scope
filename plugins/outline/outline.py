@@ -11,33 +11,12 @@ class outlineTree(QtGui.QWidget):
         self.ui = Ui_Outline_Tree()
         self.ui.setupUi(self)
         os.chdir(curdir)
-##        self.setHeaderHidden(1)
-##        self.setRootIsDecorated(0)
-##        self.setStyleSheet("""QTreeWidget {
-##            border-bottom-left-radius:5px;
-##            border-bottom-right-radius:5px;
-##            }""")
+
         self.setProperty("class","pluginVertical")
         self.parent = parent
         
-##        self.ui.fr_find.hide()
         self.ui.l_title.hide()
         self.ui.le_find.textChanged.connect(self.find)
-##        self.ui.b_find_close.clicked.connect(self.ui.le_find.clear)
-
-##    def keyPressEvent(self,event):
-##        ky = event.key()
-##        handled = 0
-##        if ky ==QtCore.Qt.Key_F and  (event.modifiers() & QtCore.Qt.ControlModifier):
-##            if self.parent.ui.fr_find.isVisible():
-##                self.parent.ui.le_find.setText('')
-##                self.parent.ui.fr_find.hide()
-##            else:
-##                self.parent.ui.fr_find.show()
-##                self.parent.ui.le_find.setFocus()
-##            handled=1
-##        if not handled:
-##            QtGui.QTreeWidget.keyPressEvent(self,event)
 
     def find(self):
         trwdg = self.ui.tr_outline
@@ -56,16 +35,11 @@ class Outline(QtGui.QWidget):
         self.ui.setupUi(self)
         self.ide = parent
         self.wdgD = {}
-##        self.treeD = {}
         
         self.show_decorators = 1
         
         # Create blank page for default
         self.ui.sw_outline.insertWidget(0,QtGui.QWidget())
-        
-##        QtGui.QShortcut(QtCore.Qt.CTRL+QtCore.Qt.Key_F,self,self.findFocus) # Find
-        
-##        self.ui.fr_find.hide()
         
         self.outlineLangD = {}
         for lang in os.listdir(os.path.join(os.path.dirname(__file__),'lang')):	
@@ -97,7 +71,6 @@ class Outline(QtGui.QWidget):
         self.ui.sw_outline.setCurrentIndex(sw_ind)
 
         self.wdgD[wdg.id] = owdg
-##        self.treeD[owdg]=wdg
 
         if self.alwaysUpdate==1:
             # Add Text Changed Signal
@@ -127,20 +100,10 @@ class Outline(QtGui.QWidget):
         if wdg != None:
             trwdg = self.wdgD[wdg.id].ui.tr_outline
             if wdg.lang != 'Text' and wdg.lang in self.outlineLangD and 'getText' in dir(wdg):
-                # Select tab if language
-    ##            i=self.ide.ui.tab_left.indexOf(self.ide.pluginD['outline'])
-    ##            self.ide.ui.tab_left.setCurrentIndex(i)
 
                 trwdg.clear()
                 
-                # Add Filename
-    ##            itm =QtGui.QTreeWidgetItem([wdg.title,'0'])
-    ##            trwdg.addTopLevelItem(itm)
-    ##            self.format(itm,'filename')
-                
-##                self.wdgD[wdg.id].ui.b_find_close.click()
                 txt = wdg.getText()
-##                txtlines = txt.replace('\r\n','\n').replace('\r','\n').split('\n')
                 txtlines = txt.splitlines()
                 
                 txt_outline = self.outlineLangD[wdg.lang](txtlines)
@@ -163,8 +126,7 @@ class Outline(QtGui.QWidget):
         if self.ide.settings['visibleLineTracking']:
             trwdg = self.wdgD[wdg.id].ui.tr_outline
             hi=0
-    ##        brsh=QtGui.QBrush(QtGui.QColor(195,216,224,150)) # light blue
-    ##        brsh=QtGui.QBrush(QtGui.QColor(26,46,56,200)) # dark blue
+
             if self.ide.theme == 'light':
                 brsh=QtGui.QBrush(QtGui.QColor(180,180,180,150)) # gray
             else:
@@ -195,7 +157,6 @@ class Outline(QtGui.QWidget):
         decAct.setCheckable(1)
         decAct.setChecked(self.show_decorators)
         menu.addAction(decAct)
-##        menu.addAction(QtGui.QIcon(self.ide.iconPath+'search.png'),'Find')
         act = menu.exec_(trwdg.ui.tr_outline.cursor().pos())
         if act != None:
             acttxt = str(act.text())
@@ -204,10 +165,6 @@ class Outline(QtGui.QWidget):
             elif acttxt =='Show Decorators':
                 self.show_decorators = decAct.isChecked()
                 self.updateOutline()
-##            elif acttxt == 'Find':
-####                trwdg.ui.fr_find.show()
-####                trwdg.ui.le_find.setFocus()
-##                self.findFocus()
     
     def findFocus(self):
         trwdg = self.ui.sw_outline.currentWidget()
@@ -220,15 +177,12 @@ class Outline(QtGui.QWidget):
             self.ui.sw_outline.setCurrentWidget(owdg)
         else:
             self.ui.sw_outline.setCurrentIndex(0)
-##        self.updateOutline(wdg)
-
-##        self.ui.le_find.clear()
-##        self.ui.fr_find.hide()
         
     def editorTabClosed(self,wdg):
         owdg = self.wdgD[wdg.id]
         self.wdgD.pop(wdg.id)
         self.ui.sw_outline.removeWidget(owdg)
+        del owdg
         
     def goto(self,itm,col):
         line = int(str(itm.text(1)))
@@ -245,13 +199,11 @@ class Outline(QtGui.QWidget):
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(42,90,139)))
             else:
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
-##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(46,66,105)))
         elif typ == 'function':
             if self.ide.theme == 'light':
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(60,131,197)))
             else:
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(101,191,246)))
-##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(52,111,171)))
         elif typ == 'heading':
             fnt=QtGui.QFont()
             fnt.setBold(1)
@@ -268,11 +220,8 @@ class Outline(QtGui.QWidget):
             itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))
         elif typ=='decorator':
             fnt=QtGui.QFont()
-##            fnt.setItalic(1)
             itm.setFont(0,fnt)
             if self.ide.theme == 'light':
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(78,150,78)))
             else:
                 itm.setForeground(0,QtGui.QBrush(QtGui.QColor(161,225,150)))
-##            itm.setForeground(0,QtGui.QBrush(QtGui.QColor(255,170,127)))
-##            itm.setBackground(0,QtGui.QBrush(QtGui.QColor(80,80,80)))

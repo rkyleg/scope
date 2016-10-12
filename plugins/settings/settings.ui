@@ -173,6 +173,26 @@ QListWidgetItem {
            <property name="spacing">
             <number>0</number>
            </property>
+           <item row="0" column="4">
+            <widget class="QPushButton" name="b_plugin_url_add">
+             <property name="toolTip">
+              <string>Install plugin from url (with zip file)</string>
+             </property>
+             <property name="text">
+              <string>Url</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="3">
+            <widget class="QPushButton" name="b_plugin_file_add">
+             <property name="toolTip">
+              <string>Install plugin from zip file</string>
+             </property>
+             <property name="text">
+              <string>File</string>
+             </property>
+            </widget>
+           </item>
            <item row="0" column="0">
             <widget class="QLabel" name="label_9">
              <property name="font">
@@ -200,22 +220,13 @@ QListWidgetItem {
              </property>
             </spacer>
            </item>
-           <item row="0" column="2">
-            <widget class="QPushButton" name="b_plugin_file_add">
-             <property name="text">
-              <string>Add from File</string>
-             </property>
-            </widget>
-           </item>
-           <item row="0" column="3">
-            <widget class="QPushButton" name="b_plugin_url_add">
-             <property name="text">
-              <string>Add from URL</string>
-             </property>
-            </widget>
-           </item>
-           <item row="1" column="0" colspan="4">
+           <item row="1" column="0" colspan="6">
             <widget class="QTreeWidget" name="tr_plugins">
+             <property name="styleSheet">
+              <string notr="true">QTreeWidget#tr_plugins {
+border-top:1px solid gray;
+}</string>
+             </property>
              <property name="frameShape">
               <enum>QFrame::NoFrame</enum>
              </property>
@@ -240,6 +251,23 @@ QListWidgetItem {
                <string>Description</string>
               </property>
              </column>
+            </widget>
+           </item>
+           <item row="0" column="5">
+            <widget class="QPushButton" name="b_plugin_manual_add">
+             <property name="toolTip">
+              <string>Manually intall plugin</string>
+             </property>
+             <property name="text">
+              <string>Manual</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="2">
+            <widget class="QLabel" name="label_10">
+             <property name="text">
+              <string>Install: </string>
+             </property>
             </widget>
            </item>
           </layout>

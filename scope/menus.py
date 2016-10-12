@@ -152,53 +152,94 @@ class EditorMenu(QtGui.QMenu):
         
         self.addSeparator()
         
+##        self.addSeparator()
+        
+        #---Edit
+        emenu = QtGui.QMenu('&Edit',self)
+        self.editMenu = emenu
+        self.addMenu(emenu)
+        
+        # Indent
+        icn = QtGui.QIcon(self.parent.iconPath+'indent.png')
+        emenu.addAction(icn,'Indent (tab)',self.parent.editorIndent)
+        
+        # UnIndent
+        icn = QtGui.QIcon(self.parent.iconPath+'unindent.png')
+        emenu.addAction(icn,'Unindent (shift + tab)',self.parent.editorUnindent)
+        
+        # Comment
+        icn = QtGui.QIcon(self.parent.iconPath+'comment.png')
+        emenu.addAction(icn,'Comment (Ctrl + E)',self.parent.editorToggleComment)
+        
+        # Color
+        icn = QtGui.QIcon(self.parent.iconPath+'color_swatch.png')
+        emenu.addAction(icn,'Insert rgb Color',self.parent.colorPicker)
+        
+        #---Run
+        rmenu = QtGui.QMenu('&Run',self)
+        self.runMenu = rmenu
+        self.addMenu(rmenu)
+        
+        # Run
+        icn = QtGui.QIcon(self.parent.iconPath+'run.png')
+        rmenu.addAction(icn,'Run (F5)',self.parent.editorRun)
+        
         # Open External
         icn = QtGui.QIcon(self.parent.iconPath+'file_go.png')
-        self.statsAction = self.addAction(icn,'Open (external)',self.parent.openFileExternal)
+        rmenu.addAction(icn,'Open (external)',self.parent.openFileExternal)
+        
+        # Compile
+        icn = QtGui.QIcon(self.parent.iconPath+'compile.png')
+        rmenu.addAction(icn,'Compile (F6)',self.parent.editorCompile)
+        
+        #---View
+        vmenu = QtGui.QMenu('&View',self)
+        self.viewMenu = vmenu
+        self.addMenu(vmenu)
+        # Whitespace
+        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
+        self.whitespaceAction = vmenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
+        
+        # Wordwrap
+        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
+        self.wordwrapAction = vmenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
+        
+        vmenu.addSeparator()
         
         # Stats
         icn = QtGui.QIcon()
-        self.statsAction = self.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
+        self.statsAction = vmenu.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
+        
+        #---Window
+        self.windowMenu=QtGui.QMenu('&Window',self)
+        self.addMenu(self.windowMenu)
+        
+        icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
+        self.windowMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
+        
+        icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
+        self.windowMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
+        
+        icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
+        self.windowMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
+        
+        icn = QtGui.QIcon()
+        self.windowMenu.addAction(icn,'Toggle Toolbar',self.parent.toggleToolbar)
+        
+        self.windowMenu.addSeparator()
+        
+        # Full Editor Mode
+        icn = QtGui.QIcon(self.parent.iconPath+'full_editor.png')
+        self.fullEditorAction = self.windowMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
+        
+        # Full Screen
+        icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
+        self.fullScreenAction = self.windowMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
 
         # Check for file changes
         icn = QtGui.QIcon()
         act = self.addAction(icn,'&Check file changes',self.parent.checkFileChanges)
-        
-        self.addSeparator()
-        
-        # Whitespace
-        icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
-        self.whitespaceAction = self.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
-        
-        # Wordwrap
-        icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
-        self.wordwrapAction = self.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
-        
-        self.addSeparator()
-        
-        #---Window
-        self.viewMenu=QtGui.QMenu('&Window',self)
-        self.addMenu(self.viewMenu)
-        
-        icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
-        
-        icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
-        
-        icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
-        
-        self.viewMenu.addSeparator()
-        
-        # Full Editor Mode
-        icn = QtGui.QIcon(self.parent.iconPath+'full_editor.png')
-        self.fullEditorAction = self.viewMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
-        
-        # Full Screen
-        icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
-        self.fullScreenAction = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
-        
+
         # -----
         # Print
         self.addSeparator()
@@ -208,4 +249,4 @@ class EditorMenu(QtGui.QMenu):
         # Close
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
-        self.addAction(icn,'Exit Scope',self.parent.close)
+        self.addAction(icn,'E&xit Scope',self.parent.close)

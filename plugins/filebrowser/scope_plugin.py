@@ -4,7 +4,7 @@ from PyQt4 import QtGui, QtCore
 class Plugin(object):
     title = 'File Browser'
     location = 'left'
-    widget = None  # The widget for the plugin (set at getWidget)
+    widget = None  # The widget for the plugin (set at loadWidget)
     
     def __init__(self,parent=None):
         self.parent = parent
