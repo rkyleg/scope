@@ -1,5 +1,3 @@
-_**Scope is currently in beta stage.** For more information on where this is going, please see the [roadmap](docs/roadmap.md)_
-
 # <img src="style/img/scope.png" height="48px;"> Scope IDE
 Scope is a lightweight, cross-platform IDE for Python, web development and more. Scope is primarily coded in Python with PyQt for the main UI with some html5 interfaces via Qt's built-in WebKit browser (QWebView).
 
@@ -13,7 +11,7 @@ Scope is a lightweight, cross-platform IDE for Python, web development and more.
 - A lightweight IDE with a clean interface that maximizes screen usage
     - looks good on small and large displays
     - Keyboard shortcuts to show/hide the plugins (left, bottom, right)
-- An innovate window switcher with multiple rows of file tabs and allows multiple workspaces open at once
+- An innovative window switcher with multiple rows of file tabs and allows multiple workspaces open at once
 - Support for multiple languages (Python, Javascript, HTML, Markdown, more...)
 - Multiple options for code editors (Ace, Scintilla, CKEditor)
     - A WYSIWYG html editor via CKEditor
@@ -52,6 +50,8 @@ Python does not need to be installed for this version. This is essentially a por
 
 ### Development
 The latest development (unstable) version is available here: [here](https://github.com/lucidlylogicole/scope/tree/dev)
+
+For more information on where Scope is headed, check out the [roadmap](docs/roadmap.md)
 
 ## License
 - **[License](LICENSE.txt)** - GNU General Public License (GPL 3) - required by PyQt
