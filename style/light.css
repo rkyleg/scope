@@ -176,7 +176,7 @@ QScrollBar::add-line:horizontal {
     border:1px outset rgb(200,200,200);
     background: rgb(200,200,200);
     width: 20px;
-    subcontrol-position: left;
+    subcontrol-position: right;
     subcontrol-origin: margin;
 }
 
@@ -184,15 +184,15 @@ QScrollBar::sub-line:horizontal {
     border:1px outset rgb(200,200,200);
     background: rgb(200,200,200);
     width: 20px;
-    subcontrol-position: right;
+    subcontrol-position: left;
     subcontrol-origin: margin;
 }
 QScrollBar::left-arrow:horizontal, QScrollBar::right-arrow:horizontal {
-    image: url(style/img/tri_left.png);
+    image: url(style/img/tri_right.png);
     background: transparent;
 }
 QScrollBar::left-arrow:horizontal {
-    image: url(style/img/tri_right.png);
+    image: url(style/img/tri_left.png);
 
 }
 
