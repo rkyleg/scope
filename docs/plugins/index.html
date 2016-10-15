@@ -1,0 +1,66 @@
+<h1>Plugins</h1>
+
+<p>Scope comes with standard plugins to the left and bottom of the editor window. Custom plugins can be created with Python and PyQt</p>
+
+<h2>Standard Plugins</h2>
+
+<ul>
+	<li>
+	<p><strong><a href="filebrowser.html">File Browser</a></strong> - Browse files</p>
+	</li>
+	<li>
+	<p><strong><a href="outline.html">Outline</a></strong> - Outline of code structure</p>
+	</li>
+	<li>
+	<p><strong>Find/Replace</strong> - Common find/replace functions</p>
+	</li>
+	<li>
+	<p><strong><a href="output.html">Output</a></strong> - Runs code in separate process and displays output.</p>
+	</li>
+	<li>
+	<p><strong><a href="python_console.html">Python Console</a></strong>&nbsp;- An interactive Python shell</p>
+	</li>
+	<li>
+	<p><strong>Snippets</strong> - view/store snippets of code</p>
+
+	<ul>
+		<li>
+		<p>You can set an existing directory of snippets in the Settings - under Plugins &gt; Snippets</p>
+
+		<pre>
+<code class="language-json">"path":"/home/username/scripts"
+</code></pre>
+		</li>
+	</ul>
+	</li>
+	<li>
+	<p><strong>Preview</strong> - a built in WebKit webbrowser for previewing html and markdown. A file does not need to be saved to use the preview.</p>
+	</li>
+</ul>
+
+<ul>
+	<li>
+	<p><strong>PyQt Converter</strong> - Convert Qt Designer ui files to python. <em>This plugin is not active by default</em></p>
+	</li>
+	<li>
+	<p><strong>Scratchpad</strong> - A simple textbox for temporarily storing text/code. <em>currently this is not saved when Scope closes</em></p>
+	</li>
+</ul>
+
+<h2>Select Active Plugins</h2>
+
+<p>To specify which plugins are active, toggle them on and off in the Plugins section of the Settings</p>
+
+<h2>Custom Plugins</h2>
+
+<p>You can create your own plugins with Python and PyQt.</p>
+
+<ol>
+	<li>Create a new directory for your plugin in /scope/plugins</li>
+	<li>Look at the plugins/_template for a basic example
+	<ul>
+		<li>For a plugin you need the plugin.json and scope_plugin.py files (can remove the scope_editor.py file)</li>
+		<li>To add an editor you need the scope_editor.py file (remove the plugin.json and scope_plugin.py files)</li>
+	</ul>
+	</li>
+</ol>

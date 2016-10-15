@@ -15,13 +15,24 @@ class NewMenu(QtGui.QMenu):
         
         # Open File
         icn = QtGui.QIcon(parent.iconPath+'/file_open.png')
-        a=self.addAction(icn,'open')
+        a=self.addAction(icn,'Open')
         a.setData('open')
+        
+        # Open With
+        icn = QtGui.QIcon(parent.iconPath+'/file_open.png')
+        owmenu = QtGui.QMenu('Open With',self)
+        owmenu.setIcon(icn)
+        self.addMenu(owmenu)
+        for e in sorted(parent.editorD):
+            icn = ( QtGui.QIcon(parent.editorPath+'/'+e+'/'+e+'.png'))
+            a=owmenu.addAction(icn,e)
+            a.setData('open_with:'+e)
+        
+        self.addSeparator()
         
         # Blank Text
         icn = QtGui.QIcon(parent.iconPath+'/files/text.png')
         self.addAction(icn,'text')
-        self.addSeparator()
         
         # Add Favorites First
         for lang in parent.settings['prog_lang']:
@@ -30,7 +41,7 @@ class NewMenu(QtGui.QMenu):
                 if os.path.exists(parent.iconPath+'/files/'+lang+'.png'):
                     icn = QtGui.QIcon(parent.iconPath+'/files/'+lang+'.png')
                 else:
-                    icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                    icn = QtGui.QIcon(parent.iconPath+'/files/blank.png')
                 self.addAction(icn,lang)
         
         self.addSeparator()
@@ -44,7 +55,7 @@ class NewMenu(QtGui.QMenu):
                     if os.path.exists(parent.iconPath+'/files/'+l.lower()+'.png'):
                         icn = QtGui.QIcon(parent.iconPath+'/files/'+l.lower()+'.png')
                     else:
-                        icn = QtGui.QIcon(parent.iconPath+'/files/_blank.png')
+                        icn = QtGui.QIcon(parent.iconPath+'/files/blank.png')
                     a=lmenu.addAction(icn,l)
                     a.setData(e)
                 self.addMenu(lmenu)
@@ -60,10 +71,11 @@ class NewMenu(QtGui.QMenu):
         editor = str(event.data().toString())
         if editor == 'open':
             self.parent.openFile()
+        elif editor.startswith('open_with'):
+            self.parent.openFile(editor=editor.split(':')[1])
         else:
             if editor == '': editor = None
             self.parent.addEditorWidget(str(event.text()),editor=editor)
-##        self.parent.removeStart()
 
 class WorkspaceMenu(QtGui.QMenu):
     def __init__(self,parent):
@@ -73,11 +85,14 @@ class WorkspaceMenu(QtGui.QMenu):
         self.setIcon(QtGui.QIcon(self.parent.iconPath+'workspace.png'))
         self.loadMenu()
         self.triggered.connect(self.loadWorkspace)
+        
+        fnt = self.font()
+        fnt.setPointSize(11)
+        self.setFont(fnt)
     
     def loadMenu(self):
         self.clear()
         self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Workspace')
-        self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_add.png'),'New Temporary Workspace')
         
         if os.path.exists(self.parent.settingPath+'/workspaces'):
             self.addSeparator()
@@ -85,11 +100,11 @@ class WorkspaceMenu(QtGui.QMenu):
                 self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace.png'),wsp)
                 
         self.addSeparator()
+        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.renameWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_edit.png'),'Rename Workspace')
         self.deleteWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_delete.png'),'Delete Workspace')
         
         self.addSeparator()
-        self.saveWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'workspace_save.png'),'Save Workspace')
         self.saveWact.setDisabled(1)
         self.closeWact = self.addAction(QtGui.QIcon(self.parent.iconPath+'close.png'),'Close Current Workspace')
         self.closeWact.setDisabled(1)
@@ -97,8 +112,6 @@ class WorkspaceMenu(QtGui.QMenu):
     def loadWorkspace(self,event):
         if str(event.text()) == 'New Workspace':
             self.parent.workspaceNew()
-        elif str(event.text()) == 'New Temporary Workspace':
-            self.parent.workspaceOpen(None,show_tabs=1)
         elif str(event.text()) == 'Save Workspace':
             self.parent.workspaceSave()
         elif str(event.text()) == 'Close Current Workspace':
@@ -112,8 +125,6 @@ class WorkspaceMenu(QtGui.QMenu):
                     if wksp in self.parent.workspaces:
                         self.parent.workspaceClose(wksp)
                     os.remove(self.parent.settingPath+'/workspaces/'+str(resp))
-##                    if str(resp) == self.parent.currentWorkspace:
-##                        self.parent.currentWorkspace=None
                     self.loadMenu()
             else:
                 QtGui.QMessageBox.warning(self,'No Workspaces','There are no workspaces to delete')
@@ -124,16 +135,10 @@ class WorkspaceMenu(QtGui.QMenu):
             self.saveWact.setDisabled(0)
             self.closeWact.setDisabled(0)
 
-class ScopeMenu(QtGui.QMenu):
+class EditorMenu(QtGui.QMenu):
     def __init__(self,parent):
         QtGui.QMenu.__init__(self,parent)
         self.parent = parent
-        # New
-        self.addMenu(self.parent.newMenu)
-        
-        # Open
-        icn = QtGui.QIcon(self.parent.iconPath+'file_open.png')
-        act = self.addAction(icn,'&Open',self.parent.openFile)
         
         # Save
         icn = QtGui.QIcon(self.parent.iconPath+'save.png')
@@ -147,79 +152,90 @@ class ScopeMenu(QtGui.QMenu):
         
         self.addSeparator()
         
-        # Workspace
-        self.addMenu(self.parent.workspaceMenu)
+##        self.addSeparator()
         
-        #---Editor
-        self.editorMenu=QtGui.QMenu('&Editor',self)
-        self.addMenu(self.editorMenu)
+        #---Edit
+        emenu = QtGui.QMenu('&Edit',self)
+        self.editMenu = emenu
+        self.addMenu(emenu)
         
-        # Tab Indent
+        # Indent
         icn = QtGui.QIcon(self.parent.iconPath+'indent.png')
-        self.indentAction = self.editorMenu.addAction(icn,'Indent',self.parent.editorIndent)
-        icn = QtGui.QIcon(self.parent.iconPath+'indent_remove.png')
-        self.unindentAction = self.editorMenu.addAction(icn,'Unindent',self.parent.editorUnindent)
+        emenu.addAction(icn,'Indent (tab)',self.parent.editorIndent)
         
-        self.editorMenu.addSeparator()
+        # UnIndent
+        icn = QtGui.QIcon(self.parent.iconPath+'unindent.png')
+        emenu.addAction(icn,'Unindent (shift + tab)',self.parent.editorUnindent)
         
         # Comment
         icn = QtGui.QIcon(self.parent.iconPath+'comment.png')
-        self.commentAction = self.editorMenu.addAction(icn,'Comment/Uncomment',self.parent.editorToggleComment)
+        emenu.addAction(icn,'Comment (Ctrl + E)',self.parent.editorToggleComment)
         
+        # Color
+        icn = QtGui.QIcon(self.parent.iconPath+'color_swatch.png')
+        emenu.addAction(icn,'Insert rgb Color',self.parent.colorPicker)
+        
+        #---Run
+        rmenu = QtGui.QMenu('&Run',self)
+        self.runMenu = rmenu
+        self.addMenu(rmenu)
+        
+        # Run
+        icn = QtGui.QIcon(self.parent.iconPath+'run.png')
+        rmenu.addAction(icn,'Run (F5)',self.parent.editorRun)
+        
+        # Open External
+        icn = QtGui.QIcon(self.parent.iconPath+'file_go.png')
+        rmenu.addAction(icn,'Open (external)',self.parent.openFileExternal)
+        
+        # Compile
+        icn = QtGui.QIcon(self.parent.iconPath+'compile.png')
+        rmenu.addAction(icn,'Compile (F6)',self.parent.editorCompile)
+        
+        #---View
+        vmenu = QtGui.QMenu('&View',self)
+        self.viewMenu = vmenu
+        self.addMenu(vmenu)
         # Whitespace
         icn = QtGui.QIcon(self.parent.iconPath+'whitespace.png')
-        self.whitespaceAction = self.editorMenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
+        self.whitespaceAction = vmenu.addAction(icn,'Toggle Whitespace',self.parent.editorToggleWhitespace)
         
         # Wordwrap
         icn = QtGui.QIcon(self.parent.iconPath+'wordwrap.png')
-        self.wordwrapAction = self.editorMenu.addAction(icn,'Toggle Wordwrap',self.parent.editorWordWrap)
+        self.wordwrapAction = vmenu.addAction(icn,'Toggle Wordwrap (Ctrl+W)',self.parent.editorWordWrap)
         
-        self.editorMenu.addSeparator()
-        
-        # Run
-        icn = QtGui.QIcon(self.parent.iconPath+'tri_right.png')
-        self.runAction = self.editorMenu.addAction(icn,'Run (F5)',self.parent.editorRun)
-        
-        self.editorMenu.addSeparator()
+        vmenu.addSeparator()
         
         # Stats
         icn = QtGui.QIcon()
-        self.statsAction = self.editorMenu.addAction(icn,'Statistics',self.parent.editorStats)
+        self.statsAction = vmenu.addAction(icn,'Statistics (Alt+S)',self.parent.editorStats)
         
         #---Window
-        self.viewMenu=QtGui.QMenu('W&indow',self)
-        self.addMenu(self.viewMenu)
+        self.windowMenu=QtGui.QMenu('&Window',self)
+        self.addMenu(self.windowMenu)
         
         icn = QtGui.QIcon(self.parent.iconPath+'left_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Left Pane (F4)',self.parent.toggleLeftPlugin)
+        self.windowMenu.addAction(icn,'Toggle Left Pane (F2)',self.parent.toggleLeftPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'right_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Right Pane (F8)',self.parent.toggleRightPlugin)
+        self.windowMenu.addAction(icn,'Toggle Right Pane (F3)',self.parent.toggleRightPlugin)
         
         icn = QtGui.QIcon(self.parent.iconPath+'bottom_pane.png')
-        self.viewMenu.addAction(icn,'Toggle Bottom Pane (F9)',self.parent.toggleBottomPlugin)
+        self.windowMenu.addAction(icn,'Toggle Bottom Pane (F4)',self.parent.toggleBottomPlugin)
         
-        self.viewMenu.addSeparator()
+        icn = QtGui.QIcon()
+        self.windowMenu.addAction(icn,'Toggle Toolbar',self.parent.toggleToolbar)
+        
+        self.windowMenu.addSeparator()
         
         # Full Editor Mode
         icn = QtGui.QIcon(self.parent.iconPath+'full_editor.png')
-        self.fullEditorAction = self.viewMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
+        self.fullEditorAction = self.windowMenu.addAction(icn,'Full Editor Mode (F10)',self.parent.toggleFullEditor)
         
         # Full Screen
         icn = QtGui.QIcon(self.parent.iconPath+'fullscreen.png')
-        self.fullScreenAction = self.viewMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
-        
-        # Home
-        icn = QtGui.QIcon(self.parent.iconPath+'home.png')
-        act = self.addAction(icn,'&Home',self.parent.showHome)
-        
-        # Settings
-##        icn = QtGui.QIcon(self.parent.iconPath+'wrench.png')
-        icn = QtGui.QIcon()
-        act = self.addAction(icn,'Se&ttings',self.parent.openSettings)
-        
-        self.addSeparator()
-        
+        self.fullScreenAction = self.windowMenu.addAction(icn,'Full Screen (F11)',self.parent.toggleFullscreen)
+
         # Check for file changes
         icn = QtGui.QIcon()
         act = self.addAction(icn,'&Check file changes',self.parent.checkFileChanges)
@@ -233,33 +249,4 @@ class ScopeMenu(QtGui.QMenu):
         # Close
         self.addSeparator()
         icn = QtGui.QIcon(self.parent.iconPath+'close.png')
-        self.addAction(icn,'Exit',self.parent.close)
-
-class ToolsMenu(QtGui.QMenu):
-    def __init__(self,parent):
-        QtGui.QMenu.__init__(self,parent)
-        self.parent = parent
-    
-        self.triggered.connect(self.togglePlugin)
-    
-    def togglePlugin(self,event):
-        plug = str(event.plugin_name)
-##        print 'toggle',plug,event.plugin_name
-        pluginWidget = None
-        if self.parent.pluginD[plug] == None:
-            curdir = os.path.abspath('.')
-            pmod = importlib.import_module('plugins.'+plug)
-            os.chdir(self.parent.pluginPath+plug)
-            pluginWidget = pmod.addPlugin(self.parent)
-            self.parent.pluginD[plug] = pluginWidget
-            pluginWidget.id = None
-            pluginWidget.title = pmod.title
-            pluginWidget.icon = QtGui.QIcon('icon.png')
-            pluginWidget.viewOnly=1
-            os.chdir(curdir)
-            
-        else:
-            pluginWidget = self.parent.pluginD[plug]
-        
-        if pluginWidget != None:
-            pluginWidget.toggle()
+        self.addAction(icn,'E&xit Scope',self.parent.close)

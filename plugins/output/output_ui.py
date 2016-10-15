@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'output.ui'
 #
-# Created: Mon Jul 20 20:51:58 2015
+# Created: Sun Jan  3 22:17:31 2016
 #      by: PyQt4 UI code generator 4.10.4
 #
 # WARNING! All changes made in this file will be lost!
@@ -45,12 +45,12 @@ class Ui_Form(object):
 "}\n"
 "QListWidget::item {\n"
 "color:white;\n"
+"border-bottom:1px solid rgba(130,130,130,200);\n"
+"border-right:1px solid rgba(130,130,130,200);\n"
 "}\n"
 "QListWidget::item:selected {\n"
 "    background-color: qlineargradient(spread:pad, x1:1, y1:1, x2:1, y2:0, stop:0 rgba(48, 85, 100, 255), stop:0.21267 rgba(61, 107, 127, 255), stop:0.831818 rgba(72, 127, 150, 255), stop:1 rgba(104, 166, 175, 255));\n"
 "color:white;\n"
-"border-top-right-radius:5px;\n"
-"border-bottom-right-radius:5px;\n"
 "}"))
         self.li_pages.setFrameShape(QtGui.QFrame.NoFrame)
         self.li_pages.setObjectName(_fromUtf8("li_pages"))

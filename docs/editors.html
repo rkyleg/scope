@@ -1,0 +1,33 @@
+<h1>Editors</h1>
+
+<p>Scope comes with multiple code editors, so you can choose the one you want for each language.</p>
+
+<ul>
+	<li>
+	<p><a href="http://www.riverbankcomputing.com/software/qscintilla/intro">QScintilla</a>&nbsp;- QScintilla is a port to Qt of Neil Hodgson&#39;s Scintilla C++ editor control. As well as features found in standard text editing components, QScintilla includes features especially useful when editing and debugging source code.</p>
+
+	<ul>
+		<li>Scope uses this as default for Python and text files</li>
+		<li>Scintilla uses less memory</li>
+	</ul>
+	</li>
+	<li>
+	<p><a href="http://ace.c9.io/">Ace</a>&nbsp;- Ace is an embeddable code editor written in JavaScript. It matches the features and performance of native editors such as Sublime, Vim and TextMate.</p>
+
+	<ul>
+		<li>Scope uses this by default for html, css, markdown, and javascript</li>
+		<li>Ace has built in syntax checking for html, css, and javascript</li>
+	</ul>
+	</li>
+	<li>
+	<p><a href="http://ckeditor.com/">CKEditor</a>&nbsp;- CKEditor is a ready-for-use HTML text editor designed to simplify web content creation. It&#39;s a WYSIWYG editor that has common word processor features to generate html.</p>
+
+	<ul>
+		<li>CKEditor is less of a code editor, but can be useful for creating content in html.</li>
+	</ul>
+	</li>
+</ul>
+
+<h2>Why Multiple?</h2>
+
+<p>There are pros and cons to each editor. Scintilla uses less resources and is my default for Python. Ace has better built in tools for html, javascript, and css, but uses more resources. Ace also supports more languages. CKEditor provides a nice WYSIWYG interface for creating some simple documents. You can disable an editor by editing the activeEditors attribute in the settings.</p>

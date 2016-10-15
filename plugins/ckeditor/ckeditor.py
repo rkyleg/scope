@@ -38,7 +38,7 @@ class WebView(QtWebKit.QWebView):
         web_page.setLinkDelegationPolicy(QtWebKit.QWebPage.DelegateAllLinks)
         self.setPage(web_page)
         self.baseurl=baseurl
-        self.evnt = Events() # Events
+        self.Events = Events() # Events
         
         # Setup Javascript object
         self.editorJS = jsObject()
@@ -94,11 +94,12 @@ class WebView(QtWebKit.QWebView):
 ##        self.okedit = 1
         self.editorTextChanged()
     
-    def contextMenuEvent(self):
+    def contextMenuEvent(self,event):
+##        QtWebKit.QWebView.contextMenuEvent(self,event)
         pass
     
     def editorTextChanged(self):
-        self.evnt.editorChanged.emit(self)
+        self.Events.editorChanged.emit(self)
         
     def getText(self):
         self.page().mainFrame().evaluateJavaScript("pythonjs.getHtml(CKEDITOR.instances.editor1.getData());")

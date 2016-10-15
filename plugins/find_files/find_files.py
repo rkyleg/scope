@@ -17,6 +17,10 @@ class Find_Files(QtGui.QWidget):
             pth = os.path.expanduser('~')
         self.ui.le_path.setText(pth)
         
+        # Set default extensions
+        if 'default_ext' in self.IDE.settings['plugins']['find_files']:
+            self.ui.le_ext.setText(self.IDE.settings['plugins']['find_files']['default_ext'])
+        
         if parent != None:
             # IDE specific code
             if self.IDE.currentWorkspace != None and self.IDE.workspaces[self.IDE.currentWorkspace]['basefolder'] != None:
@@ -55,14 +59,10 @@ class Find_Files(QtGui.QWidget):
         
         self.ui.tr_results.clear()
         
-##        if stxt == '':
-##            QtGui.QMessageBox.warning(self,'No Search Term','Please enter a search term')
-            
         if not os.path.exists(pth):
             QtGui.QMessageBox.warning(self,'Invalid Path','The path is invalid<br><br>'+pth)
         else:
             for root, dirnames, filenames in os.walk(pth):
-##                for filename in fnmatch.filter(filenames, ext):
                 self.ui.l_cur_file.setText(root)
                 QtGui.QApplication.processEvents()
                 if not self.ui.b_search.isChecked(): break
@@ -112,7 +112,6 @@ class Find_Files(QtGui.QWidget):
                     if found:
                         line_cnt +=1
                         if itm == None: itm = self.addFileItem(filepath)
-        ##                                        l = str(cnt),line.replace('\n','').replace('\r','').lstrip()
                         l = line.replace('\n','').replace('\r','')
                         litm = QtGui.QTreeWidgetItem(['',str(cnt),l])
                         for i in range(3):
@@ -121,7 +120,6 @@ class Find_Files(QtGui.QWidget):
                         litm.setForeground(1,QtGui.QBrush(QtGui.QColor(150,150,150)))
                         litm.setTextAlignment(1,2)
                         itm.addChild(litm)
-        ##                                    print line
                     if not self.ui.b_search.isChecked(): break
         except:
             print('ERROR opening: '+filepath)
@@ -142,19 +140,15 @@ class Find_Files(QtGui.QWidget):
                 ext = self.IDE.settings['extensions'][ext]
                 ipth = self.IDE.iconPath+'files/'+ext+'.png'
             else:
-                ipth = self.IDE.iconPath+'files/_blank.png'
+                ipth = self.IDE.iconPath+'files/blank.png'
             
             itm.setIcon(0,QtGui.QIcon(ipth))
 
-##        for i in range(3):
-##            itm.setBackground(i,QtGui.QBrush(QtGui.QColor(37,65,78)))
-##            itm.setForeground(i,QtGui.QBrush(QtGui.QColor(255,255,255)))
         self.ui.tr_results.addTopLevelItem(itm)
         
         return itm
     
     def browse(self):
-##        print self.ui.le_path.text()
         npth = QtGui.QFileDialog.getExistingDirectory(self,'Select directory to search',self.ui.le_path.text())
         if not npth.isEmpty(): self.ui.le_path.setText(npth)
     
@@ -164,22 +158,14 @@ class Find_Files(QtGui.QWidget):
             if itm.parent() != None:
                 pth = os.path.join(str(itm.parent().text(2)),str(itm.parent().text(0)))
                 ok = self.IDE.openFile(pth)
-##                print 'ok',ok,'goto',int(str(itm.text(1)))-1
                 if ok: 
                     self.IDE.currentEditor().gotoLine(int(str(itm.text(1)))-1)
             elif col > 0:
                 pth = os.path.join(str(itm.text(2)),str(itm.text(0)))
                 self.IDE.openFile(pth)
     
-    def toggle(self):
-##        if self.IDE.ui.sw_main.addWidget(self) ==-1:
-##            self.IDE.ui.sw_main.addWidget(plugin)
-##            self.IDE.evnt.workspaceChanged.connect(self.changeWorkspace)
-
-        self.IDE.ui.sw_main.setCurrentWidget(self)
-    
     def changeWorkspace(self,wksp):
-        if wksp != None:
+        if wksp != 'None':
             wksp = str(wksp)
             if self.IDE.workspaces[wksp]['basefolder'] != None:
                 self.ui.le_path.setText(self.IDE.workspaces[wksp]['basefolder'])

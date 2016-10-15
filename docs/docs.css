@@ -1,0 +1,118 @@
+body,table {
+    font-family:sans,verdana;
+    /*background:rgb(220,220,220);*/
+    
+    
+    color:rgb(60,60,60);
+}
+
+body {
+    margin:0px;
+    padding:0px;
+}
+
+a {
+    text-decoration:none;
+    /*font-weight:bold;*/
+    
+    color: rgb(22,90,117);
+}
+a:hover {
+    color: rgb(47,127,158);
+}
+
+h2 {
+    border-top:1px solid gray;
+    padding:6px;
+    margin-top:20px;
+}
+
+#logo {
+    text-align:center;
+}
+
+#version {
+    color:gray;
+    font-size:12px;
+    margin-bottom:4px;
+}
+
+#header {
+    background:rgba(180,180,180,0.5);
+    padding:10px;
+    font-size:2em;
+}
+
+#contents {
+    padding:10px;
+}
+
+.img-icon {
+    height:14px;
+}
+
+pre {
+    margin-left:40px;
+}
+
+/*---Workspace and New Buttons*/
+.button {  
+    background: rgb(140,140,140);
+    padding:3px;
+    border-radius:4px;
+    padding-left:6px;
+    padding-right:6px;
+    margin-top:2px;
+    color:white;
+}
+.button:hover {
+    background: rgb(120,120,120);
+}
+.panel{
+    background:rgba(180,180,180,0.7);
+    text-shadow: 0px 1px 0px rgba(160,160,160,0.5);
+    color:rgb(80,80,80);
+    border-radius:5px;
+    padding-left:10px;
+    padding-right:10px;
+    padding-bottom:10px;
+    padding-top:3px;
+    height:100%;
+}
+.workspace-add {
+    display:inline-block;
+    vertical-align:middle;
+    background: rgba(140,140,140,0.5);
+    border-radius:4px;
+    padding:3px;
+    color:white;
+    font-size:14px;
+}
+.workspace-add:hover {
+    background: rgba(120,120,120,0.5);
+}
+/*---Main Section*/
+.main_section {
+    padding-left:10px;
+    margin-top:10px;
+    padding-top:8px;
+    background:rgb(255,255,255);
+    color:rgb(60,60,60);
+    border-radius:5px;
+}
+.main_toolbar {
+    
+}
+.toolbutton {  
+    background: rgb(140,140,140);
+    padding:2px;
+    border-radius:4px;
+    padding-left:6px;
+    padding-right:6px;
+    margin-top:2px;
+    color:white;
+}
+.toolbutton:hover {
+    background: rgb(120,120,120);
+    color:white;
+}

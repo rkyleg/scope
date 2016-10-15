@@ -35,6 +35,10 @@ class Preview(QtGui.QWidget):
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavaEnabled,True)
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptEnabled,True)
         pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.JavascriptCanOpenWindows,True)
+        pwdg.webview.settings().setAttribute(QtWebKit.QWebSettings.LocalStorageEnabled,True)
+##        pwdg.webview.settings().setLocalStoragePath(self.ide.settingPath)
+##        pwdg.webview.settings().enablePersistentStorage(self.ide.settingPath)
+        pwdg.webview.settings().enablePersistentStorage(QtCore.QDir.homePath())
         
         pwdg.webview.setupInspector()
         splitter.addWidget(pwdg.webview.webInspector)
@@ -50,8 +54,8 @@ class Preview(QtGui.QWidget):
         if wdg in self.wdgD:
             pwdg = self.wdgD[wdg]
             self.ui.sw_prev.setCurrentWidget(pwdg)
-            if self.ide.ui.tab_right.isVisible():
-                self.previewRun(wdg)
+##            if self.ide.ui.tab_right.isVisible():
+##                self.previewRun(wdg)
         else:
             self.ui.sw_prev.setCurrentIndex(0)
     
@@ -60,7 +64,7 @@ class Preview(QtGui.QWidget):
             if self.wdgD[wdg].isVisible():
                 self.previewRun(wdg)
     
-    def previewRun(self,wdg):
+    def previewRun(self,wdg,justset=0):
         if wdg not in self.wdgD:
             self.addPreview(wdg)
         else:
@@ -76,27 +80,36 @@ class Preview(QtGui.QWidget):
                 pfx="file:///"
             else:
                 pfx="file://"
-            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+##            burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
+            burl = QtCore.QUrl(pfx+os.path.abspath(burl).replace('\\','/'))
 
         html = wdg.getText()
 
         cmd=None
-        if 'preview_cmd' in self.ide.settings['prog_lang'][wdg.lang]:
-            cmd=self.ide.settings['prog_lang'][wdg.lang]['preview_cmd']
+##        if 'preview_cmd' in self.ide.settings['prog_lang'][wdg.lang]:
+        if 'run' in self.ide.settings['prog_lang'][wdg.lang]:
+            pcmd=self.ide.settings['prog_lang'][wdg.lang]['run'].split('preview ')
+            if len(pcmd)>1:
+                cmd = pcmd[1]
 
         if cmd == 'markdown':
             # If markdown generate preview tab
-            import plugins.mkdown as mkdown
-            html = mkdown.generate(text=html,style='',custom=0)
+            import site_pkg.commonmark as commonmark
+            html = commonmark.generate(text=html,style='',custom=0)
 ##                self.ide.webview_preview(html,filename)
 
         elif cmd != None:
-            html = subprocess.check_output(cmd+' '+wdg.filename,shell=True)
+            if '{{filename}}' in cmd:
+                fcmd = cmd.replace('{{filename}}',wdg.filename)
+            else:
+                fcmd = cmd+' '+wdg.filename
+            
+            html = subprocess.check_output(fcmd,shell=True)
             
         pwdg.webview.setText(html,burl)
         if html != '':
-            self.ide.pluginD['output'].runProcess('preview',wdg,text=html)
-            self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'])
+            self.ide.pluginD['output'].widget.runProcess('preview',wdg,text=html,justset=justset)
+            self.ide.prevPlugin=self.ide.ui.sw_bottom.indexOf(self.ide.pluginD['output'].widget)
             
 ##        QtGui.QApplication.processEvents()
 ##        time.sleep(0.01)
@@ -108,6 +121,8 @@ class Preview(QtGui.QWidget):
             pwdg = self.wdgD[wdg]
             self.wdgD.pop(wdg)
             self.ui.sw_prev.removeWidget(pwdg)
+            pwdg.deleteLater()
+            del pwdg
     
     def load_finished(self):
         pwdg = self.ui.sw_prev.currentWidget()
@@ -120,8 +135,8 @@ class Preview(QtGui.QWidget):
             # Markdown
         if lnk.startswith('file:') and lnk.endswith('.md'):
             filename = str(url.toLocalFile())
-            import plugins.mkdown as mkdown
-            html = mkdown.generate(filename,custom=1)
+            import site_pkg.commonmark as commonmark
+            html = commonmark.generate(filename,custom=1)
             
             burl = url
             pwdg.webview.setText(html,burl)
@@ -131,4 +146,4 @@ class Preview(QtGui.QWidget):
             import webbrowser
             webbrowser.open(lnk)
         else:
-            pwdg.webview.load2(url)
+            pwdg.webview.load_link(url)

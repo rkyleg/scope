@@ -30,29 +30,20 @@ class WebView(QtWebKit.QWebView):
             baseurl=QtCore.QUrl()
         
         self.setHtml(txt,baseurl)
-        ##self.setHtml(txt)
 
     def find(self,txt,*args,**kargs):
         self.findText(txt,QtWebKit.QWebPage.FindWrapsAroundDocument)
     
-    def load2(self,url):
+    def load_link(self,url):
         # Custom load for handling markdown urls and external
-        
         lnk = str(url.toString())
             # Markdown
         if lnk.startswith('file:') and lnk.endswith('.md'):
             filename = str(url.toLocalFile())
-            import plugins.mkdown as mkdown
-            html = mkdown.generate(filename,custom=1)
+            import site_pkg.commonmark as commonmark
             
+            html = commonmark.generate(filename,custom=1)
             burl = url
-##            if burl != None:
-##                if os.name =='nt':
-##                    pfx="file:///"
-##                else:
-##                    pfx="file://"
-##                burl = QtCore.QUrl(pfx+os.path.abspath(os.path.dirname(burl)).replace('\\','/')+'/')
-
             self.setText(html,burl)
             
         elif lnk.startswith('http') or lnk.startswith('www'):
@@ -61,6 +52,29 @@ class WebView(QtWebKit.QWebView):
             webbrowser.open(lnk)
         else:
             self.load(url)
+
+    def load_help(self,url):
+        lnk = str(url.toString())
+        if lnk.startswith('http'):
+            self.load_link(url)
+        else:
+            # Read filename html
+            filename = str(url.toLocalFile())
+            with open(os.path.abspath(filename),'r') as f:
+                chtml = f.read()
+            
+            # Get Main html
+            with open(self.parent.scopePath+'/docs/main.html','r') as f:
+                mhtml = f.read()
+            
+            if os.name =='nt':
+                pfx="file:///"
+            else:
+                pfx="file://"
+                            
+            ind_fld = pfx+self.parent.scopePath+'/docs/'
+            mhtml = mhtml.replace('{{contents}}',chtml).replace('{{fld}}',ind_fld)
+            self.setText(mhtml,url)
 
     def dropEvent(self,event):
         self.parent.dropEvent(event)

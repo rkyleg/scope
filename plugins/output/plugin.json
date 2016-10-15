@@ -1,0 +1,8 @@
+{
+    "folder_name":"output",
+    "title":"Run/Output",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Handles running files and displaying the output",
+    "settings":{}
+}

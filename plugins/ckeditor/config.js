@@ -4,17 +4,19 @@
  */
 
 CKEDITOR.editorConfig = function( config ) {
-	// Define changes to default configuration here. For example:
-	// config.language = 'fr';
-	// config.uiColor = '#AADC6E';
-	// Se the most common block elements.
-	config.format_tags = 'p;h1;h2;h3;pre';
+    // Define changes to default configuration here. For example:
+    // config.language = 'fr';
+    // config.uiColor = '#AADC6E';
+    // Se the most common block elements.
+    config.format_tags = 'p;h1;h2;h3;pre';
 
-	// Make dialogs simpler.
-	config.removeDialogTabs = 'image:advanced;link:advanced';
-	config.removePlugins='preview'
-        
-    // afide customization
+    // Make dialogs simpler.
+    config.extraPlugins = 'class_edit';
+    config.removeDialogTabs = 'image:advanced;link:advanced';
+    config.removePlugins='preview'
+    config.removeButtons='Styles'
+    
+    // customization
     config.enterMode = CKEDITOR.ENTER_BR;
     config.allowedContent = true
     

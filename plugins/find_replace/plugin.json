@@ -1,0 +1,8 @@
+{
+    "folder_name":"find_replace",
+    "title":"Find/Replace",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Find and replace within the current editor",
+    "settings":{}
+}

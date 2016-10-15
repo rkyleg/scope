@@ -1,0 +1,25 @@
+<h1>Python Console</h1>
+
+<p>The Python Console is a simple interactive Python interpreter with access to the Scope environment.</p>
+
+<h2>Notes</h2>
+
+<ul>
+	<li>
+	<p>Unless you are running from Python source, the shell uses Python 2.7</p>
+	</li>
+	<li>
+	<p>If you don&#39;t have Python 2.7 installed and are using the Windows binary, then you will have limited Python functions - only what is bundled with Scope.</p>
+	</li>
+	<li>
+	<p>Ctrl +L - will launch the shell outside of Scope with your default Python install (Python and PyQt must be installed).</p>
+	</li>
+	<li>
+	<p>You can access Scope from the shell with the <em>scope</em> object. <strong>Be careful as you can lose work</strong>.</p>
+
+	<pre>
+<code>  scope.currentWidget() # Gets the current editor widget
+  scope.currentWidget().getText() # Gets the text from the current editor widget
+</code></pre>
+	</li>
+</ul>

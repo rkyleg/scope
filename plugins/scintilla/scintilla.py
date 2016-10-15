@@ -4,7 +4,13 @@ from PyQt4 import Qsci
 from PyQt4 import QtGui, QtCore, Qsci
 from .scintilla_ui import Ui_Form
 import os,sys, time
-from scintilla_style import styleD # scintilla style
+from scintilla_style import styleD, styleLightD # scintilla style
+
+try:
+    import jedi
+    USE_JEDI = 1
+except:
+    USE_JEDI = 0
 
 ##lexD = {'Python':Qsci.QsciLexerPython(),
 ##    'JavaScript':Qsci.QsciLexerJavaScript(),
@@ -58,7 +64,7 @@ class Sci(QtGui.QWidget):
         self.lex = lex
         
         # Events
-        self.evnt = Events()
+        self.Events = Events()
         self.ui.te_sci.textChanged.connect(self.editorTextChanged)
 ##        self.ui.te_sci.linesChanged.connect(self.visibleLinesChanged)
         self.ui.te_sci.verticalScrollBar().valueChanged.connect(self.visibleLinesChanged)
@@ -66,14 +72,19 @@ class Sci(QtGui.QWidget):
         self.ui.te_sci.keyPressEvent = self.keyPressEvent
         self.ui.te_sci.dropEvent = self.dropEvent
         
+        # Remove Green border
+        self.ui.te_sci.setFrameShape(QtGui.QFrame.NoFrame)
+        
         # Default settings
         self.settings = {
 ##            'wrapBehaviours':1,
 ##            'behaviours':1,
 ##            'showPrintMargin':0,
             'fontFamily':'Courier',
+##            'fontFamily':'Hack',
+##            'fontFamily':'Ubuntu',
             'fontSize':10,
-##            'theme':'twighlight',
+            'theme':'dark',
 ##            'newLineMode':'unix',
             'showWhitespace':0,
         }
@@ -92,10 +103,13 @@ class Sci(QtGui.QWidget):
         font = QFont()
 ##        font.setFamily('Ubuntu Mono')
 ##        font.setFamily('DejaVu Sans Mono')
+
         font.setFamily(self.settings['fontFamily'])
         font.setFixedPitch(True)
         
         xfont = self.settings['fontSize']
+        
+        self.default_font = font
         
         font.setPointSize(int(xfont))
         self.ui.te_sci.setFont(font)
@@ -103,7 +117,7 @@ class Sci(QtGui.QWidget):
 
         # Margin 0 for line numbers
         fontmetrics = QFontMetrics(font)
-        self.ui.te_sci.setMarginsFont(font)
+##        self.ui.te_sci.setMarginsFont(font)
         self.ui.te_sci.setMarginWidth(0, fontmetrics.width("00000"))
         self.ui.te_sci.setMarginWidth(1, 0)
         self.ui.te_sci.setMarginLineNumbers(0, True)
@@ -142,47 +156,100 @@ class Sci(QtGui.QWidget):
         if sys.version_info.major==3:
             self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytes('Courier','utf-8'))
         else:
-            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, self.settings['fontFamily'])
         
         self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
         
+        self.setupStyle()
+    
+    def setupStyle(self,*kargs):
         # Customize Python lexer
-        if 1 and type(self.lex) == type(Qsci.QsciLexerPython()):
-##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
-            self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
-            
-            shade=30
-            self.lex.setDefaultPaper(QColor(shade,shade,shade))
-            self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
-            self.ui.te_sci.setColor(QColor(255,255,255))
-            
-            self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
-            self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
-            self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
-##            self.ui.te_sci.setPaper(QColor(80,80,80))
-            self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
-##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
-            
-            self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
-            self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
-            self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
-            
-            # Set defaults for all:
-            style_obj = set(styleD.keys()).intersection(dir(self.lex))
-            style_obj.remove('Default')
-            style_obj = set(['Default']).union(sorted(style_obj))
-            
-            for c in sorted(style_obj,reverse=1):
-                clr = styleD[c]
-                if clr == '':
-##                    clr = '255,255,255'
-                    clr = styleD['Default']
-##                print c,clr
-                try:
-                    exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
-                    exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
-                except:
-                    print 'no keyword',c
+        if type(self.lex) == type(Qsci.QsciLexerPython()):
+            if self.ide.theme == 'dark':
+    ##            self.ui.te_sci.setCaretLineBackgroundColor(QColor(105,184,221,30))
+                self.ui.te_sci.setCaretForegroundColor(QColor(255,255,255))
+                
+                shade=30
+                self.lex.setDefaultPaper(QColor(shade,shade,shade))
+                self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
+                self.ui.te_sci.setColor(QColor(255,255,255))
+                
+                self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
+                self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
+                self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
+    ##            self.ui.te_sci.setPaper(QColor(80,80,80))
+                self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
+    ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
+                
+                self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
+                self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                
+                # Set defaults for all:
+                style_obj = set(styleD.keys()).intersection(dir(self.lex))
+                style_obj.remove('Default')
+                style_obj = set(['Default']).union(sorted(style_obj))
+                
+                for c in sorted(style_obj,reverse=1):
+                    clr = styleD[c]
+                    if clr == '':
+    ##                    clr = '255,255,255'
+                        clr = styleD['Default']
+    ##                print c,clr
+                    try:
+                        exec('self.lex.setPaper(QColor(30,30,30),self.lex.'+c+')')
+                        exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
+                    except:
+                        print('no keyword',c)
+            else:
+##                print 'light theme'
+                self.lex = Qsci.QsciLexerPython()
+                
+                self.lex.setDefaultFont(self.default_font)
+                self.ui.te_sci.setLexer(self.lex)
+                
+                if sys.version_info.major==3:
+                    self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, bytes('Courier','utf-8'))
+                else:
+        ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, 'Courier')
+                    self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETFONT, 1, self.settings['fontFamily'])
+                
+                # Update From Light style
+                shade=255
+                self.lex.setDefaultPaper(QColor(shade,shade,shade))
+##                print self.lex.Default
+                self.lex.setPaper(QColor(shade,shade,shade),self.lex.Default)
+                self.ui.te_sci.setColor(QColor(0,0,0))
+                
+               
+##                self.ui.te_sci.setMarginsBackgroundColor(QColor(60,60,60))
+##                self.ui.te_sci.setWhitespaceBackgroundColor(QColor(80,80,80))
+##                self.ui.te_sci.setFoldMarginColors(QColor(200,200,200),QColor(90,90,90))
+    ##            self.ui.te_sci.setPaper(QColor(80,80,80))
+##                self.ui.te_sci.setMarginsForegroundColor(QColor(200,200,200))
+    ##            self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_STYLESETBACK,Qsci.QsciScintilla.STYLE_DEFAULT,QColor(150,150,150))
+                
+                self.ui.te_sci.setMatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                self.ui.te_sci.setMatchedBraceForegroundColor(QColor(170,0,255))
+                self.ui.te_sci.setUnmatchedBraceBackgroundColor(QColor(shade,shade,shade))
+                
+                style_obj = set(styleLightD.keys()).intersection(dir(self.lex))
+                style_obj.remove('Default')
+                style_obj = set(['Default']).union(sorted(style_obj))
+                for c in sorted(style_obj,reverse=1):
+                    clr = styleLightD[c]
+                    if clr == '':
+                        clr = styleLightD['Default']
+                    try:
+                        exec('self.lex.setPaper(QColor(255,255,255),self.lex.'+c+')')
+                        exec('self.lex.setColor(QColor('+clr+'),self.lex.'+c+')')
+                    except:
+                        print('no keyword',c)
+                
+                self.ui.te_sci.setMarginsBackgroundColor(QColor(200,200,200))
+                self.ui.te_sci.setMarginsForegroundColor(QColor(60,60,60))
+                self.ui.te_sci.setFoldMarginColors(QColor(210,210,210),QColor(230,230,230))
     
     def keyPressEvent(self,event):
         ky = event.key()
@@ -202,9 +269,17 @@ class Sci(QtGui.QWidget):
             if event.key() == QtCore.Qt.Key_Down:
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESDOWN)
-            if event.key() == QtCore.Qt.Key_Up:
+                handled = 1
+            elif event.key() == QtCore.Qt.Key_Up:
                 # Move Line Down
                 self.ui.te_sci.SendScintilla(Qsci.QsciScintilla.SCI_MOVESELECTEDLINESUP)
+                handled = 1
+            elif event.key() == QtCore.Qt.Key_C:
+                # Python Autocomplete
+                if USE_JEDI and self.ide.currentEditor().lang == 'python':
+                    'run autocomplete'
+                    self.jedi_autocomplete()
+                    handled = 1
         
         if not handled:
             Qsci.QsciScintilla.keyPressEvent(self.ui.te_sci,event)
@@ -214,6 +289,7 @@ class Sci(QtGui.QWidget):
             self.okedit = 1
             self.editorTextChanged()
     
+    #---Editor Functions
     def setText(self,txt):
         self.ui.te_sci.setText(txt)
 ##        if self.settings['newLineMode']=='unix':
@@ -246,7 +322,7 @@ class Sci(QtGui.QWidget):
     
     def replace(self,ftxt,rtxt,re=0,cs=0,wo=0):
         stxt = str(self.ui.te_sci.selectedText())
-        if stxt.lower() == ftxt.lower():
+        if stxt.lower() == str(ftxt).lower():
             self.ui.te_sci.replace(rtxt)
         self.ui.te_sci.findFirst(ftxt,re,cs,wo,1)
     
@@ -256,7 +332,7 @@ class Sci(QtGui.QWidget):
         while r:
             cnt +=1
             self.ui.te_sci.replace(rtxt)
-            QtGui.QApplication.processEvents()
+##            QtGui.QApplication.processEvents()
             r = self.ui.te_sci.findFirst(ftxt,re,cs,wo,0)
         QtGui.QMessageBox.information(self,'Replace All',str(cnt)+' occurrences replaced')
     
@@ -268,7 +344,7 @@ class Sci(QtGui.QWidget):
     
     def editorTextChanged(self):
         if self.okedit:
-            self.evnt.editorChanged.emit(self)
+            self.Events.editorChanged.emit(self)
     
     def getVisibleLines(self):
         line_first = self.ui.te_sci.firstVisibleLine()
@@ -276,10 +352,13 @@ class Sci(QtGui.QWidget):
         return line_first,line_last
     
     def visibleLinesChanged(self):
-        self.evnt.visibleLinesChanged.emit(self,self.getVisibleLines())
+        self.Events.visibleLinesChanged.emit(self,self.getVisibleLines())
     
 ##    def editingFinished(self):
-##        self.evnt.editingFinished.emit(self)
+##        self.Events.editingFinished.emit(self)
+    
+    def getCursorPosition(self):
+        return self.ui.te_sci.getCursorPosition()
     
     def toggleComment(self):
         lang = self.ide.currentEditor().lang
@@ -382,3 +461,38 @@ class Sci(QtGui.QWidget):
     
     def setFocus(self):
         self.ui.te_sci.setFocus()
+
+    #----Other Tools
+    def jedi_autocomplete(self):
+        # Setup jedi autocompletion
+        pos = self.ui.te_sci.getCursorPosition()
+        x,y = self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTXFROMPOSITION,pos[0],pos[1]),self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTYFROMPOSITION,pos[0],pos[1])
+##        x,y = self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTXFROMPOSITION,0,self.ui.te_sci.getCursorPosition()[0]),self.ui.te_sci.SendScintilla(self.ui.te_sci.SCI_POINTYFROMPOSITION,0,self.ui.te_sci.getCursorPosition()[1])
+        
+        
+        line_first = self.ui.te_sci.firstVisibleLine()
+        x=pos[1]*self.settings['fontSize']+30
+        y = (pos[0]-line_first+2.5)*self.settings['fontSize']
+##        x += 100
+        y += 15
+##        y = pos[1]
+        
+        sc = jedi.Script(self.getText(),pos[0]+1,pos[1])
+        completions = sc.completions()
+        
+        menu = QtGui.QMenu()
+        menu.setStyleSheet("QMenu { menu-scrollable: 1; }")
+        
+        for c in xrange(len(completions)):
+##            print c
+            act = QtGui.QAction(completions[c].name,menu)
+            act.setData(c)
+            menu.addAction(act)
+        
+##        print x,',',y
+        act = menu.exec_(self.ui.te_sci.mapToGlobal(QtCore.QPoint(x,y)))
+##        act = menu.exec_(QtCore.QPoint(x+30,y+10))
+        if act != None:
+            acttxt = str(act.text())
+            c = int(str(act.data().toString()))
+            self.insertText(completions[c].complete)

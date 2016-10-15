@@ -1,0 +1,96 @@
+<h1>Quickstart</h1>
+
+<h2>Window Layout</h2>
+
+<p><img alt="" src="img/overview.png" /></p>
+
+<p>Scope has useful <a href="keyboard_shortcuts.html">keyboard shortcuts</a> to hide/show parts of the IDE to best utilize screen space. Plugins are easily accessible, yet can stay out of the way.</p>
+
+<ul>
+	<li>F1 - Show/Hide the Open Files (tabs)</li>
+	<li>F2 - Show/Hide left plugins</li>
+	<li>F3 - Show/Hide right plugins (preview)</li>
+	<li>F4 - Show/Hide bottom plugins</li>
+	<li>F10 - Hide the left, bottom, and right plugin windows.</li>
+	<li>F11 - Full Screen Zen Mode</li>
+</ul>
+
+<h2>Tab Window - Viewing open files</h2>
+
+<p>Instead of a row of tabs across the top, Scope has a tab window that can show multiple rows of <em>tabs</em>.</p>
+
+<p><img alt="" src="img/tabwindow.png" /></p>
+
+<ul>
+	<li>Easily visualize and open more files than a typical tabbar</li>
+	<li>Allows for multiple workspaces to be open at once</li>
+	<li>Keyboard shortcuts make it faster to go between files
+	<ul>
+		<li><em>F1</em> key will toggle this screen</li>
+		<li>Use <em>arrow keys</em> to navigate between open files and press return to select a file</li>
+		<li>Use <em>Ctrl+F1</em> to navigate between open workspaces</li>
+	</ul>
+	</li>
+	<li>Or click on a file to select it as the current file.</li>
+	<li>Click anywhere else in Scope to hide this window or click on the tab window button again</li>
+	<li><em>Note:</em> the files shown in the tab window are files considered open in the workspace, but do not actually open in Scope until you go to one (then it stays open until closed). This is done to minimize resources when a lot of files are open in a workspace.</li>
+</ul>
+
+<h2>Toolbar</h2>
+
+<p><img alt="" src="img/toolbar.png" /></p>
+
+<ul>
+	<li><img alt="" class="img-icon" src="../style/img/menu.png" /> <strong>Editor Menu</strong> - contains additional functions not available elsewhere
+
+	<ul>
+		<li><img alt="" src="img/editor_menu.png" /></li>
+		<li><strong>Save</strong> - save the current file</li>
+		<li><strong>Save As</strong> - save the file as something else</li>
+		<li><strong>Open (external) </strong>- launch the file outside of Scope. &nbsp;Just like double clicking on the file from the OS.</li>
+		<li><strong>Statistics</strong> - show the line count and current row, column in the statusbar</li>
+		<li><strong>Check file changes</strong>&nbsp;- checks if any of the open files have been modified outside this editor. This also checks to see if the file was deleted outside the editor.</li>
+		<li><strong>Toggle Whitespace</strong> - Show characters for whitespace</li>
+		<li><strong>Toggle Wordwrap</strong> - turn wordwrap on/off</li>
+		<li><strong>Window</strong> - Show/Hide different parts of the IDE. Full Editor and Full Screen mode area also available here.</li>
+		<li><strong>Print</strong> - Print the current tab</li>
+	</ul>
+	</li>
+	<li><img alt="" class="img-icon" src="../style/img/save.png" /> <strong>Save</strong> - Save the current open tab</li>
+	<li><img alt="" class="img-icon" src="../style/img/indent.png" /> <strong>Indent</strong> - Indent the current line/selection</li>
+	<li><img alt="" class="img-icon" src="../style/img/indent_remove.png" /> <strong>Unindent</strong> - Unindent the current line/selection</li>
+	<li><img alt="" class="img-icon" src="../style/img/comment.png" /> <strong>Comment</strong> - Toggle the current line/selection as commented or uncommented (uses first line of selection to determine</li>
+	<li><img alt="" class="img-icon" src="../style/img/color_swatch.png" /> <strong>Color Picker</strong> - Select a color and insert the rgb or rgba (if alpha less than 255)</li>
+	<li><strong><img alt="" class="img-icon" src="../style/img/compile.png" />&nbsp;Compile</strong> - compile the current file (additional settings are required for this)</li>
+	<li><img alt="" class="img-icon" src="../style/img/run.png" /> <strong>Run</strong> - Run current file (Supported languages: Python, HTML, Markdown by default. You can add your own with the run setting)</li>
+	<li><strong>Goto</strong> - goto a line (Ctrl + G to focus)</li>
+	<li><strong>Find</strong> - find text in the editor (Ctrl + F to focus). For more advanced find options use the find/replace plugin.</li>
+</ul>
+
+<h2><img alt="" class="img-icon" src="../style/img/workspace.png" /> Workspaces</h2>
+
+<p>Multiple projects can be managed in Scope by using workspaces. Each workspace keeps track of the following:</p>
+
+<ul>
+	<li>Last open files/tabs (on close)</li>
+	<li>What editor the file was open with</li>
+	<li>The last open file</li>
+	<li>The base path of the project (in the file browser)</li>
+</ul>
+
+<p>Workspace settings are automatically saved on close.</p>
+
+<h2>Editors/Files</h2>
+
+<p>Scope comes with multiple code editors for flexibility with the many languages out there.</p>
+
+<ul>
+	<li>A given file can only be open in one tab</li>
+	<li>Ctrl + Tab will toggle through the open editor tabs</li>
+	<li>Drag and drop files onto the editor to open them</li>
+	<li>Files are saved as utf-8</li>
+	<li>Tab indentation is 4 spaces</li>
+	<li>Files are NOT automatically saved like some editors are doing.</li>
+</ul>
+
+<p><a href="editors.html">More Info on the Editors</a></p>

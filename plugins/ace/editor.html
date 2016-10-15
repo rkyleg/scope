@@ -40,6 +40,11 @@
         // return this.session.doc.getTextRange(this.selection.getRange()) 
     } 
     
+    function getCurrentPosition() {
+        cur = editor.selection.getCursor()
+        return [cur.row,cur.column]
+    }
+    
 </script>
 
 </body>

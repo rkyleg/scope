@@ -1,0 +1,10 @@
+{
+    "folder_name":"outline",
+    "title":"Code Outline",
+    "version":"0.1.1",
+    "url":"",
+    "desc":"Outline of functions and comment headings",
+    "settings":{
+        "alwaysUpdate": 0
+    }
+}

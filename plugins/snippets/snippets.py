@@ -20,13 +20,11 @@ class Snippets(QtGui.QWidget):
         if not self.snip_fldr.endswith('/'):
             self.snip_fldr+='/'
         
-##        print self.snip_fldr
         if not os.path.exists(self.snip_fldr):
             try:
                 os.mkdir(self.snip_fldr)
             except:
                 QtGui.QMessageBox.warning(self,'Snippet Directory Error','There was an error creating the snippets folder')
-                
         
         self.ui.split_main.setSizes([200,500])
         
@@ -45,7 +43,6 @@ class Snippets(QtGui.QWidget):
         
         # Startup
         self.load_ext()
-##        self.load_list()
 
     def load_ext(self):
         exts = []
@@ -85,10 +82,9 @@ class Snippets(QtGui.QWidget):
                         elif os.path.exists(self.ide.iconPath+'files/'+ext+'.png'):
                             icn = QtGui.QIcon(self.ide.iconPath+'files/'+ext+'.png')
                         else:
-                            icn = QtGui.QIcon(self.ide.iconPath+'files/_blank.png')
+                            icn = QtGui.QIcon(self.ide.iconPath+'files/blank.png')
                         itm.setIcon(icn)
                         self.ui.li_snips.addItem(itm)
-                    
             
             self.search_list()
 
@@ -118,7 +114,6 @@ class Snippets(QtGui.QWidget):
         resp,ok = QtGui.QInputDialog.getText(self,'New Snippet','Enter the filename for the new snippet (including the extension)')
         if ok and not resp.isEmpty():
             filename = self.snip_fldr+str(resp)
-##            print filename
             if os.path.exists(filename):
                 QtGui.QMessageBox.warning(self,'Snippet Exists','A snippet with that name already exists')
             else:
@@ -133,10 +128,6 @@ class Snippets(QtGui.QWidget):
         if itm != None:
             pth=self.snip_fldr+str(itm.text())
             self.ide.openFile(pth)
-    
-##    def copy_snip(self):
-##        clip = QtGui.QApplication.clipboard()
-##        clip.setText(self.ui.te_code.toPlainText())
     
     def insert_snip(self):
         txt=self.ui.te_code.toPlainText()

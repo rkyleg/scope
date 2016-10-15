@@ -16,13 +16,14 @@ build_exe_options = {
         'PyQt4.Qsci',
         'code',
         'importlib',
+        'argparse',
 ##        'markdown',
         'shutil',
         'webbrowser',
         'threading',
         ], 
-    "excludes": ["tkinter",'numpy','scipy'],
-    'icon':'../style/img/scope.ico',
+    "excludes": ["tkinter",'numpy','scipy','tk'],
+    'icon':'../style/scope.ico',
     'copy_dependent_files':1,
     'bin_includes':['../scope/scope.py'],
     }
@@ -34,7 +35,7 @@ if sys.platform == "win32":
     base = "Win32GUI"
 
 setup(  name = "Scope",
-        version = "0.2",
+        version = "0.3",
         description = "IDE",
         options = {"build_exe": build_exe_options},
         executables = [Executable("Scope.py", base=base)])
